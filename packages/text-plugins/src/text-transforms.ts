@@ -60,7 +60,7 @@ const setFontSize = (
     }
 };
 
-const setTextColor = (board: PlaitBoard, color: string, textSelection?: BaseRange, editors?: BaseEditor[]) => {
+const setTextColor = (board: PlaitBoard, color: string | null, textSelection?: BaseRange, editors?: BaseEditor[]) => {
     const textEditors = getHandleTextEditors(board, editors);
     if (textEditors && textEditors.length) {
         textEditors.forEach(editor => {

@@ -28,11 +28,11 @@ const setStrokeStyle = (board: PlaitBoard, strokeStyle: string, options: SetOpti
     setProperty(board, { strokeStyle }, options);
 };
 
-const setFillColor = (board: PlaitBoard, fill: string, options: SetOptions) => {
+const setFillColor = (board: PlaitBoard, fill: string | null, options: SetOptions) => {
     setProperty(board, { fill }, options);
 };
 
-const setStrokeColor = (board: PlaitBoard, strokeColor: string, options: SetOptions) => {
+const setStrokeColor = (board: PlaitBoard, strokeColor: string | null, options: SetOptions) => {
     setProperty(board, { strokeColor }, options);
 };
 

@@ -74,10 +74,9 @@ export const PlaitMarkEditor = {
             Editor.addMark(editor, MarkTypes.fontSize, Number(size));
         }
     },
-    setColorMark(editor: Editor, color: string, defaultTextColor: string = DEFAULT_COLOR) {
+    setColorMark(editor: Editor, color: string | null, defaultTextColor: string = DEFAULT_COLOR) {
         setSelection(editor);
-
-        if (color === defaultTextColor) {
+        if (color === defaultTextColor || color === null || color === undefined) {
             Editor.removeMark(editor, 'color');
         } else {
             Editor.addMark(editor, 'color', color);
