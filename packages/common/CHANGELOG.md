@@ -1,5 +1,11 @@
 # @plait/common
 
+## 0.68.0
+
+### Minor Changes
+
+-   [`c743b0245`](https://github.com/worktile/plait/commit/c743b0245cec060c344b8101afb8f0e1c4e22e06) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support set null to remove color property
+
 ## 0.67.2
 
 ## 0.67.1
