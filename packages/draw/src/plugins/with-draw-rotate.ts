@@ -3,13 +3,11 @@ import {
     PlaitBoard,
     RectangleClient,
     Transforms,
-    createG,
     getRectangleByElements,
     getSelectedElements,
     getSelectionAngle,
     isMainPointer,
     isSelectionMoving,
-    preventTouchMove,
     rotatePoints,
     throttleRAF,
     toHostPoint,
@@ -115,7 +113,6 @@ export const withDrawRotate = (board: PlaitBoard) => {
         removeRotating(board);
         rotateRef = null;
         MERGING.set(board, false);
-        preventTouchMove(board, event, false);
     };
 
     board.afterChange = () => {

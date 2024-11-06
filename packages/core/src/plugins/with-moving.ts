@@ -10,9 +10,6 @@ import { throttleRAF } from '../utils/common';
 import { cacheMovingElements, getMovingElements, isMovingElements, removeMovingElements } from '../utils/moving-element';
 import { MERGING } from '../interfaces/history';
 import {
-    isPreventTouchMove,
-    preventTouchMove,
-    handleTouchTarget,
     getRectangleByElements,
     distanceBetweenPointAndPoint,
     toHostPoint,
@@ -76,12 +73,7 @@ export function withMoving(board: PlaitBoard) {
     };
 
     board.pointerDown = (event: PointerEvent) => {
-        if (
-            PlaitBoard.isReadonly(board) ||
-            !PlaitBoard.isPointer(board, PlaitPointerType.selection) ||
-            isPreventTouchMove(board) ||
-            !isMainPointer(event)
-        ) {
+        if (PlaitBoard.isReadonly(board) || !PlaitBoard.isPointer(board, PlaitPointerType.selection) || !isMainPointer(event)) {
             pointerDown(event);
             return;
         }
@@ -93,13 +85,11 @@ export function withMoving(board: PlaitBoard) {
             startPoint = point;
             activeElements = selectedTargetElements;
             activeElementsRectangle = getRectangleByElements(board, activeElements, true);
-            preventTouchMove(board, event, true);
         } else if (hitTargetElement) {
             startPoint = point;
             const relatedElements = board.getRelatedFragment([], [hitTargetElement]);
             activeElements = [...getElementsInGroupByElement(board, hitTargetElement), ...relatedElements];
             activeElementsRectangle = getRectangleByElements(board, activeElements, true);
-            preventTouchMove(board, event, true);
         } else {
             // 只有判定用户未击中元素之后才可以验证用户是否击中了已选元素所在的空白区域
             // Only after it is determined that the user has not hit the element can it be verified whether the user hit the blank area where the selected element is located.
@@ -109,7 +99,6 @@ export function withMoving(board: PlaitBoard) {
                 startPoint = point;
                 activeElements = selectedTargetElements;
                 activeElementsRectangle = targetRectangle;
-                preventTouchMove(board, event, true);
             }
         }
         pointerDown(event);
@@ -149,7 +138,6 @@ export function withMoving(board: PlaitBoard) {
                     snapG = ref.snapG;
                     snapG.classList.add(ACTIVE_MOVING_CLASS_NAME);
                     PlaitBoard.getElementActiveHost(board).append(snapG);
-                    handleTouchTarget(board);
                     if (event.altKey) {
                         pendingNodesG = drawPendingNodesG(board, activeElements, offsetX, offsetY);
                         pendingNodesG && PlaitBoard.getElementActiveHost(board).append(pendingNodesG);
@@ -191,7 +179,6 @@ export function withMoving(board: PlaitBoard) {
         if (startPoint) {
             cancelMove(board);
         }
-        preventTouchMove(board, event, false);
         globalPointerUp(event);
     };
 

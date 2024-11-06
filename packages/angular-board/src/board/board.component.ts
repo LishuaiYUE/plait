@@ -61,7 +61,6 @@ import {
     initializeViewportContainer,
     initializeViewportOffset,
     isFromViewportChange,
-    isPreventTouchMove,
     setFragment,
     setIsFromViewportChange,
     toHostPoint,
@@ -490,12 +489,10 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                 const { scrollLeft, scrollTop } = event.target as HTMLElement;
                 updateViewportByScrolling(this.board, scrollLeft, scrollTop);
             });
-        fromEvent<MouseEvent>(this.viewportContainer.nativeElement, 'touchmove', { passive: false })
+        fromEvent<MouseEvent>(this.viewportContainer.nativeElement, 'touchstart', { passive: false })
             .pipe(takeUntil(this.destroy$))
             .subscribe((event: Event) => {
-                if (isPreventTouchMove(this.board)) {
-                    event.preventDefault();
-                }
+                event.preventDefault();
             });
     }
 

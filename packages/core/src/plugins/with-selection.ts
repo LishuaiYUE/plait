@@ -21,7 +21,6 @@ import {
     isDragging,
     isHandleSelection,
     isSelectionMoving,
-    preventTouchMove,
     setSelectionMoving,
     throttleRAF,
     toHostPoint,
@@ -53,8 +52,12 @@ export function withSelection(board: PlaitBoard) {
         const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
         const isHitTarget = isHitElement(board, point);
         const options = getSelectionOptions(board);
-        if (PlaitBoard.isPointer(board, PlaitPointerType.selection) && !isHitTarget && options.isMultipleSelection && !options.isDisabledSelection) {
-            preventTouchMove(board, event, true);
+        if (
+            PlaitBoard.isPointer(board, PlaitPointerType.selection) &&
+            !isHitTarget &&
+            options.isMultipleSelection &&
+            !options.isDisabledSelection
+        ) {
             // start rectangle selection
             start = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
         }
@@ -120,7 +123,6 @@ export function withSelection(board: PlaitBoard) {
         }
         start = null;
         end = null;
-        preventTouchMove(board, event, false);
         globalPointerUp(event);
     };
 

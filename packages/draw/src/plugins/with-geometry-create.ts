@@ -1,4 +1,4 @@
-import { PlaitBoard, Point, RectangleClient, createG, preventTouchMove, toHostPoint, toViewBoxPoint } from '@plait/core';
+import { PlaitBoard, Point, RectangleClient, createG, toHostPoint, toViewBoxPoint } from '@plait/core';
 import { BasicShapes, GeometryShapes, PlaitCommonGeometry, PlaitDrawElement, PlaitGeometry } from '../interfaces';
 import { GeometryShapeGenerator } from '../generators/geometry-shape.generator';
 import {
@@ -124,7 +124,6 @@ export const withGeometryCreateByDrag = (board: PlaitBoard) => {
         temporaryElement = null;
         geometryShapeG?.remove();
         geometryShapeG = null;
-        preventTouchMove(board, event, false);
         globalPointerUp(event);
     };
 
@@ -158,7 +157,6 @@ export const withGeometryCreateByDrawing = (board: PlaitBoard) => {
             const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
             start = point;
             const pointer = PlaitBoard.getPointer(board) as DrawPointerType;
-            preventTouchMove(board, event, true);
             if (pointer === BasicShapes.text) {
                 const memorizedLatest = getMemorizedLatestByPointer(pointer);
                 const property = getTextShapeProperty(board, DefaultTextProperty.text, memorizedLatest.textProperties['font-size']);
@@ -220,7 +218,6 @@ export const withGeometryCreateByDrawing = (board: PlaitBoard) => {
             geometryShapeG = null;
             start = null;
             temporaryElement = null;
-            preventTouchMove(board, event, false);
             return;
         }
         pointerUp(event);

@@ -6,8 +6,6 @@ import {
     Point,
     distanceBetweenPointAndPoint,
     isMainPointer,
-    preventTouchMove,
-    handleTouchTarget,
     throttleRAF,
     toViewBoxPoint,
     toHostPoint,
@@ -56,7 +54,6 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
                 rectangle: resizeHitTestRef.rectangle,
                 options: resizeHitTestRef.options
             };
-            preventTouchMove(board, event, true);
             return;
         }
         pointerDown(event);
@@ -99,7 +96,6 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
                 const endPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
                 throttleRAF(board, 'with-common-resize', () => {
                     if (startPoint && resizeRef) {
-                        handleTouchTarget(board);
                         options.onResize(resizeRef, {
                             startPoint: toViewBoxPoint(board, toHostPoint(board, startPoint[0], startPoint[1])),
                             endPoint,
@@ -122,7 +118,6 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
             resizeHitTestRef = null;
             resizeRef = null;
             MERGING.set(board, false);
-            preventTouchMove(board, event, false);
         }
     };
 

@@ -7,7 +7,6 @@ import {
     addSelectedElement,
     clearSelectedElement,
     createG,
-    preventTouchMove,
     toHostPoint,
     toViewBoxPoint
 } from '@plait/core';
@@ -38,7 +37,6 @@ export const withArrowLineCreateByDraw = (board: PlaitBoard) => {
             if (hitElement) {
                 sourceElement = hitElement;
             }
-            preventTouchMove(board, event, true);
         }
         pointerDown(event);
     };
@@ -67,7 +65,6 @@ export const withArrowLineCreateByDraw = (board: PlaitBoard) => {
         sourceElement = null;
         start = null;
         temporaryElement = null;
-        preventTouchMove(board, event, false);
         globalPointerUp(event);
     };
 

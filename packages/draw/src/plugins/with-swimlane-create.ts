@@ -1,4 +1,4 @@
-import { PlaitBoard, Point, RectangleClient, createG, preventTouchMove, toHostPoint, toViewBoxPoint } from '@plait/core';
+import { PlaitBoard, Point, RectangleClient, createG, toHostPoint, toViewBoxPoint } from '@plait/core';
 import { PlaitSwimlane, SwimlaneDrawSymbols } from '../interfaces';
 import { insertElement } from '../utils';
 import {
@@ -71,7 +71,6 @@ export const withSwimlaneCreateByDrag = (board: PlaitBoard) => {
         temporaryElement = null;
         swimlaneG?.remove();
         swimlaneG = null;
-        preventTouchMove(board, event, false);
         globalPointerUp(event);
     };
 
@@ -154,7 +153,6 @@ export const withSwimlaneCreateByDrawing = (board: PlaitBoard) => {
             swimlaneG = null;
             start = null;
             temporaryElement = null;
-            preventTouchMove(board, event, false);
             return;
         }
         pointerUp(event);

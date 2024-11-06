@@ -8,7 +8,6 @@ import {
     createG,
     distanceBetweenPointAndPoint,
     getElementById,
-    preventTouchMove,
     toHostPoint,
     toViewBoxPoint
 } from '@plait/core';
@@ -78,7 +77,6 @@ export const withVectorPenCreateByDraw = (board: PlaitBoard) => {
                         vectorLineComplete();
                     }
                 }
-                preventTouchMove(board, event, true);
             }
         }
         pointerDown(event);

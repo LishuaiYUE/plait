@@ -22,7 +22,6 @@ export * from './clipboard/types';
 export * from './clipboard/clipboard';
 export * from './clipboard/common';
 export * from './clipboard';
-export * from './touch';
 export * from './dnd';
 export * from './to-point';
 export * from './group';
