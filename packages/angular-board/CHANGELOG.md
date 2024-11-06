@@ -1,5 +1,11 @@
 # @plait/angular-board
 
+## 0.69.0
+
+### Minor Changes
+
+-   [`0f8bb0f51`](https://github.com/worktile/plait/commit/0f8bb0f51a0cd95b322712d9812a3ccd35cd47a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove touch handle and use touchstart event to prevent container scrolling on mobile device
+
 ## 0.68.0
 
 ## 0.67.2
