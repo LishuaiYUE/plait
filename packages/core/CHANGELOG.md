@@ -1,5 +1,11 @@
 # plait
 
+## 0.69.1
+
+### Patch Changes
+
+-   [`bc2e97230`](https://github.com/worktile/plait/commit/bc2e97230d0050fabc81bb59ad91acc6fd948068) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - using ceilToDecimal to set text width to avoid breaking line（safari/firefox `Plait 框架`）
+
 ## 0.69.0
 
 ### Minor Changes
