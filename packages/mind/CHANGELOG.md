@@ -1,5 +1,15 @@
 # mind
 
+## 0.69.2
+
+### Patch Changes
+
+-   [`26f77e350`](https://github.com/worktile/plait/commit/26f77e350b1618095023e03b49ffb6da1e99ecb2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use current x,y to create mind cause user can not get point by getMovingPointInBoard on mobile
+
+    On touchscreens, users need to first touch the screen and then move their finger to trigger the pointermove event.
+
+    https://github.com/plait-board/drawnix/issues/20
+
 ## 0.69.1
 
 ## 0.69.0
