@@ -7,32 +7,32 @@ import { BranchShape, MindElementShape } from '../../../interfaces/element';
 
 export function drawIndentedLink(
     board: PlaitBoard,
-    node: MindNode,
+    parent: MindNode,
     child: MindNode,
     defaultStroke: string | null = null,
     needDrawUnderline = true,
     defaultStrokeWidth?: number
 ) {
-    const branchShape = getBranchShapeByMindElement(board, node.origin);
-    const branchWidth = defaultStrokeWidth || getBranchWidthByMindElement(board, node.origin);
-    const branchColor = defaultStroke || node.origin?.branchColor || getBranchColorByMindElement(board, child.origin);
+    const branchShape = getBranchShapeByMindElement(board, parent.origin);
+    const branchWidth = defaultStrokeWidth || getBranchWidthByMindElement(board, parent.origin);
+    const branchColor = defaultStroke || getBranchColorByMindElement(board, child.origin);
 
     const isUnderlineShape = (getShapeByElement(board, child.origin) as MindElementShape) === MindElementShape.underline;
     let beginX,
         beginY,
         endX,
         endY,
-        beginNode = node,
+        beginNode = parent,
         endNode = child;
     const beginRectangle = getRectangleByNode(beginNode);
     const endRectangle = getRectangleByNode(endNode);
 
     beginX = beginNode.x + beginNode.width / 2;
-    beginY = isChildUp(node, child) ? beginRectangle.y : beginRectangle.y + beginRectangle.height;
-    endX = node.left ? endNode.x + endNode.hGap + endRectangle.width : endNode.x + endNode.hGap;
+    beginY = isChildUp(parent, child) ? beginRectangle.y : beginRectangle.y + beginRectangle.height;
+    endX = parent.left ? endNode.x + endNode.hGap + endRectangle.width : endNode.x + endNode.hGap;
     endY = isUnderlineShape ? endNode.y + endNode.height - endNode.vGap : endNode.y + endNode.height / 2;
 
-    let plusMinus = isChildUp(node, child) ? (node.left ? [-1, -1] : [1, -1]) : node.left ? [-1, 1] : [1, 1];
+    let plusMinus = isChildUp(parent, child) ? (parent.left ? [-1, -1] : [1, -1]) : parent.left ? [-1, 1] : [1, 1];
 
     let curve: Point[] = [
         [beginX, beginY],

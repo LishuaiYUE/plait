@@ -39,12 +39,12 @@ export const getFirstLevelElement = (elements: MindElement[]) => {
     return result;
 };
 
-export const isChildRight = (node: MindNode, child: MindNode) => {
-    return node.x < child.x;
+export const isChildRight = (parent: MindNode, child: MindNode) => {
+    return parent.x < child.x;
 };
 
-export const isChildUp = (node: MindNode, child: MindNode) => {
-    return node.y > child.y;
+export const isChildUp = (parent: MindNode, child: MindNode) => {
+    return parent.y > child.y;
 };
 
 export const copyNewNode = (node: MindElement) => {
