@@ -1,5 +1,13 @@
 # mind
 
+## 0.70.0
+
+### Minor Changes
+
+-   [`3330172da`](https://github.com/worktile/plait/commit/3330172da6c19bd97cdc6384a38b6e36807940ea) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply branchColor By child node not parent node
+
+    BREAK CHANGES: [#973](https://github.com/worktile/plait/issues/973)
+
 ## 0.69.2
 
 ### Patch Changes
