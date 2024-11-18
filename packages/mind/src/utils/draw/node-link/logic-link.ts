@@ -69,7 +69,6 @@ export function drawLogicLink(
     const underline: Point[] = hasUnderlineShape && isHorizontal ? [underlineEnd, underlineEnd, underlineEnd] : [];
     const points = pointsOnBezierCurves([...straightLine, ...curve, ...underline]);
     const strokeLineDash = getStrokeLineDash(strokeStyle, branchWidth);
-    console.log(`strokeStyle: ${strokeStyle}, strokeLineDash: `, strokeLineDash);
     let linkG: SVGGElement;
     if (branchShape === BranchShape.polyline) {
         const buffer = 8;
