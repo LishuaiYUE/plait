@@ -4,7 +4,7 @@
             cursor: default;
         }
     }
-    &:not(.pointer-text):not(.pointer-selection):not(.pointer-hand):not(.pointer-vectorPen) {
+    &:not(.pointer-text):not(.pointer-selection):not(.pointer-hand):not(.pointer-vectorLine) {
         .board-host-svg {
             cursor: crosshair;
         }

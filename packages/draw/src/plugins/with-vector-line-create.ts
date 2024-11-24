@@ -11,8 +11,8 @@ import {
     toHostPoint,
     toViewBoxPoint
 } from '@plait/core';
-import { PlaitVectorLine, VectorLineShape, VectorPenPointerType, VectorLineRef } from '../interfaces';
-import { DrawPointerType, LINE_HIT_GEOMETRY_BUFFER, getVectorPenPointers } from '../constants';
+import { PlaitVectorLine, VectorLineShape, VectorLinePointerType, VectorLineRef } from '../interfaces';
+import { DrawPointerType, LINE_HIT_GEOMETRY_BUFFER, getVectorLinePointers } from '../constants';
 import { isDrawingMode } from '@plait/common';
 import { vectorLineCreating } from '../utils';
 import { isKeyHotkey } from 'is-hotkey';
@@ -41,10 +41,9 @@ export const withVectorLineCreateByDraw = (board: PlaitBoard) => {
     };
 
     board.pointerDown = (event: PointerEvent) => {
-        const penPointers = getVectorPenPointers();
-        const isVectorPenPointer = PlaitBoard.isInPointer(board, penPointers);
-
-        if (isVectorPenPointer && !vectorLineRef) {
+        const penPointers = getVectorLinePointers();
+        const isVectorLinePointer = PlaitBoard.isInPointer(board, penPointers);
+        if (isVectorLinePointer && !vectorLineRef) {
             vectorLineRef = { shape: VectorLineShape.straight };
         }
 
@@ -87,7 +86,7 @@ export const withVectorLineCreateByDraw = (board: PlaitBoard) => {
         lineShapeG = createG();
         let movingPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
         const pointer = PlaitBoard.getPointer(board) as DrawPointerType;
-        if (pointer !== VectorPenPointerType.vectorPen) {
+        if (pointer !== VectorLinePointerType.vectorLine) {
             vectorLineComplete();
         }
         if (vectorLineRef && vectorLineRef.start) {
