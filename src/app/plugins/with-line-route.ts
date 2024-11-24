@@ -262,7 +262,7 @@ export const mockLineData = [
     },
     {
         id: 'bwZpx',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -397,7 +397,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'drFzQ',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'elbow',
     //     source: {
     //         marker: 'none'
@@ -416,7 +416,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'SNQfA',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'straight',
     //     source: {
     //         marker: 'none'
@@ -435,7 +435,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'BBMPW',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'elbow',
     //     source: {
     //         marker: 'none'
@@ -454,7 +454,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'ikjbe',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'straight',
     //     source: {
     //         marker: 'none'
@@ -473,7 +473,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'dpKYw',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'elbow',
     //     source: {
     //         marker: 'none'
@@ -492,7 +492,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'HmJbj',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'straight',
     //     source: {
     //         marker: 'none'

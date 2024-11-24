@@ -2,8 +2,8 @@ import { Path, PlaitElement, Point } from '@plait/core';
 import { ArrowLineShape } from './arrow-line';
 import { StrokeStyle } from '@plait/common';
 
-export enum VectorPenPointerType {
-    vectorPen = 'vectorPen'
+export enum VectorLinePointerType {
+    vectorLine = 'vectorLine'
 }
 
 export enum VectorLineShape {

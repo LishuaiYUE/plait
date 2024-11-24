@@ -12,7 +12,7 @@ import { PlaitDrawElement } from '@plait/draw';
  * 3. 思维导图节点可能存在 children 属性代表子节点，流程图图形不存在节点嵌套永远在跟层
  * 4. 思维导图存在 data 属性：存储节点文本和Emoji，流程图存在 text 属性：存储元素文本（类型和思维导图中的 data.topic 相同）
  * 5. 思维导图和流程图图形 text 字段都支持基本的富文本格式，类型是 Slate 富文本编辑器的 Element 类型
- * 6. 思维导图 type 目前只有一个: 'mindmap', 流程图 type 目前有三种情况：'geometry'（几何图形）|'line'（连线）|'image'（图片）
+ * 6. 思维导图 type 目前只有一个: 'mindmap', 流程图 type 目前有三种情况：'geometry'（几何图形）|'arrow-line'（连线）|'image'（图片）
  * 7. 流程图 type type 是 geometry 的情况：通过 shape 区分不同的图形（GeometryShapes 枚举），基本图形和流程图图形不基于字段区分，只以 shape 字段区分
  * 8. 其它的属性
  */
@@ -223,7 +223,7 @@ export const mockDrawData: PlaitDrawElement[] = [
     },
     {
         id: 'hhyEm',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -245,7 +245,7 @@ export const mockDrawData: PlaitDrawElement[] = [
     },
     {
         id: 'NQbHa',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -280,7 +280,7 @@ export const mockDrawData: PlaitDrawElement[] = [
     },
     {
         id: 'dBQka',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -315,7 +315,7 @@ export const mockDrawData: PlaitDrawElement[] = [
     },
     {
         id: 'nTHrr',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -337,7 +337,7 @@ export const mockDrawData: PlaitDrawElement[] = [
     },
     {
         id: 'PMShX',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',

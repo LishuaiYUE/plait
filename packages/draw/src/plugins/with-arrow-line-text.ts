@@ -34,7 +34,7 @@ export const withArrowLineText = (board: PlaitBoard) => {
                     editHandle(board, hitTarget, textIndex);
                 } else {
                     const ratio = getRatioByPoint(points, point);
-                    const textMemory = getMemorizedLatest('line')?.text || {};
+                    const textMemory = getMemorizedLatest('arrow-line')?.text || {};
                     texts.push({
                         text: buildText(LINE_TEXT, undefined, textMemory),
                         position: ratio,

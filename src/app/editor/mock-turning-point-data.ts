@@ -45,7 +45,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'mbwmT',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -153,7 +153,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'zbGrz',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -177,7 +177,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'QMiFJ',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -242,7 +242,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'CwXGM',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -266,7 +266,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'mcrSr',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -331,7 +331,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'dEZAy',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -355,7 +355,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'GFPzY',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -420,7 +420,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'Qsiit',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -444,7 +444,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'SkeHM',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -509,7 +509,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'AtkYi',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -533,7 +533,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'cEkST',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -598,7 +598,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'ENhrj',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -622,7 +622,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'CEZwN',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -645,7 +645,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'weNti',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -669,7 +669,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'YyHjE',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -734,7 +734,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'HmZPa',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -758,7 +758,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'wSeCm',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -823,7 +823,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'nSNCX',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -847,7 +847,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'iCtYW',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -870,7 +870,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'PAGNE',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -935,7 +935,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'sSsmw',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -960,7 +960,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'YeGQR',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1025,7 +1025,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'TWGGr',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1049,7 +1049,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'tthAY',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1114,7 +1114,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'MyfCA',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1137,7 +1137,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'DcPxm',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1204,7 +1204,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'spRZM',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1270,7 +1270,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'JJSGn',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1336,7 +1336,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'SSWTB',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1402,7 +1402,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'zEQGY',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1426,7 +1426,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'JBzjY',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1449,7 +1449,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'cSFpt',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1472,7 +1472,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'bMmja',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1495,7 +1495,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'pMHXR',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1560,7 +1560,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'eBxSa',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1586,7 +1586,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'YknAK',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1651,7 +1651,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'ZeiQD',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1674,7 +1674,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'ERdrF',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1742,7 +1742,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'FGGRP',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1768,7 +1768,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'pziWQ',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1833,7 +1833,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'TjiJY',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1856,7 +1856,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'JXtHG',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1925,7 +1925,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'swEHm',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -1949,7 +1949,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'kpEaE',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -2014,7 +2014,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'YhjiJ',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -2037,7 +2037,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'hytxF',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -2103,7 +2103,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'aFDsj',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -2126,7 +2126,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'szHYY',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -2553,7 +2553,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'KkRYt',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -2577,7 +2577,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'DEdxZ',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -2664,7 +2664,7 @@ export const mockTurningPointData = [
     },
     {
         id: 'NPYhJ',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',

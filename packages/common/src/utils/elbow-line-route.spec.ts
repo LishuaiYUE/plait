@@ -49,7 +49,7 @@ describe('generate elbow line route', () => {
                 },
                 {
                     id: 'spRZM',
-                    type: 'line',
+                    type: 'arrow-line',
                     shape: 'elbow',
                     source: {
                         marker: 'none',
@@ -152,7 +152,7 @@ describe('generate elbow line route', () => {
                 },
                 {
                     id: 'CXFrs',
-                    type: 'line',
+                    type: 'arrow-line',
                     shape: 'elbow',
                     source: {
                         marker: 'none',
@@ -256,7 +256,7 @@ describe('generate elbow line route', () => {
                 },
                 {
                     id: 'dBQka',
-                    type: 'line',
+                    type: 'arrow-line',
                     shape: 'elbow',
                     source: {
                         marker: 'none',
