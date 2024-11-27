@@ -1,5 +1,29 @@
 # @plait/draw
 
+## 0.72.0
+
+### Minor Changes
+
+-   [#991](https://github.com/worktile/plait/pull/991) [`343686bc2`](https://github.com/worktile/plait/commit/343686bc211d33bce89ff2a93855b8716ed3e653) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove withGeometryResize plugin and withDrawResize support single element resize
+
+    all draw elements and custom geometry elements support rotation
+
+*   [#979](https://github.com/worktile/plait/pull/979) [`9933b62e9`](https://github.com/worktile/plait/commit/9933b62e97c59be59ba06ed5dcb204deda2474f4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract buildClipboardData and insertClipboardData to common and support scalable fun
+
+    rewrite buildClipboardData and insertClipboardData by basic method
+
+    fix copy arrow-line error
+
+-   [#981](https://github.com/worktile/plait/pull/981) [`8d343b564`](https://github.com/worktile/plait/commit/8d343b5644d2be3e772470721c450f50f64d0277) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support custom geometry
+
+*   [#986](https://github.com/worktile/plait/pull/986) [`398dc4451`](https://github.com/worktile/plait/commit/398dc44513468ea33c60d0884dad238db0ce9706) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract isRectangleHitRotatedPoints to calculate rectangle hit rotate points
+
+-   [#978](https://github.com/worktile/plait/pull/978) [`3409c8bf9`](https://github.com/worktile/plait/commit/3409c8bf92c17091e85e09bc7d1df3d122a6996b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename line -> vector-line
+
+### Patch Changes
+
+-   [#987](https://github.com/worktile/plait/pull/987) [`c759b8c0b`](https://github.com/worktile/plait/commit/c759b8c0bc95023cc45624814e1cad96e7b6fb6f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - should rewrite clipboardContext after invoking addOrCreateClipboardContext
+
 ## 0.71.0
 
 ## 0.70.0

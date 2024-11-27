@@ -1,5 +1,11 @@
 # mind
 
+## 0.72.0
+
+### Patch Changes
+
+-   [#987](https://github.com/worktile/plait/pull/987) [`c759b8c0b`](https://github.com/worktile/plait/commit/c759b8c0bc95023cc45624814e1cad96e7b6fb6f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - should rewrite clipboardContext after invoking addOrCreateClipboardContext
+
 ## 0.71.0
 
 ### Minor Changes

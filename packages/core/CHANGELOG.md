@@ -1,5 +1,17 @@
 # plait
 
+## 0.72.0
+
+### Minor Changes
+
+-   [#983](https://github.com/worktile/plait/pull/983) [`5d876529f`](https://github.com/worktile/plait/commit/5d876529f0e835dc10baa17c1583961f13d3485b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract addOrCreateClipboardContext to handle addClipboardContext and createClipboardContext requirement
+
+*   [#982](https://github.com/worktile/plait/pull/982) [`23cf8e519`](https://github.com/worktile/plait/commit/23cf8e519cbd2f38371610c9d8bd7290f9e0698c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract hasThemeChanged to PlaitPluginElementContext and all plugin apply hasThemeChanged to complete logic condition
+
+### Patch Changes
+
+-   [#987](https://github.com/worktile/plait/pull/987) [`c759b8c0b`](https://github.com/worktile/plait/commit/c759b8c0bc95023cc45624814e1cad96e7b6fb6f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - should rewrite clipboardContext after invoking addOrCreateClipboardContext
+
 ## 0.71.0
 
 ## 0.70.0
