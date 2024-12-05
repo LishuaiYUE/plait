@@ -1,5 +1,11 @@
 # angular-text
 
+## 0.73.0
+
+### Minor Changes
+
+-   [#992](https://github.com/worktile/plait/pull/992) [`71a1f3231`](https://github.com/worktile/plait/commit/71a1f3231b57dba77345068543b7932e114631ac) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove useless plugin(withInline) and rename withSelection to withInlineMove
+
 ## 0.72.0
 
 ## 0.71.0

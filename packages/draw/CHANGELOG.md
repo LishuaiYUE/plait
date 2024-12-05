@@ -1,5 +1,17 @@
 # @plait/draw
 
+## 0.73.0
+
+### Minor Changes
+
+-   [#993](https://github.com/worktile/plait/pull/993) [`60a7c164c`](https://github.com/worktile/plait/commit/60a7c164ccc2119624be4d891fea3bdb4b95fba7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - disable arrowLine rotation
+
+### Patch Changes
+
+-   [#995](https://github.com/worktile/plait/pull/995) [`20b7b661a`](https://github.com/worktile/plait/commit/20b7b661a319210d1e2fbc5db1f858c0528081e7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix resize single image issue
+
+*   [#994](https://github.com/worktile/plait/pull/994) [`4792c7067`](https://github.com/worktile/plait/commit/4792c706710cd907df88c60d673373b99b413cf8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix swimlane text position issue and add strict type for engine options
+
 ## 0.72.0
 
 ### Minor Changes
