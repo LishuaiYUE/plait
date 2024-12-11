@@ -1,5 +1,13 @@
 # plait
 
+## 0.74.0
+
+### Minor Changes
+
+-   [#996](https://github.com/worktile/plait/pull/996) [`6e52c593f`](https://github.com/worktile/plait/commit/6e52c593fb7e8a78f146e4187263c14545d97f03) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve redos logic to support withNewBatch handle(inspired by slate)
+
+    ref: https://github.com/ianstormtaylor/slate/pull/5747
+
 ## 0.73.0
 
 ## 0.72.0

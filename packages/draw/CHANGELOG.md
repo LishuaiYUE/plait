@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.74.0
+
+### Patch Changes
+
+-   [#997](https://github.com/worktile/plait/pull/997) [`58d14d6eb`](https://github.com/worktile/plait/commit/58d14d6eb8576f9ce2ca676622c6db5a98d340f1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply default fill just element is flowchart element
+
 ## 0.73.0
 
 ### Minor Changes
