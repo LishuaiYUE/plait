@@ -62,7 +62,7 @@
         "points-on-curve": "^1.0.0",
         "roughjs": "^4.5.2",
         "rxjs": "~7.8.0",
-        "slate": "^0.103.0",
+        "slate": "0.103.0",
         "slate-angular": "^18.0.1",
         "slate-history": "^0.100.0",
         "tslib": "^2.3.0",
@@ -96,7 +96,7 @@
         "karma-jasmine": "~4.0.0",
         "karma-jasmine-html-reporter": "~1.7.0",
         "ng-packagr": "^18.2.0",
-        "prettier": "^1.16.4",
+        "prettier": "^2.0.0",
         "pretty-quick": "^1.10.0",
         "typescript": "~5.5.4"
     }
