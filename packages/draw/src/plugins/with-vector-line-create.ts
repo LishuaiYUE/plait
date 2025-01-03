@@ -76,7 +76,6 @@ export const withVectorLineCreateByDraw = (board: PlaitBoard) => {
     };
 
     board.dblClick = (event: MouseEvent) => {
-        console.log('l`ll be here');
         if (!PlaitBoard.isReadonly(board)) {
             if (temporaryElement) {
                 vectorLineComplete();
