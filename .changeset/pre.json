@@ -13,5 +13,12 @@
     "@plait/mind": "0.74.0",
     "@plait/text-plugins": "0.74.0"
   },
-  "changesets": []
+  "changesets": [
+    "gentle-chairs-cry",
+    "gorgeous-seas-type",
+    "ninety-buckets-drum",
+    "shiny-ears-mix",
+    "silver-kings-begin",
+    "thick-apricots-scream"
+  ]
 }

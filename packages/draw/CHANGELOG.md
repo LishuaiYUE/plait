@@ -1,5 +1,20 @@
 # @plait/draw
 
+## 0.75.0-next.0
+
+### Minor Changes
+
+-   [#1003](https://github.com/worktile/plait/pull/1003) [`37abf30a4f600db68d2e804d851328e9453e953f`](https://github.com/worktile/plait/commit/37abf30a4f600db68d2e804d851328e9453e953f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - refactor vector line creating plugin
+
+-   [#1002](https://github.com/worktile/plait/pull/1002) [`95947209ecea26c7686f037a0e364e8d5403e0a2`](https://github.com/worktile/plait/commit/95947209ecea26c7686f037a0e364e8d5403e0a2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - isHitDrawElement support isStrict mode to match dblClick editing scene(isStrict is false)
+
+### Patch Changes
+
+-   [#1004](https://github.com/worktile/plait/pull/1004) [`69b8602335005173417d0ca544bba9951b398052`](https://github.com/worktile/plait/commit/69b8602335005173417d0ca544bba9951b398052) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prevent vector line resize handles
+
+-   [#999](https://github.com/worktile/plait/pull/999) [`9ce99cab038f47e6aa10a023c508612da7593354`](https://github.com/worktile/plait/commit/9ce99cab038f47e6aa10a023c508612da7593354) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename isDrawElementClosed to isClosedDrawElement and add isDrawElement condition
+    rename isCustomGeometryClosed to isClosedCustomGeometry
+
 ## 0.74.0
 
 ### Patch Changes

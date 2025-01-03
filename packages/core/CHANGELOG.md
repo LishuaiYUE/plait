@@ -1,5 +1,13 @@
 # plait
 
+## 0.75.0-next.0
+
+### Minor Changes
+
+-   [#1000](https://github.com/worktile/plait/pull/1000) [`e4beff4e225bfc8c2b4e4e2ba41d176e18bc859f`](https://github.com/worktile/plait/commit/e4beff4e225bfc8c2b4e4e2ba41d176e18bc859f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - updateZoom support center param
+
+-   [#1002](https://github.com/worktile/plait/pull/1002) [`95947209ecea26c7686f037a0e364e8d5403e0a2`](https://github.com/worktile/plait/commit/95947209ecea26c7686f037a0e364e8d5403e0a2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - override isHit method support isStrict param
+
 ## 0.74.0
 
 ### Minor Changes
@@ -1817,9 +1825,7 @@
 
 -   [#84](https://github.com/worktile/plait/pull/84) [`65e9d11`](https://github.com/worktile/plait/commit/65e9d11cc098e2898d201f3f571a579c8234c618) Thanks [@Ashy6](https://github.com/Ashy6)! - add toolbar for board
 
-*   [#84](https://github.com/worktile/plait/pull/84) [`65e9d11`](https://github.com/worktile/plait/commit/65e9d11cc098e2898d201f3f571a579c8234c618) Thanks [@Ashy6](https://github.com/Ashy6)! - 1. change plait toolbar style
-    2. support adapt of board
-    3. fix zoomIn and zoomOut
+*   [#84](https://github.com/worktile/plait/pull/84) [`65e9d11`](https://github.com/worktile/plait/commit/65e9d11cc098e2898d201f3f571a579c8234c618) Thanks [@Ashy6](https://github.com/Ashy6)! - 1. change plait toolbar style 2. support adapt of board 3. fix zoomIn and zoomOut
 
 ## 0.0.33
 
