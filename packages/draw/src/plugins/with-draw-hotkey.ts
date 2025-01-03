@@ -2,7 +2,7 @@ import { PlaitBoard, getHitElementByPoint, getSelectedElements, toHostPoint, toV
 import { isVirtualKey, isSpaceHotkey, isDelete } from '@plait/common';
 import { GeometryCommonTextKeys, PlaitDrawElement } from '../interfaces';
 import { editText } from '../utils/geometry';
-import { getHitMultipleGeometryText, isMultipleTextGeometry } from '../utils';
+import { getHitMultipleGeometryText, isDrawElementIncludeText, isMultipleTextGeometry } from '../utils';
 
 export const withDrawHotkey = (board: PlaitBoard) => {
     const { keyDown, dblClick } = board;
@@ -31,12 +31,12 @@ export const withDrawHotkey = (board: PlaitBoard) => {
         event.preventDefault();
         if (!PlaitBoard.isReadonly(board)) {
             const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
-            const hitElement = getHitElementByPoint(board, point);
-            if (hitElement && PlaitDrawElement.isGeometry(hitElement)) {
+            const hitElement = getHitElementByPoint(board, point, undefined, false);
+            if (hitElement && PlaitDrawElement.isGeometry(hitElement) && isDrawElementIncludeText(hitElement)) {
                 if (isMultipleTextGeometry(hitElement)) {
                     const hitText =
                         getHitMultipleGeometryText(hitElement, point) ||
-                        hitElement.texts.find(item => item.id.includes(GeometryCommonTextKeys.content)) ||
+                        hitElement.texts.find((item) => item.id.includes(GeometryCommonTextKeys.content)) ||
                         hitElement.texts[0];
                     editText(board, hitElement, hitText);
                 } else {
