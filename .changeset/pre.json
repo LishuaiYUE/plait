@@ -14,6 +14,7 @@
     "@plait/text-plugins": "0.74.0"
   },
   "changesets": [
+    "cool-shoes-hide",
     "gentle-chairs-cry",
     "gorgeous-seas-type",
     "ninety-buckets-drum",

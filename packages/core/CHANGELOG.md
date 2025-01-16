@@ -1,5 +1,29 @@
 # plait
 
+## 0.75.0-next.1
+
+### Minor Changes
+
+-   [#1005](https://github.com/worktile/plait/pull/1005) [`f4da3d2859e94e6717965ac8672dee43325ef8e8`](https://github.com/worktile/plait/commit/f4da3d2859e94e6717965ac8672dee43325ef8e8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Optimize pointer interactions across devices:
+
+    For mobile devices:
+    Long-press triggers drag selection
+    Normal movement triggers scroll interaction (while pointer remains in selection mode)
+
+    For desktop devices:
+    Selection pointer enables drag selection
+    Hand pointer triggers scrolling
+
+    优化各端设备的指针交互：
+
+    移动端：
+    长按触发拖选功能
+    普通移动触发滚动（保持 selection 指针状态）
+
+    桌面端：
+    selection 指针用于拖选
+    hand 指针用于滚动
+
 ## 0.75.0-next.0
 
 ### Minor Changes

@@ -1,5 +1,7 @@
 # @plait/draw
 
+## 0.75.0-next.1
+
 ## 0.75.0-next.0
 
 ### Minor Changes
