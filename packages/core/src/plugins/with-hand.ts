@@ -33,7 +33,7 @@ export function withHandPointer<T extends PlaitBoard>(board: T) {
         // Must exceed the PRESS_AND_MOVE_BUFFER threshold defined in withSelection's pointerMove.
         // The system first checks for drag selection state eligibility
         // withHand behavior is only triggered if drag selection state is not initiated.
-        const triggerDistance = PRESS_AND_MOVE_BUFFER + 3;
+        const triggerDistance = PRESS_AND_MOVE_BUFFER * 2;
         if (
             movingPoint &&
             !isMoving &&

@@ -67,6 +67,7 @@ export function withSelection(board: PlaitBoard) {
                 timerId = setTimeout(() => {
                     start = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
                     timerId = null;
+                    console.log('enter selection');
                 }, 500);
             } else {
                 start = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
@@ -89,22 +90,20 @@ export function withSelection(board: PlaitBoard) {
             const movedTarget = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
             const rectangle = RectangleClient.getRectangleByPoints([start, movedTarget]);
             selectionMovingG?.remove();
-            if (Math.hypot(rectangle.width, rectangle.height) > PRESS_AND_MOVE_BUFFER || isSelectionMoving(board)) {
-                end = movedTarget;
-                throttleRAF(board, 'with-selection', () => {
-                    if (start && end) {
-                        Transforms.setSelection(board, { anchor: start, focus: end });
-                    }
-                });
-                setSelectionMoving(board);
-                selectionMovingG = drawRectangle(board, rectangle, {
-                    stroke: SELECTION_BORDER_COLOR,
-                    strokeWidth: 1,
-                    fill: SELECTION_FILL_COLOR,
-                    fillStyle: 'solid'
-                });
-                PlaitBoard.getElementActiveHost(board).append(selectionMovingG);
-            }
+            end = movedTarget;
+            throttleRAF(board, 'with-selection', () => {
+                if (start && end) {
+                    Transforms.setSelection(board, { anchor: start, focus: end });
+                }
+            });
+            setSelectionMoving(board);
+            selectionMovingG = drawRectangle(board, rectangle, {
+                stroke: SELECTION_BORDER_COLOR,
+                strokeWidth: 1,
+                fill: SELECTION_FILL_COLOR,
+                fillStyle: 'solid'
+            });
+            PlaitBoard.getElementActiveHost(board).append(selectionMovingG);
         }
         pointerMove(event);
     };
@@ -143,6 +142,11 @@ export function withSelection(board: PlaitBoard) {
         }
         start = null;
         end = null;
+        if (timerId) {
+            clearTimeout(timerId);
+            timerId = null;
+        }
+        pointerDownEvent = null;
         globalPointerUp(event);
     };
 
