@@ -1,5 +1,11 @@
 # plait
 
+## 0.75.0-next.3
+
+### Patch Changes
+
+-   [`fdd95ff7f4eff74126aae17e956df9c17bfdc2c2`](https://github.com/worktile/plait/commit/fdd95ff7f4eff74126aae17e956df9c17bfdc2c2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prevent with-hand action when pointer hit element target（mobile device）
+
 ## 0.75.0-next.2
 
 ### Patch Changes
