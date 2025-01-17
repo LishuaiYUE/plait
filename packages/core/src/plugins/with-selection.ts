@@ -29,7 +29,8 @@ import {
     hasSetSelectionOperation,
     getSelectionOptions,
     setSelectionOptions,
-    distanceBetweenPointAndPoint
+    distanceBetweenPointAndPoint,
+    isMobileDeviceEvent
 } from '../utils';
 import { Selection } from '../interfaces/selection';
 import { PRESS_AND_MOVE_BUFFER } from '../constants';
@@ -61,11 +62,15 @@ export function withSelection(board: PlaitBoard) {
             options.isMultipleSelection &&
             !options.isDisabledSelection
         ) {
-            // start rectangle selection
-            timerId = setTimeout(() => {
+            // start drag selection
+            if (isMobileDeviceEvent(event)) {
+                timerId = setTimeout(() => {
+                    start = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
+                    timerId = null;
+                }, 500);
+            } else {
                 start = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
-                timerId = null;
-            }, 500);
+            }
         }
         pointerDownEvent = event;
         pointerDown(event);
