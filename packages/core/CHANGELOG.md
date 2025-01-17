@@ -1,5 +1,11 @@
 # plait
 
+## 0.75.0-next.4
+
+### Patch Changes
+
+-   [`d922ee51fd89d666c1ecc77f3d1f0b181e88d493`](https://github.com/worktile/plait/commit/d922ee51fd89d666c1ecc77f3d1f0b181e88d493) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - define DRAG_SELECTION_PRESS_AND_MOVE_BUFFER to make drag selection more easy on mobile device
+
 ## 0.75.0-next.3
 
 ### Patch Changes
