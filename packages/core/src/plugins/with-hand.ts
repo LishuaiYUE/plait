@@ -1,7 +1,7 @@
 import { PRESS_AND_MOVE_BUFFER } from '../constants';
 import { PlaitPointerType, PlaitBoard, PlaitBoardMove, WithHandPluginOptions, PlaitPluginKey } from '../interfaces';
 import { BoardTransforms } from '../transforms';
-import { distanceBetweenPointAndPoint, isMovingElements, isSelectionMoving } from '../utils';
+import { distanceBetweenPointAndPoint, isHitElement, isMovingElements, isSelectionMoving, toHostPoint, toViewBoxPoint } from '../utils';
 import { isMainPointer } from '../utils/dom/common';
 import { isSmartHand } from '../utils/mobile';
 import { updateViewportContainerScroll } from '../utils/viewport';
@@ -15,7 +15,9 @@ export function withHandPointer<T extends PlaitBoard>(board: T) {
 
     board.pointerDown = (event: PointerEvent) => {
         const options = (board as unknown as PlaitOptionsBoard).getPluginOptions<WithHandPluginOptions>(PlaitPluginKey.withHand);
-        if ((options?.isHandMode(board, event) || isSmartHand(board, event)) && isMainPointer(event)) {
+        const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
+        const isHitTarget = isHitElement(board, point);
+        if ((options?.isHandMode(board, event) || (isSmartHand(board, event) && !isHitTarget)) && isMainPointer(event)) {
             movingPoint = {
                 x: event.x,
                 y: event.y
@@ -45,7 +47,13 @@ export function withHandPointer<T extends PlaitBoard>(board: T) {
             isMoving = true;
             PlaitBoard.getBoardContainer(board).classList.add('viewport-moving');
         }
-        if ((options?.isHandMode(board, event) || isSmartHand(board, event)) && isMoving && movingPoint && !isSelectionMoving(board)) {
+        if (
+            (options?.isHandMode(board, event) || isSmartHand(board, event)) &&
+            isMoving &&
+            movingPoint &&
+            !isSelectionMoving(board) &&
+            !isMovingElements(board)
+        ) {
             const viewportContainer = PlaitBoard.getViewportContainer(board);
             const left = viewportContainer.scrollLeft - (event.x - movingPoint.x);
             const top = viewportContainer.scrollTop - (event.y - movingPoint.y);
