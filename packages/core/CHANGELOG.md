@@ -1,5 +1,13 @@
 # plait
 
+## 0.75.0-next.2
+
+### Patch Changes
+
+-   [`bb8e77285e9fd07d1b14e3b4131a2e90e92d5c4c`](https://github.com/worktile/plait/commit/bb8e77285e9fd07d1b14e3b4131a2e90e92d5c4c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - clear timeout when pointerUp in with-selection（mobile device）
+
+-   [`a0750d84cd8cd8c45cf0efb3757832265d508321`](https://github.com/worktile/plait/commit/a0750d84cd8cd8c45cf0efb3757832265d508321) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix drag selection on desktop
+
 ## 0.75.0-next.1
 
 ### Minor Changes
