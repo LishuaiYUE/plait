@@ -24,4 +24,6 @@ export const POINTER_BUTTON = {
 
 export const PRESS_AND_MOVE_BUFFER = 3;
 
+export const DRAG_SELECTION_PRESS_AND_MOVE_BUFFER = 10;
+
 export const HIT_DISTANCE_BUFFER = 5;

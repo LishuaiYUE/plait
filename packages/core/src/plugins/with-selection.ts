@@ -33,7 +33,7 @@ import {
     isMobileDeviceEvent
 } from '../utils';
 import { Selection } from '../interfaces/selection';
-import { PRESS_AND_MOVE_BUFFER } from '../constants';
+import { DRAG_SELECTION_PRESS_AND_MOVE_BUFFER } from '../constants';
 
 export function withSelection(board: PlaitBoard) {
     const { pointerDown, pointerUp, pointerMove, globalPointerUp, onChange, afterChange, drawSelectionRectangle } = board;
@@ -81,7 +81,7 @@ export function withSelection(board: PlaitBoard) {
         if (
             timerId &&
             pointerDownEvent &&
-            distanceBetweenPointAndPoint(pointerDownEvent.x, pointerDownEvent.y, event.x, event.y) > PRESS_AND_MOVE_BUFFER
+            distanceBetweenPointAndPoint(pointerDownEvent.x, pointerDownEvent.y, event.x, event.y) > DRAG_SELECTION_PRESS_AND_MOVE_BUFFER
         ) {
             clearTimeout(timerId);
             timerId = null;

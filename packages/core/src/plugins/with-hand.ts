@@ -1,4 +1,4 @@
-import { PRESS_AND_MOVE_BUFFER } from '../constants';
+import { DRAG_SELECTION_PRESS_AND_MOVE_BUFFER } from '../constants';
 import { PlaitPointerType, PlaitBoard, PlaitBoardMove, WithHandPluginOptions, PlaitPluginKey } from '../interfaces';
 import { BoardTransforms } from '../transforms';
 import { distanceBetweenPointAndPoint, isHitElement, isMovingElements, isSelectionMoving, toHostPoint, toViewBoxPoint } from '../utils';
@@ -32,10 +32,10 @@ export function withHandPointer<T extends PlaitBoard>(board: T) {
         // 阈值必须大于 withSelection 中 pointerMove 的 PRESS_AND_MOVE_BUFFER：
         // 1. 首先检测是否满足进入拖选状态的条件
         // 2. 仅当不满足拖选条件时，才会考虑触发 withHand 行为
-        // Must exceed the PRESS_AND_MOVE_BUFFER threshold defined in withSelection's pointerMove.
+        // Must exceed the DRAG_SELECTION_PRESS_AND_MOVE_BUFFER threshold defined in withSelection's pointerMove.
         // The system first checks for drag selection state eligibility
         // withHand behavior is only triggered if drag selection state is not initiated.
-        const triggerDistance = PRESS_AND_MOVE_BUFFER * 2;
+        const triggerDistance = DRAG_SELECTION_PRESS_AND_MOVE_BUFFER + 4;
         if (
             movingPoint &&
             !isMoving &&
