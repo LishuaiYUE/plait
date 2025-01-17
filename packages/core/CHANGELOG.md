@@ -1,5 +1,11 @@
 # plait
 
+## 0.75.0-next.5
+
+### Patch Changes
+
+-   [`b2c3011b725a2228c5f24bf0d700d71e4bff1d85`](https://github.com/worktile/plait/commit/b2c3011b725a2228c5f24bf0d700d71e4bff1d85) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - reduce setTimeout time on mobile device to make drag selection more easy
+
 ## 0.75.0-next.4
 
 ### Patch Changes
