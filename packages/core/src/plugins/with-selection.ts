@@ -67,7 +67,6 @@ export function withSelection(board: PlaitBoard) {
                 timerId = setTimeout(() => {
                     start = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
                     timerId = null;
-                    console.log('enter selection');
                 }, 120);
             } else {
                 start = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
