@@ -166,6 +166,10 @@ export function distanceBetweenPointAndRectangle(x: number, y: number, rect: Rec
 }
 
 export const isLineHitLine = (a: Point, b: Point, c: Point, d: Point): boolean => {
+    if (Point.isEquals(a, b) && Point.isEquals(c, d) && !Point.isEquals(a, c)) {
+        return false;
+    }
+
     const crossProduct = (v1: Point, v2: Point) => v1[0] * v2[1] - v1[1] * v2[0];
 
     const ab: Point = [b[0] - a[0], b[1] - a[1]];
