@@ -1,5 +1,7 @@
 # @plait/angular-board
 
+## 0.75.0-next.7
+
 ## 0.75.0-next.6
 
 ## 0.75.0-next.5

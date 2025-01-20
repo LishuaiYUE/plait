@@ -1,5 +1,11 @@
 # plait
 
+## 0.75.0-next.7
+
+### Patch Changes
+
+-   [`41f0fdd23a75022e48af04d3916fb2749f566c0e`](https://github.com/worktile/plait/commit/41f0fdd23a75022e48af04d3916fb2749f566c0e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isLineHitLine
+
 ## 0.75.0-next.6
 
 ### Patch Changes
