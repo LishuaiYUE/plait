@@ -179,11 +179,11 @@ export const isLineHitLine = (a: Point, b: Point, c: Point, d: Point): boolean =
     return crossProduct(ab, ac) * crossProduct(ab, ad) <= 0 && crossProduct(cd, ca) * crossProduct(cd, cb) <= 0;
 };
 
-export const isLineHitRectangle = (points: Point[], rectangle: RectangleClient, isClose: boolean = true) => {
+export const isLineHitRectangle = (points: Point[], rectangle: RectangleClient) => {
     const rectanglePoints = RectangleClient.getCornerPoints(rectangle);
     const len = points.length;
     for (let i = 0; i < len; i++) {
-        if (i === len - 1 && !isClose) continue;
+        if (i === len - 1) continue;
         const p1 = points[i];
         const p2 = points[(i + 1) % len];
         const isHit = isSingleLineHitRectangleEdge(p1, p2, rectangle);

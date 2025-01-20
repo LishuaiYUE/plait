@@ -8,11 +8,9 @@ import {
     distanceBetweenPointAndSegments,
     distanceBetweenPointAndPoint,
     HIT_DISTANCE_BUFFER,
-    rotatePointsByElement,
     rotateAntiPointsByElement,
     isPointInPolygon,
-    rotatePointsByAngle,
-    isLineHitRectangleEdge
+    rotatePointsByAngle
 } from '@plait/core';
 import {
     PlaitArrowLine,
@@ -124,7 +122,7 @@ export const isRectangleHitDrawElement = (board: PlaitBoard, element: PlaitEleme
 
     if (PlaitDrawElement.isVectorLine(element)) {
         const points = getVectorLinePoints(board, element)!;
-        return isLineHitRectangle(points, rangeRectangle, false);
+        return isLineHitRectangle(points, rangeRectangle);
     }
 
     return null;
