@@ -8,7 +8,7 @@ import {
     isIndentedLayout
 } from '@plait/layouts';
 import { MindElement, MindElementShape } from '../../interfaces/element';
-import { BASE, STROKE_WIDTH } from '../../constants/default';
+import { BASE } from '../../constants/default';
 import { getRootLayout } from '../layout';
 import { NodeSpace } from './node-space';
 import { PlaitMindBoard } from '../../plugins/with-mind.board';
