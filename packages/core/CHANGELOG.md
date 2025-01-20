@@ -1,5 +1,15 @@
 # plait
 
+## 0.75.0-next.6
+
+### Patch Changes
+
+-   [`a7a2f07ae73fbe34dfbf09a14e14540754ea8e6c`](https://github.com/worktile/plait/commit/a7a2f07ae73fbe34dfbf09a14e14540754ea8e6c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isLineHitLine method result when the fist line and the second line both are point
+
+-   [#1006](https://github.com/worktile/plait/pull/1006) [`dd32f2e18abafcb65428d8ac093fc5e667f099d9`](https://github.com/worktile/plait/commit/dd32f2e18abafcb65428d8ac093fc5e667f099d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add overridable normalizeElement method to fix incorrect data before element initialization
+
+    add normalizeElement method for mind element to fix incorrect data and widthAndHeight
+
 ## 0.75.0-next.5
 
 ### Patch Changes
