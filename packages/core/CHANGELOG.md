@@ -1,5 +1,17 @@
 # plait
 
+## 0.75.0-next.8
+
+### Minor Changes
+
+-   [#1010](https://github.com/worktile/plait/pull/1010) [`26973adcd4eda7143649e9b97b5a14e7628bd264`](https://github.com/worktile/plait/commit/26973adcd4eda7143649e9b97b5a14e7628bd264) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support to hit the could'stroke precisely
+
+### Patch Changes
+
+-   [#1007](https://github.com/worktile/plait/pull/1007) [`fc8912ce4d8f69460358d823ab6363bb85fda77b`](https://github.com/worktile/plait/commit/fc8912ce4d8f69460358d823ab6363bb85fda77b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct isLineHitRectangle logic when points length is only 1
+
+-   [#1007](https://github.com/worktile/plait/pull/1007) [`fc8912ce4d8f69460358d823ab6363bb85fda77b`](https://github.com/worktile/plait/commit/fc8912ce4d8f69460358d823ab6363bb85fda77b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - handle the issue when element only has one point
+
 ## 0.75.0-next.7
 
 ### Patch Changes

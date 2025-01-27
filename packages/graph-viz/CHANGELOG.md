@@ -1,5 +1,7 @@
 # @plait/graph-viz
 
+## 0.75.0-next.8
+
 ## 0.75.0-next.7
 
 ## 0.75.0-next.6

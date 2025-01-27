@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.75.0-next.8
+
+### Minor Changes
+
+-   [#1010](https://github.com/worktile/plait/pull/1010) [`26973adcd4eda7143649e9b97b5a14e7628bd264`](https://github.com/worktile/plait/commit/26973adcd4eda7143649e9b97b5a14e7628bd264) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support to hit the could'stroke precisely
+
 ## 0.75.0-next.7
 
 ## 0.75.0-next.6
