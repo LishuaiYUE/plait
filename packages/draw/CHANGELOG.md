@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.75.0-next.9
+
+### Patch Changes
+
+-   [#1012](https://github.com/worktile/plait/pull/1012) [`fd5bca5be7d8a766833e4cc6330a1144e9e1d623`](https://github.com/worktile/plait/commit/fd5bca5be7d8a766833e4cc6330a1144e9e1d623) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - clear selected elements when enter arrow line auto complete mode
+
 ## 0.75.0-next.8
 
 ### Minor Changes
