@@ -30,7 +30,8 @@ import {
     drawRectangle,
     ACTIVE_STROKE_WIDTH,
     SELECTION_BORDER_COLOR,
-    Path
+    Path,
+    toIslandHostRectangleFromViewBoxRectangle
 } from '@plait/core';
 import { PlaitDrawElement } from '../interfaces';
 import { DrawTransforms } from '../transforms';
@@ -249,10 +250,11 @@ export function withDrawResize(board: PlaitBoard) {
             const boundingRectangle = needCustomActiveRectangle
                 ? RectangleClient.getRectangleByPoints(resizeActivePoints!)
                 : getRectangleByElements(board, elements, false);
-            let corners = RectangleClient.getCornerPoints(boundingRectangle);
+            const boundingRectangleOfIslandHost = toIslandHostRectangleFromViewBoxRectangle(board, boundingRectangle);
+            let corners = RectangleClient.getCornerPoints(boundingRectangleOfIslandHost);
             const angle = getSelectionAngle(elements);
             if (angle) {
-                const centerPoint = RectangleClient.getCenterPoint(boundingRectangle);
+                const centerPoint = RectangleClient.getCenterPoint(boundingRectangleOfIslandHost);
                 corners = rotatePoints(corners, centerPoint, angle) as [Point, Point, Point, Point];
             }
             corners.forEach((corner) => {
@@ -266,7 +268,8 @@ export function withDrawResize(board: PlaitBoard) {
     board.drawSelectionRectangle = () => {
         if (needCustomActiveRectangle) {
             const rectangle = RectangleClient.getRectangleByPoints(resizeActivePoints!);
-            return drawRectangle(board, RectangleClient.inflate(rectangle, ACTIVE_STROKE_WIDTH), {
+            const islandHostRectangle = toIslandHostRectangleFromViewBoxRectangle(board, rectangle);
+            return drawRectangle(board, RectangleClient.inflate(islandHostRectangle, ACTIVE_STROKE_WIDTH), {
                 stroke: SELECTION_BORDER_COLOR,
                 strokeWidth: ACTIVE_STROKE_WIDTH
             });

@@ -20,6 +20,7 @@ import { filterSelectedGroups, getAllElementsInGroup, getElementsInGroup, getEle
 import { uniqueById } from './helper';
 import { Selection } from '../interfaces/selection';
 import { PlaitOptionsBoard } from '../plugins/with-options';
+import { toIslandHostRectangleFromViewBoxRectangle } from './to-point';
 
 export function isSelectionMoving(board: PlaitBoard) {
     return !!BOARD_TO_IS_SELECTION_MOVING.get(board);
@@ -66,8 +67,9 @@ export function deleteTemporaryElements(board: PlaitBoard) {
 export function drawSelectionRectangleG(board: PlaitBoard) {
     const elements = getSelectedElements(board);
     const rectangle = getRectangleByElements(board, elements, false);
-    if (rectangle.width > 0 && rectangle.height > 0 && elements.length > 1) {
-        const selectionRectangleG = drawRectangle(board, RectangleClient.inflate(rectangle, ACTIVE_STROKE_WIDTH), {
+    const islandHostRectangle = toIslandHostRectangleFromViewBoxRectangle(board, rectangle);
+    if (islandHostRectangle.width > 0 && islandHostRectangle.height > 0 && elements.length > 1) {
+        const selectionRectangleG = drawRectangle(board, RectangleClient.inflate(islandHostRectangle, ACTIVE_STROKE_WIDTH), {
             stroke: SELECTION_BORDER_COLOR,
             strokeWidth: ACTIVE_STROKE_WIDTH,
             fillStyle: 'solid'
@@ -75,7 +77,7 @@ export function drawSelectionRectangleG(board: PlaitBoard) {
         selectionRectangleG.classList.add(SELECTION_RECTANGLE_CLASS_NAME, SELECTION_RECTANGLE_BOUNDING_CLASS_NAME);
         const angle = getSelectionAngle(elements);
         if (angle) {
-            setAngleForG(selectionRectangleG, RectangleClient.getCenterPoint(rectangle), angle);
+            setAngleForG(selectionRectangleG, RectangleClient.getCenterPoint(islandHostRectangle), angle);
         }
         return selectionRectangleG;
     }

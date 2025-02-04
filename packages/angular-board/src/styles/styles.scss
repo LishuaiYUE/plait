@@ -96,4 +96,11 @@
     }
 
     @include mixins.board-background-color();
+
+    .board-island-host-svg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+    }
 }

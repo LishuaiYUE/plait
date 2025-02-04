@@ -155,11 +155,14 @@ export const PlaitBoard = {
     getElementHost(board: PlaitBoard) {
         return BOARD_TO_ELEMENT_HOST.get(board)?.host as SVGSVGElement;
     },
+    getIslandHost(board: PlaitBoard) {
+        return BOARD_TO_ELEMENT_HOST.get(board)?.islandActiveHost.parentElement as any as SVGSVGElement;
+    },
     getElementUpperHost(board: PlaitBoard) {
         return BOARD_TO_ELEMENT_HOST.get(board)?.upperHost as SVGSVGElement;
     },
     getElementActiveHost(board: PlaitBoard) {
-        return BOARD_TO_ELEMENT_HOST.get(board)?.activeHost as SVGSVGElement;
+        return BOARD_TO_ELEMENT_HOST.get(board)?.islandActiveHost as SVGSVGElement;
     },
     getRoughSVG(board: PlaitBoard) {
         return BOARD_TO_ROUGH_SVG.get(board) as RoughSVG;

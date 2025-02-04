@@ -1,4 +1,4 @@
-import { PlaitBoard, PlaitElement, RectangleClient, SELECTION_RECTANGLE_CLASS_NAME, createG, drawRectangle } from '@plait/core';
+import { ACTIVE_STROKE_WIDTH, PlaitBoard, PlaitElement, RectangleClient, SELECTION_RECTANGLE_CLASS_NAME, createG, drawRectangle, toIslandHostRectangleFromViewBoxRectangle } from '@plait/core';
 import { Generator, GeneratorOptions } from './generator';
 import { PRIMARY_COLOR } from '../constants/default';
 import { drawHandle } from '../utils/drawing';
@@ -37,14 +37,14 @@ export class ActiveGenerator<T extends PlaitElement = PlaitElement> extends Gene
 
     draw(element: T, data: ActiveGeneratorExtraData): SVGGElement {
         const activeG = createG();
-        const rectangle = this.options.getRectangle(element);
+        const rectangle = toIslandHostRectangleFromViewBoxRectangle(this.board, this.options.getRectangle(element));
 
-        const delta = this.options.getStrokeWidth();
+        const delta = this.options.getStrokeWidth() * this.board.viewport.zoom;
         const activeRectangle = RectangleClient.inflate(rectangle, delta);
 
         const strokeG = drawRectangle(this.board, activeRectangle, {
             stroke: PRIMARY_COLOR,
-            strokeWidth: delta
+            strokeWidth: ACTIVE_STROKE_WIDTH
         });
 
         activeG.append(strokeG);

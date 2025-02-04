@@ -43,6 +43,7 @@ export const BOARD_TO_ELEMENT_HOST = new WeakMap<
         host: SVGGElement;
         upperHost: SVGGElement;
         activeHost: SVGGElement;
+        islandActiveHost: SVGGElement;
         container: HTMLElement;
         viewportContainer: HTMLElement;
     }

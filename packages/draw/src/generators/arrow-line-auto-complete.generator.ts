@@ -25,7 +25,7 @@ export class ArrowLineAutoCompleteGenerator<T extends PlaitShapeElement = PlaitG
 
     draw(element: T, data: ActiveGeneratorExtraData): SVGGElement {
         this.autoCompleteG = createG();
-        const middlePoints = getAutoCompletePoints(element);
+        const middlePoints = getAutoCompletePoints(this.board, element);
         middlePoints.forEach((point, index) => {
             const circle = drawCircle(PlaitBoard.getRoughSVG(this.board), point, LINE_AUTO_COMPLETE_DIAMETER, {
                 stroke: 'none',

@@ -17,6 +17,7 @@ import {
     Output,
     QueryList,
     SimpleChanges,
+    viewChild,
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
@@ -98,6 +99,9 @@ const ElementActiveHostClass = 'element-active-host';
                 <g class="element-upper-host"></g>
                 <g class="element-active-host"></g>
             </svg>
+            <svg #islandSvg width="100%" height="100%" class="board-island-host-svg">
+                <g #islandHostG class="island-host-g"></g>
+            </svg>
         </div>
         <ng-content></ng-content>
     `,
@@ -173,6 +177,8 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
     @ViewChild('svg', { static: true })
     svg!: ElementRef;
 
+    islandHostG = viewChild<ElementRef>('islandHostG');
+
     @ViewChild('viewportContainer', { read: ElementRef, static: true })
     viewportContainer!: ElementRef;
 
@@ -196,6 +202,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         const roughSVG = rough.svg(this.host as SVGSVGElement, {
             options: { roughness: 0, strokeWidth: 1 }
         });
+        console.log(this.islandHostG()?.nativeElement);
         this.roughSVG = roughSVG;
         this.initializePlugins();
         this.ngZone.runOutsideAngular(() => {
@@ -218,6 +225,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
             host: elementHost,
             upperHost: elementUpperHost,
             activeHost: elementActiveHost,
+            islandActiveHost: this.islandHostG()?.nativeElement,
             container: this.elementRef.nativeElement,
             viewportContainer: this.viewportContainer.nativeElement
         });
@@ -293,7 +301,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                 )
             )
         );
-        this.plaitPlugins.forEach(plugin => {
+        this.plaitPlugins.forEach((plugin) => {
             board = plugin(board);
         });
         this.board = board;
@@ -400,10 +408,10 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         fromEvent<KeyboardEvent>(document, 'keydown')
             .pipe(
                 takeUntil(this.destroy$),
-                tap(event => {
+                tap((event) => {
                     this.board.globalKeyDown(event);
                 }),
-                filter(event => this.isFocused && !PlaitBoard.hasBeenTextEditing(this.board) && !hasInputOrTextareaTarget(event.target))
+                filter((event) => this.isFocused && !PlaitBoard.hasBeenTextEditing(this.board) && !hasInputOrTextareaTarget(event.target))
             )
             .subscribe((event: KeyboardEvent) => {
                 this.board.keyDown(event);
@@ -505,13 +513,13 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
     }
 
     private initializeIslands() {
-        this.islands?.forEach(island => {
+        this.islands?.forEach((island) => {
             island.initialize(this.board);
         });
     }
 
     private updateIslands() {
-        this.islands?.forEach(island => {
+        this.islands?.forEach((island) => {
             if (hasOnBoardChange(island)) {
                 island.onBoardChange();
             }

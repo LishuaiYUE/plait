@@ -28,7 +28,7 @@ export const withArrowLineAutoCompleteReaction = (board: PlaitBoard) => {
         const targetElement = selectedElements.length === 1 && selectedElements[0];
         const movingPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
         if (!PlaitBoard.isReadonly(board) && !isSelectionMoving(board) && targetElement && PlaitDrawElement.isShapeElement(targetElement)) {
-            const points = getAutoCompletePoints(targetElement);
+            const points = getAutoCompletePoints(board, targetElement);
             const hitIndex = getHitIndexOfAutoCompletePoint(rotateAntiPointsByElement(movingPoint, targetElement) || movingPoint, points);
             const hitPoint = points[hitIndex];
             const ref = PlaitElement.getElementRef<PlaitCommonElementRef>(targetElement);

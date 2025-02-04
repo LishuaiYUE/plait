@@ -43,7 +43,7 @@ export const withArrowLineAutoComplete = (board: PlaitBoard) => {
         const targetElement = selectedElements.length === 1 && selectedElements[0];
         const clickPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
         if (!PlaitBoard.isReadonly(board) && targetElement && PlaitDrawElement.isShapeElement(targetElement)) {
-            const points = getAutoCompletePoints(targetElement);
+            const points = getAutoCompletePoints(board, targetElement);
             const index = getHitIndexOfAutoCompletePoint(rotateAntiPointsByElement(clickPoint, targetElement) || clickPoint, points);
             const hitPoint = points[index];
             if (hitPoint) {
