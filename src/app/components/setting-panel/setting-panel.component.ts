@@ -151,7 +151,7 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
         this.isSelectedLine = !!selectedArrowLineElements.length || !!selectedVectorLineElements.length;
         this.isSelectedVectorLine = !!selectedVectorLineElements.length;
         this.isSelectSwimlane = isSingleSelectSwimlane(this.board);
-        this.enableSetFillColor = selectedDrawElements.some(item => isClosedDrawElement(item));
+        this.enableSetFillColor = selectedDrawElements.some((item) => isClosedDrawElement(item)) || this.isSelectedMind;
         if (this.isSelectSwimlane) {
             this.swimlaneCount = getSwimlaneCount(getSelectedElements(this.board)[0] as PlaitSwimlane);
         }
@@ -179,7 +179,7 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
                 editor = selectedTableCellsEditor[0];
                 align = (editor.children[0] as ParagraphElement)?.align || Alignment.center;
             } else {
-                const firstGeometry = selectedTableAndGeometryElements.find(item => isDrawElementIncludeText(item));
+                const firstGeometry = selectedTableAndGeometryElements.find((item) => isDrawElementIncludeText(item));
                 if (firstGeometry && PlaitElement.hasMounted(firstGeometry)) {
                     editor = getFirstTextEditor(firstGeometry);
                     align = getGeometryAlign(this.board, firstGeometry);
@@ -254,9 +254,10 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
                 if (tableElement) {
                     DrawTransforms.setTableFill(this.board, element, property, path);
                 } else {
-                    if (isClosedDrawElement(element as PlaitDrawElement)) {
-                        Transforms.setNode(this.board, { fill: property }, path);
+                    if (PlaitDrawElement.isDrawElement(element) && !isClosedDrawElement(element as PlaitDrawElement)) {
+                        return;
                     }
+                    Transforms.setNode(this.board, { fill: property }, path);
                 }
             }
         });
@@ -275,7 +276,7 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
         const selectedElements = getSelectedElements(this.board);
 
         if (selectedElements.length) {
-            selectedElements.forEach(element => {
+            selectedElements.forEach((element) => {
                 const path = PlaitBoard.findPath(this.board, element);
                 Transforms.setNode(this.board, { [attribute]: property }, path);
             });
@@ -300,7 +301,7 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
     setAbstract(event: Event) {
         const selectedElements = getSelectedElements(this.board) as MindElement[];
 
-        const ableSetAbstract = selectedElements.every(element => {
+        const ableSetAbstract = selectedElements.every((element) => {
             return canSetAbstract(element);
         });
 
