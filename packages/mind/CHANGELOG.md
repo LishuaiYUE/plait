@@ -1,5 +1,13 @@
 # mind
 
+## 0.75.0
+
+### Patch Changes
+
+-   [#1006](https://github.com/worktile/plait/pull/1006) [`dd32f2e18abafcb65428d8ac093fc5e667f099d9`](https://github.com/worktile/plait/commit/dd32f2e18abafcb65428d8ac093fc5e667f099d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add overridable normalizeElement method to fix incorrect data before element initialization
+
+    add normalizeElement method for mind element to fix incorrect data and widthAndHeight
+
 ## 0.75.0-next.9
 
 ## 0.75.0-next.8

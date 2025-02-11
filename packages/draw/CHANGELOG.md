@@ -1,5 +1,28 @@
 # @plait/draw
 
+## 0.75.0
+
+### Minor Changes
+
+-   [#1010](https://github.com/worktile/plait/pull/1010) [`26973adcd4eda7143649e9b97b5a14e7628bd264`](https://github.com/worktile/plait/commit/26973adcd4eda7143649e9b97b5a14e7628bd264) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support to hit the could'stroke precisely
+
+-   [#1003](https://github.com/worktile/plait/pull/1003) [`37abf30a4f600db68d2e804d851328e9453e953f`](https://github.com/worktile/plait/commit/37abf30a4f600db68d2e804d851328e9453e953f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - refactor vector line creating plugin
+
+-   [#1002](https://github.com/worktile/plait/pull/1002) [`95947209ecea26c7686f037a0e364e8d5403e0a2`](https://github.com/worktile/plait/commit/95947209ecea26c7686f037a0e364e8d5403e0a2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - isHitDrawElement support isStrict mode to match dblClick editing scene(isStrict is false)
+
+-   [#1022](https://github.com/worktile/plait/pull/1022) [`e7fcaa9e926cc4f639aad4512bc24ec3628c10ca`](https://github.com/worktile/plait/commit/e7fcaa9e926cc4f639aad4512bc24ec3628c10ca) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve component、package、noteCurlyLeft、noteCurlyRight、Actor、Assembly、RequiredInterface、Deletion and so on draw and getNearestPoint logic #1008
+
+### Patch Changes
+
+-   [#1004](https://github.com/worktile/plait/pull/1004) [`69b8602335005173417d0ca544bba9951b398052`](https://github.com/worktile/plait/commit/69b8602335005173417d0ca544bba9951b398052) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prevent vector line resize handles
+
+-   [#999](https://github.com/worktile/plait/pull/999) [`9ce99cab038f47e6aa10a023c508612da7593354`](https://github.com/worktile/plait/commit/9ce99cab038f47e6aa10a023c508612da7593354) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename isDrawElementClosed to isClosedDrawElement and add isDrawElement condition
+    rename isCustomGeometryClosed to isClosedCustomGeometry
+
+-   [#1012](https://github.com/worktile/plait/pull/1012) [`fd5bca5be7d8a766833e4cc6330a1144e9e1d623`](https://github.com/worktile/plait/commit/fd5bca5be7d8a766833e4cc6330a1144e9e1d623) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - clear selected elements when enter arrow line auto complete mode
+
+-   [#1023](https://github.com/worktile/plait/pull/1023) [`a181c47de84345a5dbb50bcedd3cd1a195fec243`](https://github.com/worktile/plait/commit/a181c47de84345a5dbb50bcedd3cd1a195fec243) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix table hit issue and geometry can not hitting when drag selection at left edge
+
 ## 0.75.0-next.9
 
 ### Patch Changes

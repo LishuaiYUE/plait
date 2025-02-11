@@ -1,5 +1,11 @@
 # @plait/common
 
+## 0.75.0
+
+### Patch Changes
+
+-   [#1011](https://github.com/worktile/plait/pull/1011) [`9aee49584fa546cc990c02e929c59c1b3c017928`](https://github.com/worktile/plait/commit/9aee49584fa546cc990c02e929c59c1b3c017928) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename canResize to hasResizeHandle and add hasMoreThanOnePoint condition
+
 ## 0.75.0-next.9
 
 ### Patch Changes

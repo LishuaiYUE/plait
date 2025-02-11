@@ -1,5 +1,61 @@
 # plait
 
+## 0.75.0
+
+### Minor Changes
+
+-   [#1005](https://github.com/worktile/plait/pull/1005) [`f4da3d2859e94e6717965ac8672dee43325ef8e8`](https://github.com/worktile/plait/commit/f4da3d2859e94e6717965ac8672dee43325ef8e8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Optimize pointer interactions across devices:
+
+    For mobile devices:
+    Long-press triggers drag selection
+    Normal movement triggers scroll interaction (while pointer remains in selection mode)
+
+    For desktop devices:
+    Selection pointer enables drag selection
+    Hand pointer triggers scrolling
+
+    优化各端设备的指针交互：
+
+    移动端：
+    长按触发拖选功能
+    普通移动触发滚动（保持 selection 指针状态）
+
+    桌面端：
+    selection 指针用于拖选
+    hand 指针用于滚动
+
+-   [#1010](https://github.com/worktile/plait/pull/1010) [`26973adcd4eda7143649e9b97b5a14e7628bd264`](https://github.com/worktile/plait/commit/26973adcd4eda7143649e9b97b5a14e7628bd264) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support to hit the could'stroke precisely
+
+-   [#1000](https://github.com/worktile/plait/pull/1000) [`e4beff4e225bfc8c2b4e4e2ba41d176e18bc859f`](https://github.com/worktile/plait/commit/e4beff4e225bfc8c2b4e4e2ba41d176e18bc859f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - updateZoom support center param
+
+-   [#1002](https://github.com/worktile/plait/pull/1002) [`95947209ecea26c7686f037a0e364e8d5403e0a2`](https://github.com/worktile/plait/commit/95947209ecea26c7686f037a0e364e8d5403e0a2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - override isHit method support isStrict param
+
+### Patch Changes
+
+-   [`fdd95ff7f4eff74126aae17e956df9c17bfdc2c2`](https://github.com/worktile/plait/commit/fdd95ff7f4eff74126aae17e956df9c17bfdc2c2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prevent with-hand action when pointer hit element target（mobile device）
+
+-   [`bb8e77285e9fd07d1b14e3b4131a2e90e92d5c4c`](https://github.com/worktile/plait/commit/bb8e77285e9fd07d1b14e3b4131a2e90e92d5c4c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - clear timeout when pointerUp in with-selection（mobile device）
+
+-   [`b2c3011b725a2228c5f24bf0d700d71e4bff1d85`](https://github.com/worktile/plait/commit/b2c3011b725a2228c5f24bf0d700d71e4bff1d85) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - reduce setTimeout time on mobile device to make drag selection more easy
+
+-   [`a7a2f07ae73fbe34dfbf09a14e14540754ea8e6c`](https://github.com/worktile/plait/commit/a7a2f07ae73fbe34dfbf09a14e14540754ea8e6c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isLineHitLine method result when the fist line and the second line both are point
+
+-   [`a0750d84cd8cd8c45cf0efb3757832265d508321`](https://github.com/worktile/plait/commit/a0750d84cd8cd8c45cf0efb3757832265d508321) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix drag selection on desktop
+
+-   [`d922ee51fd89d666c1ecc77f3d1f0b181e88d493`](https://github.com/worktile/plait/commit/d922ee51fd89d666c1ecc77f3d1f0b181e88d493) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - define DRAG_SELECTION_PRESS_AND_MOVE_BUFFER to make drag selection more easy on mobile device
+
+-   [#1007](https://github.com/worktile/plait/pull/1007) [`fc8912ce4d8f69460358d823ab6363bb85fda77b`](https://github.com/worktile/plait/commit/fc8912ce4d8f69460358d823ab6363bb85fda77b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct isLineHitRectangle logic when points length is only 1
+
+-   [#1007](https://github.com/worktile/plait/pull/1007) [`fc8912ce4d8f69460358d823ab6363bb85fda77b`](https://github.com/worktile/plait/commit/fc8912ce4d8f69460358d823ab6363bb85fda77b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - handle the issue when element only has one point
+
+-   [#1006](https://github.com/worktile/plait/pull/1006) [`dd32f2e18abafcb65428d8ac093fc5e667f099d9`](https://github.com/worktile/plait/commit/dd32f2e18abafcb65428d8ac093fc5e667f099d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add overridable normalizeElement method to fix incorrect data before element initialization
+
+    add normalizeElement method for mind element to fix incorrect data and widthAndHeight
+
+-   [#1023](https://github.com/worktile/plait/pull/1023) [`a181c47de84345a5dbb50bcedd3cd1a195fec243`](https://github.com/worktile/plait/commit/a181c47de84345a5dbb50bcedd3cd1a195fec243) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix table hit issue and geometry can not hitting when drag selection at left edge
+
+-   [`41f0fdd23a75022e48af04d3916fb2749f566c0e`](https://github.com/worktile/plait/commit/41f0fdd23a75022e48af04d3916fb2749f566c0e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isLineHitLine
+
 ## 0.75.0-next.9
 
 ## 0.75.0-next.8
