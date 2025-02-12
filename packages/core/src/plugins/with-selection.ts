@@ -239,16 +239,10 @@ export function withSelection(board: PlaitBoard) {
             try {
                 const currentSelectedElements = getSelectedElements(board);
                 if (currentSelectedElements.length && currentSelectedElements.length > 1) {
-                    if (
-                        previousSelectedElements &&
-                        (currentSelectedElements.length !== previousSelectedElements.length ||
-                            currentSelectedElements.some((c, index) => c !== previousSelectedElements[index]))
-                    ) {
-                        selectionRectangleG?.remove();
-                        selectionRectangleG = board.drawSelectionRectangle();
-                        PlaitBoard.getElementActiveHost(board).append(selectionRectangleG!);
-                        previousSelectedElements = [...currentSelectedElements];
-                    }
+                    selectionRectangleG?.remove();
+                    selectionRectangleG = board.drawSelectionRectangle();
+                    PlaitBoard.getElementActiveHost(board).append(selectionRectangleG!);
+                    previousSelectedElements = [...currentSelectedElements];
                 } else {
                     selectionRectangleG?.remove();
                 }
