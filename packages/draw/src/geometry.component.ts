@@ -94,7 +94,7 @@ export class GeometryComponent extends CommonElementFlavour<PlaitCommonGeometry,
         } else {
             const hasSameSelected = value.selected === previous.selected;
             const hasSameHandleState = this.activeGenerator.options.hasResizeHandle() === this.activeGenerator.hasResizeHandle;
-            if (!hasSameSelected || !hasSameHandleState) {
+            if (!hasSameSelected || !hasSameHandleState || value.selected) {
                 this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), { selected: this.selected });
                 this.lineAutoCompleteGenerator.processDrawing(this.element as PlaitGeometry, PlaitBoard.getElementActiveHost(this.board), {
                     selected: this.selected

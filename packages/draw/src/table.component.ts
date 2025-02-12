@@ -160,7 +160,7 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
             const hasSameSelected = value.selected === previous.selected;
             const hasSameHandleState = this.activeGenerator.options.hasResizeHandle() === this.activeGenerator.hasResizeHandle;
             const currentSelectedCells = getSelectedCells(value.element);
-            if (!hasSameSelected || !hasSameHandleState || currentSelectedCells?.length) {
+            if (!hasSameSelected || !hasSameHandleState || currentSelectedCells?.length || value.selected) {
                 this.activeGenerator.processDrawing(value.element, PlaitBoard.getElementActiveHost(this.board), {
                     selected: this.selected
                 });
