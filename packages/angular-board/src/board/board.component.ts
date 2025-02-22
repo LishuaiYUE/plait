@@ -61,6 +61,7 @@ import {
     initializeViewBox,
     initializeViewportContainer,
     initializeViewportOffset,
+    isFromScrolling,
     isFromViewportChange,
     setFragment,
     setIsFromViewportChange,
@@ -202,7 +203,6 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         const roughSVG = rough.svg(this.host as SVGSVGElement, {
             options: { roughness: 0, strokeWidth: 1 }
         });
-        console.log(this.islandHostG()?.nativeElement);
         this.roughSVG = roughSVG;
         this.initializePlugins();
         this.ngZone.runOutsideAngular(() => {
@@ -231,6 +231,15 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         });
         BOARD_TO_ON_CHANGE.set(this.board, () => {
             this.ngZone.run(() => {
+                const isSetViewport = this.board.operations.length && this.board.operations.some((op) => op.type === 'set_viewport');
+                const isOnlySetSelection = this.board.operations.length && this.board.operations.every((op) => op.type === 'set_selection');
+                if (!isOnlySetSelection && !(isSetViewport && isFromScrolling(this.board))) {
+                    initializeViewBox(this.board);
+                    updateViewportOffset(this.board);
+                }
+                if (isSetViewport && isFromScrolling(this.board)) {
+                    setIsFromViewportChange(this.board, false);
+                }
                 this.updateListRender();
             });
         });

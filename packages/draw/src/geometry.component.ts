@@ -19,8 +19,10 @@ import { PlaitText } from './interfaces';
 import { GeometryThreshold } from './constants';
 import { getEngine } from './engines';
 
-export class GeometryComponent extends CommonElementFlavour<PlaitCommonGeometry, PlaitBoard>
-    implements OnContextChanged<PlaitCommonGeometry, PlaitBoard> {
+export class GeometryComponent
+    extends CommonElementFlavour<PlaitCommonGeometry, PlaitBoard>
+    implements OnContextChanged<PlaitCommonGeometry, PlaitBoard>
+{
     activeGenerator!: ActiveGenerator<PlaitCommonGeometry>;
 
     lineAutoCompleteGenerator!: ArrowLineAutoCompleteGenerator;
@@ -95,7 +97,9 @@ export class GeometryComponent extends CommonElementFlavour<PlaitCommonGeometry,
             const hasSameSelected = value.selected === previous.selected;
             const hasSameHandleState = this.activeGenerator.options.hasResizeHandle() === this.activeGenerator.hasResizeHandle;
             if (!hasSameSelected || !hasSameHandleState || value.selected) {
-                this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), { selected: this.selected });
+                this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+                    selected: this.selected
+                });
                 this.lineAutoCompleteGenerator.processDrawing(this.element as PlaitGeometry, PlaitBoard.getElementActiveHost(this.board), {
                     selected: this.selected
                 });
