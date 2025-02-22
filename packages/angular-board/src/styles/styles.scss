@@ -97,7 +97,7 @@
 
     @include mixins.board-background-color();
 
-    .board-island-host-svg {
+    .board-active-svg {
         position: absolute;
         left: 0;
         top: 0;
