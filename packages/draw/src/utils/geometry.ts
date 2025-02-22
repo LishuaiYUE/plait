@@ -6,7 +6,7 @@ import {
     ThemeColorMode,
     getSelectedElements,
     idCreator,
-    toIslandHostRectangleFromViewBoxRectangle
+    toActiveRectangleFromViewBoxRectangle
 } from '@plait/core';
 import { GeometryShapes, BasicShapes, PlaitGeometry, FlowchartSymbols, UMLSymbols } from '../interfaces/geometry';
 import { Element } from 'slate';
@@ -277,8 +277,8 @@ export const createDefaultFlowchart = (point: Point) => {
 export const getAutoCompletePoints = (board: PlaitBoard, element: PlaitShapeElement) => {
     const AutoCompleteMargin = (12 + RESIZE_HANDLE_DIAMETER / 2) * 2;
     const rectangle = RectangleClient.getRectangleByPoints(element.points);
-    const islandHostRectangle = toIslandHostRectangleFromViewBoxRectangle(board, rectangle);
-    return RectangleClient.getEdgeCenterPoints(RectangleClient.inflate(islandHostRectangle, AutoCompleteMargin));
+    const activeRectangle = toActiveRectangleFromViewBoxRectangle(board, rectangle);
+    return RectangleClient.getEdgeCenterPoints(RectangleClient.inflate(activeRectangle, AutoCompleteMargin));
 };
 
 export const getHitIndexOfAutoCompletePoint = (movingPoint: Point, points: Point[]) => {

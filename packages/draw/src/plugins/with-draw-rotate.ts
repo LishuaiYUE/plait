@@ -22,7 +22,7 @@ import {
     SELECTION_RECTANGLE_CLASS_NAME,
     normalizeAngle,
     degreesToRadians,
-    toIslandHostRectangleFromViewBoxRectangle
+    toActiveRectangleFromViewBoxRectangle
 } from '@plait/core';
 import { addRotating, removeRotating, drawRotateHandle, RotateRef } from '@plait/common';
 import { PlaitDrawElement } from '../interfaces';
@@ -133,19 +133,19 @@ export const withDrawRotate = (board: PlaitBoard) => {
         if (canRotate() && !isSelectionMoving(board)) {
             if (needCustomActiveRectangle && rotateRef) {
                 const boundingRectangle = getRectangleByElements(board, rotateRef.elements, false);
-                const boundingRectangleOfIslandHost = toIslandHostRectangleFromViewBoxRectangle(board, boundingRectangle);
-                rotateHandleG = drawRotateHandle(board, boundingRectangleOfIslandHost);
+                const boundingActiveRectangle = toActiveRectangleFromViewBoxRectangle(board, boundingRectangle);
+                rotateHandleG = drawRotateHandle(board, boundingActiveRectangle);
                 rotateHandleG.classList.add(ROTATE_HANDLE_CLASS_NAME);
                 if (rotateRef.angle) {
-                    setAngleForG(rotateHandleG, RectangleClient.getCenterPoint(boundingRectangleOfIslandHost), rotateRef.angle);
+                    setAngleForG(rotateHandleG, RectangleClient.getCenterPoint(boundingActiveRectangle), rotateRef.angle);
                 }
             } else {
                 const elements = getSelectedElements(board) as PlaitDrawElement[];
                 const boundingRectangle = getRectangleByElements(board, elements, false);
-                const boundingRectangleOfIslandHost = toIslandHostRectangleFromViewBoxRectangle(board, boundingRectangle);
-                rotateHandleG = drawRotateHandle(board, boundingRectangleOfIslandHost);
+                const boundingActiveRectangle = toActiveRectangleFromViewBoxRectangle(board, boundingRectangle);
+                rotateHandleG = drawRotateHandle(board, boundingActiveRectangle);
                 rotateHandleG.classList.add(ROTATE_HANDLE_CLASS_NAME);
-                setAngleForG(rotateHandleG, RectangleClient.getCenterPoint(boundingRectangleOfIslandHost), getSelectionAngle(elements));
+                setAngleForG(rotateHandleG, RectangleClient.getCenterPoint(boundingActiveRectangle), getSelectionAngle(elements));
             }
             PlaitBoard.getElementTopHost(board).append(rotateHandleG);
         }

@@ -31,7 +31,7 @@ import {
     ACTIVE_STROKE_WIDTH,
     SELECTION_BORDER_COLOR,
     Path,
-    toIslandHostRectangleFromViewBoxRectangle
+    toActiveRectangleFromViewBoxRectangle
 } from '@plait/core';
 import { PlaitDrawElement } from '../interfaces';
 import { DrawTransforms } from '../transforms';
@@ -250,11 +250,11 @@ export function withDrawResize(board: PlaitBoard) {
             const boundingRectangle = needCustomActiveRectangle
                 ? RectangleClient.getRectangleByPoints(resizeActivePoints!)
                 : getRectangleByElements(board, elements, false);
-            const boundingRectangleOfIslandHost = toIslandHostRectangleFromViewBoxRectangle(board, boundingRectangle);
-            let corners = RectangleClient.getCornerPoints(boundingRectangleOfIslandHost);
+            const boundingActiveRectangle = toActiveRectangleFromViewBoxRectangle(board, boundingRectangle);
+            let corners = RectangleClient.getCornerPoints(boundingActiveRectangle);
             const angle = getSelectionAngle(elements);
             if (angle) {
-                const centerPoint = RectangleClient.getCenterPoint(boundingRectangleOfIslandHost);
+                const centerPoint = RectangleClient.getCenterPoint(boundingActiveRectangle);
                 corners = rotatePoints(corners, centerPoint, angle) as [Point, Point, Point, Point];
             }
             corners.forEach((corner) => {
@@ -268,7 +268,7 @@ export function withDrawResize(board: PlaitBoard) {
     board.drawSelectionRectangle = () => {
         if (needCustomActiveRectangle) {
             const rectangle = RectangleClient.getRectangleByPoints(resizeActivePoints!);
-            const islandHostRectangle = toIslandHostRectangleFromViewBoxRectangle(board, rectangle);
+            const islandHostRectangle = toActiveRectangleFromViewBoxRectangle(board, rectangle);
             return drawRectangle(board, RectangleClient.inflate(islandHostRectangle, ACTIVE_STROKE_WIDTH), {
                 stroke: SELECTION_BORDER_COLOR,
                 strokeWidth: ACTIVE_STROKE_WIDTH
