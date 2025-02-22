@@ -38,7 +38,7 @@ export class ImageComponent extends CommonElementFlavour<PlaitImage, PlaitBoard>
         super.initialize();
         this.initializeGenerator();
         this.imageGenerator.processDrawing(this.element, this.getElementG());
-        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), {
             selected: this.selected
         });
     }
@@ -50,7 +50,7 @@ export class ImageComponent extends CommonElementFlavour<PlaitImage, PlaitBoard>
         if (value.element !== previous.element) {
             this.imageGenerator.updateImage(this.getElementG(), previous.element, value.element);
             this.imageGenerator.setFocus(this.element, this.selected);
-            this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+            this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), {
                 selected: this.selected
             });
         } else {
@@ -60,7 +60,7 @@ export class ImageComponent extends CommonElementFlavour<PlaitImage, PlaitBoard>
                 this.imageGenerator.activeGenerator.options.hasResizeHandle() === this.imageGenerator.activeGenerator.hasResizeHandle;
             if (!hasSameSelected || !hasSameHandleState) {
                 this.imageGenerator.setFocus(this.element, this.selected);
-                this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+                this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), {
                     selected: this.selected
                 });
             }

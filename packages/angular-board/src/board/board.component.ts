@@ -87,7 +87,7 @@ import { OnChangeData } from '../plugins/angular-board';
 const ElementLowerHostClass = 'element-lower-host';
 const ElementHostClass = 'element-host';
 const ElementUpperHostClass = 'element-upper-host';
-const ElementActiveHostClass = 'element-active-host';
+const ElementTopHostClass = 'element-top-host';
 
 @Component({
     selector: 'plait-board',
@@ -99,8 +99,8 @@ const ElementActiveHostClass = 'element-active-host';
                 <g class="element-upper-host"></g>
                 <g class="element-active-host"></g>
             </svg>
-            <svg #islandSvg width="100%" height="100%" class="board-island-host-svg">
-                <g #islandHostG class="island-host-g"></g>
+            <svg #activeHost width="100%" height="100%" class="board-active-svg">
+                <g #activeHostG class="active-host-g"></g>
             </svg>
         </div>
         <ng-content></ng-content>
@@ -177,7 +177,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
     @ViewChild('svg', { static: true })
     svg!: ElementRef;
 
-    islandHostG = viewChild<ElementRef>('islandHostG');
+    activeHostG = viewChild<ElementRef>('activeHostG');
 
     @ViewChild('viewportContainer', { read: ElementRef, static: true })
     viewportContainer!: ElementRef;
@@ -198,7 +198,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         const elementLowerHost = this.host.querySelector(`.${ElementLowerHostClass}`) as SVGGElement;
         const elementHost = this.host.querySelector(`.${ElementHostClass}`) as SVGGElement;
         const elementUpperHost = this.host.querySelector(`.${ElementUpperHostClass}`) as SVGGElement;
-        const elementActiveHost = this.host.querySelector(`.${ElementActiveHostClass}`) as SVGGElement;
+        const elementTopHost = this.host.querySelector(`.${ElementTopHostClass}`) as SVGGElement;
         const roughSVG = rough.svg(this.host as SVGSVGElement, {
             options: { roughness: 0, strokeWidth: 1 }
         });
@@ -223,8 +223,8 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
             lowerHost: elementLowerHost,
             host: elementHost,
             upperHost: elementUpperHost,
-            activeHost: elementActiveHost,
-            islandActiveHost: this.islandHostG()?.nativeElement,
+            topHost: elementTopHost,
+            activeHost: this.activeHostG()?.nativeElement,
             container: this.elementRef.nativeElement,
             viewportContainer: this.viewportContainer.nativeElement
         });

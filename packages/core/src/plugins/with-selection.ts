@@ -108,7 +108,7 @@ export function withSelection(board: PlaitBoard) {
                 fill: SELECTION_FILL_COLOR,
                 fillStyle: 'solid'
             });
-            PlaitBoard.getElementActiveHost(board).append(selectionMovingG);
+            PlaitBoard.getElementTopHost(board).append(selectionMovingG);
         }
         pointerMove(event);
     };
@@ -224,7 +224,7 @@ export function withSelection(board: PlaitBoard) {
                     selectionRectangleG?.remove();
                     if (newElements.length > 1) {
                         selectionRectangleG = board.drawSelectionRectangle();
-                        PlaitBoard.getElementActiveHost(board).append(selectionRectangleG!);
+                        PlaitBoard.getElementTopHost(board).append(selectionRectangleG!);
                     }
                 }
             } catch (error) {
@@ -241,7 +241,7 @@ export function withSelection(board: PlaitBoard) {
                 if (currentSelectedElements.length && currentSelectedElements.length > 1) {
                     selectionRectangleG?.remove();
                     selectionRectangleG = board.drawSelectionRectangle();
-                    PlaitBoard.getElementActiveHost(board).append(selectionRectangleG!);
+                    PlaitBoard.getElementTopHost(board).append(selectionRectangleG!);
                     previousSelectedElements = [...currentSelectedElements];
                 } else {
                     selectionRectangleG?.remove();

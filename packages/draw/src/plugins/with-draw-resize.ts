@@ -126,7 +126,7 @@ export function withDrawResize(board: PlaitBoard) {
             const resizeSnapRef = getSnapResizingRef(board, resizeRef.element, resizeSnapRefOptions);
             resizeActivePoints = resizeSnapRef.activePoints;
             snapG = resizeSnapRef.snapG;
-            PlaitBoard.getElementActiveHost(board).append(snapG);
+            PlaitBoard.getElementTopHost(board).append(snapG);
 
             if (bulkRotationRef) {
                 const boundingBoxCornerPoints = RectangleClient.getPoints(resizeRef.rectangle!);
@@ -261,7 +261,7 @@ export function withDrawResize(board: PlaitBoard) {
                 const g = drawHandle(board, corner);
                 handleG && handleG.append(g);
             });
-            PlaitBoard.getElementActiveHost(board).append(handleG);
+            PlaitBoard.getElementTopHost(board).append(handleG);
         }
     };
 

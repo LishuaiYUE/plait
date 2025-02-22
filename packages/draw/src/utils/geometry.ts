@@ -379,7 +379,7 @@ export const rerenderGeometryActive = (board: PlaitBoard, element: PlaitGeometry
     const elementRef = PlaitElement.getElementRef<PlaitCommonElementRef>(element);
     const activeGenerator = elementRef.getGenerator(ActiveGenerator.key);
     const selected = getSelectedElements(board).includes(element);
-    activeGenerator.processDrawing(element, PlaitBoard.getElementActiveHost(board), { selected });
+    activeGenerator.processDrawing(element, PlaitBoard.getElementTopHost(board), { selected });
 };
 
 export const isGeometryIncludeText = (element: PlaitGeometry) => {

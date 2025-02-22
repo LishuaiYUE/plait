@@ -41,7 +41,7 @@ export const withArrowLineAutoCompleteReaction = (board: PlaitBoard) => {
                     fill: RgbaToHEX(PRIMARY_COLOR, LINE_AUTO_COMPLETE_HOVERED_OPACITY),
                     fillStyle: 'solid'
                 });
-                PlaitBoard.getElementActiveHost(board).append(reactionG);
+                PlaitBoard.getElementTopHost(board).append(reactionG);
                 PlaitBoard.getBoardContainer(board).classList.add(CursorClass.crosshair);
                 if (hasValidAngle(targetElement)) {
                     setAngleForG(reactionG, RectangleClient.getCenterPoint(board.getRectangle(targetElement)!), targetElement.angle!);

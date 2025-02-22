@@ -73,10 +73,10 @@ export class GeometryComponent
         super.initialize();
         this.initializeGenerator();
         this.shapeGenerator.processDrawing(this.element as PlaitGeometry, this.getElementG());
-        this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+        this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), {
             selected: this.selected
         });
-        this.lineAutoCompleteGenerator.processDrawing(this.element as PlaitGeometry, PlaitBoard.getElementActiveHost(this.board), {
+        this.lineAutoCompleteGenerator.processDrawing(this.element as PlaitGeometry, PlaitBoard.getElementTopHost(this.board), {
             selected: this.selected
         });
         this.textGenerator && this.textGenerator.draw(this.getElementG());
@@ -88,8 +88,8 @@ export class GeometryComponent
     ) {
         if (value.element !== previous.element || value.hasThemeChanged) {
             this.shapeGenerator.processDrawing(this.element as PlaitGeometry, this.getElementG());
-            this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), { selected: this.selected });
-            this.lineAutoCompleteGenerator.processDrawing(this.element as PlaitGeometry, PlaitBoard.getElementActiveHost(this.board), {
+            this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), { selected: this.selected });
+            this.lineAutoCompleteGenerator.processDrawing(this.element as PlaitGeometry, PlaitBoard.getElementTopHost(this.board), {
                 selected: this.selected
             });
             this.textGenerator && this.updateText(previous.element, value.element);
@@ -97,10 +97,10 @@ export class GeometryComponent
             const hasSameSelected = value.selected === previous.selected;
             const hasSameHandleState = this.activeGenerator.options.hasResizeHandle() === this.activeGenerator.hasResizeHandle;
             if (!hasSameSelected || !hasSameHandleState || value.selected) {
-                this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+                this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), {
                     selected: this.selected
                 });
-                this.lineAutoCompleteGenerator.processDrawing(this.element as PlaitGeometry, PlaitBoard.getElementActiveHost(this.board), {
+                this.lineAutoCompleteGenerator.processDrawing(this.element as PlaitGeometry, PlaitBoard.getElementTopHost(this.board), {
                     selected: this.selected
                 });
             }

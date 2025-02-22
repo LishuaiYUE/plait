@@ -39,7 +39,7 @@ export const withDrawRotate = (board: PlaitBoard) => {
         return (
             elements.length > 0 &&
             elements.every(
-                el =>
+                (el) =>
                     (PlaitDrawElement.isDrawElement(el) && !PlaitDrawElement.isArrowLine(el)) ||
                     PlaitDrawElement.isCustomGeometryElement(board, el)
             )
@@ -147,7 +147,7 @@ export const withDrawRotate = (board: PlaitBoard) => {
                 rotateHandleG.classList.add(ROTATE_HANDLE_CLASS_NAME);
                 setAngleForG(rotateHandleG, RectangleClient.getCenterPoint(boundingRectangleOfIslandHost), getSelectionAngle(elements));
             }
-            PlaitBoard.getElementActiveHost(board).append(rotateHandleG);
+            PlaitBoard.getElementTopHost(board).append(rotateHandleG);
         }
     };
 
