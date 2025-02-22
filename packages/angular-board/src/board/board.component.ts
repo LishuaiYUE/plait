@@ -76,8 +76,7 @@ import {
     withMoving,
     withOptions,
     withRelatedFragment,
-    withSelection,
-    withViewport
+    withSelection
 } from '@plait/core';
 import { PlaitIslandBaseComponent, hasOnBoardChange } from '../island/island-base.component';
 import { BOARD_TO_COMPONENT } from '../utils/weak-maps';
@@ -299,11 +298,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                     withHistory(
                         withSelection(
                             withMoving(
-                                withBoard(
-                                    withViewport(
-                                        withOptions(withAngular(withImage(withText(createBoard(this.plaitValue, this.plaitOptions)))))
-                                    )
-                                )
+                                withBoard(withOptions(withAngular(withImage(withText(createBoard(this.plaitValue, this.plaitOptions))))))
                             )
                         )
                     )
