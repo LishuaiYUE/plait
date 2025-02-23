@@ -161,6 +161,9 @@ export const PlaitBoard = {
     getElementTopHost(board: PlaitBoard) {
         return BOARD_TO_ELEMENT_HOST.get(board)?.topHost as SVGSVGElement;
     },
+    getActiveHost(board: PlaitBoard) {
+        return BOARD_TO_ELEMENT_HOST.get(board)?.activeHost as SVGSVGElement;
+    },
     getRoughSVG(board: PlaitBoard) {
         return BOARD_TO_ROUGH_SVG.get(board) as RoughSVG;
     },

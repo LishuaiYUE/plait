@@ -64,6 +64,7 @@ import {
     isFromScrolling,
     isFromViewportChange,
     setFragment,
+    setIsFromScrolling,
     setIsFromViewportChange,
     toHostPoint,
     toViewBoxPoint,
@@ -97,7 +98,7 @@ const ElementTopHostClass = 'element-top-host';
                 <g class="element-lower-host"></g>
                 <g class="element-host"></g>
                 <g class="element-upper-host"></g>
-                <g class="element-active-host"></g>
+                <g class="element-top-host"></g>
             </svg>
             <svg #activeHost width="100%" height="100%" class="board-active-svg">
                 <g #activeHostG class="active-host-g"></g>
@@ -230,15 +231,19 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         });
         BOARD_TO_ON_CHANGE.set(this.board, () => {
             this.ngZone.run(() => {
-                const isSetViewport = this.board.operations.length && this.board.operations.some((op) => op.type === 'set_viewport');
                 const isOnlySetSelection = this.board.operations.length && this.board.operations.every((op) => op.type === 'set_selection');
-                if (!isOnlySetSelection && !(isSetViewport && isFromScrolling(this.board))) {
-                    initializeViewBox(this.board);
-                    updateViewportOffset(this.board);
+                if (isOnlySetSelection) {
+                    this.updateListRender();
+                    return;
                 }
+                const isSetViewport = this.board.operations.length && this.board.operations.some((op) => op.type === 'set_viewport');
                 if (isSetViewport && isFromScrolling(this.board)) {
-                    setIsFromViewportChange(this.board, false);
+                    setIsFromScrolling(this.board, false);
+                    this.updateListRender();
+                    return;
                 }
+                initializeViewBox(this.board);
+                updateViewportOffset(this.board);
                 this.updateListRender();
             });
         });

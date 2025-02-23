@@ -11,7 +11,7 @@ export class ArrowLineAutoCompleteGenerator<T extends PlaitShapeElement = PlaitG
     hoverElement: SVGGElement | null = null;
 
     constructor(public board: PlaitBoard) {
-        super(board);
+        super(board, { active: true });
     }
 
     canDraw(element: PlaitShapeElement, data: ActiveGeneratorExtraData): boolean {

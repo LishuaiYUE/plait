@@ -7,7 +7,7 @@ import {
     setAngleForG,
     degreesToRadians
 } from '@plait/core';
-import { ActiveGenerator, CommonElementFlavour, TextManageChangeData, hasResizeHandle } from '@plait/common';
+import { ActiveGenerator, CommonElementFlavour, TextManageChangeData, createActiveGenerator, hasResizeHandle } from '@plait/common';
 import { PlaitTable, PlaitTableBoard, PlaitTableCell, PlaitTableElement } from './interfaces/table';
 import { DrawTextInfo, TextGenerator } from './generators/text.generator';
 import { TableGenerator } from './generators/table.generator';
@@ -41,7 +41,7 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
     }
 
     initializeGenerator() {
-        this.activeGenerator = new ActiveGenerator<T>(this.board, {
+        this.activeGenerator = createActiveGenerator<T>(this.board, {
             getStrokeWidth: () => {
                 return ACTIVE_STROKE_WIDTH;
             },

@@ -261,15 +261,15 @@ export function withDrawResize(board: PlaitBoard) {
                 const g = drawHandle(board, corner);
                 handleG && handleG.append(g);
             });
-            PlaitBoard.getElementTopHost(board).append(handleG);
+            PlaitBoard.getActiveHost(board).append(handleG);
         }
     };
 
     board.drawSelectionRectangle = () => {
         if (needCustomActiveRectangle) {
             const rectangle = RectangleClient.getRectangleByPoints(resizeActivePoints!);
-            const islandHostRectangle = toActiveRectangleFromViewBoxRectangle(board, rectangle);
-            return drawRectangle(board, RectangleClient.inflate(islandHostRectangle, ACTIVE_STROKE_WIDTH), {
+            const activeRectangle = toActiveRectangleFromViewBoxRectangle(board, rectangle);
+            return drawRectangle(board, RectangleClient.inflate(activeRectangle, ACTIVE_STROKE_WIDTH), {
                 stroke: SELECTION_BORDER_COLOR,
                 strokeWidth: ACTIVE_STROKE_WIDTH
             });

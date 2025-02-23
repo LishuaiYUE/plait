@@ -147,21 +147,23 @@ export const withDrawRotate = (board: PlaitBoard) => {
                 rotateHandleG.classList.add(ROTATE_HANDLE_CLASS_NAME);
                 setAngleForG(rotateHandleG, RectangleClient.getCenterPoint(boundingActiveRectangle), getSelectionAngle(elements));
             }
-            PlaitBoard.getElementTopHost(board).append(rotateHandleG);
+            PlaitBoard.getActiveHost(board).append(rotateHandleG);
         }
     };
 
     board.drawSelectionRectangle = () => {
         if (needCustomActiveRectangle && rotateRef) {
             const rectangle = getRectangleByElements(board, rotateRef.elements, false);
-            const rectangleG = drawRectangle(board, RectangleClient.inflate(rectangle, ACTIVE_STROKE_WIDTH), {
+            const activeRectangle = toActiveRectangleFromViewBoxRectangle(board, rectangle);
+            const rectangleG = drawRectangle(board, RectangleClient.inflate(activeRectangle, ACTIVE_STROKE_WIDTH), {
                 stroke: SELECTION_BORDER_COLOR,
                 strokeWidth: ACTIVE_STROKE_WIDTH
             });
             rectangleG.classList.add(SELECTION_RECTANGLE_CLASS_NAME);
             if (rotateRef.angle) {
-                setAngleForG(rectangleG, RectangleClient.getCenterPoint(rectangle), rotateRef.angle);
+                setAngleForG(rectangleG, RectangleClient.getCenterPoint(activeRectangle), rotateRef.angle);
             }
+            rectangleG.classList.add('1111');
             return rectangleG;
         }
         return drawSelectionRectangle();
