@@ -26,7 +26,7 @@ export class VectorLineComponent
         this.initializeGenerator();
         this.shapeGenerator.processDrawing(this.element, this.getElementG());
         const linePoints = getVectorLinePoints(this.board, this.element)!;
-        this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), {
+        this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
             selected: this.selected,
             linePoints
         });

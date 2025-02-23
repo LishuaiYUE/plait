@@ -274,11 +274,12 @@ export const createDefaultFlowchart = (point: Point) => {
     return [startElement, processElement1, decisionElement, processElement2, endElement, line1, line2, line3, line4, line5];
 };
 
-export const getAutoCompletePoints = (board: PlaitBoard, element: PlaitShapeElement) => {
+export const getAutoCompletePoints = (board: PlaitBoard, element: PlaitShapeElement, isToActive = false) => {
     const AutoCompleteMargin = (12 + RESIZE_HANDLE_DIAMETER / 2) * 2;
     const rectangle = RectangleClient.getRectangleByPoints(element.points);
     const activeRectangle = toActiveRectangleFromViewBoxRectangle(board, rectangle);
-    return RectangleClient.getEdgeCenterPoints(RectangleClient.inflate(activeRectangle, AutoCompleteMargin));
+    const targetRectangle = isToActive ? activeRectangle : rectangle;
+    return RectangleClient.getEdgeCenterPoints(RectangleClient.inflate(targetRectangle, AutoCompleteMargin));
 };
 
 export const getHitIndexOfAutoCompletePoint = (movingPoint: Point, points: Point[]) => {

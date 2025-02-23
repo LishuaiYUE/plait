@@ -79,7 +79,7 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
         this.tableGenerator.processDrawing(this.element, this.getElementG());
         this.textGenerator.draw(this.getElementG());
         this.rotateVerticalText();
-        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), {
+        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
             selected: this.selected
         });
     }
@@ -151,7 +151,7 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
                 setSelectedCells(value.element, previousSelectedCells);
             }
             this.tableGenerator.processDrawing(value.element, this.getElementG());
-            this.activeGenerator.processDrawing(value.element, PlaitBoard.getElementTopHost(this.board), { selected: this.selected });
+            this.activeGenerator.processDrawing(value.element, PlaitBoard.getActiveHost(this.board), { selected: this.selected });
             const previousTexts = this.getDrawShapeTexts(previous.element.cells);
             const currentTexts = this.getDrawShapeTexts(value.element.cells);
             this.textGenerator.update(value.element, previousTexts, currentTexts, this.getElementG());
@@ -161,7 +161,7 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
             const hasSameHandleState = this.activeGenerator.options.hasResizeHandle() === this.activeGenerator.hasResizeHandle;
             const currentSelectedCells = getSelectedCells(value.element);
             if (!hasSameSelected || !hasSameHandleState || currentSelectedCells?.length || value.selected) {
-                this.activeGenerator.processDrawing(value.element, PlaitBoard.getElementTopHost(this.board), {
+                this.activeGenerator.processDrawing(value.element, PlaitBoard.getActiveHost(this.board), {
                     selected: this.selected
                 });
             }
@@ -169,7 +169,7 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
                 clearSelectedCells(value.element);
             }
         }
-        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementTopHost(this.board), {
+        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
             selected: this.selected
         });
     }

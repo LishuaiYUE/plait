@@ -116,13 +116,13 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
         if (currentForeignObject && current.angle) {
             setAngleForG(this.g!, RectangleClient.getCenterPoint(currentForeignObject), current.angle);
         }
-        const activeG = PlaitBoard.getElementTopHost(this.board);
+        const activeG = PlaitBoard.getActiveHost(this.board);
         this.activeGenerator.processDrawing(current, activeG, { selected: this.isFocus });
     }
 
     setFocus(element: PlaitElement, isFocus: boolean) {
         this.isFocus = isFocus;
-        const activeG = PlaitBoard.getElementTopHost(this.board);
+        const activeG = PlaitBoard.getActiveHost(this.board);
         this.activeGenerator.processDrawing(element, activeG, { selected: isFocus });
         const props: Partial<ImageProps> = {
             isFocus

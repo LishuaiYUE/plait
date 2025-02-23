@@ -23,13 +23,23 @@ export function toActiveRectangleFromViewBoxRectangle(board: PlaitBoard, rectang
     return RectangleClient.getRectangleByPoints([leftTopOfScreen, rightBottomOfScreen]);
 }
 
+export function toActivePointFromViewBoxPoint(board: PlaitBoard, point: Point) {
+    return toScreenPointFromHostPoint(board, toHostPointFromViewBoxPoint(board, point));
+}
+
 /**
  * Get the screen point starting from the upper left corner of the svg element (based on the svg screen coordinate system)
  */
-export function toIslandHostPoint(board: PlaitBoard, x: number, y: number): Point {
+export function toActivePoint(board: PlaitBoard, x: number, y: number): Point {
     const boardContainer = PlaitBoard.getBoardContainer(board);
     const rect = boardContainer.getBoundingClientRect();
     return [x - rect.x, y - rect.y];
+}
+
+export function toScreenPointFromActivePoint(board: PlaitBoard, activePoint: Point): Point {
+    const boardContainer = PlaitBoard.getBoardContainer(board);
+    const rect = boardContainer.getBoundingClientRect();
+    return [rect.x + activePoint[0], rect.y + activePoint[1]];
 }
 
 /**

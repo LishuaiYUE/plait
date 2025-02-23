@@ -31,7 +31,7 @@ import {
     setSelectionOptions,
     distanceBetweenPointAndPoint,
     isMobileDeviceEvent,
-    toIslandHostPoint
+    toActivePoint
 } from '../utils';
 import { Selection } from '../interfaces/selection';
 import { DRAG_SELECTION_PRESS_AND_MOVE_BUFFER } from '../constants';
@@ -66,11 +66,11 @@ export function withSelection(board: PlaitBoard) {
             // start drag selection
             if (isMobileDeviceEvent(event)) {
                 timerId = setTimeout(() => {
-                    screenStart = [event.x, event.y];
+                    screenStart = toActivePoint(board, event.x, event.y);
                     timerId = null;
                 }, 120);
             } else {
-                screenStart = [event.x, event.y];
+                screenStart = toActivePoint(board, event.x, event.y);
             }
         }
         pointerDownEvent = event;
@@ -87,10 +87,10 @@ export function withSelection(board: PlaitBoard) {
             timerId = null;
         }
         if (PlaitBoard.isPointer(board, PlaitPointerType.selection) && screenStart) {
-            screenEnd = [event.x, event.y];
+            screenEnd = toActivePoint(board, event.x, event.y);
             const rectangle = RectangleClient.getRectangleByPoints([
-                toIslandHostPoint(board, ...screenStart),
-                toIslandHostPoint(board, ...screenEnd)
+                toActivePoint(board, ...screenStart),
+                toActivePoint(board, ...screenEnd)
             ]);
             selectionMovingG?.remove();
             throttleRAF(board, 'with-selection', () => {
