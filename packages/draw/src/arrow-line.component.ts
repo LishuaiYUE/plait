@@ -17,8 +17,10 @@ interface BoundedElements {
 const debugKey = 'debug:plait:line-turning';
 const debugGenerator = createDebugGenerator(debugKey);
 
-export class ArrowLineComponent extends CommonElementFlavour<PlaitArrowLine, PlaitBoard>
-    implements OnContextChanged<PlaitArrowLine, PlaitBoard> {
+export class ArrowLineComponent
+    extends CommonElementFlavour<PlaitArrowLine, PlaitBoard>
+    implements OnContextChanged<PlaitArrowLine, PlaitBoard>
+{
     shapeGenerator!: ArrowLineShapeGenerator;
 
     activeGenerator!: LineActiveGenerator;
@@ -39,14 +41,20 @@ export class ArrowLineComponent extends CommonElementFlavour<PlaitArrowLine, Pla
         this.initializeGenerator();
         this.shapeGenerator.processDrawing(this.element, this.getElementG());
         const linePoints = getArrowLinePoints(this.board, this.element);
-        this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+        this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
             selected: this.selected,
             linePoints
         });
         super.initialize();
         this.boundedElements = this.getBoundedElements();
         this.drawText();
-
+        this.getRef().updateActiveSection = () => {
+            const linePoints = getArrowLinePoints(this.board, this.element);
+            this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
+                selected: this.selected,
+                linePoints
+            });
+        };
         debugGenerator.isDebug() && debugGenerator.drawCircles(this.board, this.element.points.slice(1, -1), 4, true);
     }
 
@@ -78,7 +86,7 @@ export class ArrowLineComponent extends CommonElementFlavour<PlaitArrowLine, Pla
         const linePoints = getArrowLinePoints(this.board, this.element);
         if (value.element !== previous.element || value.hasThemeChanged) {
             this.shapeGenerator.processDrawing(this.element, this.getElementG());
-            this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+            this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
                 selected: this.selected,
                 linePoints
             });
@@ -86,8 +94,8 @@ export class ArrowLineComponent extends CommonElementFlavour<PlaitArrowLine, Pla
             this.updateTextRectangle();
         } else {
             const needUpdate = value.selected !== previous.selected || this.activeGenerator.needUpdate();
-            if (needUpdate) {
-                this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+            if (needUpdate || value.selected) {
+                this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
                     selected: this.selected,
                     linePoints
                 });
@@ -95,7 +103,7 @@ export class ArrowLineComponent extends CommonElementFlavour<PlaitArrowLine, Pla
         }
         if (isBoundedElementsChanged) {
             this.shapeGenerator.processDrawing(this.element, this.getElementG());
-            this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+            this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
                 selected: this.selected,
                 linePoints
             });
@@ -170,7 +178,7 @@ export class ArrowLineComponent extends CommonElementFlavour<PlaitArrowLine, Pla
 
     updateTextRectangle() {
         const textManages = this.getRef().getTextManages();
-        textManages.forEach(manage => {
+        textManages.forEach((manage) => {
             manage.updateRectangle();
         });
     }
