@@ -1,5 +1,23 @@
 # plait
 
+## 0.76.0
+
+### Minor Changes
+
+-   [#1026](https://github.com/worktile/plait/pull/1026) [`f10341585a84d6f0509099ecb247f54fbdaf9f90`](https://github.com/worktile/plait/commit/f10341585a84d6f0509099ecb247f54fbdaf9f90) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support active host to remain handles size、selection stroke width  consistent across zoom levels
+
+
+### Patch Changes
+
+-   [#1032](https://github.com/worktile/plait/pull/1032) [`94d428b814c1c5c5c78d00bf02599d1dc1389170`](https://github.com/worktile/plait/commit/94d428b814c1c5c5c78d00bf02599d1dc1389170) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix arrow-line-auto-complete reaction and interaction issue when element has angle
+
+
+-   [#1025](https://github.com/worktile/plait/pull/1025) [`95f3d4962653090de36eddaefcb5449c099debd7`](https://github.com/worktile/plait/commit/95f3d4962653090de36eddaefcb5449c099debd7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support long-press wheel to enter hand mode
+
+-   [#1031](https://github.com/worktile/plait/pull/1031) [`aaf13a9712e3cd9c349f39ab6ef12a4678b0de10`](https://github.com/worktile/plait/commit/aaf13a9712e3cd9c349f39ab6ef12a4678b0de10) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix toActivePointFromViewBoxPoint to handle the case when board is not filled all screen
+
+
+
 ## 0.75.0
 
 ### Minor Changes

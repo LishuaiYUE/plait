@@ -1,5 +1,11 @@
 # mind
 
+## 0.76.0
+
+### Patch Changes
+
+-   [#1029](https://github.com/worktile/plait/pull/1029) [`ca63c9ee4c2865d8234f27864416e70349ca6297`](https://github.com/worktile/plait/commit/ca63c9ee4c2865d8234f27864416e70349ca6297) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix mind node resize issue ,cause by: https://github.com/worktile/plait/commit/4bd3e83162527e8bc460b58db20ef85614c30cc5#diff-5b62d949b84a8ee13d65d2c686e1a28e9a3da1a367254c98eec6fff961fc53a2
+
 ## 0.75.0
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @plait/common
 
+## 0.76.0
+
+### Patch Changes
+
+-   [#1030](https://github.com/worktile/plait/pull/1030) [`d975ac2170f604f150543d2c121f40b790f6ec2c`](https://github.com/worktile/plait/commit/d975ac2170f604f150543d2c121f40b790f6ec2c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - handle text measurement issue for windows device
+
 ## 0.75.0
 
 ### Patch Changes
