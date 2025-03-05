@@ -1,22 +1,40 @@
 # plait
 
+## 0.77.0
+
+### Minor Changes
+
+-   [#1036](https://github.com/worktile/plait/pull/1036) [`5dae213e846693a1a7207d1787bf2ea25d055495`](https://github.com/worktile/plait/commit/5dae213e846693a1a7207d1787bf2ea25d055495) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support i18n method, you can config default text like below code:
+
+    ```
+    const { getI18nValue } = newBoard;
+    newBoard.getI18nValue = (key) => {
+        if (key === DrawI18nKey.lineText) {
+            return 'Text';
+        }
+        if (key === DrawI18nKey.geometryText) {
+            return 'Text';
+        }
+        if (key === MindI18nKey.mindCentralText) {
+            return 'Central Topic';
+        }
+        return getI18nValue(key);
+    };
+    ```
+
 ## 0.76.0
 
 ### Minor Changes
 
--   [#1026](https://github.com/worktile/plait/pull/1026) [`f10341585a84d6f0509099ecb247f54fbdaf9f90`](https://github.com/worktile/plait/commit/f10341585a84d6f0509099ecb247f54fbdaf9f90) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support active host to remain handles size、selection stroke width  consistent across zoom levels
-
+-   [#1026](https://github.com/worktile/plait/pull/1026) [`f10341585a84d6f0509099ecb247f54fbdaf9f90`](https://github.com/worktile/plait/commit/f10341585a84d6f0509099ecb247f54fbdaf9f90) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support active host to remain handles size、selection stroke width consistent across zoom levels
 
 ### Patch Changes
 
 -   [#1032](https://github.com/worktile/plait/pull/1032) [`94d428b814c1c5c5c78d00bf02599d1dc1389170`](https://github.com/worktile/plait/commit/94d428b814c1c5c5c78d00bf02599d1dc1389170) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix arrow-line-auto-complete reaction and interaction issue when element has angle
 
-
 -   [#1025](https://github.com/worktile/plait/pull/1025) [`95f3d4962653090de36eddaefcb5449c099debd7`](https://github.com/worktile/plait/commit/95f3d4962653090de36eddaefcb5449c099debd7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support long-press wheel to enter hand mode
 
 -   [#1031](https://github.com/worktile/plait/pull/1031) [`aaf13a9712e3cd9c349f39ab6ef12a4678b0de10`](https://github.com/worktile/plait/commit/aaf13a9712e3cd9c349f39ab6ef12a4678b0de10) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix toActivePointFromViewBoxPoint to handle the case when board is not filled all screen
-
-
 
 ## 0.75.0
 

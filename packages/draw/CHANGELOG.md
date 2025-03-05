@@ -1,5 +1,13 @@
 # @plait/draw
 
+## 0.77.0
+
+### Patch Changes
+
+-   [#1034](https://github.com/worktile/plait/pull/1034) [`8506a92a320e799f6338d42261491b3b581b9d97`](https://github.com/worktile/plait/commit/8506a92a320e799f6338d42261491b3b581b9d97) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix resize handles repeated issue, fix table resize check area issue
+
+-   [#1034](https://github.com/worktile/plait/pull/1034) [`70e2b67e12b101bfc788cac41a2954077ae6d699`](https://github.com/worktile/plait/commit/70e2b67e12b101bfc788cac41a2954077ae6d699) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix table element isHit handle warning
+
 ## 0.76.0
 
 ## 0.75.0
