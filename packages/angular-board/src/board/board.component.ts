@@ -69,6 +69,7 @@ import {
     setIsFromViewportChange,
     toHostPoint,
     toViewBoxPoint,
+    updateViewBox,
     updateViewportByScrolling,
     updateViewportOffset,
     withBoard,
@@ -245,7 +246,11 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                     return;
                 }
                 this.updateListRender();
-                initializeViewBox(this.board);
+                if (isSetViewport) {
+                    initializeViewBox(this.board);
+                } else {
+                    updateViewBox(this.board);
+                }
                 updateViewportOffset(this.board);
                 const selectedElements = getSelectedElements(this.board);
                 selectedElements.forEach((element) => {
