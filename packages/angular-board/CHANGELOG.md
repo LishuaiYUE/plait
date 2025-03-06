@@ -1,5 +1,11 @@
 # @plait/angular-board
 
+## 0.77.1
+
+### Patch Changes
+
+-   [#1037](https://github.com/worktile/plait/pull/1037) [`73b525478594edeece159dc2c5cde4c1af3b17d7`](https://github.com/worktile/plait/commit/73b525478594edeece159dc2c5cde4c1af3b17d7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update viewport only new content bbox exceed current bbox to reduce jitter effect
+
 ## 0.77.0
 
 ## 0.76.0

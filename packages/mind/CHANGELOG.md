@@ -1,5 +1,11 @@
 # mind
 
+## 0.77.1
+
+### Patch Changes
+
+-   [#1038](https://github.com/worktile/plait/pull/1038) [`1db6b21f4e6590583df15c402b56a4dc0d455c4c`](https://github.com/worktile/plait/commit/1db6b21f4e6590583df15c402b56a4dc0d455c4c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support i18n key for abstract node text
+
 ## 0.77.0
 
 ## 0.76.0
