@@ -1,7 +1,6 @@
 import { Node } from 'slate';
 import { CustomText, ParagraphElement } from './types';
 import { getLineHeightByFontSize } from '../utils/text';
-import { IS_WINDOWS } from '@plait/core';
 
 export function measureElement(
     element: ParagraphElement,
@@ -39,35 +38,8 @@ export function measureElement(
         lineTexts.forEach((text: CustomText, index: number) => {
             const font = getFont(text, { fontFamily: options.fontFamily, fontSize: options.fontSize });
             ctx.font = font;
-            
-            // Windows 平台下的特殊处理
-            if (IS_WINDOWS) {
-                let adjustedWidth = 0;
-                // 逐字符处理
-                for (let i = 0; i < text.text.length; i++) {
-                    const char = text.text[i];
-                    const charMetrics = ctx.measureText(char);
-                    // 判断是否为汉字（通过 Unicode 范围）
-                    if (/[\u4e00-\u9fa5]/.test(char)) {
-                        adjustedWidth += charMetrics.width;
-                    } else {
-                        // 非汉字字符的宽度调整
-                        if (/[a-zA-Z]/.test(char)) {
-                            adjustedWidth += charMetrics.width + 1.5; // 字母
-                        } else if (/[0-9]/.test(char)) {
-                            adjustedWidth += charMetrics.width + 1.5; // 数字
-                        } else {
-                            adjustedWidth += charMetrics.width + 0.8; // 其他符号
-                        }
-                    }
-                }
-                lineWidth += adjustedWidth;
-            } else {
-                lineWidth += ctx.measureText(text.text).width;
-            }
-
+            lineWidth += ctx.measureText(text.text).width;
             const isLast = index === lineTexts.length - 1;
-            // skip when text is empty and is not last text of line
             if (text['font-size'] && (isLast || text.text !== '')) {
                 const lineHeight = getLineHeightByFontSize(parseFloat(text['font-size']));
                 if (lineHeight > maxLineHeight) {
