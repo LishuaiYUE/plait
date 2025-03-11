@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { withCommonPlugin } from '../plugins/with-common';
 import { AppMenuComponent } from '../components/menu/menu.component';
-import { NgIf } from '@angular/common';
+
 import { OnChangeData, PlaitBoardComponent } from '@plait/angular-board';
 import { withForceAtlasExtend } from './with-force-atlas-extend';
 import { DebugPointDisplayComponent } from '../components/debug/point-display.component';
@@ -37,15 +37,14 @@ import { getData } from './mock-force-atlas-wiki';
     templateUrl: './graph-viz.component.html',
     standalone: true,
     imports: [
-        PlaitBoardComponent,
-        FormsModule,
-        AppZoomToolbarComponent,
-        AppMainToolbarComponent,
-        AppSettingPanelComponent,
-        AppMenuComponent,
-        DebugPointDisplayComponent,
-        NgIf
-    ]
+    PlaitBoardComponent,
+    FormsModule,
+    AppZoomToolbarComponent,
+    AppMainToolbarComponent,
+    AppSettingPanelComponent,
+    AppMenuComponent,
+    DebugPointDisplayComponent
+]
 })
 export class BasicGraphVizComponent implements OnInit {
     @HostBinding('class') hostClass = 'app-graph-viz';

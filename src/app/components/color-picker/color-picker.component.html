@@ -1,5 +1,5 @@
+@for (color of defaultColor; track $index) {
 <button
-    *ngFor="let color of defaultColor"
     class="color-picker-button"
     [ngClass]="{ active: color === currentColor }"
     [ngStyle]="{ 'background-color': color ? color : 'transparent', 'background-image': color ? '' : transparent }"
@@ -7,3 +7,4 @@
 >
     <div class="active-button-outline"></div>
 </button>
+}

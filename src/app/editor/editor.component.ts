@@ -34,7 +34,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { mockLineData, withLineRoute } from '../plugins/with-line-route';
 import { withCommonPlugin } from '../plugins/with-common';
 import { AppMenuComponent } from '../components/menu/menu.component';
-import { NgIf } from '@angular/common';
+
 import { mockTurningPointData } from './mock-turning-point-data';
 import { withGroup } from '@plait/common';
 import { OnChangeData, PlaitBoardComponent } from '@plait/angular-board';
@@ -46,14 +46,13 @@ const LOCAL_STORAGE_KEY = 'plait-board-data';
     templateUrl: './editor.component.html',
     standalone: true,
     imports: [
-        PlaitBoardComponent,
-        FormsModule,
-        AppZoomToolbarComponent,
-        AppMainToolbarComponent,
-        AppSettingPanelComponent,
-        AppMenuComponent,
-        NgIf
-    ]
+    PlaitBoardComponent,
+    FormsModule,
+    AppZoomToolbarComponent,
+    AppMainToolbarComponent,
+    AppSettingPanelComponent,
+    AppMenuComponent
+]
 })
 export class BasicEditorComponent implements OnInit {
     plugins: PlaitPlugin[] = [withCommonPlugin, withMind, withMindExtend, withDraw, withGroup];

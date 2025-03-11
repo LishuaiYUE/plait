@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, forwardRef } from '@angular/core';
 import { PlaitBoard, ToImageOptions, getSelectedElements, toImage } from '@plait/core';
-import { NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { closeAction } from '../../utils/popover';
 import { PlaitIslandBaseComponent } from '@plait/angular-board';
 
@@ -13,7 +13,7 @@ import { PlaitIslandBaseComponent } from '@plait/angular-board';
         class: 'app-menu'
     },
     standalone: true,
-    imports: [NgClass, NgTemplateOutlet, NgIf]
+    imports: [NgClass, NgTemplateOutlet]
 })
 export class AppMenuComponent extends PlaitIslandBaseComponent {
     isShowMenu = false;

@@ -24,7 +24,7 @@ import {
 import { BaseEditor, Node, Transforms as SlateTransforms } from 'slate';
 import { AppColorPickerComponent } from '../color-picker/color-picker.component';
 import { FormsModule } from '@angular/forms';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
     AlignTransform,
     Alignment,
@@ -71,7 +71,7 @@ import { OnBoardChange, PlaitIslandBaseComponent } from '@plait/angular-board';
         class: 'app-setting-panel plait-board-attached'
     },
     standalone: true,
-    imports: [NgClass, NgIf, FormsModule, AppColorPickerComponent]
+    imports: [NgClass, FormsModule, AppColorPickerComponent]
 })
 export class AppSettingPanelComponent extends PlaitIslandBaseComponent implements OnBoardChange {
     currentFillColor: string | undefined = '';
