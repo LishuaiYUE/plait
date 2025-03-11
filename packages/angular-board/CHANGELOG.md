@@ -1,5 +1,7 @@
 # @plait/angular-board
 
+## 0.77.2
+
 ## 0.77.1
 
 ### Patch Changes

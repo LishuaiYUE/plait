@@ -1,5 +1,11 @@
 # angular-text
 
+## 0.77.2
+
+### Patch Changes
+
+-   [#1043](https://github.com/worktile/plait/pull/1043) [`83535189077f2d1ac7454674a1da8ede0fadb547`](https://github.com/worktile/plait/commit/83535189077f2d1ac7454674a1da8ede0fadb547) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply font family fallback solution to resolve text width calculation issue in windows #1042
+
 ## 0.77.1
 
 ## 0.77.0
