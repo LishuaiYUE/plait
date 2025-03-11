@@ -14,7 +14,7 @@ import {
 } from '@plait/draw';
 import { MindElement, MindPointerType, MindTransforms } from '@plait/mind';
 import { fromEvent, take } from 'rxjs';
-import { NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { closeAction } from '../../utils/popover';
 import { PlaitIslandBaseComponent } from '@plait/angular-board';
 
@@ -29,7 +29,7 @@ type PointerType = MindPointerType | PlaitPointerType | DrawPointerType | ArrowL
         class: 'app-main-toolbar'
     },
     standalone: true,
-    imports: [NgClass, NgTemplateOutlet, NgIf]
+    imports: [NgClass, NgTemplateOutlet]
 })
 export class AppMainToolbarComponent extends PlaitIslandBaseComponent {
     PlaitPointerType = PlaitPointerType;

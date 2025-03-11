@@ -4,7 +4,7 @@ import { withFlow } from '@plait/flow';
 import { withCommon } from './plugins/with-common';
 import { withDraw } from './plugins/with-draw';
 import { CustomBoard } from './interfaces/board';
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { mockBasicEdges, mockMarkEdges, mockIconEdges, mockShapeEdges } from './flow-edge-data';
 import { mockBasicNodes, mockCustomNodes, mockCustomHandles, mockUndeletableNodes } from './flow-node-data';
 import { mockFlowData } from './flow-data';
@@ -16,7 +16,7 @@ const LOCAL_DATA_KEY = 'plait-board-flow-change-data';
     selector: 'app-basic-flow',
     templateUrl: './flow.component.html',
     standalone: true,
-    imports: [PlaitBoardComponent, NgFor, NgClass]
+    imports: [PlaitBoardComponent, NgClass]
 })
 export class BasicFlowComponent implements OnInit {
     @HostBinding('class') hostClass = 'app-flow';
