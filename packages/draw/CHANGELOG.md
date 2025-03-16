@@ -1,5 +1,12 @@
 # @plait/draw
 
+## 0.77.3
+
+### Patch Changes
+
+-   [#1046](https://github.com/worktile/plait/pull/1046) [`f511044e084a0a9620ec5d2ce49aa0f73ae03c59`](https://github.com/worktile/plait/commit/f511044e084a0a9620ec5d2ce49aa0f73ae03c59) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the image layer issue on export as image
+    fix hitting check issue for multiple image
+
 ## 0.77.2
 
 ## 0.77.1

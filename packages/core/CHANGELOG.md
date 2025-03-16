@@ -1,5 +1,16 @@
 # plait
 
+## 0.77.3
+
+### Patch Changes
+
+-   [#1047](https://github.com/worktile/plait/pull/1047) [`989635090d9e1d3cbfaa00eb746697c6ab981e54`](https://github.com/worktile/plait/commit/989635090d9e1d3cbfaa00eb746697c6ab981e54) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the issue of characters being copied to the clipboard with quotation marks included at the beginning and end
+
+-   [`b1eb05c3771dbb4f0ee76da71268dc3cea9d70bc`](https://github.com/worktile/plait/commit/b1eb05c3771dbb4f0ee76da71268dc3cea9d70bc) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct improve package dependencies
+
+-   [#1046](https://github.com/worktile/plait/pull/1046) [`f511044e084a0a9620ec5d2ce49aa0f73ae03c59`](https://github.com/worktile/plait/commit/f511044e084a0a9620ec5d2ce49aa0f73ae03c59) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the image layer issue on export as image
+    fix hitting check issue for multiple image
+
 ## 0.77.2
 
 ## 0.77.1

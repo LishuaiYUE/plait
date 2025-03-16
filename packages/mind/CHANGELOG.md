@@ -1,5 +1,7 @@
 # mind
 
+## 0.77.3
+
 ## 0.77.2
 
 ### Patch Changes
