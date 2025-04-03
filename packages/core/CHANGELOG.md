@@ -1,5 +1,11 @@
 # plait
 
+## 0.78.1
+
+### Patch Changes
+
+-   [`981912e244a929e07f50cac9d41e07c3eae18f2c`](https://github.com/worktile/plait/commit/981912e244a929e07f50cac9d41e07c3eae18f2c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve first function to avoid get collapsed mind node
+
 ## 0.78.0
 
 ### Minor Changes
