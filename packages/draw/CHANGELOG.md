@@ -1,5 +1,12 @@
 # @plait/draw
 
+## 0.78.2
+
+### Patch Changes
+
+-   [#1057](https://github.com/worktile/plait/pull/1057) [`5c889a1185ba0f0ca090c418016f16a8e85f2836`](https://github.com/worktile/plait/commit/5c889a1185ba0f0ca090c418016f16a8e85f2836) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - export getHitConnectionFromConnectionPoint method in @plait/draw
+    optimize the selection logic in group scene
+
 ## 0.78.1
 
 ## 0.78.0
