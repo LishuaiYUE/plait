@@ -483,6 +483,24 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                 setFragment(this.board, WritableClipboardOperationType.cut, event.clipboardData);
                 deleteFragment(this.board);
             });
+
+        fromEvent<DragEvent>(this.host, 'drop')
+            .pipe(
+                takeUntil(this.destroy$),
+                filter(() => !PlaitBoard.isReadonly(this.board))
+            )
+            .subscribe((event: DragEvent) => {
+                event.preventDefault();
+                this.board.drop(event);
+            });
+        fromEvent<DragEvent>(this.host, 'dragover')
+            .pipe(
+                takeUntil(this.destroy$),
+                filter(() => !PlaitBoard.isReadonly(this.board))
+            )
+            .subscribe((event: DragEvent) => {
+                event.preventDefault();
+            });
     }
 
     private initializeListRender() {
