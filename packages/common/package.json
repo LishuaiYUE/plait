@@ -1,6 +1,6 @@
 {
     "name": "@plait/common",
-    "version": "0.78.2",
+    "version": "0.79.0",
     "peerDependencies": {},
     "dependencies": {
         "tslib": "^2.3.0"

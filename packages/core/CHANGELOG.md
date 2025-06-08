@@ -1,5 +1,11 @@
 # plait
 
+## 0.79.0
+
+### Minor Changes
+
+-   [`4f1f3817fe6a033fd31c531bc4415fc213fcb74a`](https://github.com/worktile/plait/commit/4f1f3817fe6a033fd31c531bc4415fc213fcb74a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support drop method to handle drag files to board
+
 ## 0.78.2
 
 ### Patch Changes

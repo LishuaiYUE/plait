@@ -1,5 +1,11 @@
 # @plait/text-plugins
 
+## 0.79.0
+
+### Patch Changes
+
+-   [#1059](https://github.com/worktile/plait/pull/1059) [`b867cce83af5a4315e479bcf7a9a2c3864447fe0`](https://github.com/worktile/plait/commit/b867cce83af5a4315e479bcf7a9a2c3864447fe0) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - isUrl support mailto protocol
+
 ## 0.78.2
 
 ## 0.78.1
