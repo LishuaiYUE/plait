@@ -1,5 +1,7 @@
 # @plait/text-plugins
 
+## 0.79.1
+
 ## 0.79.0
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # plait
 
+## 0.79.1
+
+### Patch Changes
+
+-   [#1060](https://github.com/worktile/plait/pull/1060) [`c513b74bdcbc78bbc102aa9ec790f386b8a9d0de`](https://github.com/worktile/plait/commit/c513b74bdcbc78bbc102aa9ec790f386b8a9d0de) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix with hand conflict when press space key
+
 ## 0.79.0
 
 ### Minor Changes
