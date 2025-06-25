@@ -1,5 +1,14 @@
 # angular-text
 
+## 0.80.0
+
+### Minor Changes
+
+-   [`68d2e57ab0929c95ac6510eee14d91985592a60a`](https://github.com/worktile/plait/commit/68d2e57ab0929c95ac6510eee14d91985592a60a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - optimize text style to avoid text can not show
+
+    1. use pre-wrap replace break-spaces; to avoid text split multiple lines
+    2. add overflow auto for foreignObject
+
 ## 0.79.1
 
 ## 0.79.0
