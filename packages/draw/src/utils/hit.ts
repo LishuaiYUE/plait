@@ -184,8 +184,7 @@ export const isFilledDrawElement = (board: PlaitBoard, element: PlaitDrawElement
 
 export const getSolidElements = (elements: PlaitElement[]) => {
     const solidElements = elements.filter(
-        (item) =>
-            PlaitDrawElement.isText(item) || PlaitDrawElement.isLine(item) || elements.filter((item) => PlaitDrawElement.isImage(item))
+        (item) => PlaitDrawElement.isText(item) || PlaitDrawElement.isLine(item) || PlaitDrawElement.isImage(item)
     );
     if (solidElements.length) {
         return solidElements;
