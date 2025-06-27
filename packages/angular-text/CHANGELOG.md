@@ -1,5 +1,7 @@
 # angular-text
 
+## 0.81.0
+
 ## 0.80.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.81.0
+
+### Minor Changes
+
+-   [`44b8138fc06c79e17ba62df6f1cf613ec21fbdd7`](https://github.com/worktile/plait/commit/44b8138fc06c79e17ba62df6f1cf613ec21fbdd7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct getSolidElements method
+
 ## 0.80.0
 
 ## 0.79.1
