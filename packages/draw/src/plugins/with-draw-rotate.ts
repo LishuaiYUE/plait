@@ -10,8 +10,6 @@ import {
     isSelectionMoving,
     rotatePoints,
     throttleRAF,
-    toHostPoint,
-    toViewBoxPoint,
     drawRectangle,
     ACTIVE_STROKE_WIDTH,
     SELECTION_BORDER_COLOR,
@@ -104,6 +102,7 @@ export const withDrawRotate = (board: PlaitBoard) => {
 
                     rotateRef.angle = normalizeAngle(angle - selectionAngle) || 0;
                     rotateElements(board, rotateRef.elements, rotateRef.angle);
+                    MERGING.set(board, true);
                     PlaitBoard.getBoardContainer(board).classList.add('element-rotating');
                 }
             });
