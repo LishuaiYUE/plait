@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.81.1
+
+### Patch Changes
+
+-   [`a659fb01b12c257e3b4e7556f11274122910d98f`](https://github.com/worktile/plait/commit/a659fb01b12c257e3b4e7556f11274122910d98f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add merging on rotating
+
 ## 0.81.0
 
 ### Minor Changes
