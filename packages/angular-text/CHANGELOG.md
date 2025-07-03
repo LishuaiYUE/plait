@@ -1,5 +1,11 @@
 # angular-text
 
+## 0.81.2
+
+### Patch Changes
+
+-   [`0f572da58c9774cf0ed93e0b0c66976563b10305`](https://github.com/worktile/plait/commit/0f572da58c9774cf0ed93e0b0c66976563b10305) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix text can not show \n line break
+
 ## 0.81.1
 
 ## 0.81.0
