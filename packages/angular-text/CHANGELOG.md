@@ -1,5 +1,11 @@
 # angular-text
 
+## 0.81.3
+
+### Patch Changes
+
+-   [#1062](https://github.com/worktile/plait/pull/1062) [`285be735e1b27832adb1b6c1a812e9ec42d035e0`](https://github.com/worktile/plait/commit/285be735e1b27832adb1b6c1a812e9ec42d035e0) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix text can not break line issue
+
 ## 0.81.2
 
 ### Patch Changes
