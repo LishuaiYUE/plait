@@ -1,8 +1,8 @@
-import { PlaitBoard, createG } from '@plait/core';
+import { PlaitBoard, createG, isSelectionMoving } from '@plait/core';
 import { MindElement, BaseData, PlaitMind, MindElementShape, LayoutDirection } from '../interfaces';
 import { getRectangleByNode } from '../utils/position/node';
 import { getShapeByElement } from '../utils/node-style/shape';
-import { EXTEND_DIAMETER, QUICK_INSERT_CIRCLE_COLOR, QUICK_INSERT_INNER_CROSS_COLOR } from '../constants/default';
+import { EXTEND_DIAMETER, EXTEND_OFFSET, QUICK_INSERT_CIRCLE_COLOR, QUICK_INSERT_INNER_CROSS_COLOR } from '../constants/default';
 import { MindLayoutType, isHorizontalLayout, isIndentedLayout, isTopLayout } from '@plait/layouts';
 import { MindQueries } from '../queries';
 import { fromEvent } from 'rxjs';
@@ -39,7 +39,7 @@ export class NodePlusGenerator extends Generator<MindElement> implements AfterDr
         const branchColor = PlaitMind.isMind(element)
             ? getNextBranchColor(this.board, element)
             : getBranchColorByMindElement(this.board, element);
-        let distance = 8;
+        let distance = EXTEND_OFFSET;
 
         let placement: PointPlacement = [HorizontalPlacement.right, VerticalPlacement.middle];
 
@@ -53,12 +53,11 @@ export class NodePlusGenerator extends Generator<MindElement> implements AfterDr
         let beginPoint = getPointByPlacement(nodeClient, placement);
 
         if (element.children.length > 0 && !element.isRoot) {
-            beginPoint = moveXOfPoint(beginPoint, EXTEND_DIAMETER + 8, linkDirection);
-            distance = 5;
+            beginPoint = moveXOfPoint(beginPoint, EXTEND_DIAMETER + EXTEND_OFFSET, linkDirection);
         }
 
         const endPoint = moveXOfPoint(beginPoint, distance, linkDirection);
-        const circleCenter = moveXOfPoint(endPoint, 8, linkDirection);
+        const circleCenter = moveXOfPoint(endPoint, EXTEND_OFFSET, linkDirection);
 
         const line = PlaitBoard.getRoughSVG(this.board).line(beginPoint[0], beginPoint[1], endPoint[0], endPoint[1], {
             stroke: branchColor,
@@ -116,6 +115,9 @@ export class NodePlusGenerator extends Generator<MindElement> implements AfterDr
         fromEvent<PointerEvent>(this.g, 'pointerup')
             .pipe(take(1))
             .subscribe((event: PointerEvent) => {
+                if (isSelectionMoving(this.board)) {
+                    return;
+                }
                 // wait the event period end of pointerup to otherwise the pointerup will cause new element lose selected state
                 setTimeout(() => {
                     const path = findNewChildNodePath(this.board, element);

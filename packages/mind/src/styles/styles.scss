@@ -34,8 +34,20 @@ $primary: #4e8afa;
         .dragging-node {
             opacity: 0.6;
         }
+        .collapse-text {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Noto Sans', 'Noto Sans CJK SC',
+                'Microsoft Yahei', 'Hiragino Sans GB', Arial, sans-serif;
+            font-size: 12px;
+        }
+        .collapse:hover {
+            .collapse-badge {
+                opacity: 0.3 !important;
+            }
+        }
     }
-    &.focused:not(.selection-moving):not(.element-moving):not(.abstract-resizing-horizontal):not(.abstract-resizing-vertical):not(.pointer-mind):not(.mind-node-dragging):not(.mind-node-resizing) {
+    &.focused:not(.selection-moving):not(.element-moving):not(.abstract-resizing-horizontal):not(.abstract-resizing-vertical):not(
+            .pointer-mind
+        ):not(.mind-node-dragging):not(.mind-node-resizing) {
         .extend {
             cursor: pointer;
             &:hover {

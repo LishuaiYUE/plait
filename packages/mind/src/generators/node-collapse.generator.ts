@@ -11,7 +11,7 @@ import { filter, take } from 'rxjs/operators';
 import { getBranchColorByMindElement, getBranchWidthByMindElement } from '../utils/node-style/branch';
 import { getLayoutDirection, getPointByPlacement, moveXOfPoint, moveYOfPoint, transformPlacement } from '../utils/point-placement';
 import { HorizontalPlacement, PointPlacement, VerticalPlacement } from '../interfaces/types';
-import { AfterDraw, Generator } from '@plait/common';
+import { AfterDraw, buildText, DEFAULT_FONT_FAMILY, Generator, measureElement } from '@plait/common';
 
 export class CollapseGenerator extends Generator<MindElement> implements AfterDraw {
     canDraw(element: MindElement<BaseData>): boolean {
@@ -50,48 +50,52 @@ export class CollapseGenerator extends Generator<MindElement> implements AfterDr
         const endPoint = moveXOfPoint(startPoint, EXTEND_OFFSET, linkDirection);
         const circleCenter = moveXOfPoint(endPoint, EXTEND_DIAMETER / 2, linkDirection);
 
-        const arrowPoints = this.getArrowPoints(circleCenter, linkDirection);
-
-        const arrowLine = drawLinearPath(arrowPoints, {
-            stroke,
-            strokeWidth: 2
-        });
-
-        const extendLine = PlaitBoard.getRoughSVG(this.board).line(startPoint[0], startPoint[1], endPoint[0], endPoint[1], {
+        const extendLineFromNode = PlaitBoard.getRoughSVG(this.board).line(startPoint[0], startPoint[1], endPoint[0], endPoint[1], {
             strokeWidth: branchWidth,
             stroke
         });
 
-        const badge = PlaitBoard.getRoughSVG(this.board).circle(circleCenter[0], circleCenter[1], EXTEND_DIAMETER, {
-            fill: stroke,
-            stroke,
-            fillStyle: 'solid'
-        });
-
-        const hideCircleG = PlaitBoard.getRoughSVG(this.board).circle(circleCenter[0], circleCenter[1], EXTEND_DIAMETER, {
-            fill: '#fff',
-            stroke,
-            strokeWidth: branchWidth > 3 ? 3 : branchWidth,
-            fillStyle: 'solid'
-        });
-
         if (element.isCollapsed) {
-            let numberOffset = 0;
-            if (childrenCount >= 10) numberOffset = -2;
-            if (childrenCount === 1) numberOffset = 1;
-
-            const badgeText = createText(circleCenter[0] - 4 + numberOffset, circleCenter[1] + 4, stroke, `${childrenCount}`);
+            const badge = PlaitBoard.getRoughSVG(this.board).circle(circleCenter[0], circleCenter[1], EXTEND_DIAMETER, {
+                fill: stroke,
+                stroke,
+                fillStyle: 'solid'
+            });
             badge.setAttribute('style', 'opacity: 0.15');
-            badgeText.setAttribute('style', 'font-size: 12px');
+            badge.classList.add('collapse-badge');
+            
+            let text = `${childrenCount}`;
+            if (childrenCount >= 99) {
+                text = '...';
+            }
+            const { width } = measureElement(this.board, buildText(text), {
+                fontSize: 12,
+                fontFamily: DEFAULT_FONT_FAMILY
+            });
+            const badgeText = createText(circleCenter[0] - width / 2, circleCenter[1] + 4, stroke, `${text}`);
+            badgeText.classList.add('collapse-text');
+            // handle vertical alignment for ...
+            if (childrenCount > 99) {
+                badgeText.setAttribute('style', 'dominant-baseline: ideographic');
+            }
             collapseG.appendChild(badge);
             collapseG.appendChild(badgeText);
-            collapseG.appendChild(extendLine);
         } else {
-            collapseG.appendChild(hideCircleG);
-            collapseG.appendChild(arrowLine);
+            const collapsedArrowPoints = this.getArrowPoints(circleCenter, linkDirection);
+            const collapsedArrowLine = drawLinearPath(collapsedArrowPoints, {
+                stroke,
+                strokeWidth: 2
+            });
+            const collapsedCircle = PlaitBoard.getRoughSVG(this.board).circle(circleCenter[0], circleCenter[1], EXTEND_DIAMETER, {
+                fill: '#fff',
+                stroke,
+                strokeWidth: branchWidth > 3 ? 3 : branchWidth,
+                fillStyle: 'solid'
+            });
+            collapseG.appendChild(collapsedCircle);
+            collapseG.appendChild(collapsedArrowLine);
         }
-
-        collapseG.appendChild(extendLine);
+        collapseG.appendChild(extendLineFromNode);
         return collapseG;
     }
 
@@ -99,7 +103,6 @@ export class CollapseGenerator extends Generator<MindElement> implements AfterDr
         if (!this.g) {
             throw new Error(`can not find quick insert g`);
         }
-
         fromEvent<PointerEvent>(this.g, 'pointerdown')
             .pipe(
                 filter(() => !PlaitBoard.isPointer(this.board, PlaitPointerType.hand) || !!PlaitBoard.isReadonly(this.board)),
