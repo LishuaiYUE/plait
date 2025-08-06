@@ -19,15 +19,24 @@ $primary: #4e8afa;
         .slate-editable-container {
             min-width: 5px;
         }
-
-        .extend {
-            opacity: 0;
-            cursor: default;
+        .collapse-button, .add-button {
+            transform-origin: center center;
+            transform-box: fill-box;
+            cursor: pointer;
+            &.animated {
+                animation: scale-in 0.15s ease-out forwards;
+            }
         }
-
-        .collapsed {
-            .extend {
-                opacity: 1;
+        .expanded-button {
+            cursor: pointer;
+        }
+        
+        @keyframes scale-in {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
             }
         }
 
@@ -35,48 +44,10 @@ $primary: #4e8afa;
             opacity: 0.6;
         }
     }
-    &.focused:not(.selection-moving):not(.element-moving):not(.abstract-resizing-horizontal):not(.abstract-resizing-vertical):not(.pointer-mind):not(.mind-node-dragging):not(.mind-node-resizing) {
-        .extend {
-            cursor: pointer;
-            &:hover {
-                opacity: 1;
-            }
-        }
-
-        g[plait-mindmap='true'] {
-            .hovered {
-                .extend {
-                    opacity: 1;
-                }
-            }
-        }
-    }
-
-    &[class*='-resizing'] {
-        :not(.collapsed) > .extend {
-            display: none;
-        }
-    }
-
-    &:not(.readonly) {
-        &[class*='pointer-']:not(.pointer-selection) {
-            :not(.collapsed) > .extend {
-                display: none;
-            }
-        }
-    }
 
     &.pointer-hand {
         .board-host-svg {
             cursor: grab;
-        }
-        .collapsed {
-            .extend:hover {
-                cursor: grab;
-            }
-        }
-        :not(.collapsed) > .extend {
-            display: none;
         }
     }
 
@@ -87,17 +58,6 @@ $primary: #4e8afa;
     }
 
     &.readonly {
-        .collapsed {
-            .extend:hover {
-                cursor: pointer;
-            }
-        }
-        :not(.collapsed) > .extend {
-            display: block;
-            .plus {
-                display: none;
-            }
-        }
         .mind-node-image {
             cursor: zoom-in;
         }
