@@ -1,5 +1,14 @@
 # @plait/draw
 
+## 0.82.0
+
+### Minor Changes
+
+-   [#1069](https://github.com/worktile/plait/pull/1069) [`3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6`](https://github.com/worktile/plait/commit/3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - measureElement need assign board as first param to cache canvas dom element
+    refactor mind node more function
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
 ## 0.82.0-next.0
 
 ### Minor Changes
