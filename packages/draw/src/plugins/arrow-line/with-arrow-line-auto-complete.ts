@@ -19,18 +19,23 @@ import {
     toScreenPointFromActivePoint,
     toViewBoxPoint
 } from '@plait/core';
-import { ArrowLineShape, PlaitArrowLine, PlaitDrawElement, PlaitShapeElement } from '../../interfaces';
+import { ArrowLineShape, PlaitArrowLine, PlaitDrawElement, PlaitGeometry, PlaitShapeElement } from '../../interfaces';
 import { getElementShape } from '../../utils/shape';
 import { getEngine } from '../../engines';
 import { handleArrowLineCreating } from '../../utils/arrow-line/arrow-line-basic';
 import { getSelectedDrawElements } from '../../utils/selected';
 import { getAutoCompletePoints, getHitIndexOfAutoCompletePoint } from '../../utils/geometry';
+import { insertElement } from '../../utils';
 
 export const WithArrowLineAutoCompletePluginKey = 'plait-arrow-line-auto-complete-plugin-key';
 
 export interface ArrowLineAutoCompleteOptions {
     afterComplete: (element: PlaitArrowLine) => {};
 }
+
+export type PreloadingShapeRef = { tempArrow: PlaitArrowLine; drawElement: PlaitGeometry };
+export const BOARD_TO_PRELOADING_SHAPE = new WeakMap<PlaitBoard, PreloadingShapeRef>();
+// 改为weakMap存出
 
 export const withArrowLineAutoComplete = (board: PlaitBoard) => {
     const { pointerDown, pointerMove, globalPointerUp } = board;
@@ -105,6 +110,13 @@ export const withArrowLineAutoComplete = (board: PlaitBoard) => {
                 WithArrowLineAutoCompletePluginKey
             )?.afterComplete;
             afterComplete && afterComplete(temporaryElement);
+        } else {
+            const preloadingRef = BOARD_TO_PRELOADING_SHAPE.get(board);
+            if (preloadingRef) {
+                Transforms.insertNode(board, preloadingRef.tempArrow, [board.children.length]);
+                insertElement(board, preloadingRef.drawElement);
+                BOARD_TO_PRELOADING_SHAPE.delete(board);
+            }
         }
         if (autoCompletePoint) {
             BoardTransforms.updatePointerType(board, PlaitPointerType.selection);
