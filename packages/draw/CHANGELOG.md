@@ -1,5 +1,14 @@
 # @plait/draw
 
+## 0.83.0
+
+### Minor Changes
+
+-   [`86b676d13109f81f3fe51afde5ff11bf836f0119`](https://github.com/worktile/plait/commit/86b676d13109f81f3fe51afde5ff11bf836f0119) Thanks [@luBenWei-55kai](https://github.com/luBenWei-55kai)! - support hover the handle of selected element to preview elements and click to commit elements
+
+-   [#1073](https://github.com/worktile/plait/pull/1073) [`34f5a6b32955248d97d52fda5516cafb5090efc5`](https://github.com/worktile/plait/commit/34f5a6b32955248d97d52fda5516cafb5090efc5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract point-placement to common package
+    optimize flowchart's hover to preview and click to commit function
+
 ## 0.82.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # mind
 
+## 0.83.0
+
+### Patch Changes
+
+-   [#1070](https://github.com/worktile/plait/pull/1070) [`6d0a66e90adeb33e3b91772c9355e9a6c80588d9`](https://github.com/worktile/plait/commit/6d0a66e90adeb33e3b91772c9355e9a6c80588d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve getTopicSize param type
+
 ## 0.82.0
 
 ### Minor Changes

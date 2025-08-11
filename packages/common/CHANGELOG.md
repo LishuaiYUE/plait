@@ -1,5 +1,16 @@
 # @plait/common
 
+## 0.83.0
+
+### Minor Changes
+
+-   [#1073](https://github.com/worktile/plait/pull/1073) [`34f5a6b32955248d97d52fda5516cafb5090efc5`](https://github.com/worktile/plait/commit/34f5a6b32955248d97d52fda5516cafb5090efc5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract point-placement to common package
+    optimize flowchart's hover to preview and click to commit function
+
+### Patch Changes
+
+-   [#1071](https://github.com/worktile/plait/pull/1071) [`875a7c43c86c5d51f2ece088e7f73887b3073960`](https://github.com/worktile/plait/commit/875a7c43c86c5d51f2ece088e7f73887b3073960) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - assign type as paragraph for text content
+
 ## 0.82.0
 
 ### Minor Changes

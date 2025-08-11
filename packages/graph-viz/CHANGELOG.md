@@ -1,5 +1,7 @@
 # @plait/graph-viz
 
+## 0.83.0
+
 ## 0.82.0
 
 ### Minor Changes
