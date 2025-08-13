@@ -1,11 +1,4 @@
-import {
-    BasicShapes,
-    FlowchartSymbols,
-    GeometryShapes,
-    PlaitCustomGeometry,
-    PlaitGeometry,
-    UMLSymbols
-} from './geometry';
+import { BasicShapes, FlowchartSymbols, GeometryShapes, PlaitCustomGeometry, PlaitGeometry, UMLSymbols } from './geometry';
 import { PlaitImage } from './image';
 import { PlaitArrowLine } from './arrow-line';
 import { PlaitSwimlane, SwimlaneSymbols } from './swimlane';

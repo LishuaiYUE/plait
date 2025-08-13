@@ -19,7 +19,7 @@ import {
     toScreenPointFromActivePoint,
     toViewBoxPoint
 } from '@plait/core';
-import { ArrowLineShape, PlaitArrowLine, PlaitDrawElement, PlaitGeometry, PlaitShapeElement } from '../../interfaces';
+import { ArrowLineShape, PlaitArrowLine, PlaitDrawElement, PlaitGeometry, PlaitShapeElement, PlaitSwimlane } from '../../interfaces';
 import { getElementShape } from '../../utils/shape';
 import { getEngine } from '../../engines';
 import { handleArrowLineCreating } from '../../utils/arrow-line/arrow-line-basic';
