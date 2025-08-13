@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.83.1
+
+### Patch Changes
+
+-   [#1075](https://github.com/worktile/plait/pull/1075) [`67cac99176fa8d2540b9ac20cc623e6346ec327d`](https://github.com/worktile/plait/commit/67cac99176fa8d2540b9ac20cc623e6346ec327d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve hover to preview and click to commit(prevent text and swimlane)
+
 ## 0.83.0
 
 ### Minor Changes

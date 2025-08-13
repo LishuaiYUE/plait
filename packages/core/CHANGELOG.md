@@ -1,5 +1,7 @@
 # plait
 
+## 0.83.1
+
 ## 0.83.0
 
 ### Minor Changes
