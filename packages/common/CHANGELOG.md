@@ -1,5 +1,15 @@
 # @plait/common
 
+## 0.84.0
+
+### Minor Changes
+
+-   [#1077](https://github.com/worktile/plait/pull/1077) [`f3bc1daeb5f077fd47ca1fca9eff9e1d860659c7`](https://github.com/worktile/plait/commit/f3bc1daeb5f077fd47ca1fca9eff9e1d860659c7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix topic text can not show completely in different machines
+
+    1. add getElementSize to remeasure the width and height for text element and cache to `ELEMENT_TO_SIZE_MAP`.
+    2. apply getElementSize to get the width and height for mind node topic text.
+    3. handling the effect of mind node functions, such as editing topic, resizing mind node width and so on.
+
 ## 0.83.1
 
 ## 0.83.0
