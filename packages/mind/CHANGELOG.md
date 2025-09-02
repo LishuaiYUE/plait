@@ -1,5 +1,18 @@
 # mind
 
+## 0.85.0
+
+### Minor Changes
+
+-   [#1079](https://github.com/worktile/plait/pull/1079) [`98a644250b591e7e5ca6f7d683a1bc73e0512cf6`](https://github.com/worktile/plait/commit/98a644250b591e7e5ca6f7d683a1bc73e0512cf6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix two issues:
+
+    1. fix getTopicMaxDynamicWidth issue get wrong width when manualWidth exists.
+    2. fix height issue when resize mind node width or update image size.
+
+    refactor rename mind type to 'mind' and set type for child node to 'mind_child' and be compatible with legacy data.
+
+-   [#1078](https://github.com/worktile/plait/pull/1078) [`a033e0a747fd529062b8fb4fb22e84ddd9ae7edc`](https://github.com/worktile/plait/commit/a033e0a747fd529062b8fb4fb22e84ddd9ae7edc) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove width and height property and handle the effect after remove them.
+
 ## 0.84.0
 
 ### Minor Changes
