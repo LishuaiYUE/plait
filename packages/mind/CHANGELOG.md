@@ -1,5 +1,15 @@
 # mind
 
+## 0.86.0
+
+### Minor Changes
+
+-   [#1083](https://github.com/worktile/plait/pull/1083) [`e1f62f4e3b009c85f25c70b3532029bdf5cfd584`](https://github.com/worktile/plait/commit/e1f62f4e3b009c85f25c70b3532029bdf5cfd584) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove isRoot property since it is same with `type === 'mind'`
+
+### Patch Changes
+
+-   [#1082](https://github.com/worktile/plait/pull/1082) [`a30d5ee532481c56c7da8de0ae157d1452fd3895`](https://github.com/worktile/plait/commit/a30d5ee532481c56c7da8de0ae157d1452fd3895) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix mind style and correct example data
+
 ## 0.85.0
 
 ### Minor Changes
