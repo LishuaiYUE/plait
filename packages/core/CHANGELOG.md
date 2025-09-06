@@ -1,5 +1,13 @@
 # plait
 
+## 0.86.1
+
+### Patch Changes
+
+-   [#1084](https://github.com/worktile/plait/pull/1084) [`2821f046fbe0450f250ec3a77a7ccee7329c3608`](https://github.com/worktile/plait/commit/2821f046fbe0450f250ec3a77a7ccee7329c3608) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Remove rxjs independency from plait/common、plait/core
+
+    Redraw group's boundary in onChange, which was handled by onStable mechanism (use rxjs). Since it need be handle after all others elements be handled.
+
 ## 0.86.0
 
 ## 0.85.0
