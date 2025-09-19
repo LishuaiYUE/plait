@@ -1,0 +1,17 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@plait/angular-board": "0.86.1",
+    "@plait/angular-text": "0.86.1",
+    "@plait/common": "0.86.1",
+    "@plait/core": "0.86.1",
+    "@plait/draw": "0.86.1",
+    "@plait/flow": "0.86.1",
+    "@plait/graph-viz": "0.86.1",
+    "@plait/layouts": "0.86.1",
+    "@plait/mind": "0.86.1",
+    "@plait/text-plugins": "0.86.1"
+  },
+  "changesets": []
+}
