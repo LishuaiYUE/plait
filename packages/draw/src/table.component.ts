@@ -23,7 +23,7 @@ import {
 } from './utils';
 import { getEngine } from './engines';
 import { TableSymbols } from './interfaces';
-import { getHorizontalTextRectangle } from './engines/table/table';
+import { getCellTextHeight, getHorizontalTextRectangle } from './engines/table/table';
 import { ShapeDefaultSpace } from './constants';
 import { ArrowLineAutoCompleteGenerator } from './generators/arrow-line-auto-complete.generator';
 
@@ -99,7 +99,7 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
                 const textManage = getTextManageByCell(this.board, item);
                 if (textManage) {
                     const engine = getEngine<PlaitTable>(TableSymbols.table);
-                    const rectangle = engine.getTextRectangle!(this.element, { id: item.id, board: this.board });
+                    const rectangle = engine.getTextRectangle!(this.board, this.element, { id: item.id, board: this.board });
                     textManage.g.classList.add('vertical-cell-text');
                     setAngleForG(textManage.g, RectangleClient.getCenterPoint(rectangle), degreesToRadians(-90));
                 }
@@ -114,7 +114,6 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
                 return {
                     id: item.id,
                     text: item.text!,
-                    textHeight: item.textHeight!,
                     board: this.board
                 };
             });
@@ -135,16 +134,16 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
                 if (PlaitTableElement.isVerticalText(cell)) {
                     const cellRectangle = RectangleClient.getRectangleByPoints(cell.points);
                     const strokeWidth = getStrokeWidthByElement(cell);
-                    const width = cell.textHeight || 0;
-                    const height = cellRectangle.height - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
+                    const width = cellRectangle.height - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
+                    const height = getCellTextHeight(this.board, cell, true);
                     return {
-                        width,
-                        height: height > 0 ? height : 0,
+                        width: height,
+                        height: width > 0 ? width : 0,
                         x: cellRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth,
-                        y: cellRectangle.y + (cellRectangle.height - height) / 2
+                        y: cellRectangle.y + (cellRectangle.height - width) / 2
                     };
                 } else {
-                    return getHorizontalTextRectangle(cell);
+                    return getHorizontalTextRectangle(this.board, cell);
                 }
             }
         });

@@ -1,4 +1,5 @@
-import { Point, RectangleClient } from '@plait/core';
+import { PlaitBoard, Point, RectangleClient } from '@plait/core';
+import { getTextSize } from '../../utils/text-size';
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { createPolygonEngine } from './polygon';
 import { getStrokeWidthByElement } from '../../utils';
@@ -25,17 +26,18 @@ export const StarEngine: ShapeEngine = createPolygonEngine({
         const points = getStarPoints(rectangle);
         return [points[1], points[3], points[5], points[7], points[9]];
     },
-    getTextRectangle(element: PlaitGeometry) {
+    getTextRectangle: (board: PlaitBoard, element: PlaitGeometry) => {
         const elementRectangle = RectangleClient.getRectangleByPoints(element.points!);
         const strokeWidth = getStrokeWidthByElement(element);
-        const height = element.textHeight!;
         const originWidth = elementRectangle.width - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
         const width = originWidth / 2;
+        const text = element.text!;
+        const textSize = getTextSize(board, text, width);
         return {
-            height,
+            height: textSize.height,
             width: width > 0 ? width : 0,
             x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth + originWidth / 4,
-            y: elementRectangle.y + (elementRectangle.height * 1) / 6 + ((elementRectangle.height * 4) / 5 - height) / 2
+            y: elementRectangle.y + (elementRectangle.height * 1) / 6 + ((elementRectangle.height * 4) / 5 - textSize.height) / 2
         };
     }
 });

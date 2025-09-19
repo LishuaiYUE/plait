@@ -1,4 +1,4 @@
-import { PlaitElement, Point, RectangleClient, idCreator } from '@plait/core';
+import { PlaitBoard, PlaitElement, Point, RectangleClient, idCreator } from '@plait/core';
 import { GeometryShapes, UMLSymbols, PlaitMultipleTextGeometry } from '../interfaces/geometry';
 import { DefaultTextProperty, GEOMETRY_WITH_MULTIPLE_TEXT, MultipleTextGeometryTextKeys } from '../constants';
 import { getEngine } from '../engines';
@@ -43,28 +43,25 @@ export const buildDefaultTextsByShape = (shape: GeometryShapes): DrawTextInfo[] 
     const memorizedLatest = getMemorizedLatestByPointer(shape);
     const textProperties = { ...memorizedLatest.textProperties };
     const alignment = textProperties?.align;
-    const textHeight = textProperties?.textHeight || DefaultTextProperty.height;
     delete textProperties?.align;
-    delete textProperties?.textHeight;
     const defaultTexts = (getDefaultGeometryProperty(shape) as any)?.texts || [];
     const textKeys = getMultipleTextGeometryTextKeys(shape);
     return (textKeys || []).map((textKey: string) => {
         const text = defaultTexts?.find((item: { key: string }) => item?.key === textKey);
         return {
             id: textKey,
-            text: buildText(text?.text || '', alignment || text?.align || Alignment.center, textProperties),
-            textHeight: textHeight
+            text: buildText(text?.text || '', alignment || text?.align || Alignment.center, textProperties)
         };
     });
 };
 
-export const getHitMultipleGeometryText = (element: PlaitMultipleTextGeometry, point: Point) => {
+export const getHitMultipleGeometryText = (board: PlaitBoard, element: PlaitMultipleTextGeometry, point: Point) => {
     const engine = getEngine<PlaitMultipleTextGeometry>(element.shape);
     const rectangle = RectangleClient.getRectangleByPoints([point, point]);
     let hitText;
     if (engine.getTextRectangle) {
-        hitText = element.texts.find(text => {
-            const textRectangle = engine.getTextRectangle!(element, { id: text.id });
+        hitText = element.texts.find((text) => {
+            const textRectangle = engine.getTextRectangle!(board, element, { id: text.id });
             return RectangleClient.isHit(rectangle, textRectangle);
         });
     }
