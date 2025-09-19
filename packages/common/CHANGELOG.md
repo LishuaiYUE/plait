@@ -1,5 +1,7 @@
 # @plait/common
 
+## 0.87.0-next.0
+
 ## 0.86.1
 
 ### Patch Changes

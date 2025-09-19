@@ -13,5 +13,7 @@
     "@plait/mind": "0.86.1",
     "@plait/text-plugins": "0.86.1"
   },
-  "changesets": []
+  "changesets": [
+    "thin-radios-trade"
+  ]
 }
