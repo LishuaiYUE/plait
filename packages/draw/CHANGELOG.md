@@ -1,5 +1,13 @@
 # @plait/draw
 
+## 0.87.0-next.1
+
+### Patch Changes
+
+-   [#1093](https://github.com/worktile/plait/pull/1093) [`f72bb38b7bffe76be51eb13ee515539be26a47b9`](https://github.com/worktile/plait/commit/f72bb38b7bffe76be51eb13ee515539be26a47b9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix: table row height not update when text height is greater than row height
+
+-   [#1091](https://github.com/worktile/plait/pull/1091) [`2f2eaef8ae2130d067f9216608853fc064a787be`](https://github.com/worktile/plait/commit/2f2eaef8ae2130d067f9216608853fc064a787be) Thanks [@NaoCoding](https://github.com/NaoCoding)! - making the insertElement will not change the state of pointer and select the element just created
+
 ## 0.87.0-next.0
 
 ### Minor Changes
