@@ -1,5 +1,11 @@
 # mind
 
+## 0.87.0
+
+### Minor Changes
+
+-   [#1087](https://github.com/worktile/plait/pull/1087) [`0d1bf680fc4b19931f87a1599a92e171aa3a78bd`](https://github.com/worktile/plait/commit/0d1bf680fc4b19931f87a1599a92e171aa3a78bd) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix paste collapsed parent
+
 ## 0.87.0-next.1
 
 ### Minor Changes

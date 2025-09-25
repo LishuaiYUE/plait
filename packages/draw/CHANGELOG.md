@@ -1,5 +1,15 @@
 # @plait/draw
 
+## 0.87.0
+
+### Minor Changes
+
+-   [#1085](https://github.com/worktile/plait/pull/1085) [`a54fc193165b94a4bb14043d96f8a94464f82387`](https://github.com/worktile/plait/commit/a54fc193165b94a4bb14043d96f8a94464f82387) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove textHeigh for all draw elements and calculate and cache textHeight for them on using
+
+### Patch Changes
+
+-   [#1093](https://github.com/worktile/plait/pull/1093) [`f72bb38b7bffe76be51eb13ee515539be26a47b9`](https://github.com/worktile/plait/commit/f72bb38b7bffe76be51eb13ee515539be26a47b9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix: table row height not update when text height is greater than row height
+
 ## 0.87.0-next.1
 
 ### Patch Changes

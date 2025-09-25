@@ -1,5 +1,11 @@
 # @plait/common
 
+## 0.87.0
+
+### Minor Changes
+
+-   [#1090](https://github.com/worktile/plait/pull/1090) [`4445e9bd8db64edb91eb1e86e028cd1a213df34b`](https://github.com/worktile/plait/commit/4445e9bd8db64edb91eb1e86e028cd1a213df34b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify ROTATE_HANDLE_DISTANCE_TO_ELEMENT
+
 ## 0.87.0-next.1
 
 ### Minor Changes

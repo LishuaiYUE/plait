@@ -1,5 +1,15 @@
 # plait
 
+## 0.87.0
+
+### Minor Changes
+
+-   [#1089](https://github.com/worktile/plait/pull/1089) [`2f397b76631e88df5b4c4b52529a3c9f641ce66c`](https://github.com/worktile/plait/commit/2f397b76631e88df5b4c4b52529a3c9f641ce66c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix alt duplicating issue on including collapsed mind node
+
+### Patch Changes
+
+-   [`2ea6e5caacfc16a20272780e62d146a08b2ec533`](https://github.com/worktile/plait/commit/2ea6e5caacfc16a20272780e62d146a08b2ec533) Thanks [@NaoCoding](https://github.com/NaoCoding)! - fix infinite pendingNodesG appear when holding alt key
+
 ## 0.87.0-next.1
 
 ### Minor Changes
