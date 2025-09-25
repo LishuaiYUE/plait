@@ -201,7 +201,7 @@ export const createTableCells = (rows: { id: string; height?: number }[], column
     const cells = new Array(rows.length * columns.length).fill('').map((_, index) => {
         const rowId = rows[index % rows.length].id;
         const columnId = columns[Math.floor(index / rows.length)].id;
-        return createCell(rowId, columnId);
+        return createCell(rowId, columnId, '');
     });
     return cells;
 };
