@@ -364,6 +364,13 @@
         >
         <ng-template [ngTemplateOutlet]="swimlaneHorizontalWithHeader"></ng-template>
       </a>
+      <a
+        class="action-item"
+        [ngClass]="{ active: isPointer(TableSymbols.table) }"
+        (mousedown)="setPointer($event, TableSymbols.table)"
+        >
+        <ng-template [ngTemplateOutlet]="swimlaneHorizontalWithHeader"></ng-template>
+      </a>
     </div>
     <div class="title">UML</div>
     <div class="shapes-container">

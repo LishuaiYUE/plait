@@ -10,7 +10,8 @@ import {
     FlowchartSymbols,
     UMLSymbols,
     SwimlaneDrawSymbols,
-    VectorLinePointerType
+    VectorLinePointerType,
+    TableSymbols
 } from '@plait/draw';
 import { MindElement, MindPointerType, MindTransforms } from '@plait/mind';
 import { fromEvent, take } from 'rxjs';
@@ -48,6 +49,8 @@ export class AppMainToolbarComponent extends PlaitIslandBaseComponent {
     ArrowLineShapeType = ArrowLineShape;
 
     BoardCreationMode = BoardCreationMode;
+
+    TableSymbols = TableSymbols;
 
     isShowShapePopover = false;
 

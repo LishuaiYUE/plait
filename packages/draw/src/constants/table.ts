@@ -22,6 +22,11 @@ export const DefaultSwimlaneHorizontalProperty = {
     height: 580
 };
 
+export const DefaultTableProperty = {
+    width: 300,
+    height: 300
+};
+
 export const DefaultSwimlanePropertyMap: Record<string, { width: number; height: number }> = {
     [SwimlaneDrawSymbols.swimlaneHorizontal]: DefaultSwimlaneHorizontalProperty,
     [SwimlaneDrawSymbols.swimlaneVertical]: DefaultSwimlaneVerticalProperty,

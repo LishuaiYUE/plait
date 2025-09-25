@@ -23,6 +23,7 @@ import { withSwimlane } from './with-swimlane';
 import { withVectorLineCreateByDraw } from './with-vector-line-create';
 import { getVectorLinePoints } from '../utils/vector-line';
 import { withVectorLineResize } from './with-vector-line-resize';
+import { withTableCreateByDrag, withTableCreateByDrawing } from './with-table-create';
 
 export const withDraw = (board: PlaitBoard) => {
     const { drawElement, getRectangle, isRectangleHit, isHit, isInsidePoint, isMovable, isAlign, getRelatedFragment, getOneHitElement } =
@@ -149,20 +150,24 @@ export const withDraw = (board: PlaitBoard) => {
     };
 
     return withSwimlane(
-        withTable(
-            withDrawResize(
-                withVectorLineCreateByDraw(
-                    withArrowLineAutoCompleteReaction(
-                        withArrowLineBoundReaction(
-                            withVectorLineResize(
-                                withArrowLineResize(
-                                    withArrowLineTextMove(
-                                        withArrowLineText(
-                                            withDrawRotate(
-                                                withArrowLineCreateByDraw(
-                                                    withArrowLineAutoComplete(
-                                                        withGeometryCreateByDrag(
-                                                            withGeometryCreateByDrawing(withDrawFragment(withDrawHotkey(board)))
+        withTableCreateByDrawing(
+            withTableCreateByDrag(
+                withTable(
+                    withDrawResize(
+                        withVectorLineCreateByDraw(
+                            withArrowLineAutoCompleteReaction(
+                                withArrowLineBoundReaction(
+                                    withVectorLineResize(
+                                        withArrowLineResize(
+                                            withArrowLineTextMove(
+                                                withArrowLineText(
+                                                    withDrawRotate(
+                                                        withArrowLineCreateByDraw(
+                                                            withArrowLineAutoComplete(
+                                                                withGeometryCreateByDrag(
+                                                                    withGeometryCreateByDrawing(withDrawFragment(withDrawHotkey(board)))
+                                                                )
+                                                            )
                                                         )
                                                     )
                                                 )

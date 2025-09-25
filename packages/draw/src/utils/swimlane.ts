@@ -1,7 +1,7 @@
 import { idCreator, PlaitBoard, Point, RectangleClient } from '@plait/core';
 import { DefaultSwimlanePropertyMap, getSwimlanePointers, getSwimlaneShapes, SWIMLANE_HEADER_SIZE } from '../constants';
 import { PlaitDrawElement, PlaitSwimlane, PlaitTableCell, SwimlaneDrawSymbols, SwimlaneSymbols } from '../interfaces';
-import { createCell } from './table';
+import { createCell, createItems } from './table';
 
 export function buildSwimlaneTable(element: PlaitSwimlane) {
     const swimlaneElement = { ...element };
@@ -27,7 +27,7 @@ export function buildSwimlaneTable(element: PlaitSwimlane) {
 
         return swimlaneElement;
     }
-    if (element.header) {
+    if (PlaitDrawElement.isVerticalSwimlane(element) && element.header) {
         swimlaneElement.cells = [
             {
                 ...element.cells[0],
@@ -59,13 +59,12 @@ export const createDefaultSwimlane = (shape: SwimlaneDrawSymbols, points: [Point
         rows,
         columns,
         header,
-        cells: createDefaultCells(dataShape, rows, columns, header)
+        cells: createSwimlaneCells(dataShape, rows, columns, header)
     } as PlaitSwimlane;
     return swimlane;
 };
 
 export const createDefaultRowsOrColumns = (shape: SwimlaneSymbols, type: 'row' | 'column', header: boolean, size: number) => {
-    const createItems = (count: number) => new Array(count).fill('').map(() => ({ id: idCreator() }));
     let data = createItems(3);
     if (
         (type === 'row' && shape === SwimlaneSymbols.swimlaneVertical) ||
@@ -91,7 +90,7 @@ export const createDefaultRowsOrColumns = (shape: SwimlaneSymbols, type: 'row' |
     return data;
 };
 
-export const createDefaultCells = (
+export const createSwimlaneCells = (
     shape: SwimlaneSymbols,
     rows: { id: string; height?: number }[],
     columns: { id: string; width?: number }[],
