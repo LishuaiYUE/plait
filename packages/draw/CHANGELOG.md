@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.88.1
+
+### Patch Changes
+
+-   [#1101](https://github.com/worktile/plait/pull/1101) [`37c2c6d9889fc003fc0331d33e46af7a9673cab2`](https://github.com/worktile/plait/commit/37c2c6d9889fc003fc0331d33e46af7a9673cab2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix text occur overflow
+
 ## 0.88.0
 
 ### Minor Changes
