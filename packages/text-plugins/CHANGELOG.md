@@ -1,5 +1,7 @@
 # @plait/text-plugins
 
+## 0.88.0
+
 ## 0.87.0
 
 ## 0.87.0-next.1

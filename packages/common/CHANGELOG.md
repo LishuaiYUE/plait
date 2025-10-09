@@ -1,5 +1,11 @@
 # @plait/common
 
+## 0.88.0
+
+### Patch Changes
+
+-   [#1100](https://github.com/worktile/plait/pull/1100) [`a99fb37b729ec107b0ac4100dba7e86f96605a68`](https://github.com/worktile/plait/commit/a99fb37b729ec107b0ac4100dba7e86f96605a68) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - calculate text width word by word
+
 ## 0.87.0
 
 ### Minor Changes

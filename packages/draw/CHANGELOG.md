@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.88.0
+
+### Minor Changes
+
+-   [#1097](https://github.com/worktile/plait/pull/1097) [`e646c54bb90e2cf4519a3a098039b35e2d9eff4b`](https://github.com/worktile/plait/commit/e646c54bb90e2cf4519a3a098039b35e2d9eff4b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - calculating text width by correct max width
+
 ## 0.87.0
 
 ### Minor Changes
