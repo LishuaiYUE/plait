@@ -1,5 +1,11 @@
 # @plait/common
 
+## 0.89.0
+
+### Patch Changes
+
+-   [#1102](https://github.com/worktile/plait/pull/1102) [`369d3ba1c50ca9a991b2c16f0a6a54f20f5077bf`](https://github.com/worktile/plait/commit/369d3ba1c50ca9a991b2c16f0a6a54f20f5077bf) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the text height on font size is 18px
+
 ## 0.88.1
 
 ## 0.88.0

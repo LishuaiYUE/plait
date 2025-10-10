@@ -1,5 +1,11 @@
 # plait
 
+## 0.89.0
+
+### Minor Changes
+
+-   [#1096](https://github.com/worktile/plait/pull/1096) [`ce3691736765c896343b153b3a6a82a10ab9b852`](https://github.com/worktile/plait/commit/ce3691736765c896343b153b3a6a82a10ab9b852) Thanks [@NaoCoding](https://github.com/NaoCoding)! - adding secondary mouse button as a method of viewport moving
+
 ## 0.88.1
 
 ## 0.88.0
