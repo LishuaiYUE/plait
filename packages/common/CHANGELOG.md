@@ -1,5 +1,15 @@
 # @plait/common
 
+## 0.89.1
+
+### Patch Changes
+
+-   [#1098](https://github.com/worktile/plait/pull/1098) [`0e4922e3e6b9f6834891873a17bf3f66aea65bb4`](https://github.com/worktile/plait/commit/0e4922e3e6b9f6834891873a17bf3f66aea65bb4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Remove touchstart event listener(prevented the default action to cause browser can not open keyboard in touch device)
+
+    Prevent the default action in multiple plugins(with-moving, with-resize, with-selection) to support resizing/selection/moving on touch device
+
+    Adding basic methods to viewport, such as isInVisibleViewport, scrollToVisibleWhenKeyboardOpening, support editing element scroll to visible when keyboard opening on touch device
+
 ## 0.89.0
 
 ### Patch Changes

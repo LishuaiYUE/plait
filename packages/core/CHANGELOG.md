@@ -1,5 +1,7 @@
 # plait
 
+## 0.89.1
+
 ## 0.89.0
 
 ### Minor Changes
