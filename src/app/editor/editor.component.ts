@@ -20,13 +20,14 @@ import {
     setFragment,
     WritableClipboardOperationType,
     PlaitPlugin,
-    isHandMode
+    isHandMode,
+    Point
 } from '@plait/core';
 import { mockDrawData, mockTableData, mockMindData, mockRotateData, mockGroupData, mockSwimlaneData } from './mock-data';
 import { withMind, PlaitMindBoard, PlaitMind } from '@plait/mind';
 import { AbstractResizeState, MindThemeColors } from '@plait/mind';
 import { withMindExtend } from '../plugins/with-mind-extend';
-import { PlaitGeometry, withDraw } from '@plait/draw';
+import { PlaitGeometry, withDraw, DrawTransforms, BasicShapes } from '@plait/draw';
 import { AppSettingPanelComponent } from '../components/setting-panel/setting-panel.component';
 import { AppMainToolbarComponent } from '../components/main-toolbar/main-toolbar.component';
 import { AppZoomToolbarComponent } from '../components/zoom-toolbar/zoom-toolbar.component';
@@ -39,6 +40,7 @@ import { AppMenuComponent } from '../components/menu/menu.component';
 import { mockTurningPointData } from './mock-turning-point-data';
 import { withGroup } from '@plait/common';
 import { OnChangeData, PlaitBoardComponent } from '@plait/angular-board';
+import { createElement, updateElement, deleteElement } from '../utils/element-tools';
 
 const LOCAL_STORAGE_KEY = 'plait-board-data';
 
@@ -214,5 +216,51 @@ export class BasicEditorComponent implements OnInit {
         const targetPoint = toViewBoxPoint(this.board, toHostPoint(this.board, event.x, event.y));
         const clipboardData = await getClipboardData(null);
         this.board.insertFragment(clipboardData, targetPoint, WritableClipboardOperationType.paste);
+    }
+
+    // 测试函数
+    testCreateElement() {
+        // 使用 DrawTransforms 创建几何图形
+        const points: [Point, Point] = [
+            [340, 260], // [400-60, 300-40]
+            [460, 340] // [400+60, 300+40]
+        ];
+        const element = DrawTransforms.insertGeometry(this.board, points, BasicShapes.rectangle);
+        console.log('创建元素:', element);
+    }
+
+    testUpdateElement() {
+        if (this.selectedElements.length > 0) {
+            const element = this.selectedElements[0];
+            // 使用 Plait 的 Transforms 来更新元素
+            const path = PlaitBoard.findPath(this.board, element);
+            if (path) {
+                Transforms.setNode(
+                    this.board,
+                    {
+                        fill: '#FFEB3B',
+                        strokeColor: '#F57F17'
+                    },
+                    path
+                );
+                console.log('更新元素:', element);
+            }
+        } else {
+            console.log('请先选择一个元素');
+        }
+    }
+
+    testDeleteElement() {
+        if (this.selectedElements.length > 0) {
+            const element = this.selectedElements[0];
+            // 使用 Plait 的 Transforms 来删除元素
+            const path = PlaitBoard.findPath(this.board, element);
+            if (path) {
+                Transforms.removeNode(this.board, path);
+                console.log('删除元素');
+            }
+        } else {
+            console.log('请先选择一个元素');
+        }
     }
 }
