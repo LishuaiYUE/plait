@@ -67,7 +67,8 @@
         "slate-dom": "^0.116.0",
         "slate-history": "^0.115.0",
         "tslib": "^2.3.0",
-        "zone.js": "~0.15.0"
+        "zone.js": "~0.15.0",
+        "deep-chat": "2.2.2"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^19.2.3",

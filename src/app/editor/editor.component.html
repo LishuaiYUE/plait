@@ -16,6 +16,18 @@
   <app-menu></app-menu>
 </plait-board>
 
+<deep-chat
+    style="border-radius: 10px; position: fixed; bottom: 7%; right: 7%; z-index: 1"
+    connect='{
+      "url": "http://localhost:3000/api/chat",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }'
+    textInput='{"placeholder":{"text": "Welcome to the demo!"}}'
+  ></deep-chat>
+
 <div #contextMenu class="context-menu">
   <div class="context-menu-item" (pointerup)="cut($event)">
     <span>剪切</span>

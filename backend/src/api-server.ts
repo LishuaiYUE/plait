@@ -58,7 +58,8 @@ class APIServer {
     // 调用大模型 API
     this.app.post('/api/chat', async (req: Request, res: Response) => {
       try {
-        const { message, useTools = true } = req.body;
+        const { messages, useTools = true } = req.body;
+        const message = messages[messages.length - 1].text;
         const response = await this.processWithLLM(message, useTools);
         res.json({ success: true, response });
       } catch (error: any) {
