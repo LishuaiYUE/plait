@@ -94,23 +94,23 @@ class APIServer {
     this.app.post('/api/elements', async (req: Request, res: Response) => {
       try {
         const params = req.body;
-    
+
         // Prioritize passed ID (for MCP sync), otherwise generate new ID
         const id = await generateId();
         const element: PlaitElement = {
           id,
           ...params
         };
-    
+
         elements.set(id, element);
-        
+
         // Broadcast to all connected clients
         const message: ElementCreatedMessage = {
           type: 'element_created',
           element: element
         };
         this.broadcast(message);
-        
+
         res.json({
           success: true,
           element: element
@@ -127,14 +127,14 @@ class APIServer {
       try {
         const { id } = req.params;
         const updates = { id, ...req.body };
-        
+
         if (!id) {
           return res.status(400).json({
             success: false,
             error: 'Element ID is required'
           });
         }
-        
+
         const existingElement = elements.get(id);
         if (!existingElement) {
           return res.status(404).json({
@@ -142,21 +142,21 @@ class APIServer {
             error: `Element with ID ${id} not found`
           });
         }
-    
+
         const updatedElement: PlaitElement = {
           ...existingElement,
           ...updates
         };
-    
+
         elements.set(id, updatedElement);
-        
+
         // Broadcast to all connected clients
         const message: ElementUpdatedMessage = {
           type: 'element_updated',
           element: updatedElement
         };
         this.broadcast(message);
-        
+
         res.json({
           success: true,
           element: updatedElement
@@ -172,30 +172,30 @@ class APIServer {
     this.app.delete('/api/elements/:id', async (req: Request, res: Response) => {
       try {
         const { id } = req.params;
-        
+
         if (!id) {
           return res.status(400).json({
             success: false,
             error: 'Element ID is required'
           });
         }
-        
+
         if (!elements.has(id)) {
           return res.status(404).json({
             success: false,
             error: `Element with ID ${id} not found`
           });
         }
-        
+
         elements.delete(id);
-        
+
         // Broadcast to all connected clients
         const message: ElementDeletedMessage = {
           type: 'element_deleted',
           elementId: id!
         };
         this.broadcast(message);
-        
+
         res.json({
           success: true,
           message: `Element ${id} deleted successfully`
@@ -211,7 +211,7 @@ class APIServer {
     this.app.post('/api/elements/batch', async (req: Request, res: Response) => {
       try {
         const elementsToCreate = req.body;
-        
+
         if (!Array.isArray(elementsToCreate)) {
           return res.status(400).json({
             success: false,
@@ -234,7 +234,7 @@ class APIServer {
           elements: createdElements
         };
         this.broadcast(message);
-        
+
         res.json({
           success: true,
           elements: createdElements,
@@ -275,17 +275,16 @@ ${toolDescriptions}
 
 如果调用工具，返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}`;
 
-    const analysis = await this.callOpenAI([
+    const decision = await this.callOpenAI([
       { role: "system", content: systemPrompt },
       { role: "user", content: message }
     ]);
 
     try {
-      const decision = JSON.parse(analysis);
 
       if (decision.action === 'call_tool') {
         // 调用工具
-        const toolResult = await this.mcpClient.callTool(decision.tool, decision.args);
+        const toolResult = await this.mcpClient.callTool(decision.tool, decision.args.properties);
 
         // 将工具结果和原始问题一起发送给 LLM 生成最终回答
         const finalResponse = await this.callOpenAI([
@@ -309,7 +308,7 @@ ${toolDescriptions}
       // 如果 JSON 解析失败，直接返回分析结果
       return {
         type: 'direct',
-        response: analysis
+        response: decision
       };
     }
   }
@@ -336,8 +335,8 @@ ${toolDescriptions}
           'Content-Type': 'application/json'
         }
       });
-
-      return response.data.choices[0].message.content;
+      const content = response.data.choices[0].message.content;
+      return this.extractJSONFromResponse(content);
     } catch (error: any) {
       console.error('OpenAI API error:', error.response?.data || error.message);
 
@@ -347,6 +346,25 @@ ${toolDescriptions}
       }
 
       throw new Error(`AI service error: ${error.message}`);
+    }
+  }
+
+  private extractJSONFromResponse(response: string): any {
+    const jsonLikeRegex = /\{[\s\S]*\}/g;
+    const jsonLikeMatches = response.match(jsonLikeRegex);
+
+    if (jsonLikeMatches) {
+      // 从最长的匹配开始尝试解析
+      const sortedMatches = jsonLikeMatches.sort((a, b) => b.length - a.length);
+
+      for (const match of sortedMatches) {
+        try {
+          return JSON.parse(match);
+        } catch (e) {
+          // 继续尝试下一个匹配项
+          continue;
+        }
+      }
     }
   }
 
@@ -368,14 +386,14 @@ ${toolDescriptions}
     });
     this.wss.on('connection', (ws: WebSocket) => {
       this.clients.add(ws);
-      
+
       // Send current elements to new client
       const initialMessage: InitialElementsMessage = {
         type: 'initial_elements',
         elements: Array.from(elements.values())
       };
       ws.send(JSON.stringify(initialMessage));
-      
+
       // Send sync status to new client
       const syncMessage: SyncStatusMessage = {
         type: 'sync_status',
@@ -383,11 +401,11 @@ ${toolDescriptions}
         timestamp: new Date().toISOString()
       };
       ws.send(JSON.stringify(syncMessage));
-      
+
       ws.on('close', () => {
         this.clients.delete(ws);
       });
-      
+
       ws.on('error', (error) => {
         this.clients.delete(ws);
       });

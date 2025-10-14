@@ -57,7 +57,7 @@ export class PlaitMCPServer {
                         // 调用API创建元素
                         result = await axios.delete(`${config.apiBaseUrl}/api/elements/${args.id}`);
                         break;
-                    case "batch_create_element":
+                    case "batch_create_elements":
                         // 调用API创建元素
                         result = await axios.post(`${config.apiBaseUrl}/api/elements/batch`, args);
                         break;
