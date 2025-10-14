@@ -1,19 +1,29 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import MCPClient from './mcp-client';
 import axios from 'axios';
 import { config } from './config';
-
+import { elements, PlaitElement } from './types/element';
+import { generateId } from './utils';
+import { ElementCreatedMessage, ElementDeletedMessage, ElementUpdatedMessage, InitialElementsMessage, SyncStatusMessage, WebSocketMessage } from './types/message';
+import { WebSocketServer } from 'ws';
+import { createServer, Server } from 'http';
+import WebSocket from 'ws';
 
 class APIServer {
   private app: express.Application;
   private mcpClient: MCPClient;
+  private wss: WebSocketServer;
+  private clients: Set<WebSocket>;
   constructor() {
     this.app = express();
     this.mcpClient = new MCPClient();
     this.setupMiddleware();
     this.setupRoutes();
-    this.initialize();
+    const server = createServer(this.app);
+    this.wss = new WebSocketServer({ server });
+    this.initialize(server);
+    this.clients = new Set<WebSocket>();
   }
 
   setupMiddleware() {
@@ -23,18 +33,18 @@ class APIServer {
   }
 
   setupRoutes() {
-    this.app.get('/', (req, res) => {
+    this.app.get('/', async (req: Request, res: Response) => {
       res.send('ok');
     });
 
     // 获取可用工具
-    this.app.get('/api/tools', (req, res) => {
+    this.app.get('/api/tools', async (req: Request, res: Response) => {
       const tools = this.mcpClient.getAvailableTools();
       res.json({ tools });
     });
 
     // 调用工具
-    this.app.post('/api/call-tool', async (req, res) => {
+    this.app.post('/api/call-tool', async (req: Request, res: Response) => {
       try {
         const { toolName, arguments: args } = req.body;
         const result = await this.mcpClient.callTool(toolName, args);
@@ -45,7 +55,7 @@ class APIServer {
     });
 
     // 调用大模型 API
-    this.app.post('/api/chat', async (req, res) => {
+    this.app.post('/api/chat', async (req: Request, res: Response) => {
       try {
         const { message, useTools = true } = req.body;
         const response = await this.processWithLLM(message, useTools);
@@ -56,11 +66,155 @@ class APIServer {
     });
 
     // 健康检查
-    this.app.get('/api/health', (req, res) => {
+    this.app.get('/api/health', async (req: Request, res: Response) => {
       res.json({
         status: 'healthy',
         availableTools: this.mcpClient.getAvailableTools().length
       });
+    });
+
+    // 获取所有元素
+    this.app.get('/api/elements', async (req: Request, res: Response) => {
+      try {
+        const elementsArray = Array.from(elements.values());
+        res.json({
+          success: true,
+          elements: elementsArray,
+          count: elementsArray.length
+        });
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          error: (error as Error).message
+        });
+      }
+    });
+
+    // 添加元素
+    this.app.post('/api/elements', async (req: Request, res: Response) => {
+      try {
+        const params = req.body;
+    
+        // Prioritize passed ID (for MCP sync), otherwise generate new ID
+        const id = await generateId();
+        const element: PlaitElement = {
+          id,
+          ...params
+        };
+    
+        elements.set(id, element);
+        
+        // Broadcast to all connected clients
+        const message: ElementCreatedMessage = {
+          type: 'element_created',
+          element: element
+        };
+        this.broadcast(message);
+        
+        res.json({
+          success: true,
+          element: element
+        });
+      } catch (error) {
+        res.status(400).json({
+          success: false,
+          error: (error as Error).message
+        });
+      }
+    });
+    // 更新元素
+    this.app.put('/api/elements/:id', async (req: Request, res: Response) => {
+      try {
+        const { id } = req.params;
+        const updates = { id, ...req.body };
+        
+        if (!id) {
+          return res.status(400).json({
+            success: false,
+            error: 'Element ID is required'
+          });
+        }
+        
+        const existingElement = elements.get(id);
+        if (!existingElement) {
+          return res.status(404).json({
+            success: false,
+            error: `Element with ID ${id} not found`
+          });
+        }
+    
+        const updatedElement: PlaitElement = {
+          ...existingElement,
+          ...updates
+        };
+    
+        elements.set(id, updatedElement);
+        
+        // Broadcast to all connected clients
+        const message: ElementUpdatedMessage = {
+          type: 'element_updated',
+          element: updatedElement
+        };
+        this.broadcast(message);
+        
+        res.json({
+          success: true,
+          element: updatedElement
+        });
+      } catch (error) {
+        res.status(400).json({
+          success: false,
+          error: (error as Error).message
+        });
+      }
+    });
+
+    this.app.delete('/api/elements/:id', (req: Request, res: Response) => {
+      try {
+        const { id } = req.params;
+        
+        if (!id) {
+          return res.status(400).json({
+            success: false,
+            error: 'Element ID is required'
+          });
+        }
+        
+        if (!elements.has(id)) {
+          return res.status(404).json({
+            success: false,
+            error: `Element with ID ${id} not found`
+          });
+        }
+        
+        elements.delete(id);
+        
+        // Broadcast to all connected clients
+        const message: ElementDeletedMessage = {
+          type: 'element_deleted',
+          elementId: id!
+        };
+        this.broadcast(message);
+        
+        res.json({
+          success: true,
+          message: `Element ${id} deleted successfully`
+        });
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          error: (error as Error).message
+        });
+      }
+    });
+  }
+
+  broadcast(message: WebSocketMessage): void {
+    const data = JSON.stringify(message);
+    this.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(data);
+      }
     });
   }
 
@@ -160,16 +314,42 @@ ${toolDescriptions}
     }
   }
 
-  async initialize() {
-
+  async initialize(server: Server) {
     const PORT = 3000;
-    this.app.listen(PORT, () => {
-      console.log(`MCP Web Server running on http://localhost:${PORT}`);
-      console.log('Available endpoints:');
+    const HOST = 'localhost';
+    server.listen(PORT, HOST, () => {
+      console.log(`POC server running on http://${HOST}:${PORT}`);
+      console.log(`WebSocket server running on ws://${HOST}:${PORT}`);
       console.log('  GET  /api/tools - 查看可用工具');
       console.log('  POST /api/call-tool - 调用工具');
       console.log('  POST /api/chat - 与AI对话');
       console.log('  GET  /api/health - 健康检查');
+    });
+    this.wss.on('connection', (ws: WebSocket) => {
+      this.clients.add(ws);
+      
+      // Send current elements to new client
+      const initialMessage: InitialElementsMessage = {
+        type: 'initial_elements',
+        elements: Array.from(elements.values())
+      };
+      ws.send(JSON.stringify(initialMessage));
+      
+      // Send sync status to new client
+      const syncMessage: SyncStatusMessage = {
+        type: 'sync_status',
+        elementCount: elements.size,
+        timestamp: new Date().toISOString()
+      };
+      ws.send(JSON.stringify(syncMessage));
+      
+      ws.on('close', () => {
+        this.clients.delete(ws);
+      });
+      
+      ws.on('error', (error) => {
+        this.clients.delete(ws);
+      });
     });
   }
 }

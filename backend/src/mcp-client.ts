@@ -17,12 +17,12 @@ class MCPClient {
                 });
 
                 this.client.on('error', (error) => {
-                    console.error(`Connection error to ${name}:`, error);
+                    console.error(`Connection error to ws:`, error);
                     reject(error);
                 });
 
                 this.client.on('close', () => {
-                    console.log(`Disconnected from ${name} MCP Server`);
+                    console.log(`Disconnected from MCP Server`);
                 });
 
             } catch (error) {
