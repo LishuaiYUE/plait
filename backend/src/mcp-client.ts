@@ -1,8 +1,9 @@
 import { WebSocket } from 'ws';
+import { Tool } from '@modelcontextprotocol/sdk/types';
 
 class MCPClient {
     private client: WebSocket;
-    private tools: Map<string, any>;
+    private tools: Map<string, Tool>;
     constructor(url: string = 'ws://localhost:3001') {
         this.tools = new Map();
         this.client = new WebSocket(url);

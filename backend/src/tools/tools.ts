@@ -50,3 +50,5 @@ export const tools: Tool[] = [
         }
     }
 ];
+
+export const toolNames = tools.map(tool => tool.name);

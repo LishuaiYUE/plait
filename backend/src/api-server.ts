@@ -9,6 +9,7 @@ import { BatchCreatedMessage, ElementCreatedMessage, ElementDeletedMessage, Elem
 import { WebSocketServer } from 'ws';
 import { createServer, Server } from 'http';
 import WebSocket from 'ws';
+import { toolNames } from './tools/tools';
 
 class APIServer {
   private app: express.Application;
@@ -270,9 +271,8 @@ class APIServer {
       `工具: ${tool.name}\n描述: ${tool.description}\n参数: ${JSON.stringify(tool.parameters)}`
     ).join('\n\n');
 
-    const systemPrompt = `你是一个流程图生成助手，你需要根据流程图生成对应的流程图代码。请根据用户的问题，选择合适的工具并调用工具。如果用户的问题不涉及工具，请直接回答用户的问题。:
+    const systemPrompt = `你是一个流程图生成助手，你需要根据流程图生成对应的流程图代码:
 ${toolDescriptions}
-
 如果调用工具，返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}`;
 
     const decision = await this.callOpenAI([
@@ -282,9 +282,11 @@ ${toolDescriptions}
 
     try {
 
-      if (decision.action === 'call_tool') {
+      if (decision.action === 'call_tool' || toolNames.includes(decision.type)) {
         // 调用工具
-        const toolResult = await this.mcpClient.callTool(decision.tool, decision.args.properties);
+        const toolName = decision.tool || decision.type;
+        const elements = decision.args?.properties || decision.args?.elements || decision.elements;
+        const toolResult = await this.mcpClient.callTool(toolName, elements);
 
         // 将工具结果和原始问题一起发送给 LLM 生成最终回答
         const finalResponse = await this.callOpenAI([
@@ -294,7 +296,7 @@ ${toolDescriptions}
 
         return {
           type: 'tool_enhanced',
-          toolUsed: decision.tool,
+          toolUsed: toolName,
           toolResult,
           finalResponse
         };
@@ -350,6 +352,7 @@ ${toolDescriptions}
   }
 
   private extractJSONFromResponse(response: string): any {
+    response.replaceAll('\n', '').trim();
     const jsonLikeRegex = /\{[\s\S]*\}/g;
     const jsonLikeMatches = response.match(jsonLikeRegex);
 
