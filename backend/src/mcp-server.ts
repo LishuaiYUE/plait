@@ -47,7 +47,7 @@ export class PlaitMCPServer {
                 switch (tool) {
                     case "create_element":
                         // 调用API创建元素
-                        result = await axios.post(`${config.apiBaseUrl}/api/elements`, decision.args);
+                        result = await axios.post(`${config.apiBaseUrl}/api/elements`, decision.args?.element || decision.args);
                         break;
                     case "update_element":
                         // 调用API创建元素
