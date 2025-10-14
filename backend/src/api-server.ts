@@ -296,7 +296,7 @@ ${toolDescriptions}
       } else {
         return {
           type: 'direct',
-          response: decision.response
+          response: decision
         };
       }
     } catch (error) {
@@ -361,6 +361,9 @@ ${toolDescriptions}
           continue;
         }
       }
+    }
+    else {
+      return response;
     }
   }
 
