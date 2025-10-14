@@ -17,7 +17,8 @@
     "ws": "^8.14.2",
     "zod": "^3.22.4",
     "zod-to-json-schema": "^3.22.3",
-    "nanoid": "3.3.4"
+    "nanoid": "3.3.4",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

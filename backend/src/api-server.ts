@@ -10,12 +10,17 @@ import { WebSocketServer } from 'ws';
 import { createServer, Server } from 'http';
 import WebSocket from 'ws';
 import { toolNames } from './tools/tools';
+import { ChatInputMessageItem, ChatInputMessages, ChatMessages } from './types/chat';
+import dotenv from 'dotenv';
 
+// 加载环境变量
+dotenv.config();
 class APIServer {
   private app: express.Application;
   private mcpClient: MCPClient;
   private wss: WebSocketServer;
   private clients: Set<WebSocket>;
+  private historyMessages: ChatMessages = [];
   constructor() {
     this.app = express();
     this.mcpClient = new MCPClient();
@@ -59,9 +64,15 @@ class APIServer {
     this.app.post('/api/chat', async (req: Request, res: Response) => {
       try {
         const { messages, useTools = true } = req.body;
-        const message = messages[messages.length - 1].text;
-        const response = await this.processWithLLM(message, useTools);
-        res.json({ success: true, response });
+        const inputMessages: ChatMessages = (messages as ChatInputMessages).map((x: ChatInputMessageItem) => {
+          return {
+            role: x.role,
+            content: x.text
+          }
+        });
+        this.historyMessages.push(...inputMessages);
+        const response = await this.processWithLLM(this.historyMessages, useTools);
+        res.json({ role: "ai", text: response });
       } catch (error: any) {
         res.status(500).json({ success: false, error: error.message });
       }
@@ -260,10 +271,10 @@ class APIServer {
     });
   }
 
-  async processWithLLM(message: string, useTools = true) {
+  async processWithLLM(messages: ChatMessages, useTools = true) {
     if (!useTools) {
       // 直接调用 OpenAI API
-      return await this.callOpenAI(message);
+      return await this.callOpenAI(messages);
     }
 
     // 分析用户意图，决定是否使用工具
@@ -276,41 +287,29 @@ class APIServer {
 ${toolDescriptions}
 如果调用工具，返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}`;
 
-    const decision = await this.callOpenAI([
+    const content = await this.callOpenAI([
       { role: "system", content: systemPrompt },
-      { role: "user", content: message }
+      ...messages
     ]);
+    const decision = this.extractJSONFromResponse(content);
 
     try {
-
       if (decision.action === 'call_tool' || toolNames.includes(decision.type)) {
         // 调用工具
         const toolName = decision.tool || decision.type;
-        const toolResult = await this.mcpClient.callTool(toolName, decision);
-
-        return {
-          type: 'tool_enhanced',
-          toolUsed: toolName,
-          toolResult
-        };
-      } else {
-        return {
-          type: 'direct',
-          response: decision
-        };
+        await this.mcpClient.callTool(toolName, decision);
+        
       }
     } catch (error) {
       // 如果 JSON 解析失败，直接返回分析结果
-      return {
-        type: 'direct',
-        response: decision
-      };
+      throw error;
     }
+    return content;
   }
 
-  async callOpenAI(messages: string | Array<{ role: string; content: string }>) {
+  async callOpenAI(messages: ChatMessages) {
     try {
-      const apiKey = config.claude.apiKey;
+      const apiKey = process.env.CLAUDE_API_KEY;
       const baseURL = config.claude.baseUrl;
 
       if (!apiKey) {
@@ -331,7 +330,8 @@ ${toolDescriptions}
         }
       });
       const content = response.data.choices[0].message.content;
-      return this.extractJSONFromResponse(content);
+      return content;
+      // return this.extractJSONFromResponse(content);
     } catch (error: any) {
       console.error('OpenAI API error:', error.response?.data || error.message);
 
