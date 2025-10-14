@@ -68,7 +68,7 @@ export class PlaitMCPServer {
                 ws.send(JSON.stringify({
                     type: "tool_result",
                     id,
-                    content: result
+                    content: result.data
                 }));
             } catch (error: any) {
                 this.sendError(ws, error.message, id);

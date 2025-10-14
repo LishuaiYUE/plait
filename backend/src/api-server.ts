@@ -288,17 +288,10 @@ ${toolDescriptions}
         const elements = decision.args?.properties || decision.args?.elements || decision.elements;
         const toolResult = await this.mcpClient.callTool(toolName, elements);
 
-        // 将工具结果和原始问题一起发送给 LLM 生成最终回答
-        const finalResponse = await this.callOpenAI([
-          { role: "system", content: "你是一个流程图生成助手，你需要根据流程图生成对应的流程图代码。" },
-          { role: "user", content: `原始问题: ${message}\n\n工具执行结果: ${JSON.stringify(toolResult, null, 2)}` }
-        ]);
-
         return {
           type: 'tool_enhanced',
           toolUsed: toolName,
-          toolResult,
-          finalResponse
+          toolResult
         };
       } else {
         return {
