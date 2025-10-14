@@ -12,6 +12,15 @@ export const tools: Tool[] = [
         }
     },
     {
+        name: 'batch_create_elements',
+        description: 'Batch create new elements on the Plait board',
+        inputSchema: {
+            type: 'object',
+            properties: PlaitElementSchemas,
+            required: ['type', 'points']
+        }
+    },
+    {
         name: 'update_element',
         description: 'Update the existing element',
         inputSchema: {

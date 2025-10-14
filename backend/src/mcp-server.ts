@@ -1,7 +1,9 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import axios from 'axios';
+import { tools } from './tools/tools';
+import { config } from './config';
 
-export class WeatherMCPServer {
+export class PlaitMCPServer {
     private port: number;
     private wss: WebSocketServer;
     constructor(port = 3001) {
@@ -29,7 +31,6 @@ export class WeatherMCPServer {
     }
 
     sendTools(ws: WebSocket) {
-        const tools: any[] = [];
 
         ws.send(JSON.stringify({
             type: "tools",
@@ -46,9 +47,19 @@ export class WeatherMCPServer {
                 switch (tool) {
                     case "create_element":
                         // 调用API创建元素
+                        result = await axios.post(`${config.apiBaseUrl}/api/elements`, args);
+                        break;
+                    case "update_element":
+                        // 调用API创建元素
+                        result = await axios.put(`${config.apiBaseUrl}/api/elements/${args.id}`, args);
+                        break;
+                    case "delete_element":
+                        // 调用API创建元素
+                        result = await axios.delete(`${config.apiBaseUrl}/api/elements/${args.id}`);
                         break;
                     case "batch_create_element":
                         // 调用API创建元素
+                        result = await axios.post(`${config.apiBaseUrl}/api/elements/batch`, args);
                         break;
                     default:
                         throw new Error(`Unknown tool: ${tool}`);
@@ -76,5 +87,5 @@ export class WeatherMCPServer {
 }
 
 // 启动服务器
-const server = new WeatherMCPServer(3001);
+const server = new PlaitMCPServer(3001);
 console.log('Weather MCP Server running on port 3001');

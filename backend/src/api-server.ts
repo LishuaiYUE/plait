@@ -5,7 +5,7 @@ import axios from 'axios';
 import { config } from './config';
 import { elements, PlaitElement } from './types/element';
 import { generateId } from './utils';
-import { ElementCreatedMessage, ElementDeletedMessage, ElementUpdatedMessage, InitialElementsMessage, SyncStatusMessage, WebSocketMessage } from './types/message';
+import { BatchCreatedMessage, ElementCreatedMessage, ElementDeletedMessage, ElementUpdatedMessage, InitialElementsMessage, SyncStatusMessage, WebSocketMessage } from './types/message';
 import { WebSocketServer } from 'ws';
 import { createServer, Server } from 'http';
 import WebSocket from 'ws';
@@ -46,8 +46,8 @@ class APIServer {
     // 调用工具
     this.app.post('/api/call-tool', async (req: Request, res: Response) => {
       try {
-        const { toolName, arguments: args } = req.body;
-        const result = await this.mcpClient.callTool(toolName, args);
+        const { tool_name, arguments: args } = req.body;
+        const result = await this.mcpClient.callTool(tool_name, args);
         res.json({ success: true, result });
       } catch (error: any) {
         res.status(500).json({ success: false, error: error.message });
@@ -169,7 +169,7 @@ class APIServer {
       }
     });
 
-    this.app.delete('/api/elements/:id', (req: Request, res: Response) => {
+    this.app.delete('/api/elements/:id', async (req: Request, res: Response) => {
       try {
         const { id } = req.params;
         
@@ -207,6 +207,46 @@ class APIServer {
         });
       }
     });
+
+    this.app.post('/api/elements/batch', async (req: Request, res: Response) => {
+      try {
+        const elementsToCreate = req.body;
+        
+        if (!Array.isArray(elementsToCreate)) {
+          return res.status(400).json({
+            success: false,
+            error: 'Expected an array of elements'
+          });
+        }
+        const createdElements: PlaitElement[] = [];
+        for (const elementData of elementsToCreate) {
+          const id = await generateId();
+          const element: PlaitElement = {
+            id,
+            ...elementData
+          };
+          elements.set(id, element);
+          createdElements.push(element);
+        }
+        // Broadcast to all connected clients
+        const message: BatchCreatedMessage = {
+          type: 'elements_batch_created',
+          elements: createdElements
+        };
+        this.broadcast(message);
+        
+        res.json({
+          success: true,
+          elements: createdElements,
+          count: createdElements.length
+        });
+      } catch (error) {
+        res.status(400).json({
+          success: false,
+          error: (error as Error).message
+        });
+      }
+    });
   }
 
   broadcast(message: WebSocketMessage): void {
@@ -230,14 +270,10 @@ class APIServer {
       `工具: ${tool.name}\n描述: ${tool.description}\n参数: ${JSON.stringify(tool.parameters)}`
     ).join('\n\n');
 
-    const systemPrompt = `你是一个智能助手，可以调用各种工具来帮助用户。
-可用的工具:
+    const systemPrompt = `你是一个流程图生成助手，你需要根据流程图生成对应的流程图代码。请根据用户的问题，选择合适的工具并调用工具。如果用户的问题不涉及工具，请直接回答用户的问题。:
 ${toolDescriptions}
 
-请分析用户的问题，如果问题涉及到天气查询、数学计算或单位转换，请调用相应的工具。
-响应格式:
-如果调用工具，返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}
-如果直接回答，返回: {"action": "direct_response", "response": "你的回答"}`;
+如果调用工具，返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}`;
 
     const analysis = await this.callOpenAI([
       { role: "system", content: systemPrompt },
@@ -253,7 +289,7 @@ ${toolDescriptions}
 
         // 将工具结果和原始问题一起发送给 LLM 生成最终回答
         const finalResponse = await this.callOpenAI([
-          { role: "system", content: "你是一个有帮助的助手。请根据工具执行结果和用户原始问题，生成自然、友好的回答。" },
+          { role: "system", content: "你是一个流程图生成助手，你需要根据流程图生成对应的流程图代码。" },
           { role: "user", content: `原始问题: ${message}\n\n工具执行结果: ${JSON.stringify(toolResult, null, 2)}` }
         ]);
 
@@ -323,6 +359,11 @@ ${toolDescriptions}
       console.log('  GET  /api/tools - 查看可用工具');
       console.log('  POST /api/call-tool - 调用工具');
       console.log('  POST /api/chat - 与AI对话');
+      console.log('  GET /api/elements - 获取所有元素');
+      console.log('  POST /api/elements - 新建节点');
+      console.log('  POST /api/elements/batch - 批量新建节点');
+      console.log('  PUT /api/elements/:id - 更新节点');
+      console.log('  DEL /api/elements/:id - 删除节点');
       console.log('  GET  /api/health - 健康检查');
     });
     this.wss.on('connection', (ws: WebSocket) => {

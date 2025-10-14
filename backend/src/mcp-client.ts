@@ -90,7 +90,7 @@ class MCPClient {
         return Array.from(this.tools.entries()).map(([name, tool]) => ({
             name,
             description: tool.description,
-            parameters: tool.parameters
+            parameters: tool.inputSchema
         }));
     }
 }
