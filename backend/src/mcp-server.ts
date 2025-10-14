@@ -39,7 +39,7 @@ export class PlaitMCPServer {
     }
 
     async handleMessage(ws: WebSocket, message: any) {
-        const { type, tool, arguments: args, id } = message;
+        const { type, tool, arguments: decision, id } = message;
 
         if (type === "call_tool") {
             try {
@@ -47,19 +47,22 @@ export class PlaitMCPServer {
                 switch (tool) {
                     case "create_element":
                         // 调用API创建元素
-                        result = await axios.post(`${config.apiBaseUrl}/api/elements`, args);
+                        result = await axios.post(`${config.apiBaseUrl}/api/elements`, decision.args);
                         break;
                     case "update_element":
                         // 调用API创建元素
-                        result = await axios.put(`${config.apiBaseUrl}/api/elements/${args.id}`, args);
+                        const updateId = decision.args?.id;
+                        result = await axios.put(`${config.apiBaseUrl}/api/elements/${updateId}`, decision.args);
                         break;
                     case "delete_element":
                         // 调用API创建元素
-                        result = await axios.delete(`${config.apiBaseUrl}/api/elements/${args.id}`);
+                        const deleteId = decision.args?.id;
+                        result = await axios.delete(`${config.apiBaseUrl}/api/elements/${deleteId}`);
                         break;
                     case "batch_create_elements":
                         // 调用API创建元素
-                        result = await axios.post(`${config.apiBaseUrl}/api/elements/batch`, args);
+                        const input = decision.elements || decision.args.elements || decision.args.properties;
+                        result = await axios.post(`${config.apiBaseUrl}/api/elements/batch`, input);
                         break;
                     default:
                         throw new Error(`Unknown tool: ${tool}`);

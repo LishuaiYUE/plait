@@ -285,8 +285,7 @@ ${toolDescriptions}
       if (decision.action === 'call_tool' || toolNames.includes(decision.type)) {
         // 调用工具
         const toolName = decision.tool || decision.type;
-        const elements = decision.args?.properties || decision.args?.elements || decision.elements;
-        const toolResult = await this.mcpClient.callTool(toolName, elements);
+        const toolResult = await this.mcpClient.callTool(toolName, decision);
 
         return {
           type: 'tool_enhanced',
