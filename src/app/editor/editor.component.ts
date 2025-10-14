@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
     BoardTransforms,
     PlaitBoard,
@@ -39,6 +39,7 @@ import { AppMenuComponent } from '../components/menu/menu.component';
 import { mockTurningPointData } from './mock-turning-point-data';
 import { withGroup } from '@plait/common';
 import { OnChangeData, PlaitBoardComponent } from '@plait/angular-board';
+import 'deep-chat';
 
 const LOCAL_STORAGE_KEY = 'plait-board-data';
 
@@ -52,7 +53,8 @@ const LOCAL_STORAGE_KEY = 'plait-board-data';
         AppMainToolbarComponent,
         AppSettingPanelComponent,
         AppMenuComponent
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BasicEditorComponent implements OnInit, OnDestroy {
     plugins: PlaitPlugin[] = [withCommonPlugin, withMind, withMindExtend, withDraw, withGroup];
@@ -102,6 +104,11 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
             this.contextMenu.nativeElement.style.top = `${event.clientY}px`;
         }
     }
+
+    history = [
+        { role: 'user', text: 'Hey, how are you today?' },
+        { role: 'ai', text: 'I am doing very well!' }
+    ];
 
     constructor(private activeRoute: ActivatedRoute) {}
 
