@@ -9,7 +9,7 @@ import { BatchCreatedMessage, ElementCreatedMessage, ElementDeletedMessage, Elem
 import { WebSocketServer } from 'ws';
 import { createServer, Server } from 'http';
 import WebSocket from 'ws';
-import { toolNames } from './tools/tools';
+import { RequestTool, toolNames } from './tools/tools';
 import { ChatInputMessageItem, ChatInputMessages, ChatMessages } from './types/chat';
 import dotenv from 'dotenv';
 
@@ -285,12 +285,12 @@ class APIServer {
 
     const systemPrompt = `你是一个流程图生成助手，你需要根据流程图生成对应的流程图代码:
 ${toolDescriptions}
-如果调用工具，返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}`;
+如果调用工具，必须返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}`;
 
     const content = await this.callOpenAI([
       { role: "system", content: systemPrompt },
       ...messages
-    ]);
+    ], tools);
     const decision = this.extractJSONFromResponse(content);
 
     try {
@@ -302,12 +302,12 @@ ${toolDescriptions}
       }
     } catch (error) {
       // 如果 JSON 解析失败，直接返回分析结果
-      throw error;
+      console.error('callTool 失败:', error);
     }
     return content;
   }
 
-  async callOpenAI(messages: ChatMessages) {
+  async callOpenAI(messages: ChatMessages, tools?: RequestTool[]) {
     try {
       const apiKey = process.env.CLAUDE_API_KEY;
       const baseURL = config.claude.baseUrl;
@@ -320,7 +320,8 @@ ${toolDescriptions}
         model: config.claude.model,
         messages: Array.isArray(messages) ? messages : [{ role: "user", content: messages }],
         max_tokens: config.claude.maxTokens,
-        temperature: config.claude.temperature
+        temperature: config.claude.temperature,
+        tools: tools
       };
 
       const response = await axios.post(`${baseURL}/chat/completions`, payload, {

@@ -61,7 +61,7 @@ export class PlaitMCPServer {
                         break;
                     case "batch_create_elements":
                         // 调用API创建元素
-                        const input = decision.elements || decision.args.elements || decision.args.properties;
+                        const input = decision.elements || decision.args.elements || decision.args.properties || decision.args.children;
                         result = await axios.post(`${config.apiBaseUrl}/api/elements/batch`, input);
                         break;
                     default:

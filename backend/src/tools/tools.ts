@@ -52,3 +52,9 @@ export const tools: Tool[] = [
 ];
 
 export const toolNames = tools.map(tool => tool.name);
+
+export type RequestTool = {
+    name?: string;
+    description?: string;
+    parameters: any;
+}
