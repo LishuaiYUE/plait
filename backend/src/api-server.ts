@@ -306,14 +306,14 @@ ${toolAuxiliaryPrompt}`;
                 const toolName = decision.tool || decision.type;
                 await this.mcpClient.callTool(toolName, decision);
             }
-        } catch (error) {
+        } catch (error: any) {
             // 如果 JSON 解析失败，直接返回分析结果
-            throw error;
+            console.error('Error calling tool:', error.message);
         }
         return content;
     }
 
-    async callOpenAI(messages: ChatMessages) {
+    async callOpenAI(messages: ChatMessages, tools?: RequestTool[]) {
         try {
             const apiKey = process.env.CLAUDE_API_KEY;
             const baseURL = config.claude.baseUrl;
@@ -326,7 +326,8 @@ ${toolAuxiliaryPrompt}`;
                 model: config.claude.model,
                 messages: Array.isArray(messages) ? messages : [{ role: 'user', content: messages }],
                 max_tokens: config.claude.maxTokens,
-                temperature: config.claude.temperature
+                temperature: config.claude.temperature,
+                tools: tools
             };
 
             const response = await axios.post(`${baseURL}/chat/completions`, payload, {

@@ -13,7 +13,7 @@ export const tools: Tool[] = [
     },
     {
         name: 'batch_create_elements',
-        description: 'Batch create new elements on the Plait board',
+        description: 'Batch create elements, Notice: ${toolAuxiliaryPrompt}',
         inputSchema: {
             type: 'object',
             properties: PlaitElementSchemas,
@@ -51,10 +51,10 @@ export const tools: Tool[] = [
     }
 ];
 
-export const toolNames = tools.map(tool => tool.name);
+export const toolNames = tools.map((tool: Tool) => tool.name);
 
 export type RequestTool = {
     name?: string;
     description?: string;
     parameters: any;
-}
+};

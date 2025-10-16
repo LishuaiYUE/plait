@@ -31,9 +31,8 @@ export class PlaitMCPServer {
     }
 
     sendTools(ws: WebSocket) {
-
         ws.send(JSON.stringify({
-            type: "tools",
+            type: 'tools',
             tools: tools
         }));
     }
