@@ -302,7 +302,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
 
 // Set up request handler for listing available tools
 server.setRequestHandler(ListToolsRequestSchema, async () => {
-    console.info('Listing available tools');
     return { tools: tools };
 });
 
