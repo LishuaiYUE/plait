@@ -292,7 +292,7 @@ class APIServer {
             .map((tool) => `工具: ${tool.name}\n描述: ${tool.description}\n参数: ${JSON.stringify(tool.parameters)}`)
             .join('\n\n');
 
-        const systemPrompt = `你是一个流程图生成助手，你需要根据流程图生成对应的流程图代码:
+        const systemPrompt = `你是一个专业的流程图生成专家，专门使用 Plait 工具集来创建和编辑流程图元素。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码。\n
 ${toolDescriptions}
 如果调用工具，返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}
 ${toolAuxiliaryPrompt}`;
