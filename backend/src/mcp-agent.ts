@@ -27,15 +27,15 @@ export class McpAgent {
             };
         });
         try {
-            const apiKey = process.env.CLAUDE_API_KEY;
-            const baseURL = config.claude.baseUrl;
+            const apiKey = process.env.AI_API_KEY;
+            const baseURL = process.env.AI_BASE_URL;
 
             if (!apiKey) {
                 throw new Error('OpenAI API key not configured');
             }
 
             const payload: any = {
-                model: config.claude.model,
+                model: process.env.AI_MODEL,
                 messages: Array.isArray(messages) ? messages : [{ role: 'user', content: messages }],
                 max_tokens: config.claude.maxTokens,
                 temperature: config.claude.temperature
@@ -121,7 +121,7 @@ export class McpAgent {
             .map((tool) => `工具: ${tool.name}\n描述: ${tool.description}\n参数: ${JSON.stringify(tool.parameters)}`)
             .join('\n\n');
 
-        const executePrompt = `你是一个流程图生成助理，负责生成相应的流程图节点。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码。还需要使用箭头线来连接节点。\n
+        const executePrompt = `你是一个流程图生成助理，负责生成相应的流程图节点。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码，需要确定合适的位置，填充颜色，必要的箭头连接线， 确保生成的代码符合 Plait 工具集的要求，并根据用户的描述，使用适当的工具来创建或更新流程图元素。\n
       
       ${context}
 
@@ -131,7 +131,9 @@ export class McpAgent {
 
       ${toolAuxiliaryPrompt}
       `;
-        const message = await this.callLLM([{ role: 'system', content: executePrompt }, ...messages], tools);
+        messages.push({ role: 'system', content: executePrompt });
+        const message = await this.callLLM(messages, tools);
+        messages.push(message);
         if (message.tool_calls) {
             const toolResults = [];
             for (const toolCall of message.tool_calls) {
@@ -141,14 +143,16 @@ export class McpAgent {
                     tool_call_id: toolCall.id,
                     output: JSON.stringify(result)
                 });
+                messages.push({
+                    role: 'tool',
+                    tool_call_id: toolCall.id, // 必须匹配对应的tool_call_id
+                    content: JSON.stringify(result)
+                });
             }
 
             // 将工具执行的结果作为新的上下文信息，再次发送给模型，让它生成最终回答
             // messages.push(message);
-            // messages.push({
-            //     role: 'tool',
-            //     content: toolResults
-            // });
+
             // const finalResponse = await this.callLLM(messages);
             // return finalResponse.choices[0].message.content;
             return toolResults;
@@ -158,12 +162,15 @@ export class McpAgent {
     }
 
     private async createPlan(messages: ChatMessages, tools?: RequestTool[]) {
-        const planPrompt = `你是一个专业的流程图生成专家，专门使用 Plait 工具集来创建和编辑流程图元素。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码。你的任务是针对给定目标，制定一个简单的分步计划。
-      该计划应包含各项独立任务，这些任务若执行正确，就能得出正确答案。请勿添加任何多余步骤。
+        const planPrompt = `你是一个专业的流程图生成专家，专门使用 Plait 工具集来创建和编辑流程图元素。你能够理解用户的自然语言描述，自动推断所需的参数。你的任务是针对给定目标，制定一个简单的分步计划。
+      该计划应包含各项独立任务，包括必要的连线信息，这些任务若执行正确，就能得出正确答案。请勿添加任何多余步骤。
       最后一步的结果须为最终答案。确保每一步都包含所需的全部信息。
       请将计划输出为一个 JSON 数组，例如：['第一步', '第二步', '第三步']`;
-
-        const planResponse = await this.callLLM([{ role: 'system', content: planPrompt }, ...messages], tools);
+        messages.push({
+            role: 'system',
+            content: planPrompt
+        });
+        const planResponse = await this.callLLM(messages, tools);
 
         // 尝试从返回内容中解析 JSON 数组
         try {

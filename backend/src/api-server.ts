@@ -30,7 +30,7 @@ class APIServer {
     private mcpClient: MCPClient;
     private wss: WebSocketServer;
     private clients: Set<WebSocket>;
-    private historyMessages: ChatMessages = [];
+    // private historyMessages: ChatMessages = [];
     private agent: McpAgent;
     constructor() {
         this.app = express();
@@ -82,8 +82,8 @@ class APIServer {
                         content: x.text
                     };
                 });
-                this.historyMessages.push(...inputMessages);
-                const response = await this.agent.deepThink(this.historyMessages, this.mcpClient);
+                // this.historyMessages.push(...inputMessages);
+                const response = await this.agent.deepThink(inputMessages, this.mcpClient);
                 res.json({ role: 'ai', text: response });
             } catch (error: any) {
                 res.status(500).json({ success: false, error: error.message });
@@ -271,6 +271,17 @@ class APIServer {
                     error: (error as Error).message
                 });
             }
+        });
+
+        this.app.get('/api/clear', async (req: Request, res: Response) => {
+            elements.clear();
+            // this.historyMessages = [];
+            this.broadcast({
+                type: 'elements_clear'
+            });
+            res.json({
+                success: true
+            });
         });
     }
 

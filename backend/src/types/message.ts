@@ -12,7 +12,8 @@ export type WebSocketMessageType =
     | 'element_deleted'
     | 'elements_batch_created'
     | 'elements_synced'
-    | 'sync_status';
+    | 'sync_status'
+    | 'elements_clear';
 
 export interface InitialElementsMessage extends WebSocketMessage {
     type: 'initial_elements';
