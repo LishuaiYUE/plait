@@ -13,14 +13,15 @@ import {
     InitialElementsMessage,
     SyncStatusMessage,
     WebSocketMessage
-} from './types/message';
+} from './types/message.js';
 import { WebSocketServer } from 'ws';
 import { createServer, Server } from 'http';
 import WebSocket from 'ws';
 import { RequestTool, toolNames } from './tools/tools';
-import { ChatInputMessageItem, ChatInputMessages, ChatMessages } from './types/chat';
+import { ChatInputMessageItem, ChatInputMessages, ChatMessages } from './types/chat.js';
 import dotenv from 'dotenv';
 import { toolAuxiliaryPrompt } from './tools/schemas';
+import { McpAgent } from './mcp-agent';
 
 // 加载环境变量
 dotenv.config();
@@ -30,9 +31,11 @@ class APIServer {
     private wss: WebSocketServer;
     private clients: Set<WebSocket>;
     private historyMessages: ChatMessages = [];
+    private agent: McpAgent;
     constructor() {
         this.app = express();
         this.mcpClient = new MCPClient();
+        this.agent = new McpAgent();
         this.setupMiddleware();
         this.setupRoutes();
         const server = createServer(this.app);
@@ -80,7 +83,7 @@ class APIServer {
                     };
                 });
                 this.historyMessages.push(...inputMessages);
-                const response = await this.processWithLLM(this.historyMessages, useTools);
+                const response = await this.agent.deepThink(this.historyMessages, this.mcpClient);
                 res.json({ role: 'ai', text: response });
             } catch (error: any) {
                 res.status(500).json({ success: false, error: error.message });
@@ -278,99 +281,6 @@ class APIServer {
                 client.send(data);
             }
         });
-    }
-
-    async processWithLLM(messages: ChatMessages, useTools = true) {
-        if (!useTools) {
-            // 直接调用 OpenAI API
-            return await this.callOpenAI(messages);
-        }
-
-        // 分析用户意图，决定是否使用工具
-        const tools = this.mcpClient.getAvailableTools();
-        const toolDescriptions = tools
-            .map((tool) => `工具: ${tool.name}\n描述: ${tool.description}\n参数: ${JSON.stringify(tool.parameters)}`)
-            .join('\n\n');
-
-        const systemPrompt = `你是一个专业的流程图生成专家，专门使用 Plait 工具集来创建和编辑流程图元素。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码。\n
-${toolDescriptions}
-如果调用工具，返回: {"action": "call_tool", "tool": "工具名称", "args": {参数对象}}
-${toolAuxiliaryPrompt}`;
-
-        const content = await this.callOpenAI([{ role: 'system', content: systemPrompt }, ...messages]);
-        const decision = this.extractJSONFromResponse(content);
-
-        try {
-            if (decision.action === 'call_tool' || toolNames.includes(decision.type)) {
-                // 调用工具
-                const toolName = decision.tool || decision.type;
-                await this.mcpClient.callTool(toolName, decision);
-            }
-        } catch (error: any) {
-            // 如果 JSON 解析失败，直接返回分析结果
-            console.error('Error calling tool:', error.message);
-        }
-        return content;
-    }
-
-    async callOpenAI(messages: ChatMessages, tools?: RequestTool[]) {
-        try {
-            const apiKey = process.env.CLAUDE_API_KEY;
-            const baseURL = config.claude.baseUrl;
-
-            if (!apiKey) {
-                throw new Error('OpenAI API key not configured');
-            }
-
-            const payload = {
-                model: config.claude.model,
-                messages: Array.isArray(messages) ? messages : [{ role: 'user', content: messages }],
-                max_tokens: config.claude.maxTokens,
-                temperature: config.claude.temperature,
-                tools: tools
-            };
-
-            const response = await axios.post(`${baseURL}/chat/completions`, payload, {
-                headers: {
-                    Authorization: `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            const content = response.data.choices[0].message.content;
-            return content;
-            // return this.extractJSONFromResponse(content);
-        } catch (error: any) {
-            console.error('OpenAI API error:', error.response?.data || error.message);
-
-            // 模拟回退响应（当没有 API key 时）
-            if (error.response?.status === 401) {
-                return `这是一个模拟响应（需要配置 OPENAI_API_KEY 环境变量来使用真实 AI）\n\n用户消息: ${messages}`;
-            }
-
-            throw new Error(`AI service error: ${error.message}`);
-        }
-    }
-
-    private extractJSONFromResponse(response: string): any {
-        response.replaceAll('\n', '').trim();
-        const jsonLikeRegex = /\{[\s\S]*\}/g;
-        const jsonLikeMatches = response.match(jsonLikeRegex);
-
-        if (jsonLikeMatches) {
-            // 从最长的匹配开始尝试解析
-            const sortedMatches = jsonLikeMatches.sort((a, b) => b.length - a.length);
-
-            for (const match of sortedMatches) {
-                try {
-                    return JSON.parse(match);
-                } catch (e) {
-                    // 继续尝试下一个匹配项
-                    continue;
-                }
-            }
-        } else {
-            return response;
-        }
     }
 
     async initialize(server: Server) {

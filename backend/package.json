@@ -3,22 +3,24 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "start-api": "ts-node src/api-server.ts",
     "start-mcp": "ts-node src/mcp-server.ts",
     "build": "npx tsc"
   },
   "dependencies": {
+    "@codelytv/mcp-client": "^0.7.0",
     "@excalidraw/excalidraw": "^0.18.0",
     "@modelcontextprotocol/sdk": "latest",
     "axios": "^1.12.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "nanoid": "3.3.4",
     "ws": "^8.14.2",
     "zod": "^3.22.4",
-    "zod-to-json-schema": "^3.22.3",
-    "nanoid": "3.3.4",
-    "dotenv": "^16.3.1"
+    "zod-to-json-schema": "^3.22.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

@@ -8,11 +8,15 @@ export const tools: Tool[] = [
         description: 'Create a new geometry element',
         inputSchema: geometrySchema
     },
-    {
-        name: 'create_vector_line',
-        description: 'Create a new vector line element',
-        inputSchema: vectorLineSchema
-    },
+    // {
+    //     name: 'batch_create_elements',
+    //     description: 'Batch create elements, Notice: ${toolAuxiliaryPrompt}',
+    //     inputSchema: {
+    //         type: 'object',
+    //         properties: PlaitElementSchemas,
+    //         required: requiredProperties
+    //     }
+    // },
     {
         name: 'create_arrow_line',
         description: 'Create a new arrow line element',
@@ -60,17 +64,17 @@ export const tools: Tool[] = [
             },
             required: ['id']
         }
-    },
-    // batch
-    {
-        name: 'batch_create_elements',
-        description: `Batch create elements, Notice: ${toolAuxiliaryPrompt}`,
-        inputSchema: {
-            type: 'object',
-            properties: allElementsSchema,
-            required: requiredProperties
-        }
     }
+    // batch
+    // {
+    //     name: 'batch_create_elements',
+    //     description: `Batch create elements, Notice: ${toolAuxiliaryPrompt}`,
+    //     inputSchema: {
+    //         type: 'object',
+    //         properties: allElementsSchema,
+    //         required: requiredProperties
+    //     }
+    // }
 ];
 
 export const toolNames = tools.map((tool: Tool) => tool.name);
@@ -79,4 +83,9 @@ export type RequestTool = {
     name?: string;
     description?: string;
     parameters: any;
+};
+
+export type AiRequestTool = {
+    type: 'function';
+    function: RequestTool;
 };

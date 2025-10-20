@@ -6,12 +6,7 @@ process.env.NO_COLOR = '1';
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import {
-    CallToolRequestSchema,
-    ListToolsRequestSchema,
-    CallToolRequest,
-    Tool
-} from '@modelcontextprotocol/sdk/types.js';
+import { CallToolRequestSchema, ListToolsRequestSchema, CallToolRequest, Tool } from '@modelcontextprotocol/sdk/types.js';
 import dotenv from 'dotenv';
 import { tools } from './tools/tools';
 import { PlaitElement } from './types/element';
@@ -83,11 +78,9 @@ async function syncToCanvas(operation: string, data: any): Promise<SyncResponse 
                 break;
 
             default:
-                console.warn(`Unknown sync operation: ${operation}`);
                 return null;
         }
 
-        console.debug(`Syncing to canvas: ${operation}`, { url, data });
         const response = await axios(url, options);
 
         if (response.status !== 200) {
@@ -95,12 +88,8 @@ async function syncToCanvas(operation: string, data: any): Promise<SyncResponse 
         }
 
         const result = response.data;
-        console.debug(`Canvas sync successful: ${operation}`, result);
         return result as SyncResponse;
-
     } catch (error) {
-        console.warn(`Canvas sync failed for ${operation}:`, (error as Error).message);
-        // Don't throw - we want MCP operations to work even if canvas is unavailable
         return null;
     }
 }
@@ -111,7 +100,7 @@ async function createElementOnCanvas(elementData: PlaitElement): Promise<PlaitEl
     return result?.element || elementData;
 }
 
-// Helper to sync element update to canvas  
+// Helper to sync element update to canvas
 async function updateElementOnCanvas(elementData: Partial<PlaitElement> & { id: string }): Promise<PlaitElement | null> {
     const result = await syncToCanvas('update', elementData);
     return result?.element || null;
@@ -129,15 +118,14 @@ async function batchCreateElementsOnCanvas(elementsData: PlaitElement[]): Promis
     return result?.elements || elementsData;
 }
 
-
 // Tool definitions
 
 // Initialize MCP server
 const server = new Server(
     {
-        name: 'mcp-excalidraw-server',
+        name: 'plait-mcp-server',
         version: '1.0.2',
-        description: 'Advanced MCP server for Excalidraw with real-time canvas'
+        description: 'Plait MCP Server'
     },
     {
         capabilities: {
@@ -170,60 +158,48 @@ function convertTextToLabel(element: PlaitElement): PlaitElement {
 server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest) => {
     try {
         const { name, arguments: args } = request.params;
-        console.info(`Handling tool call: ${name}`);
 
         switch (name) {
-            case 'create_element': {
-                console.info('Creating element via MCP', { type: (args as any).type });
-
+            case 'create_geometry':
+            case 'create_arrow_line':
                 const id = await generateId();
                 const element: PlaitElement = {
                     id,
                     ...args
                 };
 
-
-                // Create element directly on HTTP server (no local storage)
                 const canvasElement = await createElementOnCanvas(element);
 
                 if (!canvasElement) {
                     throw new Error('Failed to create element: HTTP server unavailable');
                 }
 
-                console.info('Element created via MCP and synced to canvas', {
-                    id: canvasElement.id,
-                    type: canvasElement.type,
-                    synced: !!canvasElement
-                });
-
                 return {
-                    content: [{
-                        type: 'text',
-                        text: `Element created successfully!\n\n${JSON.stringify(canvasElement, null, 2)}\n\n✅ Synced to canvas`
-                    }]
+                    content: [
+                        {
+                            type: 'text',
+                            text: `Element created successfully!\n\n${JSON.stringify(canvasElement, null, 2)}\n\n✅ Synced to canvas`
+                        }
+                    ]
                 };
-            }
 
-            case 'update_element': {
+            case 'update_geometry':
+            case 'update_vector_line':
+            case 'update_arrow_line':
                 // Update element directly on HTTP server (no local storage)
-                const canvasElement = await updateElementOnCanvas(args as PlaitElement);
+                const updatedElement = await updateElementOnCanvas(args as PlaitElement);
 
-                if (!canvasElement) {
+                if (!updatedElement) {
                     throw new Error('Failed to update element: HTTP server unavailable or element not found');
                 }
-
-                console.info('Element updated via MCP and synced to canvas', {
-                    id: canvasElement.id,
-                    synced: !!canvasElement
-                });
-
                 return {
-                    content: [{
-                        type: 'text',
-                        text: `Element updated successfully!\n\n${JSON.stringify(canvasElement, null, 2)}\n\n✅ Synced to canvas`
-                    }]
+                    content: [
+                        {
+                            type: 'text',
+                            text: `Element updated successfully!\n\n${JSON.stringify(updatedElement, null, 2)}\n\n✅ Synced to canvas`
+                        }
+                    ]
                 };
-            }
 
             case 'delete_element': {
                 const { id } = args as PlaitElement;
@@ -236,20 +212,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                 }
 
                 const result = { id, deleted: true, syncedToCanvas: true };
-                console.info('Element deleted via MCP and synced to canvas', result);
 
                 return {
-                    content: [{
-                        type: 'text',
-                        text: `Element deleted successfully!\n\n${JSON.stringify(result, null, 2)}\n\n✅ Synced to canvas`
-                    }]
+                    content: [
+                        {
+                            type: 'text',
+                            text: `Element deleted successfully!\n\n${JSON.stringify(result, null, 2)}\n\n✅ Synced to canvas`
+                        }
+                    ]
                 };
             }
             case 'batch_create_elements': {
-                console.info('Batch creating elements via MCP', { count: (args as any).elements.length });
-
                 const createdElements: PlaitElement[] = [];
-
                 // Create each element with unique ID
                 for (const elementData of (args as any).elements) {
                     const id = await generateId();
@@ -274,17 +248,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                     count: canvasElements.length,
                     syncedToCanvas: true
                 };
-
-                console.info('Batch elements created via MCP and synced to canvas', {
-                    count: result.count,
-                    synced: result.syncedToCanvas
-                });
-
                 return {
-                    content: [{
-                        type: 'text',
-                        text: `${result.count} elements created successfully!\n\n${JSON.stringify(result, null, 2)}\n\n${result.syncedToCanvas ? '✅ All elements synced to canvas' : '⚠️  Canvas sync failed (elements still created locally)'}`
-                    }]
+                    content: [
+                        {
+                            type: 'text',
+                            text: `${result.count} elements created successfully!\n\n${JSON.stringify(result, null, 2)}\n\n${result.syncedToCanvas ? '✅ All elements synced to canvas' : '⚠️  Canvas sync failed (elements still created locally)'}`
+                        }
+                    ]
                 };
             }
 
@@ -292,7 +262,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                 throw new Error(`Unknown tool: ${name}`);
         }
     } catch (error) {
-        console.error(`Error handling tool call: ${(error as Error).message}`, { error });
         return {
             content: [{ type: 'text', text: `Error: ${(error as Error).message}` }],
             isError: true
@@ -308,17 +277,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 // Start server with transport based on mode
 async function runServer(): Promise<void> {
     try {
-        console.info('Starting Excalidraw MCP server...');
-
         const transportMode = process.env.MCP_TRANSPORT_MODE || 'stdio';
         let transport;
 
         if (transportMode === 'http') {
             const port = parseInt(process.env.PORT || '3000', 10);
             const host = process.env.HOST || 'localhost';
-
-            console.info(`Starting HTTP server on ${host}:${port}`);
-            // Here you would create an HTTP transport
             // This is a placeholder - actual HTTP transport implementation would need to be added
             transport = new StdioServerTransport(); // Fallback to stdio for now
         } else {
@@ -327,15 +291,12 @@ async function runServer(): Promise<void> {
         }
 
         // Add a debug message before connecting
-        console.debug('Connecting to transport...');
 
         await server.connect(transport);
-        console.info(`Excalidraw MCP server running on ${transportMode}`);
 
         // Keep the process running
         process.stdin.resume();
     } catch (error) {
-        console.error('Error starting server:', error);
         process.stderr.write(`Failed to start MCP server: ${(error as Error).message}\n${(error as Error).stack}\n`);
         process.exit(1);
     }
@@ -343,23 +304,15 @@ async function runServer(): Promise<void> {
 
 // Add global error handlers
 process.on('uncaughtException', (error: Error) => {
-    console.error('Uncaught exception:', error);
     process.stderr.write(`UNCAUGHT EXCEPTION: ${error.message}\n${error.stack}\n`);
     setTimeout(() => process.exit(1), 1000);
 });
 
 process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
-    console.error('Unhandled promise rejection:', reason);
     process.stderr.write(`UNHANDLED REJECTION: ${reason}\n`);
     setTimeout(() => process.exit(1), 1000);
 });
-
-// For testing and debugging purposes
-if (process.env.DEBUG === 'true') {
-    console.debug('Debug mode enabled');
-}
-runServer().catch(error => {
-    console.error('Failed to start server:', error);
+runServer().catch((error: any) => {
     process.exit(1);
 });
 export default runServer;

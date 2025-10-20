@@ -1,5 +1,4 @@
-import { PlaitElement } from "./element";
-
+import { PlaitElement } from './element';
 
 export interface WebSocketMessage {
     type: WebSocketMessageType;
