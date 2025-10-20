@@ -104,9 +104,6 @@ export class McpAgent {
 
         // 3. 合成最终答案
         console.log(`\n🎯 合成最终答案...`);
-        // const toolDescriptions = tools
-        //     .map((tool) => `工具: ${tool.name}\n描述: ${tool.description}\n参数: ${JSON.stringify(tool.parameters)}`)
-        //     .join('\n\n');
         const synthesizePrompt = `你是一个流程图生成专家。请基于以下所有步骤的研究结果，为原始问题提供一个完整、准确、精炼的最终答案，并使用工具输出流程图代码。
       
       研究过程与发现：
@@ -114,10 +111,8 @@ export class McpAgent {
       
       请给出最终答案：
       `;
-
-        const finalAnswer = await this.callLLM([{ role: 'system', content: synthesizePrompt }, ...messages], tools);
-
-        return finalAnswer;
+        const finalAnswer = await this.callLLM([{ role: 'system', content: synthesizePrompt }, ...messages]);
+        return finalAnswer.content;
     }
 
     private async executeTask(taskDescription: any, pastResults: any[], messages: ChatMessages, tools: RequestTool[], mcpClient: MCPClient) {
@@ -126,7 +121,7 @@ export class McpAgent {
             .map((tool) => `工具: ${tool.name}\n描述: ${tool.description}\n参数: ${JSON.stringify(tool.parameters)}`)
             .join('\n\n');
 
-        const executePrompt = `你是一个流程图生成助理，负责生成相应的流程图节点。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码。\n
+        const executePrompt = `你是一个流程图生成助理，负责生成相应的流程图节点。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码。还需要使用箭头线来连接节点。\n
       
       ${context}
 
@@ -135,8 +130,6 @@ export class McpAgent {
       ${toolDescriptions}
 
       ${toolAuxiliaryPrompt}
-
-      如果匹配到工具，请返回正确的JSON格式 {tool: '工具名称', args: {参数名称: 参数值}}，否则返回 {tool: 'none'}。
       `;
         const message = await this.callLLM([{ role: 'system', content: executePrompt }, ...messages], tools);
         if (message.tool_calls) {
@@ -165,7 +158,7 @@ export class McpAgent {
     }
 
     private async createPlan(messages: ChatMessages, tools?: RequestTool[]) {
-        const planPrompt = `你是一个专业的流程图生成专家，专门使用 Plait 工具集来创建和编辑流程图元素。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码。你的任务是针对给定目标，制定一个简单的分步计划。这些任务会分配给研究助理，所以不要过分细化。
+        const planPrompt = `你是一个专业的流程图生成专家，专门使用 Plait 工具集来创建和编辑流程图元素。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码。你的任务是针对给定目标，制定一个简单的分步计划。
       该计划应包含各项独立任务，这些任务若执行正确，就能得出正确答案。请勿添加任何多余步骤。
       最后一步的结果须为最终答案。确保每一步都包含所需的全部信息。
       请将计划输出为一个 JSON 数组，例如：['第一步', '第二步', '第三步']`;
