@@ -653,7 +653,7 @@ When creating diagrams with Plait MCP, follow these rules:
 - When creating a shape or arrow and want to add text, do not add a new text box. Instead, place the text inside the shape/arrow.
 - When drawing arrows:
 - Make sure they connect to the linked shape.
-- If there is text on the arrow, make sure the arrow is long enough to display the entire text.
+- If there is text on the line (vector-line or arrow-line), make sure the arrow is long enough to display the entire text.
 - When creating a shape that contains a shape:
 - Make sure the shape is large enough to contain all the content.
 
@@ -671,4 +671,5 @@ When creating diagrams with Plait MCP, follow these rules:
 
 - Guess required parameters based on the user's language; do not require the user to provide specific parameter values.
 - Different elements should have different coordinates to prevent overlap.
+- I hope the drawing will be more colorful and beautiful.
 `;
