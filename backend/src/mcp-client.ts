@@ -75,7 +75,7 @@ class MCPClient {
             this.client.send(JSON.stringify({
                 type: 'call_tool',
                 tool: tool.name,
-                arguments: args,
+                args: args,
                 id
             }));
 
@@ -91,7 +91,7 @@ class MCPClient {
         return Array.from(this.tools.entries()).map(([name, tool]) => ({
             name,
             description: tool.description,
-            parameters: tool.inputSchema
+            inputSchema: tool.inputSchema
         }));
     }
 }

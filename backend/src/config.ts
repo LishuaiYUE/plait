@@ -9,4 +9,4 @@ export const config = {
         maxTokens: 2000,
         temperature: 0.7
     }
-}
+};

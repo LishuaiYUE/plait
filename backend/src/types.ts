@@ -1,5 +1,4 @@
-
-export const elementTypes = ['text', 'rectangle', 'ellipse', 'diamond', 'triangle', 'arrow', 'line', 'freedraw', 'image', 'video', 'audio', 'file', 'sticker', 'text_box', 'code_block', 'shape', 'link', 'frame', 'table', 'chart', 'mindmap', 'flowchart', 'sequence_diagram', 'class_diagram', 'state_di']
+export const elementTypes = ['text', 'rectangle', 'ellipse', 'diamond', 'triangle', 'arrow', 'line', 'freedraw', 'image', 'video', 'audio', 'file', 'sticker', 'text_box', 'code_block', 'shape', 'link', 'frame', 'table', 'chart', 'mindmap', 'flowchart', 'sequence_diagram', 'class_diagram', 'state_di'];
 export interface WebSocketMessage {
     type: WebSocketMessageType;
     [key: string]: any;

@@ -38,37 +38,40 @@ export class PlaitMCPServer {
     }
 
     async handleMessage(ws: WebSocket, message: any) {
-        const { type, tool, arguments: decision, id } = message;
+        const { type, tool, args, id } = message;
 
-        if (type === "call_tool") {
+        if (type === 'call_tool') {
             try {
                 let result;
                 switch (tool) {
-                    case "create_element":
+                    case 'create_geometry':
+                    case 'create_arrow_line':
                         // 调用API创建元素
-                        result = await axios.post(`${config.apiBaseUrl}/api/elements`, decision.args?.element || decision.args);
+                        result = await axios.post(`${config.apiBaseUrl}/api/elements`, args);
                         break;
-                    case "update_element":
+                    case 'update_geometry':
+                    case 'update_vector_line':
+                    case 'update_arrow_line':
                         // 调用API创建元素
-                        const updateId = decision.args?.id;
-                        result = await axios.put(`${config.apiBaseUrl}/api/elements/${updateId}`, decision.args);
+                        const updateId = args?.id;
+                        result = await axios.put(`${config.apiBaseUrl}/api/elements/${updateId}`, args);
                         break;
-                    case "delete_element":
+                    case 'delete_element':
                         // 调用API创建元素
-                        const deleteId = decision.args?.id;
+                        const deleteId = args?.id;
                         result = await axios.delete(`${config.apiBaseUrl}/api/elements/${deleteId}`);
                         break;
-                    case "batch_create_elements":
-                        // 调用API创建元素
-                        const input = decision.elements || decision.args.elements || decision.args.properties || decision.args.children;
-                        result = await axios.post(`${config.apiBaseUrl}/api/elements/batch`, input);
-                        break;
+                    // case 'batch_create_elements':
+                    //     // 调用API创建元素
+                    //     const input = decision.elements || decision.args.elements || decision.args.properties || decision.args.children;
+                    //     result = await axios.post(`${config.apiBaseUrl}/api/elements/batch`, input);
+                    //     break;
                     default:
                         throw new Error(`Unknown tool: ${tool}`);
                 }
 
                 ws.send(JSON.stringify({
-                    type: "tool_result",
+                    type: 'tool_result',
                     id,
                     content: result.data
                 }));
@@ -81,7 +84,7 @@ export class PlaitMCPServer {
 
     sendError(ws: WebSocket, message: string, id = null) {
         ws.send(JSON.stringify({
-            type: "error",
+            type: 'error',
             id,
             message
         }));
