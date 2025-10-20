@@ -1,3 +1,35 @@
+export const text = {
+    type: 'object',
+    properties: {
+        type: {
+            type: 'string',
+            enum: ['paragraph'],
+            description: '文本类型'
+        },
+        children: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    text: {
+                        type: 'string',
+                        description: '文本内容'
+                    }
+                },
+                required: ['text']
+            },
+            description: '文本数组'
+        },
+        align: {
+            type: 'string',
+            enum: ['left', 'center', 'right'],
+            description: '对齐方式'
+        }
+    },
+    required: ['type', 'children', 'align'],
+    description: '文本'
+};
+
 // Detail schemas
 export const geometrySchema = {
     type: 'object' as const,
@@ -258,37 +290,7 @@ export const arrowLineSchema = {
             items: {
                 type: 'object',
                 properties: {
-                    text: {
-                        type: 'object',
-                        properties: {
-                            type: {
-                                type: 'string',
-                                enum: ['paragraph'],
-                                description: '文本类型'
-                            },
-                            children: {
-                                type: 'array',
-                                items: {
-                                    type: 'object',
-                                    properties: {
-                                        text: {
-                                            type: 'string',
-                                            description: '文本内容'
-                                        }
-                                    },
-                                    required: ['text']
-                                },
-                                description: '文本数组'
-                            },
-                            align: {
-                                type: 'string',
-                                enum: ['left', 'center', 'right'],
-                                description: '对齐方式'
-                            }
-                        },
-                        required: ['type', 'children', 'align'],
-                        description: '文本。需要满足 type 为 geometry 且 shape 为 text。'
-                    },
+                    text: text,
                     position: { type: 'number', description: 'Percentage of positioning based on line length.（可选）' }
                 }
             },
@@ -316,7 +318,7 @@ export const arrowLineSchema = {
     required: ['type', 'points', 'shape', 'opacity', 'strokeWidth', 'source', 'target', 'texts']
 };
 
-// Old schemas, will be deprecated
+// Old schemas (will be deprecated)
 export const PlaitDefaultSchema = {
     type: {
         type: 'string',
@@ -370,39 +372,7 @@ export const PlaitDefaultSchema = {
     }
 };
 
-export const TextSchema = {
-    text: {
-        type: 'object',
-        properties: {
-            type: {
-                type: 'string',
-                enum: ['paragraph'],
-                description: '文本类型。必填'
-            },
-            children: {
-                type: 'array',
-                items: {
-                    type: 'object',
-                    properties: {
-                        text: {
-                            type: 'string',
-                            description: '文本内容，默认空字符串'
-                        }
-                    }
-                },
-                description: '文本数组。必填'
-            },
-            align: {
-                type: 'string',
-                enum: ['left', 'center', 'right'],
-                description: '对齐方式。必填'
-            }
-        },
-        description: '文本。需要满足 type 为 geometry 且 shape 为 text。'
-    }
-};
-
-// Geometry、PlaitVectorLine
+// Geometry、PlaitVectorLine (will be deprecated)
 export const PlaitGeometrySchema = {
     shape: {
         type: 'string',
@@ -490,7 +460,7 @@ export const PlaitGeometrySchema = {
         description:
             "当元素的类型为 geometry 时，shape 字段值只能选 'rectangle','ellipse','diamond','roundRectangle','parallelogram','text','triangle','leftArrow','trapezoid','rightArrow','cross','star','pentagon','hexagon','octagon','pentagonArrow','processArrow','twoWayArrow','comment','roundComment','cloud' 其中之一。当元素的类型为 vector-line 时，shape 字段值只能选 'straight','curve' 其中之一。当元素的类型为 arrow-line 时，shape 字段值只能选 'straight','curve','elbow' 其中之一。"
     },
-    ...TextSchema,
+    text: text,
     fill: {
         type: 'string',
         pattern: '^#[0-9A-Fa-f]{6}$',
@@ -520,7 +490,7 @@ export const PlaitGeometrySchema = {
     }
 };
 
-// PlaitArrowLine、ForceAtlasEdgeElement;
+// PlaitArrowLine、ForceAtlasEdgeElement (will be deprecated)
 export const PlaitArrowLineSchema = {
     source: {
         type: 'object',
@@ -585,7 +555,7 @@ export const PlaitArrowLineSchema = {
         items: {
             type: 'object',
             properties: {
-                ...TextSchema,
+                text: text,
                 position: { type: 'number', description: 'Percentage of positioning based on line length.（可选）' }
             }
         },
@@ -593,6 +563,7 @@ export const PlaitArrowLineSchema = {
     }
 };
 
+// PlaitTable (will be deprecated)
 export const PlaitTableSchema = {
     rows: {
         type: 'array',
@@ -620,7 +591,7 @@ export const PlaitTableSchema = {
                 columnId: { type: 'string', description: '列ID（可选）' },
                 colspan: { type: 'number', description: '列跨度（可选）' },
                 rowspan: { type: 'number', description: '行跨度（可选）' },
-                ...TextSchema,
+                text: text,
                 fill: { type: 'string', description: '填充颜色，十六进制格式如 #E3F2FD（可选）' }
             },
             description: '单元格（可选）。当 type 为 table 时可设置该属性。'
@@ -629,6 +600,7 @@ export const PlaitTableSchema = {
     header: { type: 'boolean', description: '是否显示表头，默认 false（可选）。当 type 为 swimlane 时可设置该属性。' }
 };
 
+// PlaitMind (will be deprecated)
 export const PlaitMindSchema = {
     rightNodeCount: { type: 'number', description: '右节点数量（可选）。当 type 为 mind_child、mind、mindmap 时可设置该属性。' },
     manualWidth: { type: 'number', description: '手动宽度（可选）。当 type 为 mind_child、mind、mindmap 时可设置该属性。' },
@@ -662,6 +634,7 @@ export const PlaitMindSchema = {
     end: { type: 'number', description: '结束位置（可选）。当 type 为 mind_child、mind、mindmap 时可设置该属性。' }
 };
 
+// All elements schema (will be deprecated)
 export const allElementsSchema = {
     ...PlaitDefaultSchema,
     ...PlaitGeometrySchema,
