@@ -261,10 +261,10 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
 
             switch (parsedData.type) {
                 case 'initial_elements':
-                    this.value = parsedData.elements;
+                    this.value = [...parsedData.elements];
                     break;
                 case 'element_created': {
-                    this.value.push(parsedData.element);
+                    this.value = [...this.value, parsedData.element];
                     break;
                 }
                 case 'elements_batch_created': {
@@ -295,9 +295,17 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
 
                 // 文本的格式需要满足  element.type=geometry && element.shape=paragraph && element.text.type = paragraph，模型返回的数据经常满足不了，这里兼容转一下
                 if (element.type === 'paragraph' || (element.type === 'geometry' && element.text)) {
-                    element.type = 'geometry';
-                    element.shape = 'text';
-                    element.text && (element.text.type = 'paragraph');
+                    element = {
+                        ...element,
+                        type: 'geometry',
+                        shape: 'text',
+                        text: element.text
+                            ? {
+                                  ...element.text,
+                                  type: 'paragraph'
+                              }
+                            : element.text
+                    };
                 }
 
                 return element;
@@ -305,7 +313,9 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
 
             console.log('value：', this.value);
             this.cdr.detectChanges();
-        } catch (error) {}
+        } catch (error) {
+            console.log('handleWebSocketMessage error：', error);
+        }
     }
 
     private disconnectWebSocket(): void {
