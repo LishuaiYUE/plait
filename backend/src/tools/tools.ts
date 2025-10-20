@@ -8,15 +8,11 @@ export const tools: Tool[] = [
         description: 'Create a new geometry element',
         inputSchema: geometrySchema
     },
-    // {
-    //     name: 'batch_create_elements',
-    //     description: 'Batch create elements, Notice: ${toolAuxiliaryPrompt}',
-    //     inputSchema: {
-    //         type: 'object',
-    //         properties: PlaitElementSchemas,
-    //         required: requiredProperties
-    //     }
-    // },
+    {
+        name: 'create_vector_line',
+        description: 'Create a new vector line element',
+        inputSchema: vectorLineSchema
+    },
     {
         name: 'create_arrow_line',
         description: 'Create a new arrow line element',
@@ -65,7 +61,7 @@ export const tools: Tool[] = [
             required: ['id']
         }
     }
-    // batch
+    // batch (will be deprecated)
     // {
     //     name: 'batch_create_elements',
     //     description: `Batch create elements, Notice: ${toolAuxiliaryPrompt}`,
