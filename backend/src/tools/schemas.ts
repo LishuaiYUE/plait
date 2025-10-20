@@ -127,6 +127,7 @@ export const geometrySchema = {
             ],
             description: '形状'
         },
+        text: text,
         angle: {
             type: 'number',
             description: '元素角度，0-360度'
