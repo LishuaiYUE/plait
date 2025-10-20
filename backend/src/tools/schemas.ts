@@ -1,3 +1,322 @@
+// Detail schemas
+export const geometrySchema = {
+    type: 'object' as const,
+    properties: {
+        type: {
+            type: 'string',
+            enum: ['geometry']
+        },
+        points: {
+            type: 'array',
+            items: {
+                type: 'array',
+                items: { type: 'number' },
+                minItems: 2,
+                maxItems: 2
+            },
+            minItems: 2,
+            maxItems: 2,
+            description: '元素位置坐标，格式为 [[x1, y1], [x2, y2]]'
+        },
+        shape: {
+            type: 'string',
+            enum: [
+                // ① BasicShapes
+                'rectangle',
+                'ellipse',
+                'diamond',
+                'roundRectangle',
+                'parallelogram',
+                'text',
+                'triangle',
+                'leftArrow',
+                'trapezoid',
+                'rightArrow',
+                'cross',
+                'star',
+                'pentagon',
+                'hexagon',
+                'octagon',
+                'pentagonArrow',
+                'processArrow',
+                'twoWayArrow',
+                'comment',
+                'roundComment',
+                'cloud'
+
+                // // ② FlowchartSymbols
+                // 'process',
+                // 'decision',
+                // 'data',
+                // 'connector',
+                // 'terminal',
+                // 'database',
+                // 'hardDisk',
+                // 'internalStorage',
+                // 'manualInput',
+                // 'preparation',
+                // 'manualLoop',
+                // 'merge',
+                // 'delay',
+                // 'storedData',
+                // 'or',
+                // 'summingJunction',
+                // 'predefinedProcess',
+                // 'offPage',
+                // 'document',
+                // 'multiDocument',
+                // 'noteCurlyLeft',
+                // 'noteCurlyRight',
+                // 'noteSquare',
+                // 'display',
+
+                // // ③ UMLSymbols
+                // 'actor',
+                // 'useCase',
+                // 'container',
+                // 'note',
+                // 'package',
+                // 'combinedFragment',
+                // 'class',
+                // 'interface',
+                // 'activation',
+                // 'object',
+                // 'deletion',
+                // 'activityClass',
+                // 'simpleClass',
+                // 'component',
+                // 'componentBox',
+                // 'template',
+                // 'port',
+                // 'branchMerge',
+                // 'assembly',
+                // 'requiredInterface',
+                // 'providedInterface',
+            ],
+            description: '形状'
+        },
+        angle: {
+            type: 'number',
+            description: '元素角度，0-360度'
+        },
+        fill: {
+            type: 'string',
+            pattern: '^#[0-9A-Fa-f]{6}$'
+        },
+        strokeColor: {
+            type: 'string',
+            pattern: '^#[0-9A-Fa-f]{6}$'
+        },
+        strokeWidth: {
+            type: 'number',
+            minimum: 1,
+            description: '边框宽度，默认 2'
+        },
+        strokeStyle: {
+            type: 'string',
+            enum: ['solid', 'dashed', 'dotted']
+        },
+        opacity: {
+            type: 'number',
+            minimum: 0,
+            maximum: 1
+        }
+    },
+    required: ['type', 'points', 'shape', 'opacity', 'strokeWidth', 'text', 'angle']
+};
+
+export const vectorLineSchema = {
+    type: 'object' as const,
+    properties: {
+        type: {
+            type: 'string',
+            enum: ['vector-line']
+        },
+        shape: {
+            type: 'string',
+            enum: ['straight', 'curve']
+        },
+        points: {
+            type: 'array',
+            items: {
+                type: 'array',
+                items: { type: 'number' },
+                minItems: 2,
+                maxItems: 2
+            },
+            minItems: 2,
+            maxItems: 2
+        },
+        fill: {
+            type: 'string',
+            pattern: '^#[0-9A-Fa-f]{6}$'
+        },
+        strokeColor: {
+            type: 'string',
+            pattern: '^#[0-9A-Fa-f]{6}$'
+        },
+        strokeWidth: {
+            type: 'number',
+            minimum: 1,
+            description: '边框宽度，默认 2'
+        },
+        strokeStyle: {
+            type: 'string',
+            enum: ['solid', 'dashed', 'dotted']
+        },
+        opacity: {
+            type: 'number',
+            minimum: 0,
+            maximum: 1
+        }
+    },
+    required: ['type', 'points', 'shape', 'opacity', 'strokeWidth']
+};
+
+export const arrowLineSchema = {
+    type: 'object' as const,
+    properties: {
+        type: {
+            type: 'string',
+            enum: ['arrow-line']
+        },
+        shape: {
+            type: 'string',
+            enum: ['straight', 'curve', 'elbow']
+        },
+        points: {
+            type: 'array',
+            items: {
+                type: 'array',
+                items: { type: 'number' },
+                minItems: 2,
+                maxItems: 2
+            },
+            minItems: 2,
+            maxItems: 2
+        },
+        source: {
+            type: 'object',
+            properties: {
+                boundId: { type: 'string', description: '线的起始位置连着的元素的id，如果起点没有连着其它元素，则不填' },
+                connection: {
+                    type: 'array',
+                    items: { type: 'number' },
+                    minItems: 2,
+                    maxItems: 2,
+                    description: '连接点，格式为 [x, y]（可选）'
+                },
+                marker: {
+                    type: 'string',
+                    enum: [
+                        'arrow',
+                        'none',
+                        'open-triangle',
+                        'solid-triangle',
+                        'sharp-arrow',
+                        'one-side-up',
+                        'one-side-down',
+                        'hollow-triangle',
+                        'single-slash'
+                    ],
+                    description: '箭头类型，默认 none'
+                }
+            },
+            description: '线的起点，当 type 为 arrow-line 时必填'
+        },
+        target: {
+            type: 'object',
+            properties: {
+                boundId: { type: 'string', description: '线的终点连着的元素的id，如果终点没有连着其它元素，则不填' },
+                connection: {
+                    type: 'array',
+                    items: { type: 'number' },
+                    minItems: 2,
+                    maxItems: 2,
+                    description: '连接点，格式为 [x, y]（可选）'
+                },
+                marker: {
+                    type: 'string',
+                    enum: [
+                        'arrow',
+                        'none',
+                        'open-triangle',
+                        'solid-triangle',
+                        'sharp-arrow',
+                        'one-side-up',
+                        'one-side-down',
+                        'hollow-triangle',
+                        'single-slash'
+                    ],
+                    description: '箭头类型，默认arrow'
+                }
+            },
+            description: '线的终点，当 type 为 arrow-line 时必填'
+        },
+        texts: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    text: {
+                        type: 'object',
+                        properties: {
+                            type: {
+                                type: 'string',
+                                enum: ['paragraph'],
+                                description: '文本类型'
+                            },
+                            children: {
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        text: {
+                                            type: 'string',
+                                            description: '文本内容'
+                                        }
+                                    },
+                                    required: ['text']
+                                },
+                                description: '文本数组'
+                            },
+                            align: {
+                                type: 'string',
+                                enum: ['left', 'center', 'right'],
+                                description: '对齐方式'
+                            }
+                        },
+                        required: ['type', 'children', 'align'],
+                        description: '文本。需要满足 type 为 geometry 且 shape 为 text。'
+                    },
+                    position: { type: 'number', description: 'Percentage of positioning based on line length.（可选）' }
+                }
+            },
+            description: '文本（可选）。当 type 为 arrow-line 时可设置该属性。'
+        },
+        strokeColor: {
+            type: 'string',
+            pattern: '^#[0-9A-Fa-f]{6}$'
+        },
+        strokeWidth: {
+            type: 'number',
+            minimum: 1,
+            description: '边框宽度，默认 2'
+        },
+        strokeStyle: {
+            type: 'string',
+            enum: ['solid', 'dashed', 'dotted']
+        },
+        opacity: {
+            type: 'number',
+            minimum: 0,
+            maximum: 1
+        }
+    },
+    required: ['type', 'points', 'shape', 'opacity', 'strokeWidth', 'source', 'target', 'texts']
+};
+
+// Old schemas（will be deprecated after deep thinking is supported）
 export const PlaitDefaultSchema = {
     type: {
         type: 'string',
@@ -343,7 +662,7 @@ export const PlaitMindSchema = {
     end: { type: 'number', description: '结束位置（可选）。当 type 为 mind_child、mind、mindmap 时可设置该属性。' }
 };
 
-export const PlaitElementSchemas = {
+export const allElementsSchema = {
     ...PlaitDefaultSchema,
     ...PlaitGeometrySchema,
     ...PlaitArrowLineSchema
@@ -353,20 +672,29 @@ export const PlaitElementSchemas = {
 
 export const requiredProperties = ['type', 'points', 'shape', 'opacity', 'strokeWidth'];
 
-// 由于 MCP Tool 的 inputSchema 是一个对象，无法根据 type 来判断必填字段，所以需要通过 prompt 来辅助模型理解。
 export const toolAuxiliaryPrompt = `
-注意：支持绘制三种类型的元素，分别是：geometry, vector-line, arrow-line。
+When creating diagrams with Plait MCP, follow these rules:
 
-shape 字段有要求：
-当元素的类型为 geometry 时，shape 字段值只能选 'rectangle','ellipse','diamond','roundRectangle','parallelogram','text','triangle','leftArrow','trapezoid','rightArrow','cross','star','pentagon','hexagon','octagon','pentagonArrow','processArrow','twoWayArrow','comment','roundComment','cloud' 其中之一。当绘制的是文字时，shape 值才会是 text。
-当元素的类型为 vector-line 时，shape 字段值只能选 'straight','curve' 其中之一。
-当元素的类型为 arrow-line 时，shape 字段值只能选 'straight','curve','elbow' 其中之一。
+- Create elements one by one, not in batches. Connect blocks with arrows only after they exist.
+- When creating a shape or arrow and want to add text, do not add a new text box. Instead, place the text inside the shape/arrow.
+- When drawing arrows:
+- Make sure they connect to the linked shape.
+- If there is text on the arrow, make sure the arrow is long enough to display the entire text.
+- When creating a shape that contains a shape:
+- Make sure the shape is large enough to contain all the content.
 
+- Three types of elements are supported: geometry, vector-line, and arrow-line.
 
-type 不同，必填字段也不同：
-当元素的类型为 geometry 时，必填字段为 ${requiredProperties.join(', ')}, text, angle。
-当元素的类型为 vector-line 时，必填字段为 ${requiredProperties.join(', ')}.
-当元素的类型为 arrow-line 时，必填字段为 ${requiredProperties.join(', ')}, source, target, texts。
+- The shape field has requirements:
+- When the element type is geometry, the shape field value can only be one of 'rectangle', 'ellipse', 'diamond', 'roundRectangle', 'parallelogram', 'text', 'triangle', 'leftArrow', 'trapezoid', 'rightArrow', 'cross', 'star', 'pentagon', 'hexagon', 'octagon', 'pentagonArrow', 'processArrow', 'twoWayArrow', 'comment', 'roundComment', or 'cloud'. The shape value is text only when drawing text.
+- When the element type is vector-line, the shape field value can only be one of 'straight' or 'curve'.
+- When the element type is arrow-line, the shape field value can only be one of 'straight', 'curve', or 'elbow'.
 
-根据用户的语言猜测需要的参数，不要让用户提供具体参数值。
+- When creating an element, the required fields vary depending on the element type:
+- When the element type is geometry, the required fields are ${requiredProperties.join(', ')}, text, and angle.
+- When the element type is vector-line, the required fields are ${requiredProperties.join(', ')}.
+- When the element type is arrow-line, the required fields are ${requiredProperties.join(', ')}, source, target, and texts.
+
+- Guess required parameters based on the user's language; do not require the user to provide specific parameter values.
+- Different elements should have different coordinates to prevent overlap.
 `;

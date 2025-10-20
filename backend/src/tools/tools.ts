@@ -1,40 +1,52 @@
 import { Tool } from '@modelcontextprotocol/sdk/types';
-import { PlaitElementSchemas, requiredProperties, toolAuxiliaryPrompt } from './schemas';
+import { geometrySchema, vectorLineSchema, arrowLineSchema, allElementsSchema, requiredProperties, toolAuxiliaryPrompt } from './schemas';
 
 export const tools: Tool[] = [
+    // create
     {
-        name: 'create_element',
-        description: `Create a new element on the Plait board, Notice: ${toolAuxiliaryPrompt}`,
-        inputSchema: {
-            type: 'object',
-            properties: PlaitElementSchemas,
-            required: requiredProperties
-        }
+        name: 'create_geometry',
+        description: 'Create a new geometry element',
+        inputSchema: geometrySchema
     },
     {
-        name: 'batch_create_elements',
-        description: 'Batch create elements, Notice: ${toolAuxiliaryPrompt}',
-        inputSchema: {
-            type: 'object',
-            properties: PlaitElementSchemas,
-            required: requiredProperties
-        }
+        name: 'create_vector_line',
+        description: 'Create a new vector line element',
+        inputSchema: vectorLineSchema
     },
     {
-        name: 'update_element',
-        description: 'Update the existing element',
+        name: 'create_arrow_line',
+        description: 'Create a new arrow line element',
+        inputSchema: arrowLineSchema
+    },
+    // update
+    {
+        name: 'update_geometry',
+        description: 'Update the existing geometry element',
         inputSchema: {
-            type: 'object',
-            properties: {
-                id: {
-                    type: 'string',
-                    description: 'The ID of the element to update'
-                },
-                ...PlaitElementSchemas
-            },
+            ...geometrySchema,
+            properties: { ...geometrySchema.properties, id: { type: 'string', description: 'The ID of the element to update' } },
             required: ['id']
         }
     },
+    {
+        name: 'update_vector_line',
+        description: 'Update the existing vector line element',
+        inputSchema: {
+            ...vectorLineSchema,
+            properties: { ...vectorLineSchema.properties, id: { type: 'string', description: 'The ID of the element to update' } },
+            required: ['id']
+        }
+    },
+    {
+        name: 'update_arrow_line',
+        description: 'Update the existing arrow line element',
+        inputSchema: {
+            ...arrowLineSchema,
+            properties: { ...arrowLineSchema.properties, id: { type: 'string', description: 'The ID of the element to update' } },
+            required: ['id']
+        }
+    },
+    // delete
     {
         name: 'delete_element',
         description: 'Delete the element',
@@ -47,6 +59,16 @@ export const tools: Tool[] = [
                 }
             },
             required: ['id']
+        }
+    },
+    // batch（will be deprecated after deep thinking is supported）
+    {
+        name: 'batch_create_elements',
+        description: `Batch create elements, Notice: ${toolAuxiliaryPrompt}`,
+        inputSchema: {
+            type: 'object',
+            properties: allElementsSchema,
+            required: requiredProperties
         }
     }
 ];
