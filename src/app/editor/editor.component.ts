@@ -167,6 +167,9 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
         //     }
         // });
 
+        // 调一下 get /api/clear 清空元素
+        // this.clearElements();
+
         this.connectWebSocket();
     }
 
@@ -322,6 +325,32 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
         if (this.websocket) {
             this.websocket.close();
             this.websocket = null;
+        }
+    }
+
+    private async clearElements(): Promise<void> {
+        try {
+            const response = await fetch('http://localhost:3000/api/clear', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('清空元素成功:', result);
+                // 清空本地数据
+                this.value = [];
+                this.cdr.detectChanges();
+            } else {
+                console.error('清空元素失败:', response.status, response.statusText);
+                // 尝试读取响应内容来调试
+                const text = await response.text();
+                console.error('响应内容:', text);
+            }
+        } catch (error) {
+            console.error('调用清空接口出错:', error);
         }
     }
 
