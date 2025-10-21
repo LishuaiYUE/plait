@@ -174,11 +174,93 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
     }
 
     change(event: OnChangeData) {
+        this.syncElementsToServer(event.children);
         this.setLocalData(JSON.stringify(event));
         this.selectedElements = getSelectedElements(this.board);
         this.showRemoveGroup = canRemoveGroup(this.board);
         this.showAddGroup = canAddGroup(this.board);
         this.contextMenu.nativeElement.style.display = 'none';
+    }
+
+    syncElementsToServer(newElements: PlaitElement[]) {
+        const oldElements = this.value;
+        const oldElementMap = new Map(oldElements.map((el) => [el.id, el]));
+        const newElementMap = new Map(newElements.map((el) => [el.id, el]));
+
+        const addedElements = newElements.filter((el) => !oldElementMap.has(el.id));
+        const deletedElements = oldElements.filter((el) => !newElementMap.has(el.id));
+
+        const modifiedElements = newElements.filter((el) => {
+            const oldEl = oldElementMap.get(el.id);
+            return oldEl && JSON.stringify(oldEl) !== JSON.stringify(el);
+        });
+        if (addedElements.length > 0) {
+            this.addElementsToServer(addedElements);
+        }
+
+        if (deletedElements.length > 0) {
+            this.deleteElementsFromServer(deletedElements);
+        }
+        if (modifiedElements.length > 0) {
+            this.updateElementsOnServer(modifiedElements);
+        }
+    }
+
+    private async addElementsToServer(elements: PlaitElement[]) {
+        try {
+            for (const element of elements) {
+                const response = await fetch('http://localhost:3000/api/elements', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(element)
+                });
+                if (!response.ok) {
+                    console.error('add element error:', await response.text());
+                }
+            }
+        } catch (error) {
+            console.error('catch add elements error:', error);
+        }
+    }
+
+    private async deleteElementsFromServer(elements: PlaitElement[]) {
+        try {
+            for (const element of elements) {
+                const response = await fetch(`http://localhost:3000/api/elements/${element.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                    console.error('delete element error:', await response.text());
+                }
+            }
+        } catch (error) {
+            console.error('catch delete elements error:', error);
+        }
+    }
+
+    private async updateElementsOnServer(elements: PlaitElement[]) {
+        try {
+            for (const element of elements) {
+                const response = await fetch(`http://localhost:3000/api/elements/${element.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(element)
+                });
+
+                if (!response.ok) {
+                    console.error('update element error:', await response.text());
+                }
+            }
+        } catch (error) {
+            console.error('catch update elements error:', error);
+        }
     }
 
     getLocalStorage() {

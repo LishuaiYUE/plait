@@ -39,7 +39,7 @@ const geometryShapes = [
     'diamond',
     'roundRectangle',
     'parallelogram',
-    // 'text',
+    'text',
     'triangle',
     'leftArrow',
     'trapezoid',
@@ -376,7 +376,7 @@ When creating diagrams with Plait MCP, follow these rules:
 - When the element type is geometry, the required fields are ${requiredProperties.join(', ')}, text, and angle.
 - When the element type is vector-line, the required fields are ${requiredProperties.join(', ')}.
 - When the element type is arrow-line, the required fields are ${requiredProperties.join(', ')}, source, target, and texts.
-
+- Use macaron colors for the fill color of the graphic, and don’t use too dark a background color to avoid the text from being invisible.
 - Guess required parameters based on the user's language; do not require the user to provide specific parameter values.
 - Different elements should have different coordinates to prevent overlap.
 - I hope the drawing will be more colorful and beautiful.
