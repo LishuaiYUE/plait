@@ -1,5 +1,5 @@
 import { Tool } from '@modelcontextprotocol/sdk/types';
-import { geometrySchema, vectorLineSchema, arrowLineSchema, allElementsSchema, requiredProperties, toolAuxiliaryPrompt } from './schemas';
+import { geometrySchema, vectorLineSchema, arrowLineSchema } from './schemas';
 
 export const tools: Tool[] = [
     // create
@@ -61,16 +61,6 @@ export const tools: Tool[] = [
             required: ['id']
         }
     }
-    // batch (will be deprecated)
-    // {
-    //     name: 'batch_create_elements',
-    //     description: `Batch create elements, Notice: ${toolAuxiliaryPrompt}`,
-    //     inputSchema: {
-    //         type: 'object',
-    //         properties: allElementsSchema,
-    //         required: requiredProperties
-    //     }
-    // }
 ];
 
 export const toolNames = tools.map((tool: Tool) => tool.name);
