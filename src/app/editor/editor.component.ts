@@ -296,21 +296,6 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
                     };
                 }
 
-                // 文本的格式需要满足  element.type=geometry && element.shape=paragraph && element.text.type = paragraph，模型返回的数据经常满足不了，这里兼容转一下
-                if (element.type === 'paragraph' || (element.type === 'geometry' && element.text)) {
-                    element = {
-                        ...element,
-                        type: 'geometry',
-                        shape: 'text',
-                        text: element.text
-                            ? {
-                                  ...element.text,
-                                  type: 'paragraph'
-                              }
-                            : element.text
-                    };
-                }
-
                 return element;
             });
 
