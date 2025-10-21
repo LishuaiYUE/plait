@@ -1,4 +1,4 @@
-export const text = {
+const text = {
     type: 'object',
     properties: {
         type: {
@@ -30,7 +30,86 @@ export const text = {
     description: '文本'
 };
 
-// Detail schemas
+const types = ['geometry', 'vector-line', 'arrow-line'];
+
+const geometryShapes = [
+    // ① BasicShapes
+    'rectangle',
+    'ellipse',
+    'diamond',
+    'roundRectangle',
+    'parallelogram',
+    // 'text',
+    'triangle',
+    'leftArrow',
+    'trapezoid',
+    'rightArrow',
+    'cross',
+    'star',
+    'pentagon',
+    'hexagon',
+    'octagon',
+    'pentagonArrow',
+    'processArrow',
+    'twoWayArrow',
+    'comment',
+    'roundComment',
+    'cloud'
+
+    // // ② FlowchartSymbols
+    // 'process',
+    // 'decision',
+    // 'data',
+    // 'connector',
+    // 'terminal',
+    // 'database',
+    // 'hardDisk',
+    // 'internalStorage',
+    // 'manualInput',
+    // 'preparation',
+    // 'manualLoop',
+    // 'merge',
+    // 'delay',
+    // 'storedData',
+    // 'or',
+    // 'summingJunction',
+    // 'predefinedProcess',
+    // 'offPage',
+    // 'document',
+    // 'multiDocument',
+    // 'noteCurlyLeft',
+    // 'noteCurlyRight',
+    // 'noteSquare',
+    // 'display',
+
+    // // ③ UMLSymbols
+    // 'actor',
+    // 'useCase',
+    // 'container',
+    // 'note',
+    // 'package',
+    // 'combinedFragment',
+    // 'class',
+    // 'interface',
+    // 'activation',
+    // 'object',
+    // 'deletion',
+    // 'activityClass',
+    // 'simpleClass',
+    // 'component',
+    // 'componentBox',
+    // 'template',
+    // 'port',
+    // 'branchMerge',
+    // 'assembly',
+    // 'requiredInterface',
+    // 'providedInterface',
+];
+
+const vectorLineShapes = ['straight', 'curve'];
+
+const arrowLineShapes = ['straight', 'curve', 'elbow'];
+
 export const geometrySchema = {
     type: 'object' as const,
     properties: {
@@ -52,79 +131,7 @@ export const geometrySchema = {
         },
         shape: {
             type: 'string',
-            enum: [
-                // ① BasicShapes
-                'rectangle',
-                'ellipse',
-                'diamond',
-                'roundRectangle',
-                'parallelogram',
-                'text',
-                'triangle',
-                'leftArrow',
-                'trapezoid',
-                'rightArrow',
-                'cross',
-                'star',
-                'pentagon',
-                'hexagon',
-                'octagon',
-                'pentagonArrow',
-                'processArrow',
-                'twoWayArrow',
-                'comment',
-                'roundComment',
-                'cloud'
-
-                // // ② FlowchartSymbols
-                // 'process',
-                // 'decision',
-                // 'data',
-                // 'connector',
-                // 'terminal',
-                // 'database',
-                // 'hardDisk',
-                // 'internalStorage',
-                // 'manualInput',
-                // 'preparation',
-                // 'manualLoop',
-                // 'merge',
-                // 'delay',
-                // 'storedData',
-                // 'or',
-                // 'summingJunction',
-                // 'predefinedProcess',
-                // 'offPage',
-                // 'document',
-                // 'multiDocument',
-                // 'noteCurlyLeft',
-                // 'noteCurlyRight',
-                // 'noteSquare',
-                // 'display',
-
-                // // ③ UMLSymbols
-                // 'actor',
-                // 'useCase',
-                // 'container',
-                // 'note',
-                // 'package',
-                // 'combinedFragment',
-                // 'class',
-                // 'interface',
-                // 'activation',
-                // 'object',
-                // 'deletion',
-                // 'activityClass',
-                // 'simpleClass',
-                // 'component',
-                // 'componentBox',
-                // 'template',
-                // 'port',
-                // 'branchMerge',
-                // 'assembly',
-                // 'requiredInterface',
-                // 'providedInterface',
-            ],
+            enum: geometryShapes,
             description: '形状'
         },
         text: text,
@@ -167,7 +174,7 @@ export const vectorLineSchema = {
         },
         shape: {
             type: 'string',
-            enum: ['straight', 'curve']
+            enum: vectorLineShapes
         },
         points: {
             type: 'array',
@@ -215,7 +222,7 @@ export const arrowLineSchema = {
         },
         shape: {
             type: 'string',
-            enum: ['straight', 'curve', 'elbow']
+            enum: arrowLineShapes
         },
         points: {
             type: 'array',
@@ -329,21 +336,41 @@ export const requiredProperties = ['type', 'points', 'shape', 'opacity', 'stroke
 
 export const toolAuxiliaryPrompt = `
 When creating diagrams with Plait MCP, follow these rules:
-
 - Create elements one by one, not in batches. Connect blocks with arrows only after they exist.
-- When creating a shape or arrow and want to add text, do not add a new text box. Instead, place the text inside the shape/arrow.
+- Text can only be drawn in geometry graphics. The basic text data structure is as follows:
+\`\`\`json
+    {
+        "id": "BAeHJ",
+        "type": "geometry",
+        "shape": "rectangle",
+        "angle": 0,
+        "opacity": 1,
+        "text": { "children": [{ "text": "吉祥" }], "type": "paragraph", "align": "center" },
+        "points": [
+            [-199.49609375, -270.15625],
+            [-80.30078125, -224.546875]
+        ],
+        "strokeWidth": 2,
+        "strokeColor": "#f08c02"
+    }
+\`\`\`
+
 - When drawing arrows:
 - Make sure they connect to the linked shape.
 - If there is text on the line (vector-line or arrow-line), make sure the arrow is long enough to display the entire text.
 - When creating a shape that contains a shape:
-- Make sure the shape is large enough to contain all the content.
+- Make sure the line is long enough to contain all the text.
 
-- Three types of elements are supported: geometry, vector-line, and arrow-line.
+- Supported element types: ${types.join(', ')}.
 
 - The shape field has requirements:
-- When the element type is geometry, the shape field value can only be one of 'rectangle', 'ellipse', 'diamond', 'roundRectangle', 'parallelogram', 'text', 'triangle', 'leftArrow', 'trapezoid', 'rightArrow', 'cross', 'star', 'pentagon', 'hexagon', 'octagon', 'pentagonArrow', 'processArrow', 'twoWayArrow', 'comment', 'roundComment', or 'cloud'. The shape value is text only when drawing text.
-- When the element type is vector-line, the shape field value can only be one of 'straight' or 'curve'.
-- When the element type is arrow-line, the shape field value can only be one of 'straight', 'curve', or 'elbow'.
+- When the element type is geometry, the shape field value can only be one of ${geometryShapes.join(', ')}.
+- When the element type is vector-line, the shape field value can only be one of ${vectorLineShapes.join(
+    ', '
+)}.Note that lines cannot overlap
+- When the element type is arrow-line, the shape field value can only be one of ${arrowLineShapes.join(
+    ', '
+)}. Note that lines cannot overlap.
 
 - When creating an element, the required fields vary depending on the element type:
 - When the element type is geometry, the required fields are ${requiredProperties.join(', ')}, text, and angle.
