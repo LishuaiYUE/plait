@@ -50,7 +50,7 @@ async function syncToCanvas(operation: string, data: any): Promise<SyncResponse 
                 options = {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    data: data
+                    data: JSON.parse(JSON.stringify(data))
                 };
                 break;
 

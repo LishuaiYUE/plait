@@ -127,7 +127,7 @@ class APIServer {
                     ...params
                 };
 
-                elements.set(id, element);
+                elements.set(element.id, element);
 
                 // Broadcast to all connected clients
                 const message: ElementCreatedMessage = {
@@ -204,7 +204,6 @@ class APIServer {
                         error: 'Element ID is required'
                     });
                 }
-
                 if (!elements.has(id)) {
                     return res.status(404).json({
                         success: false,

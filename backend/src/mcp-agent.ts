@@ -80,7 +80,8 @@ export class McpAgent {
         // 1. 创建初始计划
         console.log(`📋 规划阶段...`);
         let plan: any[] = await this.createPlan(messages);
-        console.log(`制定计划:`, plan.map((step, i) => `\n  ${i + 1}. ${step}`).join(''));
+        const planText =  plan.map((step, i) => `\n  ${i + 1}. ${step}`).join('');
+        console.log(`制定计划:`, planText);
 
         let allResults = [];
         let iteration = 0;
@@ -104,15 +105,7 @@ export class McpAgent {
 
         // 3. 合成最终答案
         console.log(`\n🎯 合成最终答案...`);
-        const synthesizePrompt = `你是一个流程图生成专家。请基于以下所有步骤的研究结果，为原始问题提供一个完整、准确、精炼的最终答案，并使用工具输出流程图代码。
-      
-      研究过程与发现：
-      ${allResults.map((result, index) => `步骤 ${index + 1}:\n${result}`).join('\n\n')}
-      
-      请给出最终答案：
-      `;
-        const finalAnswer = await this.callLLM([{ role: 'system', content: synthesizePrompt }, ...messages]);
-        return finalAnswer.content;
+        return planText;
     }
 
     private async executeTask(taskDescription: any, pastResults: any[], messages: ChatMessages, tools: RequestTool[], mcpClient: MCPClient) {
@@ -121,7 +114,7 @@ export class McpAgent {
             .map((tool) => `工具: ${tool.name}\n描述: ${tool.description}\n参数: ${JSON.stringify(tool.parameters)}`)
             .join('\n\n');
 
-        const executePrompt = `你是一个流程图生成助理，负责生成相应的流程图节点。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码，需要确定合适的位置，填充颜色，必要的箭头连接线， 确保生成的代码符合 Plait 工具集的要求，并根据用户的描述，使用适当的工具来创建或更新流程图元素。\n
+        const executePrompt = `你是一个流程图生成助理，负责生成相应的流程图节点。你能够理解用户的自然语言描述，自动推断所需的参数，并生成相应的流程图代码，需要确定合适的位置，填充图片边框颜色，必要的箭头连接线， 确保生成的代码符合 Plait 工具集的要求，并根据用户的描述，使用适当的工具来创建或更新流程图元素。\n
       
       ${context}
 
