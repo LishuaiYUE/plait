@@ -167,6 +167,9 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
         //     }
         // });
 
+        // 调一下 get /api/clear 清空元素
+        // this.clearElements();
+
         this.connectWebSocket();
     }
 
@@ -261,7 +264,354 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
 
             switch (parsedData.type) {
                 case 'initial_elements':
-                    this.value = [...parsedData.elements];
+                    // this.value = [...parsedData.elements];
+                    this.value = [
+                        {
+                            id: '7LnvoZ',
+                            type: 'geometry',
+                            points: [
+                                [50, 50],
+                                [150, 100]
+                            ],
+                            shape: 'ellipse',
+                            text: {
+                                type: 'paragraph',
+                                children: [
+                                    {
+                                        text: '开始'
+                                    }
+                                ],
+                                align: 'center'
+                            },
+                            angle: 0,
+                            fill: '#87CEEB',
+                            strokeColor: '#4169E1',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'nGpNBk',
+                            type: 'geometry',
+                            points: [
+                                [200, 150],
+                                [400, 250]
+                            ],
+                            shape: 'rectangle',
+                            text: {
+                                type: 'paragraph',
+                                children: [
+                                    {
+                                        text: 'MCP客户端'
+                                    }
+                                ],
+                                align: 'center'
+                            },
+                            angle: 0,
+                            fill: '#98FB98',
+                            strokeColor: '#228B22',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'SxuxL2',
+                            type: 'geometry',
+                            points: [
+                                [450, 150],
+                                [650, 250]
+                            ],
+                            shape: 'rectangle',
+                            text: {
+                                type: 'paragraph',
+                                children: [
+                                    {
+                                        text: 'MCP服务器'
+                                    }
+                                ],
+                                align: 'center'
+                            },
+                            angle: 0,
+                            fill: '#FFB6C1',
+                            strokeColor: '#DC143C',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'o5Ga2a',
+                            type: 'geometry',
+                            points: [
+                                [300, 300],
+                                [500, 400]
+                            ],
+                            shape: 'parallelogram',
+                            text: {
+                                type: 'paragraph',
+                                children: [
+                                    {
+                                        text: '请求消息'
+                                    }
+                                ],
+                                align: 'center'
+                            },
+                            angle: 0,
+                            fill: '#FFD700',
+                            strokeColor: '#FF8C00',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'DrrDiY',
+                            type: 'geometry',
+                            points: [
+                                [300, 450],
+                                [500, 550]
+                            ],
+                            shape: 'parallelogram',
+                            text: {
+                                type: 'paragraph',
+                                children: [
+                                    {
+                                        text: '响应消息'
+                                    }
+                                ],
+                                align: 'center'
+                            },
+                            angle: 0,
+                            fill: '#DDA0DD',
+                            strokeColor: '#8A2BE2',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'o0lzfH',
+                            type: 'geometry',
+                            points: [
+                                [550, 450],
+                                [750, 550]
+                            ],
+                            shape: 'diamond',
+                            text: {
+                                type: 'paragraph',
+                                children: [
+                                    {
+                                        text: '错误处理'
+                                    }
+                                ],
+                                align: 'center'
+                            },
+                            angle: 0,
+                            fill: '#FFA07A',
+                            strokeColor: '#FF4500',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'njKxrR',
+                            type: 'geometry',
+                            points: [
+                                [350, 600],
+                                [450, 650]
+                            ],
+                            shape: 'ellipse',
+                            text: {
+                                type: 'paragraph',
+                                children: [
+                                    {
+                                        text: '结束'
+                                    }
+                                ],
+                                align: 'center'
+                            },
+                            angle: 0,
+                            fill: '#87CEEB',
+                            strokeColor: '#4169E1',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'lUpgkD',
+                            type: 'arrow-line',
+                            points: [
+                                [100, 100],
+                                [200, 200]
+                            ],
+                            shape: 'straight',
+                            source: {
+                                boundId: '7LnvoZ',
+                                marker: 'none'
+                            },
+                            target: {
+                                boundId: 'nGpNBk',
+                                marker: 'arrow'
+                            },
+                            texts: [],
+                            strokeColor: '#000000',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'VMX3YC',
+                            type: 'arrow-line',
+                            points: [
+                                [300, 200],
+                                [300, 300]
+                            ],
+                            shape: 'straight',
+                            source: {
+                                boundId: 'nGpNBk',
+                                marker: 'none'
+                            },
+                            target: {
+                                boundId: 'o5Ga2a',
+                                marker: 'arrow'
+                            },
+                            texts: [],
+                            strokeColor: '#000000',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'gfH6Av',
+                            type: 'arrow-line',
+                            points: [
+                                [400, 350],
+                                [450, 250]
+                            ],
+                            shape: 'straight',
+                            source: {
+                                boundId: 'o5Ga2a',
+                                marker: 'none'
+                            },
+                            target: {
+                                boundId: 'SxuxL2',
+                                marker: 'arrow'
+                            },
+                            texts: [],
+                            strokeColor: '#000000',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'BuPf87',
+                            type: 'arrow-line',
+                            points: [
+                                [550, 250],
+                                [400, 450]
+                            ],
+                            shape: 'straight',
+                            source: {
+                                boundId: 'SxuxL2',
+                                marker: 'none'
+                            },
+                            target: {
+                                boundId: 'DrrDiY',
+                                marker: 'arrow'
+                            },
+                            texts: [],
+                            strokeColor: '#000000',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'bqjBV9',
+                            type: 'arrow-line',
+                            points: [
+                                [300, 500],
+                                [300, 600]
+                            ],
+                            shape: 'straight',
+                            source: {
+                                boundId: 'DrrDiY',
+                                marker: 'none'
+                            },
+                            target: {
+                                boundId: 'njKxrR',
+                                marker: 'arrow'
+                            },
+                            texts: [],
+                            strokeColor: '#000000',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        },
+                        {
+                            id: 'Vlm4Qo',
+                            type: 'arrow-line',
+                            points: [
+                                [400, 200],
+                                [550, 450]
+                            ],
+                            shape: 'elbow',
+                            source: {
+                                boundId: 'nGpNBk',
+                                marker: 'none'
+                            },
+                            target: {
+                                boundId: 'o0lzfH',
+                                marker: 'arrow'
+                            },
+                            texts: [],
+                            strokeColor: '#FF0000',
+                            strokeWidth: 2,
+                            strokeStyle: 'dashed',
+                            opacity: 1
+                        },
+                        {
+                            id: '-iaYBw',
+                            type: 'arrow-line',
+                            points: [
+                                [650, 500],
+                                [400, 600]
+                            ],
+                            shape: 'elbow',
+                            source: {
+                                boundId: 'o0lzfH',
+                                marker: 'none'
+                            },
+                            target: {
+                                boundId: 'njKxrR',
+                                marker: 'arrow'
+                            },
+                            texts: [],
+                            strokeColor: '#FF0000',
+                            strokeWidth: 2,
+                            strokeStyle: 'dashed',
+                            opacity: 1
+                        },
+                        {
+                            id: '7zatBu',
+                            type: 'arrow-line',
+                            points: [
+                                [500, 500],
+                                [300, 200]
+                            ],
+                            shape: 'elbow',
+                            source: {
+                                boundId: 'DrrDiY',
+                                marker: 'none'
+                            },
+                            target: {
+                                boundId: 'nGpNBk',
+                                marker: 'arrow'
+                            },
+                            texts: [],
+                            strokeColor: '#000000',
+                            strokeWidth: 2,
+                            strokeStyle: 'solid',
+                            opacity: 1
+                        }
+                    ];
+
                     break;
                 case 'element_created': {
                     this.value = [...this.value, parsedData.element];
@@ -322,6 +672,32 @@ export class BasicEditorComponent implements OnInit, OnDestroy {
         if (this.websocket) {
             this.websocket.close();
             this.websocket = null;
+        }
+    }
+
+    private async clearElements(): Promise<void> {
+        try {
+            const response = await fetch('http://localhost:3000/api/clear', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('清空元素成功:', result);
+                // 清空本地数据
+                this.value = [];
+                this.cdr.detectChanges();
+            } else {
+                console.error('清空元素失败:', response.status, response.statusText);
+                // 尝试读取响应内容来调试
+                const text = await response.text();
+                console.error('响应内容:', text);
+            }
+        } catch (error) {
+            console.error('调用清空接口出错:', error);
         }
     }
 
