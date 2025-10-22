@@ -1,6 +1,6 @@
 {
     "name": "@plait/angular-board",
-    "version": "0.89.1",
+    "version": "0.89.2",
     "peerDependencies": {
         "@angular/common": "^19.2.2",
         "@angular/core": "^19.2.2"

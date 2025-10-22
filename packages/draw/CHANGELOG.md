@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.89.2
+
+### Patch Changes
+
+-   [#1113](https://github.com/worktile/plait/pull/1113) [`11ec882fb236155aa36438d84d61cbfb7736320a`](https://github.com/worktile/plait/commit/11ec882fb236155aa36438d84d61cbfb7736320a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - compatible interaction with touch device, select end when start text editing on touch device
+
 ## 0.89.1
 
 ## 0.89.0
