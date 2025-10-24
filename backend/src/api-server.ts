@@ -17,10 +17,8 @@ import {
 import { WebSocketServer } from 'ws';
 import { createServer, Server } from 'http';
 import WebSocket from 'ws';
-import { RequestTool, toolNames } from './tools/tools';
-import { ChatInputMessageItem, ChatInputMessages, ChatMessages } from './types/chat.js';
+import { ChatInputMessageItem, ChatInputMessages, ChatMessages } from './types/chat';
 import dotenv from 'dotenv';
-import { toolAuxiliaryPrompt } from './tools/schemas';
 import { McpAgent } from './mcp-agent';
 
 // 加载环境变量
@@ -30,7 +28,7 @@ class APIServer {
     private mcpClient: MCPClient;
     private wss: WebSocketServer;
     private clients: Set<WebSocket>;
-    // private historyMessages: ChatMessages = [];
+    private historyMessages: ChatMessages = [];
     private agent: McpAgent;
     constructor() {
         this.app = express();
@@ -82,8 +80,8 @@ class APIServer {
                         content: x.text
                     };
                 });
-                // this.historyMessages.push(...inputMessages);
-                const response = await this.agent.deepThink(inputMessages, this.mcpClient);
+                this.historyMessages.push(...inputMessages);
+                const response = await this.agent.deepThink(this.historyMessages, this.mcpClient);
                 res.json({ role: 'ai', text: response });
             } catch (error: any) {
                 res.status(500).json({ success: false, error: error.message });
@@ -274,7 +272,7 @@ class APIServer {
 
         this.app.get('/api/clear', async (req: Request, res: Response) => {
             elements.clear();
-            // this.historyMessages = [];
+            this.historyMessages = [];
             this.broadcast({
                 type: 'elements_clear'
             });
