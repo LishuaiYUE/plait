@@ -1,5 +1,21 @@
 # mind
 
+## 0.90.0
+
+### Minor Changes
+
+-   [#1123](https://github.com/worktile/plait/pull/1123) [`0039f3388187f649ec879b95b2d7a2243e584d3f`](https://github.com/worktile/plait/commit/0039f3388187f649ec879b95b2d7a2243e584d3f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - optimize node more awareness rectangle to avoid flickering in the mouse movement
+
+-   [#1125](https://github.com/worktile/plait/pull/1125) [`e6badda5c97fb19c25171a474a002942384243a3`](https://github.com/worktile/plait/commit/e6badda5c97fb19c25171a474a002942384243a3) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - do not allow to display node more when selected elements count greater than 1
+
+### Patch Changes
+
+-   [`1e19043246fba06a59f3b73b3a0584e26e18828b`](https://github.com/worktile/plait/commit/1e19043246fba06a59f3b73b3a0584e26e18828b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix mind node more hasExpandedIcon status error
+
+-   [#1124](https://github.com/worktile/plait/pull/1124) [`268c3cb28c6ee3030ec1fc630b76a1666fb430a4`](https://github.com/worktile/plait/commit/268c3cb28c6ee3030ec1fc630b76a1666fb430a4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - mind node more support touch device
+
+-   [#1126](https://github.com/worktile/plait/pull/1126) [`b05593abddf758e08b123a1883500803aa870e16`](https://github.com/worktile/plait/commit/b05593abddf758e08b123a1883500803aa870e16) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Support adding child nodes to both left and right sides in standard layout
+
 ## 0.89.2
 
 ## 0.89.1
