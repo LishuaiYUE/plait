@@ -1,5 +1,11 @@
 # plait
 
+## 0.90.1
+
+### Patch Changes
+
+-   [#1127](https://github.com/worktile/plait/pull/1127) [`b0bbe1a90981c28724dd9d407b33b3cfc16f290d`](https://github.com/worktile/plait/commit/b0bbe1a90981c28724dd9d407b33b3cfc16f290d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support cache clipboard data on paste
+
 ## 0.90.0
 
 ## 0.89.2
