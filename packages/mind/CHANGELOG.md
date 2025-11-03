@@ -1,5 +1,13 @@
 # mind
 
+## 0.91.0
+
+### Minor Changes
+
+-   [`9bad91071057784f2498d7d3768116d6be5b801f`](https://github.com/worktile/plait/commit/9bad91071057784f2498d7d3768116d6be5b801f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove getLayoutByElement, if you want to get layout value, please use getCorrectLayoutByElement
+
+-   [#1128](https://github.com/worktile/plait/pull/1128) [`d47ce3c9234cdee307b395f9a49202c4758c24f6`](https://github.com/worktile/plait/commit/d47ce3c9234cdee307b395f9a49202c4758c24f6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix node more layout direction issue #WIK-18654(nested layout, right layout include right-bottom-indent and then switch right layout to up layout, the node of right-bottom-indent will be drawn in down direction)
+
 ## 0.90.1
 
 ## 0.90.0
