@@ -15,7 +15,7 @@ export function drawLink(
     defaultStrokeWidth?: number,
     defaultStrokeStyle?: StrokeStyle
 ) {
-    return MindElement.isIndentedLayout(parentNode.origin)
+    return MindElement.isIndentedLayout(board, parentNode.origin)
         ? drawIndentedLink(board, parentNode, node, needDrawUnderline, defaultStrokeColor, defaultStrokeWidth, defaultStrokeStyle)
         : drawLogicLink(board, parentNode, node, isHorizontal, defaultStrokeColor, defaultStrokeWidth, defaultStrokeStyle);
 }

@@ -68,7 +68,7 @@ export const withAbstract: PlaitPlugin = (board: PlaitBoard) => {
 
             let children = parentElement.children;
 
-            const parentLayout = MindQueries.getLayoutByElement(parentElement);
+            const parentLayout = MindQueries.getCorrectLayoutByElement(board, parentElement);
             if (isStandardLayout(parentLayout)) {
                 const rightNodeCount = parentElement.rightNodeCount!;
                 const { leftChildren, rightChildren } = separateChildren(parentElement);

@@ -182,7 +182,7 @@ export class MindNodeComponent
             this.linkLineG.remove();
         }
 
-        const layout = MindQueries.getLayoutByElement(parent) as MindLayoutType;
+        const layout = MindQueries.getCorrectLayoutByElement(this.board, parent) as MindLayoutType;
         if (AbstractNode.isAbstract(this.node.origin)) {
             this.linkLineG = drawAbstractLink(this.board, this.node, isHorizontalLayout(layout));
         } else {

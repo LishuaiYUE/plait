@@ -362,8 +362,7 @@ export const getNodeMoreStartPoint = (board: PlaitBoard, element: MindElement, l
     }
     transformPlacement(placement, linkLineDirection);
     // underline shape and horizontal
-    const layout = MindQueries.getLayoutByElement(element) as MindLayoutType;
-    const isHorizontal = isHorizontalLayout(layout);
+    const isHorizontal = linkLineDirection === LayoutDirection.left || linkLineDirection === LayoutDirection.right;
     if (isHorizontal && isUnderlineShape && !PlaitMind.isMind(element)) {
         placement[1] = VerticalPlacement.bottom;
     }

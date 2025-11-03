@@ -79,7 +79,7 @@ export const drawFakeDropNode = (
     const target = dropTarget.target;
     const fakeDropNodeG = createG();
     const parent = PlaitNode.get(board, Path.parent(path)) as MindElement;
-    const layout = MindQueries.getLayoutByElement(parent) as MindLayoutType;
+    const layout = MindQueries.getCorrectLayoutByElement(board, parent) as MindLayoutType;
     const isHorizontal = isHorizontalLayout(layout);
     const { hasNextNode, hasPreviousNode } = hasPreviousOrNextOfDropPath(parent, dropTarget, path);
 
@@ -131,7 +131,7 @@ export const drawFakeDropNode = (
         transformPlacement(placement, linkDirection);
 
         let offset = -height;
-        if (MindElement.isIndentedLayout(parent)) {
+        if (MindElement.isIndentedLayout(board, parent)) {
             offset = isTopLayout(layout) ? offset / 2 + basicNode.height - basicNode.vGap : 0;
         }
 
@@ -148,7 +148,7 @@ export const drawFakeDropNode = (
         transformPlacement(placement, linkDirection);
 
         let offset = height;
-        if (MindElement.isIndentedLayout(parent)) {
+        if (MindElement.isIndentedLayout(board, parent)) {
             offset = isTopLayout(layout) ? -offset - (basicNode.height - basicNode.vGap) : offset;
         }
         centerPoint = getPointByPlacement(previousRect, placement);
@@ -195,8 +195,8 @@ export const drawFakeDropNode = (
         y,
         width,
         height,
-        hGap: MindElement.isIndentedLayout(parent) ? BASE * 4 + (basicNode.origin.strokeWidth || STROKE_WIDTH) : 0,
-        vGap: MindElement.isIndentedLayout(parent) ? BASE : 0
+        hGap: MindElement.isIndentedLayout(board, parent) ? BASE * 4 + (basicNode.origin.strokeWidth || STROKE_WIDTH) : 0,
+        vGap: MindElement.isIndentedLayout(board, parent) ? BASE : 0
     };
 
     const fakeRectangleG = drawRoundRectangle(

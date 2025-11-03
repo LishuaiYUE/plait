@@ -49,12 +49,8 @@ export const PlaitMind = {
 };
 
 export const MindElement = {
-    hasLayout(value: MindElement, layout: MindLayoutType) {
-        const _layout = MindQueries.getLayoutByElement(value);
-        return _layout === layout;
-    },
-    isIndentedLayout(value: MindElement) {
-        const _layout = MindQueries.getLayoutByElement(value) as MindLayoutType;
+    isIndentedLayout(board: PlaitBoard, value: MindElement) {
+        const _layout = MindQueries.getCorrectLayoutByElement(board, value) as MindLayoutType;
         return isIndentedLayout(_layout);
     },
     isMindElement(board: PlaitBoard | null, element: PlaitElement): element is MindElement {

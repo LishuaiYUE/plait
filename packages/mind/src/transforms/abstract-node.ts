@@ -51,7 +51,7 @@ const setAbstractByElements = (board: PlaitBoard, groupParent: MindElement, grou
         end = indexArray[indexArray.length - 1];
 
     if (
-        isStandardLayout(MindQueries.getLayoutByElement(groupParent)) &&
+        isStandardLayout(MindQueries.getCorrectLayoutByElement(board, groupParent)) &&
         rightNodeCount &&
         start < rightNodeCount &&
         end >= rightNodeCount
