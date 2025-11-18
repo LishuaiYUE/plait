@@ -22,7 +22,7 @@ for package in "${packages[@]}"
 do
   cd "dist/$package"
 
-  npm publish --access public
+  npm publish --access public --tag next
 
   cd ../../
 done
