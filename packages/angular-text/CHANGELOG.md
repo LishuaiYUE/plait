@@ -1,5 +1,11 @@
 # angular-text
 
+## 0.92.0-next.1
+
+### Patch Changes
+
+-   [`440abdb19b139c272a4b83ee1f00a609c81b020b`](https://github.com/worktile/plait/commit/440abdb19b139c272a4b83ee1f00a609c81b020b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate-angular and implement paragraph flavour and text flavour to render text
+
 ## 0.92.0-next.0
 
 ### Minor Changes

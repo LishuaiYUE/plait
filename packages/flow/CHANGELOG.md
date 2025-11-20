@@ -1,5 +1,7 @@
 # @plait/flow
 
+## 0.92.0-next.1
+
 ## 0.92.0-next.0
 
 ### Minor Changes

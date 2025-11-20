@@ -14,6 +14,7 @@
     "@plait/text-plugins": "0.91.0"
   },
   "changesets": [
-    "tangy-turkeys-happen"
+    "tangy-turkeys-happen",
+    "wicked-tables-mate"
   ]
 }
