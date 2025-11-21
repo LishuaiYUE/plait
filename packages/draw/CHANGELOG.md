@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.92.0-next.2
+
+### Patch Changes
+
+-   [#1132](https://github.com/worktile/plait/pull/1132) [`197ae369c2848a91c90aceaf8b9ec8e5bcd66509`](https://github.com/worktile/plait/commit/197ae369c2848a91c90aceaf8b9ec8e5bcd66509) Thanks [@minlovehua](https://github.com/minlovehua)! - fix export issue
+
 ## 0.92.0-next.1
 
 ## 0.92.0-next.0
