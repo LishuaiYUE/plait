@@ -1,5 +1,11 @@
 # @plait/text-plugins
 
+## 0.92.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
 ## 0.92.0-next.2
 
 ## 0.92.0-next.1
