@@ -1,5 +1,11 @@
 # plait
 
+## 0.92.1
+
+### Patch Changes
+
+-   [#1133](https://github.com/worktile/plait/pull/1133) [`de069e80bafc965d47b0ea35f410e0ecf99d9dfc`](https://github.com/worktile/plait/commit/de069e80bafc965d47b0ea35f410e0ecf99d9dfc) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `toSvg` method to export svg file and optimize export style
+
 ## 0.92.0
 
 ### Minor Changes
