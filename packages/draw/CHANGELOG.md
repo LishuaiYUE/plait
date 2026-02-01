@@ -1,5 +1,19 @@
 # @plait/draw
 
+## 0.92.2
+
+### Patch Changes
+
+-   [#1134](https://github.com/worktile/plait/pull/1134) [`2b527e1ecabd57af8734947fa8fd38860cd20957`](https://github.com/worktile/plait/commit/2b527e1ecabd57af8734947fa8fd38860cd20957) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - need to prevent dblClick when enter text editing, will fix the issue mentioned in https://github.com/plait-board/drawnix/issues/364
+
+    when line element is on other elements will double click the line will trigger both line and the bottom shape enter editing state
+
+-   [#1135](https://github.com/worktile/plait/pull/1135) [`b3ecf77a98b0f1bd0d400d8e82b8279449a50ef9`](https://github.com/worktile/plait/commit/b3ecf77a98b0f1bd0d400d8e82b8279449a50ef9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support movingPoint align to neighbor point when resize or create arrow line
+
+    remove alignPoints handing on hitElement is undefined since it has been handled in before
+
+    add some notes arrow line align
+
 ## 0.92.1
 
 ## 0.92.0

@@ -1,5 +1,7 @@
 # plait
 
+## 0.92.2
+
 ## 0.92.1
 
 ### Patch Changes
