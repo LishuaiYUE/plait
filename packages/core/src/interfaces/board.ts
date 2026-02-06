@@ -75,7 +75,7 @@ export interface PlaitBoard {
     isHit: (element: PlaitElement, point: Point, isStrict?: boolean) => boolean;
     isInsidePoint: (element: PlaitElement, point: Point) => boolean;
     // the hit element is determined by the plugin
-    getOneHitElement: (hitElements: PlaitElement[]) => PlaitElement;
+    getOneHitElement: (hitElements: PlaitElement[], hitPoint: Point) => PlaitElement;
     isRecursion: (element: PlaitElement) => boolean;
     isMovable: (element: PlaitElement) => boolean;
     getRectangle: (element: PlaitElement) => RectangleClient | null;

@@ -204,7 +204,7 @@ export function withSelection(board: PlaitBoard) {
                         setSelectedElementsWithGroup(board, elements, isShift);
                     } else {
                         if (board.selection && Selection.isCollapsed(board.selection)) {
-                            const element = board.getOneHitElement(elements);
+                            const element = board.getOneHitElement(elements, board.selection.anchor);
                             if (element) {
                                 elements = [element];
                             }

@@ -128,12 +128,12 @@ export const withMind = (baseBoard: PlaitBoard) => {
         return isHit(element, point, isStrict);
     };
 
-    board.getOneHitElement = (elements) => {
+    board.getOneHitElement = (elements, hitPoint: Point) => {
         const isAllMindElements = elements.every((item) => MindElement.isMindElement(board, item));
         if (isAllMindElements) {
             return elements[0];
         }
-        return getOneHitElement(elements);
+        return getOneHitElement(elements, hitPoint);
     };
 
     board.isMovable = (element) => {

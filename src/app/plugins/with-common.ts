@@ -1,4 +1,4 @@
-import { PlaitBoard, PlaitElement, PlaitI18nBoard } from '@plait/core';
+import { P, PlaitBoard, PlaitElement, PlaitI18nBoard, Point } from '@plait/core';
 import { ImageProps, isFilled, PlaitImageBoard, sortElementsByArea } from '@plait/common';
 import { AngularBoard } from '@plait/angular-board';
 import { PlaitImageComponent } from '../editor/image/image.component';
@@ -17,13 +17,13 @@ export const withCommonPlugin = (board: PlaitBoard) => {
         return ref;
     };
 
-    newBoard.getOneHitElement = (elements: PlaitElement[]) => {
+    newBoard.getOneHitElement = (elements: PlaitElement[], hitPoint: Point) => {
         const hasMindElements = elements.some((item) => MindElement.isMindElement(board, item));
         const hasDrawElements = elements.some((item) => PlaitDrawElement.isDrawElement(item));
         if (hasMindElements && hasDrawElements) {
             return getCommonHitElement(board, elements);
         }
-        return getOneHitElement(elements);
+        return getOneHitElement(elements, hitPoint);
     };
 
     newBoard.getI18nValue = (key) => {

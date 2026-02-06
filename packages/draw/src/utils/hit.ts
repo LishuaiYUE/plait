@@ -140,7 +140,7 @@ export const isRectangleHitRotatedPoints = (rectangle: RectangleClient, points: 
     return isLineHitRectangle(rotatedPoints, rectangle);
 };
 
-export const getHitDrawElement = (board: PlaitBoard, elements: (PlaitDrawElement | PlaitCustomGeometry)[]) => {
+export const getHitDrawElement = (board: PlaitBoard, elements: (PlaitDrawElement | PlaitCustomGeometry)[], hitPoint: Point) => {
     let firstFilledElement = getFirstFilledDrawElement(board, elements);
     let endIndex = elements.length;
     if (firstFilledElement) {

@@ -6,6 +6,7 @@ import {
     PlaitOperation,
     PlaitPluginKey,
     PlaitPointerType,
+    Point,
     RectangleClient,
     SELECTION_BORDER_COLOR,
     WithSelectionPluginOptions
@@ -112,7 +113,7 @@ export function setSelectedElementsWithGroup(board: PlaitBoard, elements: PlaitE
             if (isShift) {
                 cacheSelectedElementsWithGroupOnShift(board, elements, isSelectGroupElement, elementsInHighestGroup);
             } else {
-                cacheSelectedElementsWithGroup(board, elements, isSelectGroupElement, hitElementGroups);
+                cacheSelectedElementsWithGroup(board, elements, isSelectGroupElement, hitElementGroups, board.selection.anchor);
             }
         }
     }
@@ -154,7 +155,8 @@ export function cacheSelectedElementsWithGroup(
     board: PlaitBoard,
     elements: PlaitElement[],
     isSelectGroupElement: boolean,
-    hitElementGroups: PlaitGroup[]
+    hitElementGroups: PlaitGroup[],
+    hitPoint: Point
 ) {
     let newElements = [...elements];
     const selectedGroups = filterSelectedGroups(board, hitElementGroups);
@@ -162,7 +164,7 @@ export function cacheSelectedElementsWithGroup(
         if (selectedGroups.length > 1) {
             newElements = getAllElementsInGroup(board, selectedGroups[selectedGroups.length - 2], true);
         } else {
-            const element = board.getOneHitElement(elements);
+            const element = board.getOneHitElement(elements, hitPoint);
             if (element) {
                 newElements = [element];
             }
@@ -172,7 +174,7 @@ export function cacheSelectedElementsWithGroup(
         if (!isSelectGroupElement) {
             newElements = elementsInGroup;
         } else {
-            const element = board.getOneHitElement(elements);
+            const element = board.getOneHitElement(elements, hitPoint);
             if (element) {
                 newElements = [element];
             }

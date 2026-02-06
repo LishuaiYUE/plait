@@ -93,7 +93,7 @@ export const getHitElementByPoint = (
     isStrict = true
 ): undefined | PlaitElement => {
     const pointHitElements = getHitElementsByPoint(board, point, match, isStrict);
-    const hitElement = board.getOneHitElement(pointHitElements);
+    const hitElement = board.getOneHitElement(pointHitElements, point);
     return hitElement;
 };
 

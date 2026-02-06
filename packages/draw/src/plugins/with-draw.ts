@@ -84,12 +84,12 @@ export const withDraw = (board: PlaitBoard) => {
         return isHit(element, point, isStrict);
     };
 
-    board.getOneHitElement = (elements) => {
+    board.getOneHitElement = (elements, hitPoint: Point) => {
         const isAllDrawElements = elements.every((item) => PlaitDrawElement.isDrawElement(item));
         if (isAllDrawElements) {
-            return getHitDrawElement(board, elements as PlaitDrawElement[]);
+            return getHitDrawElement(board, elements as PlaitDrawElement[], hitPoint);
         }
-        return getOneHitElement(elements);
+        return getOneHitElement(elements, hitPoint);
     };
 
     board.isInsidePoint = (element: PlaitElement, point: Point) => {
