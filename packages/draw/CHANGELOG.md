@@ -1,5 +1,13 @@
 # @plait/draw
 
+## 0.92.3
+
+### Patch Changes
+
+-   [#1136](https://github.com/worktile/plait/pull/1136) [`3c383b538f75bf60631fb37e11505bd847ad0535`](https://github.com/worktile/plait/commit/3c383b538f75bf60631fb37e11505bd847ad0535) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix multiple points align problem
+    fix straight line points align problem
+    fix connector point align problem
+
 ## 0.92.2
 
 ### Patch Changes
