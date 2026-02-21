@@ -22,7 +22,7 @@ export const InternalStorageEngine: ShapeEngine = {
             M${rectangle.x} ${rectangle.y + rectangle.height / 10} h${rectangle.width}
             M${rectangle.x + rectangle.width / 10} ${rectangle.y} v${rectangle.height}
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;

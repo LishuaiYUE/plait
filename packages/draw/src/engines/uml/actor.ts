@@ -77,7 +77,7 @@ export const ActorEngine: ShapeEngine = {
             `M${rightLegLine[0][0]} ${rightLegLine[0][1]} L${rightLegLine[1][0]} ${rightLegLine[1][1]}`
         ].join(' ');
 
-        const shape = rs.path(pathData, { ...options, fillStyle: 'solid' });
+        const shape = rs.path(pathData, options);
         setStrokeLinecap(shape, 'round');
         return shape;
     },

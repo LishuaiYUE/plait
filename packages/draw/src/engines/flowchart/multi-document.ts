@@ -74,7 +74,7 @@ export const MultiDocumentEngine: ShapeEngine = {
                 rectangle.y + rectangle.height - rectangle.height / 9 - 10 - 3
             }
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;

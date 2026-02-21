@@ -39,7 +39,7 @@ export const DisplayEngine: ShapeEngine = {
             L${rectangle.x} ${rectangle.y + rectangle.height / 2}
             Z
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 

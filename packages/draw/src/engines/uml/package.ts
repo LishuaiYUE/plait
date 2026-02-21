@@ -67,7 +67,7 @@ export const PackageEngine: ShapeEngine<PlaitMultipleTextGeometry, DrawOptions, 
             `H${points.middlePoint[0]}`
         ].join(' ');
 
-        const shape = rs.path(pathData, { ...options, fillStyle: 'solid' });
+        const shape = rs.path(pathData, options);
         setStrokeLinecap(shape, 'round');
         return shape;
     },

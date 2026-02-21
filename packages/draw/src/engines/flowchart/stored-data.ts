@@ -27,7 +27,7 @@ export const StoredDataEngine: ShapeEngine = {
             } ${rectangle.y + rectangle.height}A  ${rectangle.width / 10} ${rectangle.height / 2}, 0, 0, 1,${
                 rectangle.x + rectangle.width / 10
             } ${rectangle.y}`,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;

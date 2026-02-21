@@ -30,7 +30,7 @@ export const CombinedFragmentEngine: ShapeEngine<PlaitMultipleTextGeometry, Draw
             V${rectangle.y}
             `,
 
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 

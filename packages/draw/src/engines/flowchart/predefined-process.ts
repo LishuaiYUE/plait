@@ -24,7 +24,7 @@ export const PredefinedProcessEngine: ShapeEngine = {
                 rectangle.height} M${rectangle.x + rectangle.width - rectangle.width * 0.06} ${rectangle.y} L${rectangle.x +
                 rectangle.width -
                 rectangle.width * 0.06} ${rectangle.y + rectangle.height}`,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 

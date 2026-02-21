@@ -32,7 +32,7 @@ export const HardDiskEngine: ShapeEngine = {
             A${rectangle.width * 0.15} ${rectangle.height / 2}, 0, 0, 0, ${rectangle.x + rectangle.width * 0.15} ${rectangle.y +
                 rectangle.height}
             H${rectangle.x + rectangle.width - rectangle.width * 0.15}`,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;

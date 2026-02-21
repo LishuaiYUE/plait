@@ -23,7 +23,7 @@ export function createEllipseEngine(createOptions?: CreateEllipseOptions): Shape
         draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
             const centerPoint = [rectangle.x + rectangle.width / 2, rectangle.y + rectangle.height / 2];
             const rs = PlaitBoard.getRoughSVG(board);
-            const shape = rs.ellipse(centerPoint[0], centerPoint[1], rectangle.width, rectangle.height, { ...options, fillStyle: 'solid' });
+            const shape = rs.ellipse(centerPoint[0], centerPoint[1], rectangle.width, rectangle.height, options);
             setStrokeLinecap(shape, 'round');
             return shape;
         },

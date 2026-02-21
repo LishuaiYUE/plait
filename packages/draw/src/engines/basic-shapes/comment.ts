@@ -18,7 +18,7 @@ export const CommentEngine: ShapeEngine = {
     draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
         const points = getCommentPoints(rectangle);
         const rs = PlaitBoard.getRoughSVG(board);
-        const polygon = rs.polygon(points, { ...options, fillStyle: 'solid' });
+        const polygon = rs.polygon(points, options);
         setStrokeLinecap(polygon, 'round');
         return polygon;
     },

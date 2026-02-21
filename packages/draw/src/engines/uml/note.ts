@@ -30,7 +30,7 @@ export const NoteEngine: ShapeEngine = {
             M${rectangle.x + rectangle.width - 16} ${rectangle.y} 
             A16 16, 0,0,1, ${rectangle.x + rectangle.width} ${rectangle.y + 16}
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 

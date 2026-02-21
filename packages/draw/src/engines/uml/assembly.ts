@@ -80,10 +80,7 @@ export const AssemblyEngine: ShapeEngine = {
             `M${line2[0][0]} ${line2[0][1]} H${line2[1][0]}`
         ].join(' ');
 
-        const shape = rs.path(pathData, {
-            ...options,
-            fillStyle: 'solid'
-        });
+        const shape = rs.path(pathData, options);
         setStrokeLinecap(shape, 'round');
         return shape;
     },

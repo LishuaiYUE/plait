@@ -21,7 +21,7 @@ export const NoteSquareEngine: ShapeEngine = {
             `M${rectangle.x + rectangle.width * 0.075} ${rectangle.y + rectangle.height} H${rectangle.x} V${rectangle.y} H${rectangle.x +
                 rectangle.width * 0.075}
            `,
-            { ...options, fillStyle: 'solid', fill: 'transparent' }
+            { ...options, fill: 'transparent' }
         );
         setStrokeLinecap(shape, 'round');
         return shape;

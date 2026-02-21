@@ -21,7 +21,7 @@ export const TerminalEngine: ShapeEngine = {
             rectangle.y,
             rectangle.x + rectangle.width,
             rectangle.y + rectangle.height,
-            { ...options, fillStyle: 'solid' },
+            options,
             false,
             getStartEndRadius(rectangle)
         );
