@@ -1,5 +1,21 @@
 # plait
 
+## 0.93.0
+
+### Minor Changes
+
+-   [`983b4158099ed1e68815e3870eaa0a9c200dfbaf`](https://github.com/worktile/plait/commit/983b4158099ed1e68815e3870eaa0a9c200dfbaf) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - getOneHitElement support hitPoint
+
+### Patch Changes
+
+-   [`44af7bf22fab90a4f0d061c915245ea1567b6c7f`](https://github.com/worktile/plait/commit/44af7bf22fab90a4f0d061c915245ea1567b6c7f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - allow move selected element when user hit selected rectangle
+
+-   [`980db5a805fa80522665c4865ba6dfc14e75d48f`](https://github.com/worktile/plait/commit/980db5a805fa80522665c4865ba6dfc14e75d48f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify HIT_DISTANCE_BUFFER to 2 to improve hit accuracy #WIK-19887
+
+    if hit multiple elements, return the first element in flow chart scenario, so reduce the buffer to 2
+
+-   [`44af7bf22fab90a4f0d061c915245ea1567b6c7f`](https://github.com/worktile/plait/commit/44af7bf22fab90a4f0d061c915245ea1567b6c7f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify HIT_DISTANCE_BUFFER to 3 to avoid ellipse hit is difficult
+
 ## 0.92.3
 
 ## 0.92.2
