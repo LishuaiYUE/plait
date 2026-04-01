@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
--   [#1142](https://github.com/worktile/plait/pull/1142) [`d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5`](https://github.com/worktile/plait/commit/d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump angular into 21
+-   [#1142](https://github.com/worktile/plait/pull/1142) [`d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5`](https://github.com/worktile/plait/commit/d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - bump angular into 21
 
 ## 0.92.3
 
