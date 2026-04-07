@@ -1,5 +1,11 @@
 # mind
 
+## 0.93.1
+
+### Patch Changes
+
+-   [`e3559e3e7cd0fa4627fbe523634610eb042e61f2`](https://github.com/worktile/plait/commit/e3559e3e7cd0fa4627fbe523634610eb042e61f2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - hide add icon when board is readonly #WIK-19942
+
 ## 0.93.0
 
 ### Minor Changes
