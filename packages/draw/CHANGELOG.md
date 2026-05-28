@@ -1,5 +1,11 @@
 # @plait/draw
 
+## 0.93.2
+
+### Patch Changes
+
+-   [`d264796e3d4fd541f0b132a5007b27638cbac00e`](https://github.com/worktile/plait/commit/d264796e3d4fd541f0b132a5007b27638cbac00e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - render fill as none when fill is transparent
+
 ## 0.93.1
 
 ## 0.93.0
