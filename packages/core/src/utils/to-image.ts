@@ -169,7 +169,7 @@ async function cloneSvg(board: PlaitBoard, elements: PlaitElement[], rectangle: 
 
     cloneSvgElement.style.width = `${width}px`;
     cloneSvgElement.style.height = `${height}px`;
-    cloneSvgElement.style.backgroundColor = '';
+    cloneSvgElement.style.backgroundColor = options.fillStyle ?? '';
     cloneSvgElement.setAttribute('width', `${width}`);
     cloneSvgElement.setAttribute('height', `${height}`);
     cloneSvgElement.setAttribute('viewBox', [x - padding, y - padding, width + 2 * padding, height + 2 * padding].join(','));
@@ -213,7 +213,7 @@ export async function toImage(board: PlaitBoard, options: ToImageOptions) {
     const ratioWidth = width * ratio;
     const ratioHeight = height * ratio;
 
-    const svgData = await toSvgData(board, options);
+    const svgData = await toSvgData(board, { ...options, fillStyle: '' });
     const { canvas, ctx } = createCanvas(ratioWidth, ratioHeight, fillStyle);
     const imgSrc = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgData)}`;
     try {
