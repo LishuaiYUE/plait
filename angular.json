@@ -133,6 +133,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/angular-text/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/angular-text/tsconfig.spec.json",
             "karmaConfig": "packages/angular-text/karma.conf.js"
           }
@@ -173,6 +177,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/core/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/core/tsconfig.spec.json",
             "karmaConfig": "packages/core/karma.conf.js"
           }
@@ -213,6 +221,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/angular-board/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/angular-board/tsconfig.spec.json",
             "karmaConfig": "packages/angular-board/karma.conf.js"
           }
@@ -253,6 +265,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/mind/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/mind/tsconfig.spec.json",
             "karmaConfig": "packages/mind/karma.conf.js"
           }
@@ -293,6 +309,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/layouts/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/layouts/tsconfig.spec.json",
             "karmaConfig": "packages/layouts/karma.conf.js"
           }
@@ -333,6 +353,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/flow/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/flow/tsconfig.spec.json",
             "karmaConfig": "packages/flow/karma.conf.js"
           }
@@ -373,6 +397,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/draw/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/draw/tsconfig.spec.json",
             "karmaConfig": "packages/draw/karma.conf.js"
           }
@@ -413,6 +441,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/graph-viz/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/graph-viz/tsconfig.spec.json",
             "karmaConfig": "packages/graph-viz/karma.conf.js"
           }
@@ -453,6 +485,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/common/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/common/tsconfig.spec.json",
             "karmaConfig": "packages/common/karma.conf.js"
           }
@@ -493,6 +529,10 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "packages/text-plugins/src/test.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "packages/text-plugins/tsconfig.spec.json",
             "karmaConfig": "packages/text-plugins/karma.conf.js"
           }
