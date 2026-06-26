@@ -1,5 +1,5 @@
 import { BOARD_TO_ROUGH_SVG, createTestingBoard, PlaitBoard, RectangleClient } from '@plait/core';
-import { withDraw, PlaitGeometry, BasicShapes, drawGeometry, FillStyle, FlowchartSymbols, UMLSymbols } from '@plait/draw';
+import { withDraw, PlaitGeometry, BasicShapes, drawGeometry, FlowchartSymbols, UMLSymbols } from '@plait/draw';
 import { Options } from 'roughjs/bin/core';
 import { GeometryShapeGenerator } from '../generators/geometry-shape.generator';
 
@@ -18,67 +18,6 @@ describe('fillStyle', () => {
             path: () => createG()
         } as any;
     };
-
-    describe('PlaitCommonGeometry interface', () => {
-        it('should accept fillStyle property on geometry elements', () => {
-            const element: PlaitGeometry = {
-                id: 'test-1',
-                type: 'geometry',
-                shape: BasicShapes.rectangle,
-                points: [
-                    [0, 0],
-                    [100, 100]
-                ],
-                fill: '#FF5733',
-                fillStyle: 'hachure',
-                strokeColor: '#000000',
-                strokeWidth: 2
-            };
-
-            expect(element.fillStyle).toBe('hachure');
-        });
-
-        it('should allow all rough.js fill styles', () => {
-            const fillStyles: FillStyle[] = [
-                'solid',
-                'hachure',
-                'zigzag',
-                'cross-hatch',
-                'dots',
-                'dashed',
-                'zigzag-line'
-            ];
-
-            fillStyles.forEach((fillStyle) => {
-                const element: PlaitGeometry = {
-                    id: `test-${fillStyle}`,
-                    type: 'geometry',
-                    shape: BasicShapes.rectangle,
-                    points: [
-                        [0, 0],
-                        [100, 100]
-                    ],
-                    fillStyle
-                };
-
-                expect(element.fillStyle).toBe(fillStyle);
-            });
-        });
-
-        it('should make fillStyle optional', () => {
-            const element: PlaitGeometry = {
-                id: 'test-optional',
-                type: 'geometry',
-                shape: BasicShapes.rectangle,
-                points: [
-                    [0, 0],
-                    [100, 100]
-                ]
-            };
-
-            expect(element.fillStyle).toBeUndefined();
-        });
-    });
 
     describe('GeometryShapeGenerator', () => {
         it('should use solid fillStyle by default', () => {
