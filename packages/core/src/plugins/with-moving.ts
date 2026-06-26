@@ -4,7 +4,7 @@ import { createG, isMainPointer } from '../utils/dom/common';
 import { Point } from '../interfaces/point';
 import { Transforms } from '../transforms';
 import { PlaitElement } from '../interfaces/element';
-import { getHitElementByPoint, getSelectedElements } from '../utils/selected-element';
+import { getHitElementByPoint, getSelectedElements, isHitSelectedRectangle } from '../utils/selected-element';
 import { PlaitNode } from '../interfaces/node';
 import { throttleRAF } from '../utils/common';
 import { cacheMovingElements, getMovingElements, isMovingElements, removeMovingElements } from '../utils/moving-element';
@@ -85,7 +85,7 @@ export function withMoving(board: PlaitBoard) {
         hitTargetElement = getHitElementByPoint(board, point, (el) => board.isMovable(el));
         selectedTargetElements = getSelectedTargetElements(board);
         isHitSelectedTarget = hitTargetElement && selectedTargetElements.includes(hitTargetElement);
-        if (hitTargetElement && isHitSelectedTarget) {
+        if (hitTargetElement && (isHitSelectedTarget || isHitSelectedRectangle(board, point))) {
             startPoint = point;
             pointerId = event.pointerId;
             activeElements = selectedTargetElements;

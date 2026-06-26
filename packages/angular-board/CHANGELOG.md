@@ -1,5 +1,17 @@
 # @plait/angular-board
 
+## 0.93.2
+
+## 0.93.1
+
+## 0.93.0
+
+### Minor Changes
+
+-   [#1142](https://github.com/worktile/plait/pull/1142) [`d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5`](https://github.com/worktile/plait/commit/d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename output events from onChange to change and plaitBoardInitialized to initialized
+
+-   [#1142](https://github.com/worktile/plait/pull/1142) [`d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5`](https://github.com/worktile/plait/commit/d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - bump angular into 21
+
 ## 0.92.3
 
 ## 0.92.2

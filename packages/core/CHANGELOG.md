@@ -1,5 +1,25 @@
 # plait
 
+## 0.93.2
+
+## 0.93.1
+
+## 0.93.0
+
+### Minor Changes
+
+-   [`983b4158099ed1e68815e3870eaa0a9c200dfbaf`](https://github.com/worktile/plait/commit/983b4158099ed1e68815e3870eaa0a9c200dfbaf) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - getOneHitElement support hitPoint
+
+### Patch Changes
+
+-   [`44af7bf22fab90a4f0d061c915245ea1567b6c7f`](https://github.com/worktile/plait/commit/44af7bf22fab90a4f0d061c915245ea1567b6c7f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - allow move selected element when user hit selected rectangle
+
+-   [`980db5a805fa80522665c4865ba6dfc14e75d48f`](https://github.com/worktile/plait/commit/980db5a805fa80522665c4865ba6dfc14e75d48f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify HIT_DISTANCE_BUFFER to 2 to improve hit accuracy #WIK-19887
+
+    if hit multiple elements, return the first element in flow chart scenario, so reduce the buffer to 2
+
+-   [`44af7bf22fab90a4f0d061c915245ea1567b6c7f`](https://github.com/worktile/plait/commit/44af7bf22fab90a4f0d061c915245ea1567b6c7f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify HIT_DISTANCE_BUFFER to 3 to avoid ellipse hit is difficult
+
 ## 0.92.3
 
 ## 0.92.2
@@ -1115,7 +1135,7 @@
 
 ### Minor Changes
 
--   [`07eaf04d`](https://github.com/worktile/plait/commit/07eaf04d7a74f1b9fc67e5822ba01bf5e7e8e469) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add afterChange method and move the timing of plaitChange event trigging to afterChange
+-   [`07eaf04d`](https://github.com/worktile/plait/commit/07eaf04d7a74f1b9fc67e5822ba01bf5e7e8e469) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add afterChange method and move the timing of change event trigging to afterChange
     overriding the afterChange method of board can handle some things between the component update and the component triggering the change event.
 
 *   [`e90c5c21`](https://github.com/worktile/plait/commit/e90c5c2192807eae2b6d6d7c230bc4e979d4c863) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct getGapCenter method logic, add note for a-star
@@ -1284,7 +1304,7 @@
 
 *   [`3f8d541a`](https://github.com/worktile/plait/commit/3f8d541a6b7fa2257e42ce9048f9e4eff8f255e4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - select elements which were inserted from clipboard
 
--   [`c49f5ec1`](https://github.com/worktile/plait/commit/c49f5ec1d46a06770692a2b52c6bbc43c1c10786) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use plaitChange replace onChange to handle island base
+-   [`c49f5ec1`](https://github.com/worktile/plait/commit/c49f5ec1d46a06770692a2b52c6bbc43c1c10786) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use change replace onChange to handle island base
 
 *   [`bc9efa35`](https://github.com/worktile/plait/commit/bc9efa3570703860be0ef8824c20a8cb4c56d904) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename folder name from plait to core
 
@@ -1419,7 +1439,7 @@
 
 -   [`653109b8`](https://github.com/worktile/plait/commit/653109b836c5707ec03714a801e3a167ad4e6263) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - handle touch target to avoid touch move event not fire
 
-*   [`c49f5ec1`](https://github.com/worktile/plait/commit/c49f5ec1d46a06770692a2b52c6bbc43c1c10786) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use plaitChange replace onChange to handle island base
+*   [`c49f5ec1`](https://github.com/worktile/plait/commit/c49f5ec1d46a06770692a2b52c6bbc43c1c10786) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use change replace onChange to handle island base
 
 -   [`aedbae54`](https://github.com/worktile/plait/commit/aedbae5464735592f7682335c14cf1e733b9e46d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update geometry stroke width generate logic
 

@@ -3,7 +3,7 @@ import { DefaultDrawStyle } from '../../constants';
 import { PlaitBoard, PlaitElement } from '@plait/core';
 import { getDrawDefaultStrokeColor, getFlowchartDefaultFill } from '../geometry';
 import { isClosedDrawElement } from '../common';
-import { StrokeStyle } from '@plait/common';
+import { StrokeStyle, TRANSPARENT } from '@plait/common';
 
 export const getStrokeColorByElement = (board: PlaitBoard, element: PlaitElement) => {
     const defaultColor = getDrawDefaultStrokeColor(board.theme.themeColorMode);
@@ -16,7 +16,9 @@ export const getFillByElement = (board: PlaitBoard, element: PlaitElement) => {
         PlaitDrawElement.isFlowchart(element) && isClosedDrawElement(element as PlaitDrawElement)
             ? getFlowchartDefaultFill(board.theme.themeColorMode)
             : DefaultDrawStyle.fill;
-    const fill = element.fill || defaultFill;
+    const currentFill =
+        element.fill && (element.fill === TRANSPARENT || element.fill === TRANSPARENT.toUpperCase()) ? DefaultDrawStyle.fill : element.fill;
+    const fill = currentFill || defaultFill;
     return fill;
 };
 

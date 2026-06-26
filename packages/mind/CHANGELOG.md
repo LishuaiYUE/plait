@@ -1,5 +1,19 @@
 # mind
 
+## 0.93.2
+
+## 0.93.1
+
+### Patch Changes
+
+-   [`e3559e3e7cd0fa4627fbe523634610eb042e61f2`](https://github.com/worktile/plait/commit/e3559e3e7cd0fa4627fbe523634610eb042e61f2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - hide add icon when board is readonly #WIK-19942
+
+## 0.93.0
+
+### Minor Changes
+
+-   [`983b4158099ed1e68815e3870eaa0a9c200dfbaf`](https://github.com/worktile/plait/commit/983b4158099ed1e68815e3870eaa0a9c200dfbaf) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - getOneHitElement support hitPoint
+
 ## 0.92.3
 
 ## 0.92.2
