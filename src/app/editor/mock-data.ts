@@ -344,6 +344,186 @@ export const mockDrawData: PlaitDrawElement[] = [
             [-277, -129.0000000000001]
         ],
         strokeWidth: 2
+    },
+    {
+        id: 'fill-style-title',
+        type: 'geometry',
+        shape: 'text',
+        angle: 0,
+        opacity: 1,
+        text: {
+            children: [
+                {
+                    text: 'FillStyle examples'
+                }
+            ]
+        },
+        points: [
+            [320, -120],
+            [470, -100]
+        ],
+        autoSize: true
+    },
+    {
+        id: 'fill-style-solid',
+        type: 'geometry',
+        shape: 'rectangle',
+        angle: 0,
+        opacity: 1,
+        text: {
+            children: [
+                {
+                    text: 'solid'
+                }
+            ],
+            align: 'center'
+        },
+        points: [
+            [320, -50],
+            [500, 70]
+        ],
+        strokeWidth: 2,
+        strokeColor: '#1e1e1e',
+        fill: '#F6EDCF',
+        fillStyle: 'solid'
+    },
+    {
+        id: 'fill-style-hachure',
+        type: 'geometry',
+        shape: 'diamond',
+        angle: 0,
+        opacity: 1,
+        text: {
+            children: [
+                {
+                    text: 'hachure'
+                }
+            ],
+            align: 'center'
+        },
+        points: [
+            [560, -50],
+            [740, 70]
+        ],
+        strokeWidth: 2,
+        strokeColor: '#1e1e1e',
+        fill: '#CDEFF2',
+        fillStyle: 'hachure'
+    },
+    {
+        id: 'fill-style-zigzag',
+        type: 'geometry',
+        shape: 'ellipse',
+        angle: 0,
+        opacity: 1,
+        text: {
+            children: [
+                {
+                    text: 'zigzag'
+                }
+            ],
+            align: 'center'
+        },
+        points: [
+            [800, -50],
+            [980, 70]
+        ],
+        strokeWidth: 2,
+        strokeColor: '#1e1e1e',
+        fill: '#DADFEB',
+        fillStyle: 'zigzag'
+    },
+    {
+        id: 'fill-style-cross-hatch',
+        type: 'geometry',
+        shape: 'process',
+        angle: 0,
+        opacity: 1,
+        text: {
+            children: [
+                {
+                    text: 'cross-hatch'
+                }
+            ],
+            align: 'center'
+        },
+        points: [
+            [1040, -50],
+            [1220, 70]
+        ],
+        strokeWidth: 2,
+        strokeColor: '#1e1e1e',
+        fill: '#F6EDCF',
+        fillStyle: 'cross-hatch'
+    },
+    {
+        id: 'fill-style-dots',
+        type: 'geometry',
+        shape: 'delay',
+        angle: 0,
+        opacity: 1,
+        text: {
+            children: [
+                {
+                    text: 'dots'
+                }
+            ],
+            align: 'center'
+        },
+        points: [
+            [320, 130],
+            [500, 250]
+        ],
+        strokeWidth: 2,
+        strokeColor: '#1e1e1e',
+        fill: '#CDEFF2',
+        fillStyle: 'dots'
+    },
+    {
+        id: 'fill-style-dashed',
+        type: 'geometry',
+        shape: 'predefinedProcess',
+        angle: 0,
+        opacity: 1,
+        text: {
+            children: [
+                {
+                    text: 'dashed'
+                }
+            ],
+            align: 'center'
+        },
+        points: [
+            [560, 130],
+            [740, 250]
+        ],
+        strokeWidth: 2,
+        strokeColor: '#1e1e1e',
+        fill: '#DADFEB',
+        fillStyle: 'dashed'
+    },
+    {
+        id: 'fill-style-zigzag-line',
+        type: 'geometry',
+        shape: 'activityClass',
+        angle: 0,
+        opacity: 1,
+        text: {
+            children: [
+                {
+                    text: 'zigzag-line'
+                }
+            ],
+            align: 'center'
+        },
+        points: [
+            [800, 130],
+            [980, 250]
+        ],
+        strokeWidth: 2,
+        strokeColor: '#1e1e1e',
+        fill: '#F6EDCF',
+        fillStyle: 'zigzag-line'
     }
 ] as PlaitDrawElement[];
 
