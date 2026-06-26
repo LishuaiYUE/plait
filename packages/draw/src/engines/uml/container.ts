@@ -21,7 +21,7 @@ export const ContainerEngine: ShapeEngine = {
             `M${rectangle.x} ${rectangle.y} H${rectangle.x + rectangle.width} V${rectangle.y + rectangle.height} H${rectangle.x} Z M${
                 rectangle.x + 40
             } ${rectangle.y} L${rectangle.x + 40} ${rectangle.y + rectangle.height} `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 

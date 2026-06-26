@@ -27,7 +27,7 @@ export class GeometryShapeGenerator extends Generator<PlaitGeometry, ShapeData> 
             strokeWidth,
             fill,
             strokeLineDash,
-            fillStyle: element.fillStyle
+            fillStyle: element.fillStyle ?? 'solid'
         });
     }
 }

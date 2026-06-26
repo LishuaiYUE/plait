@@ -23,7 +23,7 @@ export const DelayEngine: ShapeEngine = {
             }, 0, 0, 1,${rectangle.x + (rectangle.width * 3) / 4} ${rectangle.y + rectangle.height} L${rectangle.x} ${
                 rectangle.y + rectangle.height
             } Z`,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 
