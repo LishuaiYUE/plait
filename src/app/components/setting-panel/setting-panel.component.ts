@@ -56,7 +56,8 @@ import {
     getSwimlaneCount,
     getSelectedTableCellsEditor,
     VectorLineShape,
-    isClosedDrawElement
+    isClosedDrawElement,
+    FillStyle
 } from '@plait/draw';
 import { MindLayoutType } from '@plait/layouts';
 import { FontSizes, LinkEditor, MarkTypes, PlaitMarkEditor, TextTransforms } from '@plait/text-plugins';
@@ -80,6 +81,8 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
     currentStrokeColor: string | undefined = '';
 
     currentBranchColor: string | undefined = '';
+
+    currentFillStyle: FillStyle = 'solid';
 
     currentMarks: Omit<CustomText, 'text'> = {};
 
@@ -111,6 +114,16 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
 
     branchColor = ['#A287E0', '#6E80DB', '#E0B75E', '#B1C675', '#77C386', '#E48484'];
 
+    fillStyles: { value: FillStyle; label: string }[] = [
+        { value: 'solid', label: '实心' },
+        { value: 'hachure', label: '斜线' },
+        { value: 'zigzag', label: '锯齿' },
+        { value: 'cross-hatch', label: '交叉线' },
+        { value: 'dots', label: '点状' },
+        { value: 'dashed', label: '虚线' },
+        { value: 'zigzag-line', label: '锯齿线' }
+    ];
+
     align = Alignment.center;
 
     lineShape = ArrowLineShape.straight;
@@ -128,6 +141,8 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
     swimlaneCount = 3;
 
     enableSetFillColor = true;
+
+    enableSetFillStyle = false;
 
     @HostBinding('class.visible')
     get isVisible() {
@@ -149,6 +164,7 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
         this.isSelectedVectorLine = !!selectedVectorLineElements.length;
         this.isSelectSwimlane = isSingleSelectSwimlane(this.board);
         this.enableSetFillColor = selectedDrawElements.some((item) => isClosedDrawElement(item)) || this.isSelectedMind;
+        this.enableSetFillStyle = selectedDrawElements.some((item) => isClosedDrawElement(item));
         if (this.isSelectSwimlane) {
             this.swimlaneCount = getSwimlaneCount(getSelectedElements(this.board)[0] as PlaitSwimlane);
         }
@@ -170,6 +186,10 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
         const selectedTableCellsEditor = getSelectedTableCellsEditor(this.board);
         const selectedTableAndGeometryElements = [...selectedGeometryElements, ...selectedTableElements];
         if (selectedTableAndGeometryElements.length) {
+            const firstClosedGeometry = selectedGeometryElements.find((item) => isClosedDrawElement(item));
+            if (firstClosedGeometry) {
+                this.currentFillStyle = firstClosedGeometry.fillStyle || 'solid';
+            }
             let editor: BaseEditor | undefined;
             let align: Alignment = this.align;
             if (selectedTableCellsEditor?.length) {
@@ -257,6 +277,14 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
                     Transforms.setNode(this.board, { fill: property }, path);
                 }
             }
+        });
+    }
+
+    changeFillStyle(fillStyle: FillStyle) {
+        this.currentFillStyle = fillStyle;
+        PropertyTransforms.setProperty(this.board, { fillStyle } as Partial<PlaitElement>, {
+            getMemorizeKey,
+            match: (element: PlaitElement) => PlaitDrawElement.isDrawElement(element) && isClosedDrawElement(element)
         });
     }
 
