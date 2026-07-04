@@ -1,6 +1,22 @@
-import { BasicShapes, FlowchartSymbols, LineShape, SwimlaneDrawSymbols, TableSymbols, UMLSymbols } from '../interfaces';
+import {
+    BasicShapes,
+    FlowchartSymbols,
+    ArrowLineShape,
+    SwimlaneDrawSymbols,
+    TableSymbols,
+    UMLSymbols,
+    VectorLinePointerType,
+    SwimlaneSymbols
+} from '../interfaces';
 
-export type DrawPointerType = BasicShapes | LineShape | FlowchartSymbols | SwimlaneDrawSymbols | TableSymbols | UMLSymbols;
+export type DrawPointerType =
+    | BasicShapes
+    | ArrowLineShape
+    | FlowchartSymbols
+    | SwimlaneDrawSymbols
+    | TableSymbols
+    | UMLSymbols
+    | VectorLinePointerType;
 
 export const getGeometryPointers = () => {
     return [...Object.keys(BasicShapes), ...Object.keys(FlowchartSymbols), ...Object.keys(UMLSymbols)];
@@ -8,6 +24,10 @@ export const getGeometryPointers = () => {
 
 export const getSwimlanePointers = () => {
     return Object.keys(SwimlaneDrawSymbols);
+};
+
+export const getSwimlaneShapes = () => {
+    return Object.keys(SwimlaneSymbols);
 };
 
 export const getBasicPointers = () => {
@@ -22,6 +42,10 @@ export const getUMLPointers = () => {
     return Object.keys(UMLSymbols);
 };
 
-export const getLinePointers = () => {
-    return Object.keys(LineShape);
+export const getArrowLinePointers = () => {
+    return Object.keys(ArrowLineShape);
+};
+
+export const getVectorLinePointers = () => {
+    return Object.keys(VectorLinePointerType);
 };

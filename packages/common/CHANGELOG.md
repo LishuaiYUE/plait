@@ -1,5 +1,404 @@
 # @plait/common
 
+## 0.93.2
+
+## 0.93.1
+
+## 0.93.0
+
+## 0.92.3
+
+## 0.92.2
+
+## 0.92.1
+
+## 0.92.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.92.0-next.2
+
+## 0.92.0-next.1
+
+## 0.92.0-next.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.91.0
+
+## 0.90.1
+
+## 0.90.0
+
+## 0.89.2
+
+### Patch Changes
+
+-   [#1111](https://github.com/worktile/plait/pull/1111) [`88e0110d8fc75c29708008ba468df14fcd46dd63`](https://github.com/worktile/plait/commit/88e0110d8fc75c29708008ba468df14fcd46dd63) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct ActiveGeneratorOptions type and add active field
+
+-   [#1113](https://github.com/worktile/plait/pull/1113) [`11ec882fb236155aa36438d84d61cbfb7736320a`](https://github.com/worktile/plait/commit/11ec882fb236155aa36438d84d61cbfb7736320a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - compatible interaction with touch device, select end when start text editing on touch device
+
+## 0.89.1
+
+### Patch Changes
+
+-   [#1098](https://github.com/worktile/plait/pull/1098) [`0e4922e3e6b9f6834891873a17bf3f66aea65bb4`](https://github.com/worktile/plait/commit/0e4922e3e6b9f6834891873a17bf3f66aea65bb4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Remove touchstart event listener(prevented the default action to cause browser can not open keyboard in touch device)
+
+    Prevent the default action in multiple plugins(with-moving, with-resize, with-selection) to support resizing/selection/moving on touch device
+
+    Adding basic methods to viewport, such as isInVisibleViewport, scrollToVisibleWhenKeyboardOpening, support editing element scroll to visible when keyboard opening on touch device
+
+## 0.89.0
+
+### Patch Changes
+
+-   [#1102](https://github.com/worktile/plait/pull/1102) [`369d3ba1c50ca9a991b2c16f0a6a54f20f5077bf`](https://github.com/worktile/plait/commit/369d3ba1c50ca9a991b2c16f0a6a54f20f5077bf) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the text height on font size is 18px
+
+## 0.88.1
+
+## 0.88.0
+
+### Patch Changes
+
+-   [#1100](https://github.com/worktile/plait/pull/1100) [`a99fb37b729ec107b0ac4100dba7e86f96605a68`](https://github.com/worktile/plait/commit/a99fb37b729ec107b0ac4100dba7e86f96605a68) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - calculate text width word by word
+
+## 0.87.0
+
+### Minor Changes
+
+-   [#1090](https://github.com/worktile/plait/pull/1090) [`4445e9bd8db64edb91eb1e86e028cd1a213df34b`](https://github.com/worktile/plait/commit/4445e9bd8db64edb91eb1e86e028cd1a213df34b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify ROTATE_HANDLE_DISTANCE_TO_ELEMENT
+
+## 0.87.0-next.1
+
+### Minor Changes
+
+-   [#1090](https://github.com/worktile/plait/pull/1090) [`4445e9bd8db64edb91eb1e86e028cd1a213df34b`](https://github.com/worktile/plait/commit/4445e9bd8db64edb91eb1e86e028cd1a213df34b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify ROTATE_HANDLE_DISTANCE_TO_ELEMENT
+
+## 0.87.0-next.0
+
+## 0.86.1
+
+### Patch Changes
+
+-   [#1084](https://github.com/worktile/plait/pull/1084) [`2821f046fbe0450f250ec3a77a7ccee7329c3608`](https://github.com/worktile/plait/commit/2821f046fbe0450f250ec3a77a7ccee7329c3608) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Remove rxjs independency from plait/common、plait/core
+
+    Redraw group's boundary in onChange, which was handled by onStable mechanism (use rxjs). Since it need be handle after all others elements be handled.
+
+## 0.86.0
+
+## 0.85.0
+
+## 0.84.0
+
+### Minor Changes
+
+-   [#1077](https://github.com/worktile/plait/pull/1077) [`f3bc1daeb5f077fd47ca1fca9eff9e1d860659c7`](https://github.com/worktile/plait/commit/f3bc1daeb5f077fd47ca1fca9eff9e1d860659c7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix topic text can not show completely in different machines
+
+    1. add getElementSize to remeasure the width and height for text element and cache to `ELEMENT_TO_SIZE_MAP`.
+    2. apply getElementSize to get the width and height for mind node topic text.
+    3. handling the effect of mind node functions, such as editing topic, resizing mind node width and so on.
+
+## 0.83.1
+
+## 0.83.0
+
+### Minor Changes
+
+-   [#1073](https://github.com/worktile/plait/pull/1073) [`34f5a6b32955248d97d52fda5516cafb5090efc5`](https://github.com/worktile/plait/commit/34f5a6b32955248d97d52fda5516cafb5090efc5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract point-placement to common package
+    optimize flowchart's hover to preview and click to commit function
+
+### Patch Changes
+
+-   [#1071](https://github.com/worktile/plait/pull/1071) [`875a7c43c86c5d51f2ece088e7f73887b3073960`](https://github.com/worktile/plait/commit/875a7c43c86c5d51f2ece088e7f73887b3073960) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - assign type as paragraph for text content
+
+## 0.82.0
+
+### Minor Changes
+
+-   [#1069](https://github.com/worktile/plait/pull/1069) [`3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6`](https://github.com/worktile/plait/commit/3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - measureElement need assign board as first param to cache canvas dom element
+    refactor mind node more function
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.82.0-next.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.81.3
+
+## 0.81.2
+
+## 0.81.1
+
+## 0.81.0
+
+## 0.80.0
+
+## 0.79.1
+
+## 0.79.0
+
+## 0.78.2
+
+## 0.78.1
+
+## 0.78.0
+
+### Minor Changes
+
+-   [#1052](https://github.com/worktile/plait/pull/1052) [`688cf253feea7902690af40ded129bd83a4469a7`](https://github.com/worktile/plait/commit/688cf253feea7902690af40ded129bd83a4469a7) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.78.0-next.0
+
+### Minor Changes
+
+-   [`af24487d0cb31303c8600aae655f5825e4c9e918`](https://github.com/worktile/plait/commit/af24487d0cb31303c8600aae655f5825e4c9e918) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.77.3
+
+## 0.77.2
+
+### Patch Changes
+
+-   [#1043](https://github.com/worktile/plait/pull/1043) [`83535189077f2d1ac7454674a1da8ede0fadb547`](https://github.com/worktile/plait/commit/83535189077f2d1ac7454674a1da8ede0fadb547) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply font family fallback solution to resolve text width calculation issue in windows #1042
+
+## 0.77.1
+
+## 0.77.0
+
+## 0.76.0
+
+### Patch Changes
+
+-   [#1030](https://github.com/worktile/plait/pull/1030) [`d975ac2170f604f150543d2c121f40b790f6ec2c`](https://github.com/worktile/plait/commit/d975ac2170f604f150543d2c121f40b790f6ec2c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - handle text measurement issue for windows device
+
+## 0.75.0
+
+### Patch Changes
+
+-   [#1011](https://github.com/worktile/plait/pull/1011) [`9aee49584fa546cc990c02e929c59c1b3c017928`](https://github.com/worktile/plait/commit/9aee49584fa546cc990c02e929c59c1b3c017928) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename canResize to hasResizeHandle and add hasMoreThanOnePoint condition
+
+## 0.75.0-next.9
+
+### Patch Changes
+
+-   [#1011](https://github.com/worktile/plait/pull/1011) [`9aee49584fa546cc990c02e929c59c1b3c017928`](https://github.com/worktile/plait/commit/9aee49584fa546cc990c02e929c59c1b3c017928) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename canResize to hasResizeHandle and add hasMoreThanOnePoint condition
+
+## 0.75.0-next.8
+
+## 0.75.0-next.7
+
+## 0.75.0-next.6
+
+## 0.75.0-next.5
+
+## 0.75.0-next.4
+
+## 0.75.0-next.3
+
+## 0.75.0-next.2
+
+## 0.75.0-next.1
+
+## 0.75.0-next.0
+
+## 0.74.0
+
+## 0.73.0
+
+## 0.72.0
+
+### Minor Changes
+
+-   [#979](https://github.com/worktile/plait/pull/979) [`9933b62e9`](https://github.com/worktile/plait/commit/9933b62e97c59be59ba06ed5dcb204deda2474f4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract buildClipboardData and insertClipboardData to common and support scalable fun
+
+    rewrite buildClipboardData and insertClipboardData by basic method
+
+    fix copy arrow-line error
+
+*   [#976](https://github.com/worktile/plait/pull/976) [`3b9b60114`](https://github.com/worktile/plait/commit/3b9b601149e4167b427d6a4592333e9045c5f271) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - - Manage textManages based on Ref, remove textManages related logic from CommonElementFlavour
+
+    -   Added TODO: Is it possible to position TextManager completely based on position to unify line and multi-text geometry?
+
+    When an element has multiple texts, TextManage cannot be obtained simply through position, so the corresponding relationship between keyword key and TextManage is saved here through Map alone.
+
+    1. The key of a single text element is the id of the element
+    2. The key of the table element is the id of the cell
+    3. For elements that conform to isMultipleTextGeometry, the key is the element id + text.id (usually not the id but the constant of the text position)
+    4. arrow-line and vector-line text do not depend on text.generator, TextManage can be found directly based on text
+
+    -   基于 Ref 管理 textManages，将 textManages 相关逻辑从 CommonElementFlavour 移除
+
+    -   增加 TODO: 是否可以完全基于位置定位 TextManager，实现 line 和 多文本 geometry 统一
+
+    一个元素有多个文本时，单纯通过位置无法获取 TextManage，因此这里单独通过 Map 保存关键字 key 和 TextManage 的对应关系
+
+    1. 单文本元素 key 就是元素的 id
+    2. 表格元素 key 是单元格的 id
+    3. 符合 isMultipleTextGeometry 的元素，key 是元素 id + text.id （通常不是 id 而是文本位置的常量）
+    4. arrow-line 和 vector-line 文本不依赖于 text.generator，基于 text 可以直接找到 TextManage
+
+## 0.71.0
+
+## 0.70.0
+
+## 0.69.2
+
+## 0.69.1
+
+## 0.69.0
+
+### Minor Changes
+
+-   [`0f8bb0f51`](https://github.com/worktile/plait/commit/0f8bb0f51a0cd95b322712d9812a3ccd35cd47a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove touch handle and use touchstart event to prevent container scrolling on mobile device
+
+## 0.68.0
+
+### Minor Changes
+
+-   [`c743b0245`](https://github.com/worktile/plait/commit/c743b0245cec060c344b8101afb8f0e1c4e22e06) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support set null to remove color property
+
+## 0.67.2
+
+## 0.67.1
+
+## 0.67.0
+
+## 0.66.1
+
+### Patch Changes
+
+-   [`875feb44e`](https://github.com/worktile/plait/commit/875feb44e97feffacdc78a0ccd46148c64aae43b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - using ceilToDecimal to set text width to avoid breaking line(like `j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j`)
+
+## 0.66.0
+
+### Minor Changes
+
+-   [`eb23e9a34`](https://github.com/worktile/plait/commit/eb23e9a34add6d624e28f1cf92bcbbb0cf20d18e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add throttleRAF for pointerMove hook in with-group to reduce the getHitElementsBySelection's invoking times
+
+## 0.65.2
+
+## 0.65.1
+
+## 0.65.0
+
+## 0.65.0-next.0
+
+## 0.64.9
+
+## 0.64.8
+
+### Patch Changes
+
+-   [`2c49d77f9`](https://github.com/worktile/plait/commit/2c49d77f910006b8b7aa763115b5707edfdbd8bc) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - invoking updateForeignObject will trigger auto scroll (browser default behavior) which cause board unexceptional scrolling
+
+    so need remove updateForeignObject and invoke immediately onChange to avoid coming up shaking in drawnix
+
+    prevent board children being covered when board is in FLUSHING
+
+## 0.64.7
+
+## 0.64.6
+
+### Patch Changes
+
+-   [`423d5b7a5`](https://github.com/worktile/plait/commit/423d5b7a56eabca488f4a2d6153edad12524b26a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - allow undo once insert_node when first enter mind node editing
+
+## 0.64.5
+
+### Patch Changes
+
+-   [`a457641ef`](https://github.com/worktile/plait/commit/a457641efb30eedb79d0a20b09198dcddfd3ce4a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - immediately update foreignObject's width and height when text changed
+
+*   [`fe711d3e0`](https://github.com/worktile/plait/commit/fe711d3e037dd72fb5d23ad02fb4c809cc8a1de1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct height, textHeight, width when zoom is not 100% for operations: resize, remove image, add image and so on
+
+## 0.64.4
+
+## 0.64.3
+
+## 0.64.2
+
+## 0.64.1
+
+## 0.64.0
+
+## 0.63.0
+
+### Patch Changes
+
+-   [`e56c9cb9e`](https://github.com/worktile/plait/commit/e56c9cb9e440ff3beb84d58ff2531e85a4fb5d85) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - invoking onChange asap to avoid blinking on typing chinese(onComposition)
+
+## 0.62.0
+
+### Minor Changes
+
+-   [#914](https://github.com/worktile/plait/pull/914) [`92436588f`](https://github.com/worktile/plait/commit/92436588fa95557474c8ebc0c282330376622fb4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Framework agnostic refactoring:
+
+    1. Reimplement text-manage in `@plait/common`, and remove the dependency on front-end frameworks such as Angular/React by providing an overridable method renderText
+
+    2. Provide an overridable method renderImage in `@plait/common`
+
+    3. Implement the `measureElement` method based on `canvas`, calculate the width and height of the text in Plait through the `measureText` API of `canvas`, and change all places that originally called `getTextSize` or `measureDivSize` to call `measureElement`
+
+    4. Move the part of `@plait/core` that depends on Angular to `@plait/angular-board`
+
+    ***
+
+    Framework agnostic 改造:
+
+    1. 在 `@plait/common` 中重新实现 text-manage，通过提供可重写方法 renderText 解除和 Angular/React 等前端框架的强依赖
+    2. 在 `@plait/common` 中提供可重写方法 renderImage
+    3. 基于 `canvas` 实现 `measureElement` 方法，通过 `canvas` 的 `measureText` API 计算 Plait 中文本的宽和高，将原本调用 `getTextSize` 或者 `measureDivSize` 的地方全部改为调用 `measureElement`
+    4. 将 `@plait/core` 中依赖 Angular 的部分移入 `@plait/angular-board`
+
+*   [`bdfbe315a`](https://github.com/worktile/plait/commit/bdfbe315a48f1b41655f1da89e887dfae2595148) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove the some logic in ImageBaseComponent and MindEmojiBaseComponent to try remove base class
+
+-   [#922](https://github.com/worktile/plait/pull/922) [`0e1ddecc4`](https://github.com/worktile/plait/commit/0e1ddecc45b76f4093944d340bfe5670a80e2b1b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - refactor getHitElementByPoint return value
+
+    add getHitElement to board, the hit element is determined by the plugin
+
+### Patch Changes
+
+-   [#935](https://github.com/worktile/plait/pull/935) [`716e8f23f`](https://github.com/worktile/plait/commit/716e8f23fbfd6394b917b1e35ff3cb34d4d848dc) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - handle enter event when editing text
+
+*   [`aa8ce9692`](https://github.com/worktile/plait/commit/aa8ce9692508bcf34d9d233f83086af5a8088006) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove 'plait-image-container' from image-base.component
+
+    remove the dependency of className('plait-image-container') from @plait/core
+
+-   [#945](https://github.com/worktile/plait/pull/945) [`46dec5346`](https://github.com/worktile/plait/commit/46dec53469b8b52636e8a9795ea1b6101df09c9f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Add debounce to avoid trigger more times(from onChange and onComposition) onChange when user is typing chinese(Be going to attract board children are overwritten when fired more times onChange(eg: board is embed in editor))
+
+*   [`7625c6cb2`](https://github.com/worktile/plait/commit/7625c6cb228fa66a408b00997a7b81d5fd9d8d6d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update peerDependencies
+
+## 0.62.0-next.10
+
+## 0.62.0-next.9
+
+### Patch Changes
+
+-   [`7625c6cb2`](https://github.com/worktile/plait/commit/7625c6cb228fa66a408b00997a7b81d5fd9d8d6d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update peerDependencies
+
+## 0.62.0-next.8
+
+### Patch Changes
+
+-   [#935](https://github.com/worktile/plait/pull/935) [`716e8f23f`](https://github.com/worktile/plait/commit/716e8f23fbfd6394b917b1e35ff3cb34d4d848dc) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - handle enter event when editing text
+
+*   [#945](https://github.com/worktile/plait/pull/945) [`46dec5346`](https://github.com/worktile/plait/commit/46dec53469b8b52636e8a9795ea1b6101df09c9f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Add debounce to avoid trigger more times(from onChange and onComposition) onChange when user is typing chinese(Be going to attract board children are overwritten when fired more times onChange(eg: board is embed in editor))
+
+## 0.62.0-next.7
+
+### Minor Changes
+
+-   [#922](https://github.com/worktile/plait/pull/922) [`0e1ddecc4`](https://github.com/worktile/plait/commit/0e1ddecc45b76f4093944d340bfe5670a80e2b1b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - refactor getHitElementByPoint return value
+
+    add getHitElement to board, the hit element is determined by the plugin
+
 ## 0.62.0-next.6
 
 ## 0.62.0-next.5

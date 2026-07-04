@@ -6,17 +6,19 @@ import {
     RectangleClient,
     createForeignObject,
     createG,
+    isDebug,
+    isTouchDevice,
     setAngleForG,
     toHostPoint,
     toViewBoxPoint,
     updateForeignObject,
     updateForeignObjectWidth
 } from '@plait/core';
-import { fromEvent, timer } from 'rxjs';
 import { Editor, Element, NodeEntry, Range, Text, Node, Transforms, Operation } from 'slate';
 import { PlaitTextBoard, TextPlugin } from './with-text';
-import { measureElement } from './text-measure';
+import { clearElementSizeCache, measureElement, updateElementSizeCache } from './text-measure';
 import { TextChangeData, TextComponentRef, TextProps } from './with-text';
+import { ParagraphElement } from './types';
 
 export interface TextManageChangeData {
     newText?: Element;
@@ -35,6 +37,8 @@ export class TextManage {
     foreignObject!: SVGForeignObjectElement;
 
     textComponentRef!: TextComponentRef;
+
+    exitCallback?: () => void;
 
     constructor(
         private board: PlaitBoard,
@@ -62,9 +66,9 @@ export class TextManage {
             text,
             textPlugins: this.options.textPlugins,
             onChange: (data: TextChangeData) => {
-                if (data.operations.some(op => !Operation.isSelectionOperation(op))) {
-                    const { width, height } = this.getSize();
-                    this.options.onChange && this.options.onChange({ ...data, width, height });
+                if (data.operations.some((op) => !Operation.isSelectionOperation(op))) {
+                    const { width: newWidth, height: newHeight } = this.getSize();
+                    this.options.onChange && this.options.onChange({ ...data, width: newWidth, height: newHeight });
                     MERGING.set(this.board, true);
                 }
             },
@@ -72,15 +76,21 @@ export class TextManage {
                 this.editor = editor;
             },
             onComposition: (event: CompositionEvent) => {
+                if (event.type === 'compositionend') {
+                    clearElementSizeCache(this.board, this.editor.children[0] as ParagraphElement);
+                    return;
+                }
                 const fakeRoot = buildCompositionData(this.editor, event.data);
                 if (fakeRoot) {
                     const sizeData = this.getSize(fakeRoot.children[0]);
-                    this.options.onChange && this.options.onChange(sizeData);
+                    updateElementSizeCache(this.board, this.editor.children[0] as ParagraphElement, sizeData);
+                    // invoking onChange asap to avoid blinking on typing chinese
+                    this.options.onChange && this.options.onChange({ ...sizeData });
                     MERGING.set(this.board, true);
                 }
             }
         };
-        this.textComponentRef = ((this.board as unknown) as PlaitTextBoard).renderText(this.foreignObject, props);
+        this.textComponentRef = (this.board as unknown as PlaitTextBoard).renderText(this.foreignObject, props);
     }
 
     updateRectangleWidth(width: number) {
@@ -103,65 +113,87 @@ export class TextManage {
         this.textComponentRef.update(props);
     }
 
-    edit(callback?: () => void) {
+    edit(callback?: () => void, exitEdit?: (event: Event) => boolean) {
         this.isEditing = true;
         IS_TEXT_EDITABLE.set(this.board, true);
+        if (isDebug()) {
+            console.log('text-manage', 'set text editing to ', true);
+        }
         const props: Partial<TextProps> = {
             readonly: false
         };
         this.textComponentRef.update(props);
-        Transforms.select(this.editor, [0]);
-        const mousedown$ = fromEvent<MouseEvent>(document, 'mousedown').subscribe((event: MouseEvent) => {
+
+        if (isTouchDevice()) {
+            setTimeout(() => {
+                const end = Editor.end(this.editor, [0]);
+                Transforms.select(this.editor, end);
+            }, 0);
+        } else {
+            Transforms.select(this.editor, [0]);
+        }
+
+        const pointerDownHandler = (event: PointerEvent) => {
             const point = toViewBoxPoint(this.board, toHostPoint(this.board, event.x, event.y));
             const textRec = this.options.getRenderRectangle ? this.options.getRenderRectangle() : this.options.getRectangle();
             const clickInText = RectangleClient.isHit(RectangleClient.getRectangleByPoints([point, point]), textRec);
             const isAttached = (event.target as HTMLElement).closest('.plait-board-attached');
             if (!clickInText && !isAttached) {
                 // handle composition input state, like: Chinese IME Composition Input
-                timer(0).subscribe(() => {
+                setTimeout(() => {
                     exitCallback();
-                });
+                }, 0);
             }
-        });
-        const keydown$ = fromEvent<KeyboardEvent>(document, 'keydown').subscribe((event: KeyboardEvent) => {
+        };
+        const keyDownHandler = (event: KeyboardEvent) => {
             if (event.isComposing) {
                 return;
             }
-            if (event.key === 'Escape' || (event.key === 'Enter' && !event.shiftKey) || event.key === 'Tab') {
+            if (event.key === 'Escape' || event.key === 'Tab' || (exitEdit ? exitEdit(event) : false)) {
                 event.preventDefault();
                 event.stopPropagation();
                 exitCallback();
                 return;
             }
-        });
-        const exitCallback = () => {
-            this.updateRectangle();
-            mousedown$.unsubscribe();
-            keydown$.unsubscribe();
-            IS_TEXT_EDITABLE.set(this.board, false);
-            MERGING.set(this.board, false);
-            callback && callback();
-            const props = {
-                readonly: true
-            };
-            this.textComponentRef.update(props);
-            this.isEditing = false;
         };
+        const exitCallback = () => {
+            if (this.isEditing) {
+                this.updateRectangle();
+                document.removeEventListener('pointerdown', pointerDownHandler);
+                document.removeEventListener('keydown', keyDownHandler);
+                IS_TEXT_EDITABLE.set(this.board, false);
+                if (isDebug()) {
+                    console.log('text-manage', 'set IS_TEXT_EDITABLE to ', false);
+                }
+                MERGING.set(this.board, false);
+                callback && callback();
+                const props = {
+                    readonly: true
+                };
+                this.textComponentRef.update(props);
+                this.isEditing = false;
+                this.exitCallback = undefined;
+            }
+        };
+        document.addEventListener('pointerdown', pointerDownHandler);
+        document.addEventListener('keydown', keyDownHandler);
+        this.exitCallback = exitCallback;
         return exitCallback;
     }
 
-    getSize = (element?: Element) => {
+    getSize = (element?: Element, maxWidth?: number) => {
         const computedStyle = window.getComputedStyle(this.foreignObject.children[0]);
         const fontFamily = computedStyle.fontFamily;
         const fontSize = parseFloat(computedStyle.fontSize);
         const target = element || (this.editor.children[0] as Element);
         return measureElement(
+            this.board,
             target,
             {
                 fontSize: fontSize,
                 fontFamily
             },
-            this.options.getMaxWidth!()
+            maxWidth || this.options.getMaxWidth!()
         );
     };
 
@@ -172,6 +204,7 @@ export class TextManage {
     destroy() {
         this.g?.remove();
         this.textComponentRef?.destroy();
+        this.exitCallback && this.exitCallback();
     }
 }
 

@@ -1,17 +1,14 @@
 import { getNonAbstractChildren, isStandardLayout } from '@plait/layouts';
 import { MindElement, PlaitMind } from '../../interfaces/element';
-import { MindNodeComponent } from '../../mind-node.component';
-import { Path, PlaitBoard, PlaitElement } from '@plait/core';
+import { Path, PlaitBoard, PlaitElement, setDragging } from '@plait/core';
 import { getRootLayout } from '../layout';
 import { DetectResult } from '../../interfaces/node';
-
-export const IS_DRAGGING = new WeakMap<PlaitBoard, boolean>();
 
 export const addActiveOnDragOrigin = (activeElement: MindElement) => {
     PlaitElement.getElementG(activeElement).classList.add('dragging-node');
 
     !activeElement.isCollapsed &&
-        activeElement.children.forEach(child => {
+        activeElement.children.forEach((child) => {
             addActiveOnDragOrigin(child);
         });
 };
@@ -19,17 +16,13 @@ export const addActiveOnDragOrigin = (activeElement: MindElement) => {
 export const removeActiveOnDragOrigin = (activeElement: MindElement) => {
     PlaitElement.getElementG(activeElement).classList.remove('dragging-node');
     !activeElement.isCollapsed &&
-        activeElement.children.forEach(child => {
+        activeElement.children.forEach((child) => {
             removeActiveOnDragOrigin(child);
         });
 };
 
-export const isDragging = (board: PlaitBoard) => {
-    return !!IS_DRAGGING.get(board);
-};
-
-export const setIsDragging = (board: PlaitBoard, state: boolean) => {
-    IS_DRAGGING.set(board, state);
+export const setMindDragging = (board: PlaitBoard, state: boolean) => {
+    setDragging(board, state);
     if (state) {
         PlaitBoard.getBoardContainer(board).classList.add('mind-node-dragging');
     } else {

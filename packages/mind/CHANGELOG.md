@@ -1,5 +1,447 @@
 # mind
 
+## 0.93.2
+
+## 0.93.1
+
+### Patch Changes
+
+-   [`e3559e3e7cd0fa4627fbe523634610eb042e61f2`](https://github.com/worktile/plait/commit/e3559e3e7cd0fa4627fbe523634610eb042e61f2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - hide add icon when board is readonly #WIK-19942
+
+## 0.93.0
+
+### Minor Changes
+
+-   [`983b4158099ed1e68815e3870eaa0a9c200dfbaf`](https://github.com/worktile/plait/commit/983b4158099ed1e68815e3870eaa0a9c200dfbaf) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - getOneHitElement support hitPoint
+
+## 0.92.3
+
+## 0.92.2
+
+## 0.92.1
+
+## 0.92.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.92.0-next.2
+
+## 0.92.0-next.1
+
+## 0.92.0-next.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.91.0
+
+### Minor Changes
+
+-   [`9bad91071057784f2498d7d3768116d6be5b801f`](https://github.com/worktile/plait/commit/9bad91071057784f2498d7d3768116d6be5b801f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove getLayoutByElement, if you want to get layout value, please use getCorrectLayoutByElement
+
+-   [#1128](https://github.com/worktile/plait/pull/1128) [`d47ce3c9234cdee307b395f9a49202c4758c24f6`](https://github.com/worktile/plait/commit/d47ce3c9234cdee307b395f9a49202c4758c24f6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix node more layout direction issue #WIK-18654(nested layout, right layout include right-bottom-indent and then switch right layout to up layout, the node of right-bottom-indent will be drawn in down direction)
+
+## 0.90.1
+
+## 0.90.0
+
+### Minor Changes
+
+-   [#1123](https://github.com/worktile/plait/pull/1123) [`0039f3388187f649ec879b95b2d7a2243e584d3f`](https://github.com/worktile/plait/commit/0039f3388187f649ec879b95b2d7a2243e584d3f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - optimize node more awareness rectangle to avoid flickering in the mouse movement
+
+-   [#1125](https://github.com/worktile/plait/pull/1125) [`e6badda5c97fb19c25171a474a002942384243a3`](https://github.com/worktile/plait/commit/e6badda5c97fb19c25171a474a002942384243a3) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - do not allow to display node more when selected elements count greater than 1
+
+### Patch Changes
+
+-   [`1e19043246fba06a59f3b73b3a0584e26e18828b`](https://github.com/worktile/plait/commit/1e19043246fba06a59f3b73b3a0584e26e18828b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix mind node more hasExpandedIcon status error
+
+-   [#1124](https://github.com/worktile/plait/pull/1124) [`268c3cb28c6ee3030ec1fc630b76a1666fb430a4`](https://github.com/worktile/plait/commit/268c3cb28c6ee3030ec1fc630b76a1666fb430a4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - mind node more support touch device
+
+-   [#1126](https://github.com/worktile/plait/pull/1126) [`b05593abddf758e08b123a1883500803aa870e16`](https://github.com/worktile/plait/commit/b05593abddf758e08b123a1883500803aa870e16) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Support adding child nodes to both left and right sides in standard layout
+
+## 0.89.2
+
+## 0.89.1
+
+## 0.89.0
+
+## 0.88.1
+
+## 0.88.0
+
+## 0.87.0
+
+### Minor Changes
+
+-   [#1087](https://github.com/worktile/plait/pull/1087) [`0d1bf680fc4b19931f87a1599a92e171aa3a78bd`](https://github.com/worktile/plait/commit/0d1bf680fc4b19931f87a1599a92e171aa3a78bd) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix paste collapsed parent
+
+## 0.87.0-next.1
+
+### Minor Changes
+
+-   [#1087](https://github.com/worktile/plait/pull/1087) [`0d1bf680fc4b19931f87a1599a92e171aa3a78bd`](https://github.com/worktile/plait/commit/0d1bf680fc4b19931f87a1599a92e171aa3a78bd) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix paste collapsed parent
+
+## 0.87.0-next.0
+
+## 0.86.1
+
+## 0.86.0
+
+### Minor Changes
+
+-   [#1083](https://github.com/worktile/plait/pull/1083) [`e1f62f4e3b009c85f25c70b3532029bdf5cfd584`](https://github.com/worktile/plait/commit/e1f62f4e3b009c85f25c70b3532029bdf5cfd584) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove isRoot property since it is same with `type === 'mind'`
+
+### Patch Changes
+
+-   [#1082](https://github.com/worktile/plait/pull/1082) [`a30d5ee532481c56c7da8de0ae157d1452fd3895`](https://github.com/worktile/plait/commit/a30d5ee532481c56c7da8de0ae157d1452fd3895) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix mind style and correct example data
+
+## 0.85.0
+
+### Minor Changes
+
+-   [#1079](https://github.com/worktile/plait/pull/1079) [`98a644250b591e7e5ca6f7d683a1bc73e0512cf6`](https://github.com/worktile/plait/commit/98a644250b591e7e5ca6f7d683a1bc73e0512cf6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix two issues:
+
+    1. fix getTopicMaxDynamicWidth issue get wrong width when manualWidth exists.
+    2. fix height issue when resize mind node width or update image size.
+
+    refactor rename mind type to 'mind' and set type for child node to 'mind_child' and be compatible with legacy data.
+
+-   [#1078](https://github.com/worktile/plait/pull/1078) [`a033e0a747fd529062b8fb4fb22e84ddd9ae7edc`](https://github.com/worktile/plait/commit/a033e0a747fd529062b8fb4fb22e84ddd9ae7edc) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove width and height property and handle the effect after remove them.
+
+## 0.84.0
+
+### Minor Changes
+
+-   [#1077](https://github.com/worktile/plait/pull/1077) [`f3bc1daeb5f077fd47ca1fca9eff9e1d860659c7`](https://github.com/worktile/plait/commit/f3bc1daeb5f077fd47ca1fca9eff9e1d860659c7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix topic text can not show completely in different machines
+
+    1. add getElementSize to remeasure the width and height for text element and cache to `ELEMENT_TO_SIZE_MAP`.
+    2. apply getElementSize to get the width and height for mind node topic text.
+    3. handling the effect of mind node functions, such as editing topic, resizing mind node width and so on.
+
+## 0.83.1
+
+### Patch Changes
+
+-   [#1074](https://github.com/worktile/plait/pull/1074) [`9c4c1a4d3bccd1bf2914c58d961ce7516482854a`](https://github.com/worktile/plait/commit/9c4c1a4d3bccd1bf2914c58d961ce7516482854a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update mind node shape and link default width
+
+-   [#1075](https://github.com/worktile/plait/pull/1075) [`67cac99176fa8d2540b9ac20cc623e6346ec327d`](https://github.com/worktile/plait/commit/67cac99176fa8d2540b9ac20cc623e6346ec327d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve hover to preview and click to commit(prevent text and swimlane)
+
+## 0.83.0
+
+### Patch Changes
+
+-   [#1070](https://github.com/worktile/plait/pull/1070) [`6d0a66e90adeb33e3b91772c9355e9a6c80588d9`](https://github.com/worktile/plait/commit/6d0a66e90adeb33e3b91772c9355e9a6c80588d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve getTopicSize param type
+
+## 0.82.0
+
+### Minor Changes
+
+-   [#1069](https://github.com/worktile/plait/pull/1069) [`3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6`](https://github.com/worktile/plait/commit/3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - measureElement need assign board as first param to cache canvas dom element
+    refactor mind node more function
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.82.0-next.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.81.3
+
+## 0.81.2
+
+## 0.81.1
+
+## 0.81.0
+
+## 0.80.0
+
+## 0.79.1
+
+## 0.79.0
+
+## 0.78.2
+
+## 0.78.1
+
+## 0.78.0
+
+### Minor Changes
+
+-   [#1052](https://github.com/worktile/plait/pull/1052) [`688cf253feea7902690af40ded129bd83a4469a7`](https://github.com/worktile/plait/commit/688cf253feea7902690af40ded129bd83a4469a7) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.78.0-next.0
+
+### Minor Changes
+
+-   [`af24487d0cb31303c8600aae655f5825e4c9e918`](https://github.com/worktile/plait/commit/af24487d0cb31303c8600aae655f5825e4c9e918) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.77.3
+
+## 0.77.2
+
+### Patch Changes
+
+-   [#1043](https://github.com/worktile/plait/pull/1043) [`83535189077f2d1ac7454674a1da8ede0fadb547`](https://github.com/worktile/plait/commit/83535189077f2d1ac7454674a1da8ede0fadb547) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply font family fallback solution to resolve text width calculation issue in windows #1042
+
+## 0.77.1
+
+### Patch Changes
+
+-   [#1038](https://github.com/worktile/plait/pull/1038) [`1db6b21f4e6590583df15c402b56a4dc0d455c4c`](https://github.com/worktile/plait/commit/1db6b21f4e6590583df15c402b56a4dc0d455c4c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support i18n key for abstract node text
+
+## 0.77.0
+
+## 0.76.0
+
+### Patch Changes
+
+-   [#1029](https://github.com/worktile/plait/pull/1029) [`ca63c9ee4c2865d8234f27864416e70349ca6297`](https://github.com/worktile/plait/commit/ca63c9ee4c2865d8234f27864416e70349ca6297) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix mind node resize issue ,cause by: https://github.com/worktile/plait/commit/4bd3e83162527e8bc460b58db20ef85614c30cc5#diff-5b62d949b84a8ee13d65d2c686e1a28e9a3da1a367254c98eec6fff961fc53a2
+
+## 0.75.0
+
+### Patch Changes
+
+-   [#1006](https://github.com/worktile/plait/pull/1006) [`dd32f2e18abafcb65428d8ac093fc5e667f099d9`](https://github.com/worktile/plait/commit/dd32f2e18abafcb65428d8ac093fc5e667f099d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add overridable normalizeElement method to fix incorrect data before element initialization
+
+    add normalizeElement method for mind element to fix incorrect data and widthAndHeight
+
+## 0.75.0-next.9
+
+## 0.75.0-next.8
+
+## 0.75.0-next.7
+
+## 0.75.0-next.6
+
+### Patch Changes
+
+-   [#1006](https://github.com/worktile/plait/pull/1006) [`dd32f2e18abafcb65428d8ac093fc5e667f099d9`](https://github.com/worktile/plait/commit/dd32f2e18abafcb65428d8ac093fc5e667f099d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add overridable normalizeElement method to fix incorrect data before element initialization
+
+    add normalizeElement method for mind element to fix incorrect data and widthAndHeight
+
+## 0.75.0-next.5
+
+## 0.75.0-next.4
+
+## 0.75.0-next.3
+
+## 0.75.0-next.2
+
+## 0.75.0-next.1
+
+## 0.75.0-next.0
+
+## 0.74.0
+
+## 0.73.0
+
+## 0.72.0
+
+### Patch Changes
+
+-   [#987](https://github.com/worktile/plait/pull/987) [`c759b8c0b`](https://github.com/worktile/plait/commit/c759b8c0bc95023cc45624814e1cad96e7b6fb6f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - should rewrite clipboardContext after invoking addOrCreateClipboardContext
+
+## 0.71.0
+
+### Minor Changes
+
+-   [#975](https://github.com/worktile/plait/pull/975) [`5ad8ebe47`](https://github.com/worktile/plait/commit/5ad8ebe47ec2d59111d36274c509ab3505677f11) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support strokeStyle for mind node and link
+
+    BREAK CHANGES:
+
+    1. It is planned to replace branchColor and branchWidth with strokeColor and strokeWidth. To maintain compatibility, branchColor and branchWidth will not be deleted. BranchColor and branchWidth will be applied first.
+    2. Both branchWidth and branchColor attributes are applied to the child node first and no longer rely on the attributes of the parent node. BranchShape remains dependent on the attributes of the parent node.
+
+    破坏性更改：
+
+    1. 计划用 strokeColor 和 strokeWidth 替换 branchColor 和 branchWidth，为保持兼容 branchColor 和 branchWidth 不删除，优先应用 branchColor 和 branchWidth。
+    2. branchWidth 和 branchColor 属性都优先应用 child 节点，不再依赖父节点的属性，branchShape 保持依赖父节点属性
+
+## 0.70.0
+
+### Minor Changes
+
+-   [`3330172da`](https://github.com/worktile/plait/commit/3330172da6c19bd97cdc6384a38b6e36807940ea) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply branchColor By child node not parent node
+
+    BREAK CHANGES: [#973](https://github.com/worktile/plait/issues/973)
+
+## 0.69.2
+
+### Patch Changes
+
+-   [`26f77e350`](https://github.com/worktile/plait/commit/26f77e350b1618095023e03b49ffb6da1e99ecb2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use current x,y to create mind cause user can not get point by getMovingPointInBoard on mobile
+
+    On touchscreens, users need to first touch the screen and then move their finger to trigger the pointermove event.
+
+    https://github.com/plait-board/drawnix/issues/20
+
+## 0.69.1
+
+## 0.69.0
+
+## 0.68.0
+
+## 0.67.2
+
+## 0.67.1
+
+## 0.67.0
+
+### Minor Changes
+
+-   [`4bd3e8316`](https://github.com/worktile/plait/commit/4bd3e83162527e8bc460b58db20ef85614c30cc5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use global selection class (`selection-rectangle`), and use global dragging state for mind node dnd
+
+## 0.66.1
+
+## 0.66.0
+
+## 0.65.2
+
+## 0.65.1
+
+## 0.65.0
+
+## 0.65.0-next.0
+
+## 0.64.9
+
+## 0.64.8
+
+## 0.64.7
+
+### Patch Changes
+
+-   [`5fb79e060`](https://github.com/worktile/plait/commit/5fb79e060865bb808f8857ad201317d8faf994ae) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isHotkey import error
+
+## 0.64.6
+
+### Patch Changes
+
+-   [`423d5b7a5`](https://github.com/worktile/plait/commit/423d5b7a56eabca488f4a2d6153edad12524b26a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - allow undo once insert_node when first enter mind node editing
+
+*   [`11804a707`](https://github.com/worktile/plait/commit/11804a707b11d6c7f95b5a99b498d86bb1d669bd) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the mind element can not selected issue after press plus icon
+
+## 0.64.5
+
+### Patch Changes
+
+-   [`fe711d3e0`](https://github.com/worktile/plait/commit/fe711d3e037dd72fb5d23ad02fb4c809cc8a1de1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct height, textHeight, width when zoom is not 100% for operations: resize, remove image, add image and so on
+
+## 0.64.4
+
+### Patch Changes
+
+-   [`091ad58fd`](https://github.com/worktile/plait/commit/091ad58fd422fee506c1c6f400aa838cd4b8a5e2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Identify mind elements by verifying that the element includes the attributes: data, data.topic, width, and height.
+
+    exist the waring case of height equal 0
+
+## 0.64.3
+
+### Patch Changes
+
+-   [`ed2f0906f`](https://github.com/worktile/plait/commit/ed2f0906f242996f1486adbee802c3d0746e0a34) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Identify mind elements by the type of root node rather than the node properties
+
+    Handle the waring of drawing on element can not been identified
+
+## 0.64.2
+
+### Patch Changes
+
+-   [#959](https://github.com/worktile/plait/pull/959) [`a47f09a6f`](https://github.com/worktile/plait/commit/a47f09a6f8fdef405d8cdd8de36470c04c5d2f2d) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix defects in dblclick and moving
+
+*   [`5b3e8945a`](https://github.com/worktile/plait/commit/5b3e8945a9826ae5b385d73cc343af29a99524e5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - should not trigger focus when board is readonly
+
+## 0.64.1
+
+## 0.64.0
+
+## 0.63.0
+
+## 0.62.0
+
+### Minor Changes
+
+-   [#914](https://github.com/worktile/plait/pull/914) [`92436588f`](https://github.com/worktile/plait/commit/92436588fa95557474c8ebc0c282330376622fb4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Framework agnostic refactoring:
+
+    1. Use `measureElement` to measure text width and height
+
+    2. Use `text-manage` in `@plait/common` to render text
+
+    3. Provide an overridable method `renderEmoji` in `@plait/mind` to remove the dependency on Angular and transform the response generator
+
+    4. Provide an overridable method `renderLabelIcon` in `@plait/flow` to remove the dependency on Angular and transform the response generator
+
+    ***
+
+    Framework agnostic 改造:
+
+    1. 改用 `measureElement` 测量文本宽高
+
+    2. 改用 `@plait/common` 中的 `text-manage` 实现文本的渲染
+
+    3. `@plait/mind` 中提供可重写方法 `renderEmoji` 解除对 Angular 的依赖，并且改造响应 generator
+
+    4. `@plait/flow` 中提供可重写方法 `renderLabelIcon` 解除对 Angular 的依赖，并且改造响应 generator
+
+*   [`bdfbe315a`](https://github.com/worktile/plait/commit/bdfbe315a48f1b41655f1da89e887dfae2595148) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove the some logic in ImageBaseComponent and MindEmojiBaseComponent to try remove base class
+
+-   [#922](https://github.com/worktile/plait/pull/922) [`0e1ddecc4`](https://github.com/worktile/plait/commit/0e1ddecc45b76f4093944d340bfe5670a80e2b1b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - refactor getHitElementByPoint return value
+
+    add getHitElement to board, the hit element is determined by the plugin
+
+*   [`3f54f62e6`](https://github.com/worktile/plait/commit/3f54f62e61fa5182e2cf178011b495fa27bda398) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove angular/core and angular/common from peerDependencies of package.json
+
+### Patch Changes
+
+-   [`ec00cb4f4`](https://github.com/worktile/plait/commit/ec00cb4f4c3cff6fbab7ed7ab67ef48e3efb47ee) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `isPreventClearSelection` in WithSelectionPluginOptions(with-selection)
+
+    extract `getSelectionOptions` and `setSelectionOptions` to set/get options of selection
+
+    rename `isMultipleSelection` to `isMultiple` in WithSelectionPluginOptions(with-selection)
+
+    rename `WithPluginOptions` to `WithSelectionPluginOptions` and rename `PlaitPluginOptions` to `WithPluginOptions`
+
+*   [#935](https://github.com/worktile/plait/pull/935) [`716e8f23f`](https://github.com/worktile/plait/commit/716e8f23fbfd6394b917b1e35ff3cb34d4d848dc) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - handle enter event when editing text
+
+-   [`59627b552`](https://github.com/worktile/plait/commit/59627b5526d2b710db0ce3b189f443921a165065) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prompt `mind element has not been mounted` when element is mind element
+
+## 0.62.0-next.10
+
+### Patch Changes
+
+-   [`ec00cb4f4`](https://github.com/worktile/plait/commit/ec00cb4f4c3cff6fbab7ed7ab67ef48e3efb47ee) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `isPreventClearSelection` in WithSelectionPluginOptions(with-selection)
+
+    extract `getSelectionOptions` and `setSelectionOptions` to set/get options of selection
+
+    rename `isMultipleSelection` to `isMultiple` in WithSelectionPluginOptions(with-selection)
+
+    rename `WithPluginOptions` to `WithSelectionPluginOptions` and rename `PlaitPluginOptions` to `WithPluginOptions`
+
+## 0.62.0-next.9
+
+## 0.62.0-next.8
+
+### Patch Changes
+
+-   [#935](https://github.com/worktile/plait/pull/935) [`716e8f23f`](https://github.com/worktile/plait/commit/716e8f23fbfd6394b917b1e35ff3cb34d4d848dc) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - handle enter event when editing text
+
+## 0.62.0-next.7
+
+### Minor Changes
+
+-   [#922](https://github.com/worktile/plait/pull/922) [`0e1ddecc4`](https://github.com/worktile/plait/commit/0e1ddecc45b76f4093944d340bfe5670a80e2b1b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - refactor getHitElementByPoint return value
+
+    add getHitElement to board, the hit element is determined by the plugin
+
+### Patch Changes
+
+-   [`59627b552`](https://github.com/worktile/plait/commit/59627b5526d2b710db0ce3b189f443921a165065) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prompt `mind element has not been mounted` when element is mind element
+
 ## 0.62.0-next.6
 
 ### Minor Changes

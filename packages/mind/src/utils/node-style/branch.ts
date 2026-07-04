@@ -3,7 +3,7 @@
  */
 import { PlaitBoard, isNullOrUndefined } from '@plait/core';
 import { BranchShape, MindElement } from '../../interfaces/element';
-import { BRANCH_WIDTH } from '../../constants/default';
+import { STROKE_WIDTH } from '../../constants/default';
 import { DefaultAbstractNodeStyle } from '../../constants/node-style';
 import { getAvailableProperty } from './common';
 import { MindDefaultThemeColor, MindThemeColor } from '../../interfaces/theme-color';
@@ -15,7 +15,7 @@ export const getBranchColorByMindElement = (board: PlaitBoard, element: MindElem
         return getAbstractBranchColor(board, element);
     }
 
-    const branchColor = getAvailableProperty(board, element, 'branchColor');
+    const branchColor = getAvailableProperty(board, element, 'branchColor') || getAvailableProperty(board, element, 'strokeColor');
     return branchColor || getDefaultBranchColor(board, element);
 };
 
@@ -25,20 +25,20 @@ export const getBranchShapeByMindElement = (board: PlaitBoard, element: MindElem
 };
 
 export const getBranchWidthByMindElement = (board: PlaitBoard, element: MindElement) => {
-    const branchWidth = getAvailableProperty(board, element, 'branchWidth');
-    return branchWidth || BRANCH_WIDTH;
+    const branchWidth = getAvailableProperty(board, element, 'branchWidth') || getAvailableProperty(board, element, 'strokeWidth');
+    return branchWidth || STROKE_WIDTH;
 };
 
 export const getAbstractBranchWidth = (board: PlaitBoard, element: MindElement) => {
     if (!isNullOrUndefined(element.branchWidth)) {
-        return element.branchWidth;
+        return element.branchWidth as number;
     }
     return DefaultAbstractNodeStyle.branch.width;
 };
 
 export const getAbstractBranchColor = (board: PlaitBoard, element: MindElement) => {
-    if (element.branchColor) {
-        return element.branchColor;
+    if (element.branchColor || element.strokeColor) {
+        return element.branchColor || element.strokeColor;
     }
     return DefaultAbstractNodeStyle.branch.color;
 };
@@ -62,7 +62,7 @@ export const getDefaultBranchColorByIndex = (board: PlaitBoard, index: number) =
 
 export const getMindThemeColor = (board: PlaitBoard) => {
     const themeColors = PlaitBoard.getThemeColors(board);
-    const themeColor = themeColors.find(val => val.mode === board.theme.themeColorMode);
+    const themeColor = themeColors.find((val) => val.mode === board.theme.themeColorMode);
     if (themeColor && MindThemeColor.isMindThemeColor(themeColor)) {
         return themeColor;
     } else {

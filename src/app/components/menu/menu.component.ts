@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, forwardRef } from '@angular/core';
-import { PlaitBoard, ToImageOptions, getSelectedElements, toImage } from '@plait/core';
-import { NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, forwardRef, inject } from '@angular/core';
+import { PlaitBoard, ToImageOptions, getSelectedElements, toImage, toSvgData } from '@plait/core';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { closeAction } from '../../utils/popover';
 import { PlaitIslandBaseComponent } from '@plait/angular-board';
 
@@ -12,15 +12,12 @@ import { PlaitIslandBaseComponent } from '@plait/angular-board';
     host: {
         class: 'app-menu'
     },
-    standalone: true,
-    imports: [NgClass, NgTemplateOutlet, NgIf]
+    imports: [NgClass, NgTemplateOutlet]
 })
 export class AppMenuComponent extends PlaitIslandBaseComponent {
-    isShowMenu = false;
+    cdr = inject(ChangeDetectorRef);
 
-    constructor(protected cdr: ChangeDetectorRef, private elementRef: ElementRef<HTMLElement>) {
-        super(cdr);
-    }
+    isShowMenu = false;
 
     open(event: MouseEvent) {
         this.isShowMenu = !this.isShowMenu;
@@ -32,11 +29,11 @@ export class AppMenuComponent extends PlaitIslandBaseComponent {
         }
     }
 
-    exportImage(event: MouseEvent) {
+    exportPNG(event: MouseEvent) {
         const selectedElements = getSelectedElements(this.board);
         boardToImage(this.board, {
             elements: selectedElements.length > 0 ? selectedElements : undefined
-        }).then(image => {
+        }).then((image) => {
             if (image) {
                 const pngImage = base64ToBlob(image);
                 const imageName = `plait-export-data-${new Date().getTime()}.png`;
@@ -44,6 +41,20 @@ export class AppMenuComponent extends PlaitIslandBaseComponent {
             }
             this.isShowMenu = false;
             this.cdr.markForCheck();
+        });
+    }
+
+    exportSVG(event: MouseEvent) {
+        const selectedElements = getSelectedElements(this.board);
+        return toSvgData(this.board, {
+            fillStyle: 'transparent',
+            padding: 20,
+            ratio: 4,
+            elements: selectedElements.length > 0 ? selectedElements : undefined
+        }).then((svgData) => {
+            const blob = new Blob([svgData], { type: 'image/svg+xml' });
+            const imageName = `plait-export-data-${new Date().getTime()}.svg`;
+            download(blob, imageName);
         });
     }
 }
@@ -66,7 +77,6 @@ export const base64ToBlob = (base64: string) => {
 export const boardToImage = (board: PlaitBoard, options: ToImageOptions = {}) => {
     return toImage(board, {
         fillStyle: 'transparent',
-        inlineStyleClassNames: '.extend,.emojis,.text',
         padding: 20,
         ratio: 4,
         ...options

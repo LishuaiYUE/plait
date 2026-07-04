@@ -1,7 +1,7 @@
-import { Point, RectangleClient } from '@plait/core';
+import { PlaitBoard, Point, RectangleClient } from '@plait/core';
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { createPolygonEngine } from './polygon';
-import { getStrokeWidthByElement } from '../../utils';
+import { getCustomTextRectangle } from '../../utils';
 import { ShapeDefaultSpace } from '../../constants';
 
 export const getPentagonPoints = (rectangle: RectangleClient): Point[] => {
@@ -16,17 +16,12 @@ export const getPentagonPoints = (rectangle: RectangleClient): Point[] => {
 
 export const PentagonEngine: ShapeEngine = createPolygonEngine({
     getPolygonPoints: getPentagonPoints,
-    getTextRectangle(element: PlaitGeometry) {
+    getTextRectangle: (board: PlaitBoard, element: PlaitGeometry) => {
         const elementRectangle = RectangleClient.getRectangleByPoints(element.points!);
-        const strokeWidth = getStrokeWidthByElement(element);
-        const height = element.textHeight!;
-        const originWidth = elementRectangle.width - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
-        const width = (originWidth * 3) / 5;
-        return {
-            height,
-            width: width > 0 ? width : 0,
-            x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth + originWidth / 5,
-            y: elementRectangle.y + elementRectangle.height / 5 + ((elementRectangle.height * 4) / 5 - height) / 2
-        };
+        const customTextRectangle = getCustomTextRectangle(board, element, 3 / 5);
+        const startY = elementRectangle.y + elementRectangle.height / 5;
+        const endY = elementRectangle.y + elementRectangle.height;
+        customTextRectangle.y = startY + (endY - startY - customTextRectangle.height) / 2;
+        return customTextRectangle;
     }
 });

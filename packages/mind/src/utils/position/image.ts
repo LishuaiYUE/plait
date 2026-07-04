@@ -9,7 +9,6 @@ import { RESIZE_HANDLE_DIAMETER, getRectangleResizeHandleRefs } from '@plait/com
 export function getImageForeignRectangle(board: PlaitMindBoard, element: MindElement<ImageData>): RectangleClient {
     let { x, y } = getRectangleByNode(MindElement.getNode(element));
     const elementWidth = element.manualWidth || element.width;
-
     x =
         elementWidth > element.data.image.width
             ? x + NodeSpace.getTextLeftSpace(board, element) + (elementWidth - element.data.image.width) / 2
@@ -34,7 +33,7 @@ export const isHitImage = (board: PlaitBoard, element: MindElement<ImageData>, p
 export const getHitImageResizeHandleDirection = (board: PlaitBoard, element: MindElement<ImageData>, point: Point) => {
     const imageRectangle = getImageForeignRectangle(board as PlaitMindBoard, element);
     const resizeHandleRefs = getRectangleResizeHandleRefs(imageRectangle, RESIZE_HANDLE_DIAMETER);
-    const result = resizeHandleRefs.find(resizeHandleRef => {
+    const result = resizeHandleRefs.find((resizeHandleRef) => {
         return RectangleClient.isHit(RectangleClient.getRectangleByPoints([point, point]), resizeHandleRef.rectangle);
     });
     return result;

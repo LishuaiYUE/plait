@@ -1,6 +1,6 @@
 import { PlaitMindBoard } from '@plait/mind';
-import { PlaitBoard, Point, RectangleClient, RgbaToHEX, createG, getElementById } from '@plait/core';
-import { PlaitDrawElement, PlaitGeometry, getLineHandleRefPair, getStrokeWidthByElement } from '@plait/draw';
+import { PlaitBoard, Point, RectangleClient, rgbaToHEX, createG, getElementById } from '@plait/core';
+import { PlaitDrawElement, PlaitGeometry, getArrowLineHandleRefPair, getStrokeWidthByElement } from '@plait/draw';
 import {
     AStar,
     ElbowLineRouteOptions,
@@ -34,10 +34,10 @@ export const withLineRoute = (board: PlaitBoard) => {
 
 export const fakeLineRouteProcess = (board: PlaitBoard) => {
     const g = createG();
-    PlaitBoard.getElementActiveHost(board).append(g);
+    PlaitBoard.getElementTopHost(board).append(g);
     const rough = PlaitBoard.getRoughSVG(board);
     const lineElement = getElementById(board, mockLineData[2].id);
-    const handleRefPair = lineElement && PlaitDrawElement.isLine(lineElement) && getLineHandleRefPair(board, lineElement);
+    const handleRefPair = lineElement && PlaitDrawElement.isArrowLine(lineElement) && getArrowLineHandleRefPair(board, lineElement);
     const sourceElement = lineElement && lineElement.source.boundId && getElementById<PlaitGeometry>(board, lineElement.source.boundId);
     const targetElement = lineElement && lineElement.target.boundId && getElementById<PlaitGeometry>(board, lineElement.target.boundId);
     if (lineElement && sourceElement && targetElement && handleRefPair) {
@@ -140,7 +140,7 @@ export const fakeLineRouteProcess = (board: PlaitBoard) => {
             };
             // 2、Construct connected points
             const points = getGraphPoints(options);
-            points.forEach(p => {
+            points.forEach((p) => {
                 const controlPointG = rough.circle(p[0], p[1], 4, {
                     stroke: '#f08c02',
                     fill: '#f08c02',
@@ -164,13 +164,13 @@ export const fakeLineRouteProcess = (board: PlaitBoard) => {
                     throw new Error(`can't find current`);
                 }
                 const currentPoint = current!.node.data;
-                current.node.adjacentNodes.forEach(next => {
+                current.node.adjacentNodes.forEach((next) => {
                     if (!reached.has(next)) {
                         reached.add(next);
                         frontier.enqueue({ node: next, priority: 0 });
                     }
                     if (
-                        !edges.find(line => {
+                        !edges.find((line) => {
                             return Point.isEquals(line[0], next.data) && Point.isEquals(line[1], currentPoint);
                         })
                     ) {
@@ -179,9 +179,9 @@ export const fakeLineRouteProcess = (board: PlaitBoard) => {
                 });
             }
             // Figure edges effect diagram
-            edges.forEach(edges => {
+            edges.forEach((edges) => {
                 const connectionG = rough.line(edges[0][0], edges[0][1], edges[1][0], edges[1][1], {
-                    stroke: RgbaToHEX('#007500', 0.2),
+                    stroke: rgbaToHEX('#007500', 0.2),
                     strokeWidth: 1.5
                 });
                 g?.append(connectionG);
@@ -192,7 +192,7 @@ export const fakeLineRouteProcess = (board: PlaitBoard) => {
             aStar.search(nextSourcePoint, nextTargetPoint, options.sourcePoint);
             let route = aStar.getRoute(nextSourcePoint, nextTargetPoint);
             route = [options.sourcePoint, ...route, nextTargetPoint, options.targetPoint];
-            const routeG = rough.linearPath(route, { stroke: RgbaToHEX('#e03130', 0.4), strokeWidth: 3 });
+            const routeG = rough.linearPath(route, { stroke: rgbaToHEX('#e03130', 0.4), strokeWidth: 3 });
             g.append(routeG);
             // 5、Correct the shortest path: get the midline xAxis, yAxis between figures (if they exist)
             const isHitX = RectangleClient.isHitX(options.sourceOuterRectangle, options.targetOuterRectangle);
@@ -224,7 +224,6 @@ export const mockLineData = [
         shape: 'rectangle',
         angle: 0,
         opacity: 1,
-        textHeight: 20,
         text: {
             children: [
                 {
@@ -245,7 +244,6 @@ export const mockLineData = [
         shape: 'rectangle',
         angle: 0,
         opacity: 1,
-        textHeight: 20,
         text: {
             children: [
                 {
@@ -262,7 +260,7 @@ export const mockLineData = [
     },
     {
         id: 'bwZpx',
-        type: 'line',
+        type: 'arrow-line',
         shape: 'elbow',
         source: {
             marker: 'none',
@@ -289,7 +287,6 @@ export const mockLineData = [
         shape: 'text',
         angle: 0,
         opacity: 1,
-        textHeight: 45,
         text: {
             children: [
                 {
@@ -311,12 +308,10 @@ export const mockLineData = [
         shape: 'text',
         angle: 0,
         opacity: 1,
-        textHeight: 45,
         text: {
             children: [
                 {
-                    text:
-                        'Green connection: the connection through the center line corrected based on the shortest path with the fewest turning points',
+                    text: 'Green connection: the connection through the center line corrected based on the shortest path with the fewest turning points',
                     color: '#2f9e44',
                     'font-size': 15
                 }
@@ -334,7 +329,6 @@ export const mockLineData = [
         shape: 'text',
         angle: 0,
         opacity: 1,
-        textHeight: 22.5,
         text: {
             children: [
                 {
@@ -349,7 +343,7 @@ export const mockLineData = [
             [802.4403076171873, -183.92864990234375]
         ],
         autoSize: true
-    },
+    }
     // turning points note
     // {
     //     id: 'TmwRd',
@@ -357,7 +351,6 @@ export const mockLineData = [
     //     shape: 'text',
     //     angle: 0,
     //     opacity: 1,
-    //     textHeight: 22.5,
     //     text: {
     //         children: [
     //             {
@@ -379,7 +372,6 @@ export const mockLineData = [
     //     shape: 'text',
     //     angle: 0,
     //     opacity: 1,
-    //     textHeight: 22.5,
     //     text: {
     //         children: [
     //             {
@@ -397,7 +389,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'drFzQ',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'elbow',
     //     source: {
     //         marker: 'none'
@@ -416,7 +408,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'SNQfA',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'straight',
     //     source: {
     //         marker: 'none'
@@ -435,7 +427,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'BBMPW',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'elbow',
     //     source: {
     //         marker: 'none'
@@ -454,7 +446,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'ikjbe',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'straight',
     //     source: {
     //         marker: 'none'
@@ -473,7 +465,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'dpKYw',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'elbow',
     //     source: {
     //         marker: 'none'
@@ -492,7 +484,7 @@ export const mockLineData = [
     // },
     // {
     //     id: 'HmJbj',
-    //     type: 'line',
+    //     type: 'arrow-line',
     //     shape: 'straight',
     //     source: {
     //         marker: 'none'

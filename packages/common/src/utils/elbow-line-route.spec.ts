@@ -11,7 +11,6 @@ describe('generate elbow line route', () => {
                     shape: 'rectangle',
                     angle: 0,
                     opacity: 1,
-                    textHeight: 20,
                     text: {
                         children: [
                             {
@@ -32,7 +31,6 @@ describe('generate elbow line route', () => {
                     shape: 'rectangle',
                     angle: 0,
                     opacity: 1,
-                    textHeight: 20,
                     text: {
                         children: [
                             {
@@ -49,7 +47,7 @@ describe('generate elbow line route', () => {
                 },
                 {
                     id: 'spRZM',
-                    type: 'line',
+                    type: 'arrow-line',
                     shape: 'elbow',
                     source: {
                         marker: 'none',
@@ -114,7 +112,6 @@ describe('generate elbow line route', () => {
                     shape: 'rectangle',
                     angle: 0,
                     opacity: 1,
-                    textHeight: 20,
                     text: {
                         children: [
                             {
@@ -135,7 +132,6 @@ describe('generate elbow line route', () => {
                     shape: 'rectangle',
                     angle: 0,
                     opacity: 1,
-                    textHeight: 20,
                     text: {
                         children: [
                             {
@@ -152,7 +148,7 @@ describe('generate elbow line route', () => {
                 },
                 {
                     id: 'CXFrs',
-                    type: 'line',
+                    type: 'arrow-line',
                     shape: 'elbow',
                     source: {
                         marker: 'none',
@@ -218,7 +214,6 @@ describe('generate elbow line route', () => {
                     shape: 'terminal',
                     angle: 0,
                     opacity: 1,
-                    textHeight: 20,
                     text: {
                         children: [
                             {
@@ -239,7 +234,6 @@ describe('generate elbow line route', () => {
                     shape: 'decision',
                     angle: 0,
                     opacity: 1,
-                    textHeight: 20,
                     text: {
                         children: [
                             {
@@ -256,7 +250,7 @@ describe('generate elbow line route', () => {
                 },
                 {
                     id: 'dBQka',
-                    type: 'line',
+                    type: 'arrow-line',
                     shape: 'elbow',
                     source: {
                         marker: 'none',

@@ -9,8 +9,8 @@ import { sortElements } from './position';
 import { RectangleClient } from '../interfaces/rectangle-client';
 import { getRectangleByElements } from './element';
 import { PlaitOptionsBoard } from '../plugins/with-options';
-import { PlaitPluginKey } from '../interfaces/plugin-key';
-import { WithPluginOptions } from '../plugins/with-selection';
+import { isDebug } from './debug';
+import { PlaitPluginKey, WithSelectionPluginOptions } from '../interfaces/plugin';
 
 export const getHitElementsBySelection = (
     board: PlaitBoard,
@@ -24,18 +24,28 @@ export const getHitElementsBySelection = (
     }
     const isCollapsed = Selection.isCollapsed(newSelection);
     if (isCollapsed) {
-        const hitElement = getHitElementByPoint(board, newSelection.anchor, match);
-        if (hitElement) {
-            return [hitElement];
+        const hitElements = getHitElementsByPoint(board, newSelection.anchor, match);
+        if (hitElements?.length) {
+            return hitElements;
         } else {
             return [];
         }
     }
     depthFirstRecursion<Ancestor>(
         board,
-        node => {
-            if (!PlaitBoard.isBoard(node) && match(node) && board.isRectangleHit(node, newSelection)) {
-                rectangleHitElements.push(node);
+        (node) => {
+            if (!PlaitBoard.isBoard(node) && match(node)) {
+                let isRectangleHit = false;
+                try {
+                    isRectangleHit = board.isRectangleHit(node, newSelection);
+                } catch (error) {
+                    if (isDebug()) {
+                        console.error('isRectangleHit', error, 'node', node);
+                    }
+                }
+                if (isRectangleHit) {
+                    rectangleHitElements.push(node);
+                }
             }
         },
         getIsRecursionFunc(board),
@@ -44,43 +54,47 @@ export const getHitElementsBySelection = (
     return rectangleHitElements;
 };
 
-export const getHitElementByPoint = (
+export const getHitElementsByPoint = (
     board: PlaitBoard,
     point: Point,
-    match: (element: PlaitElement) => boolean = () => true
-): undefined | PlaitElement => {
-    let hitElement: PlaitElement | undefined = undefined;
-    let hitInsideElement: PlaitElement | undefined = undefined;
+    match: (element: PlaitElement) => boolean = () => true,
+    isStrict = true
+): PlaitElement[] => {
+    let hitElements: PlaitElement[] = [];
     depthFirstRecursion<Ancestor>(
         board,
-        node => {
-            if (hitElement) {
-                return;
-            }
+        (node) => {
             if (PlaitBoard.isBoard(node) || !match(node) || !PlaitElement.hasMounted(node)) {
                 return;
             }
-            if (board.isHit(node, point)) {
-                hitElement = node;
-                return;
+            let isHit = false;
+            try {
+                isHit = board.isHit(node, point, isStrict);
+            } catch (error) {
+                if (isDebug()) {
+                    console.error('isHit', error, 'node', node);
+                }
             }
-
-            /**
-             * 需要增加场景测试
-             * hitInsideElement 存的是第一个符合 isInsidePoint 的元素
-             * 当有元素符合 isHit 时结束遍历，并返回 hitElement
-             * 当所有元素都不符合 isHit ，则返回第一个符合 isInsidePoint 的元素
-             * 这样保证最上面的元素优先被探测到；
-             */
-
-            if (!hitInsideElement && board.isInsidePoint(node, point)) {
-                hitInsideElement = node;
+            if (isHit) {
+                hitElements.push(node);
+                return;
             }
         },
         getIsRecursionFunc(board),
         true
     );
-    return hitElement || hitInsideElement;
+    return hitElements;
+};
+
+export const getHitElementByPoint = (
+    board: PlaitBoard,
+    point: Point,
+    match: (element: PlaitElement) => boolean = () => true,
+    isStrict = true
+): undefined | PlaitElement => {
+    const pointHitElements = getHitElementsByPoint(board, point, match, isStrict);
+    const hitElement = board.getOneHitElement(pointHitElements, point);
+    return hitElement;
 };
 
 export const getHitSelectedElements = (board: PlaitBoard, point: Point) => {
@@ -121,17 +135,22 @@ export const removeSelectedElement = (board: PlaitBoard, element: PlaitElement, 
         if (board.isRecursion(element) && isRemoveChildren) {
             depthFirstRecursion(
                 element,
-                node => {
+                (node) => {
                     targetElements.push(node);
                 },
-                node => board.isRecursion(node)
+                (node) => board.isRecursion(node)
             );
         } else {
             targetElements.push(element);
         }
-        const newSelectedElements = selectedElements.filter(value => !targetElements.includes(value));
+        const newSelectedElements = selectedElements.filter((value) => !targetElements.includes(value));
         cacheSelectedElements(board, newSelectedElements);
     }
+};
+
+export const replaceSelectedElement = (board: PlaitBoard, element: PlaitElement, newElement: PlaitElement) => {
+    const selectedElements = getSelectedElements(board);
+    selectedElements.splice(selectedElements.indexOf(element), 1, newElement);
 };
 
 export const clearSelectedElement = (board: PlaitBoard) => {
@@ -140,16 +159,16 @@ export const clearSelectedElement = (board: PlaitBoard) => {
 
 export const isSelectedElement = (board: PlaitBoard, element: PlaitElement) => {
     const selectedElements = getSelectedElements(board);
-    return !!selectedElements.find(value => value === element);
+    return !!selectedElements.find((value) => value === element);
 };
 
 export const temporaryDisableSelection = (board: PlaitOptionsBoard) => {
     const currentOptions = board.getPluginOptions(PlaitPluginKey.withSelection);
-    board.setPluginOptions<WithPluginOptions>(PlaitPluginKey.withSelection, {
-        isDisabledSelect: true
+    board.setPluginOptions<WithSelectionPluginOptions>(PlaitPluginKey.withSelection, {
+        isDisabledSelection: true
     });
     setTimeout(() => {
-        board.setPluginOptions<WithPluginOptions>(PlaitPluginKey.withSelection, { ...currentOptions });
+        board.setPluginOptions<WithSelectionPluginOptions>(PlaitPluginKey.withSelection, { ...currentOptions });
     }, 0);
 };
 

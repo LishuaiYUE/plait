@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import {
     BoardTransforms,
     PlaitBoard,
@@ -19,7 +19,8 @@ import {
     duplicateElements,
     setFragment,
     WritableClipboardOperationType,
-    PlaitPlugin
+    PlaitPlugin,
+    isHandMode
 } from '@plait/core';
 import { mockDrawData, mockTableData, mockMindData, mockRotateData, mockGroupData, mockSwimlaneData } from './mock-data';
 import { withMind, PlaitMindBoard, PlaitMind } from '@plait/mind';
@@ -34,7 +35,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { mockLineData, withLineRoute } from '../plugins/with-line-route';
 import { withCommonPlugin } from '../plugins/with-common';
 import { AppMenuComponent } from '../components/menu/menu.component';
-import { NgIf } from '@angular/common';
+
 import { mockTurningPointData } from './mock-turning-point-data';
 import { withGroup } from '@plait/common';
 import { OnChangeData, PlaitBoardComponent } from '@plait/angular-board';
@@ -44,18 +45,18 @@ const LOCAL_STORAGE_KEY = 'plait-board-data';
 @Component({
     selector: 'app-basic-editor',
     templateUrl: './editor.component.html',
-    standalone: true,
     imports: [
         PlaitBoardComponent,
         FormsModule,
         AppZoomToolbarComponent,
         AppMainToolbarComponent,
         AppSettingPanelComponent,
-        AppMenuComponent,
-        NgIf
+        AppMenuComponent
     ]
 })
 export class BasicEditorComponent implements OnInit {
+    private activeRoute = inject(ActivatedRoute);
+
     plugins: PlaitPlugin[] = [withCommonPlugin, withMind, withMindExtend, withDraw, withGroup];
 
     value: (PlaitElement | PlaitGeometry | PlaitMind)[] = [];
@@ -95,14 +96,14 @@ export class BasicEditorComponent implements OnInit {
     @HostListener('mouseup', ['$event'])
     onMouseup(event: MouseEvent): void {
         this.contextMenu.nativeElement.style.display = 'none';
-        if (event.button === 2 && !this.board.options.readonly) {
+        if (event.button === 2 && !this.board.options.readonly && !isHandMode(this.board)) {
             this.contextMenu.nativeElement.style.display = 'block';
             this.contextMenu.nativeElement.style.left = `${event.clientX}px`;
             this.contextMenu.nativeElement.style.top = `${event.clientY}px`;
         }
     }
 
-    constructor(private activeRoute: ActivatedRoute) {}
+    constructor() {}
 
     ngOnInit(): void {
         this.activeRoute.queryParams.subscribe((params: Params) => {
@@ -168,7 +169,7 @@ export class BasicEditorComponent implements OnInit {
         localStorage.setItem(`${LOCAL_STORAGE_KEY}`, data);
     }
 
-    plaitBoardInitialized(value: PlaitBoard) {
+    initialized(value: PlaitBoard) {
         this.board = value;
         (this.board as PlaitMindBoard).onAbstractResize = (state: AbstractResizeState) => {};
     }

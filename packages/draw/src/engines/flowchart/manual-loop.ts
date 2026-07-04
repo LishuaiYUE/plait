@@ -1,8 +1,8 @@
-import { Point, RectangleClient } from '@plait/core';
+import { PlaitBoard, Point, RectangleClient } from '@plait/core';
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { createPolygonEngine } from '../basic-shapes/polygon';
 import { getCenterPointsOnPolygon } from '../../utils/polygon';
-import { getTextRectangle } from '../../utils';
+import { getCustomTextRectangle, getTextRectangle } from '../../utils';
 
 export const getManualLoopPoints = (rectangle: RectangleClient): Point[] => {
     return [
@@ -18,11 +18,8 @@ export const ManualLoopEngine: ShapeEngine = createPolygonEngine({
         const cornerPoints = getManualLoopPoints(rectangle);
         return getCenterPointsOnPolygon(cornerPoints);
     },
-    getTextRectangle(element: PlaitGeometry) {
-        const rectangle = getTextRectangle(element);
-        const width = rectangle.width;
-        rectangle.width = (rectangle.width * 3) / 4;
-        rectangle.x += width / 8;
+    getTextRectangle: (board: PlaitBoard, element: PlaitGeometry) => {
+        const rectangle = getCustomTextRectangle(board, element, 3 / 4);
         return rectangle;
     }
 });

@@ -1,5 +1,209 @@
 # layouts
 
+## 0.93.2
+
+## 0.93.1
+
+## 0.93.0
+
+## 0.92.3
+
+## 0.92.2
+
+## 0.92.1
+
+## 0.92.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.92.0-next.2
+
+## 0.92.0-next.1
+
+## 0.92.0-next.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.91.0
+
+## 0.90.1
+
+## 0.90.0
+
+## 0.89.2
+
+## 0.89.1
+
+## 0.89.0
+
+## 0.88.1
+
+## 0.88.0
+
+## 0.87.0
+
+## 0.87.0-next.1
+
+## 0.87.0-next.0
+
+## 0.86.1
+
+## 0.86.0
+
+## 0.85.0
+
+## 0.84.0
+
+## 0.83.1
+
+## 0.83.0
+
+## 0.82.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.82.0-next.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.81.3
+
+## 0.81.2
+
+## 0.81.1
+
+## 0.81.0
+
+## 0.80.0
+
+## 0.79.1
+
+## 0.79.0
+
+## 0.78.2
+
+## 0.78.1
+
+## 0.78.0
+
+### Minor Changes
+
+-   [#1052](https://github.com/worktile/plait/pull/1052) [`688cf253feea7902690af40ded129bd83a4469a7`](https://github.com/worktile/plait/commit/688cf253feea7902690af40ded129bd83a4469a7) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.78.0-next.0
+
+### Minor Changes
+
+-   [`af24487d0cb31303c8600aae655f5825e4c9e918`](https://github.com/worktile/plait/commit/af24487d0cb31303c8600aae655f5825e4c9e918) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.77.3
+
+## 0.77.2
+
+## 0.77.1
+
+## 0.77.0
+
+## 0.76.0
+
+## 0.75.0
+
+## 0.75.0-next.9
+
+## 0.75.0-next.8
+
+## 0.75.0-next.7
+
+## 0.75.0-next.6
+
+## 0.75.0-next.5
+
+## 0.75.0-next.4
+
+## 0.75.0-next.3
+
+## 0.75.0-next.2
+
+## 0.75.0-next.1
+
+## 0.75.0-next.0
+
+## 0.74.0
+
+## 0.73.0
+
+## 0.72.0
+
+## 0.71.0
+
+## 0.70.0
+
+## 0.69.2
+
+## 0.69.1
+
+## 0.69.0
+
+## 0.68.0
+
+## 0.67.2
+
+## 0.67.1
+
+## 0.67.0
+
+## 0.66.1
+
+## 0.66.0
+
+## 0.65.2
+
+## 0.65.1
+
+## 0.65.0
+
+## 0.65.0-next.0
+
+## 0.64.9
+
+## 0.64.8
+
+## 0.64.7
+
+## 0.64.6
+
+## 0.64.5
+
+## 0.64.4
+
+## 0.64.3
+
+## 0.64.2
+
+## 0.64.1
+
+## 0.64.0
+
+## 0.63.0
+
+## 0.62.0
+
+## 0.62.0-next.10
+
+## 0.62.0-next.9
+
+## 0.62.0-next.8
+
+## 0.62.0-next.7
+
 ## 0.62.0-next.6
 
 ## 0.62.0-next.5

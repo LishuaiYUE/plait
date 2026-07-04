@@ -17,8 +17,10 @@ import {
     Output,
     QueryList,
     SimpleChanges,
+    viewChild,
     ViewChild,
-    ViewContainerRef
+    ViewContainerRef,
+    inject
 } from '@angular/core';
 import rough from 'roughjs/bin/rough';
 import { RoughSVG } from 'roughjs/bin/svg';
@@ -35,11 +37,13 @@ import {
     BOARD_TO_ON_CHANGE,
     BOARD_TO_ROUGH_SVG,
     BoardTransforms,
+    FLUSHING,
     HOST_CLASS_NAME,
     IS_BOARD_ALIVE,
     IS_CHROME,
     IS_FIREFOX,
     IS_SAFARI,
+    KEY_TO_ELEMENT_MAP,
     ListRender,
     PlaitBoard,
     PlaitBoardContext,
@@ -54,38 +58,41 @@ import {
     createBoard,
     deleteFragment,
     getClipboardData,
+    getSelectedElements,
     hasInputOrTextareaTarget,
     initializeViewBox,
     initializeViewportContainer,
     initializeViewportOffset,
+    isFromScrolling,
     isFromViewportChange,
-    isPreventTouchMove,
     setFragment,
+    setIsFromScrolling,
     setIsFromViewportChange,
     toHostPoint,
     toViewBoxPoint,
+    updateViewBox,
     updateViewportByScrolling,
     updateViewportOffset,
     withBoard,
     withHandPointer,
     withHistory,
     withHotkey,
+    withI18n,
     withMoving,
     withOptions,
     withRelatedFragment,
-    withSelection,
-    withViewport
+    withSelection
 } from '@plait/core';
 import { PlaitIslandBaseComponent, hasOnBoardChange } from '../island/island-base.component';
 import { BOARD_TO_COMPONENT } from '../utils/weak-maps';
 import { withAngular } from '../plugins/with-angular';
-import { withImage, withText } from '@plait/common';
+import { PlaitCommonElementRef, withImage, withText } from '@plait/common';
 import { OnChangeData } from '../plugins/angular-board';
 
 const ElementLowerHostClass = 'element-lower-host';
 const ElementHostClass = 'element-host';
 const ElementUpperHostClass = 'element-upper-host';
-const ElementActiveHostClass = 'element-active-host';
+const ElementTopHostClass = 'element-top-host';
 
 @Component({
     selector: 'plait-board',
@@ -95,7 +102,10 @@ const ElementActiveHostClass = 'element-active-host';
                 <g class="element-lower-host"></g>
                 <g class="element-host"></g>
                 <g class="element-upper-host"></g>
-                <g class="element-active-host"></g>
+                <g class="element-top-host"></g>
+            </svg>
+            <svg width="100%" height="100%" class="board-active-svg">
+                <g #activeHostG class="active-host-g"></g>
             </svg>
         </div>
         <ng-content></ng-content>
@@ -104,6 +114,12 @@ const ElementActiveHostClass = 'element-active-host';
     standalone: true
 })
 export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
+    cdr = inject(ChangeDetectorRef);
+    injector = inject(Injector);
+    viewContainerRef = inject(ViewContainerRef);
+    private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+    private ngZone = inject(NgZone);
+
     hasInitialized = false;
 
     board!: PlaitBoard;
@@ -124,9 +140,9 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
 
     @Input() plaitTheme?: PlaitTheme;
 
-    @Output() onChange: EventEmitter<OnChangeData> = new EventEmitter();
+    @Output() change: EventEmitter<OnChangeData> = new EventEmitter();
 
-    @Output() plaitBoardInitialized: EventEmitter<PlaitBoard> = new EventEmitter();
+    @Output() initialized: EventEmitter<PlaitBoard> = new EventEmitter();
 
     get host(): SVGSVGElement {
         return this.svg.nativeElement;
@@ -172,6 +188,8 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
     @ViewChild('svg', { static: true })
     svg!: ElementRef;
 
+    activeHostG = viewChild<ElementRef>('activeHostG');
+
     @ViewChild('viewportContainer', { read: ElementRef, static: true })
     viewportContainer!: ElementRef;
 
@@ -179,19 +197,13 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
 
     listRender!: ListRender;
 
-    constructor(
-        public cdr: ChangeDetectorRef,
-        public injector: Injector,
-        public viewContainerRef: ViewContainerRef,
-        private elementRef: ElementRef<HTMLElement>,
-        private ngZone: NgZone
-    ) {}
+    constructor() {}
 
     ngOnInit(): void {
         const elementLowerHost = this.host.querySelector(`.${ElementLowerHostClass}`) as SVGGElement;
         const elementHost = this.host.querySelector(`.${ElementHostClass}`) as SVGGElement;
         const elementUpperHost = this.host.querySelector(`.${ElementUpperHostClass}`) as SVGGElement;
-        const elementActiveHost = this.host.querySelector(`.${ElementActiveHostClass}`) as SVGGElement;
+        const elementTopHost = this.host.querySelector(`.${ElementTopHostClass}`) as SVGGElement;
         const roughSVG = rough.svg(this.host as SVGSVGElement, {
             options: { roughness: 0, strokeWidth: 1 }
         });
@@ -216,13 +228,36 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
             lowerHost: elementLowerHost,
             host: elementHost,
             upperHost: elementUpperHost,
-            activeHost: elementActiveHost,
+            topHost: elementTopHost,
+            activeHost: this.activeHostG()?.nativeElement,
             container: this.elementRef.nativeElement,
             viewportContainer: this.viewportContainer.nativeElement
         });
         BOARD_TO_ON_CHANGE.set(this.board, () => {
             this.ngZone.run(() => {
+                const isOnlySetSelection = this.board.operations.length && this.board.operations.every((op) => op.type === 'set_selection');
+                if (isOnlySetSelection) {
+                    this.updateListRender();
+                    return;
+                }
+                const isSetViewport = this.board.operations.length && this.board.operations.some((op) => op.type === 'set_viewport');
+                if (isSetViewport && isFromScrolling(this.board)) {
+                    setIsFromScrolling(this.board, false);
+                    this.updateListRender();
+                    return;
+                }
                 this.updateListRender();
+                if (isSetViewport) {
+                    initializeViewBox(this.board);
+                } else {
+                    updateViewBox(this.board);
+                }
+                updateViewportOffset(this.board);
+                const selectedElements = getSelectedElements(this.board);
+                selectedElements.forEach((element) => {
+                    const elementRef = PlaitElement.getElementRef<PlaitCommonElementRef>(element);
+                    elementRef.updateActiveSection();
+                });
             });
         });
         BOARD_TO_AFTER_CHANGE.set(this.board, () => {
@@ -235,7 +270,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                     theme: this.board.theme
                 };
                 this.updateIslands();
-                this.onChange.emit(data);
+                this.change.emit(data);
             });
         });
         const context = new PlaitBoardContext();
@@ -254,8 +289,11 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
             const options = changes['plaitOptions'];
 
             if (valueChange) {
-                this.board.children = valueChange.currentValue;
-                this.updateListRender();
+                // avoid useless updating
+                if (this.board.children !== valueChange.currentValue && !FLUSHING.get(this.board)) {
+                    this.board.children = valueChange.currentValue;
+                    this.updateListRender();
+                }
             }
             if (options) {
                 this.board.options = options.currentValue;
@@ -265,7 +303,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
     }
 
     ngAfterViewInit(): void {
-        this.plaitBoardInitialized.emit(this.board);
+        this.initialized.emit(this.board);
         initializeViewportContainer(this.board);
         initializeViewBox(this.board);
         initializeViewportOffset(this.board);
@@ -279,9 +317,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                         withSelection(
                             withMoving(
                                 withBoard(
-                                    withViewport(
-                                        withOptions(withAngular(withImage(withText(createBoard(this.plaitValue, this.plaitOptions)))))
-                                    )
+                                    withI18n(withOptions(withAngular(withImage(withText(createBoard(this.plaitValue, this.plaitOptions))))))
                                 )
                             )
                         )
@@ -289,7 +325,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                 )
             )
         );
-        this.plaitPlugins.forEach(plugin => {
+        this.plaitPlugins.forEach((plugin) => {
             board = plugin(board);
         });
         this.board = board;
@@ -301,6 +337,8 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         if (this.plaitTheme) {
             this.board.theme = this.plaitTheme;
         }
+
+        KEY_TO_ELEMENT_MAP.set(board, new Map());
     }
 
     private initializeHookListener() {
@@ -344,6 +382,13 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                 this.board.pointerLeave(event);
             });
 
+        fromEvent<PointerEvent>(this.host, 'pointercancel')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((event: PointerEvent) => {
+                BOARD_TO_MOVING_POINT_IN_BOARD.delete(this.board);
+                this.board.pointerCancel(event);
+            });
+
         fromEvent<MouseEvent>(document, 'mousemove')
             .pipe(takeUntil(this.destroy$))
             .subscribe((event: MouseEvent) => {
@@ -370,6 +415,24 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                 this.board.pointerUp(event);
             });
 
+        fromEvent<TouchEvent>(this.host, 'touchstart')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((event: TouchEvent) => {
+                this.board.touchStart(event);
+            });
+
+        fromEvent<TouchEvent>(this.host, 'touchmove')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((event: TouchEvent) => {
+                this.board.touchMove(event);
+            });
+
+        fromEvent<TouchEvent>(this.host, 'touchend')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((event: TouchEvent) => {
+                this.board.touchEnd(event);
+            });
+
         fromEvent<MouseEvent>(document, 'mouseup')
             .pipe(takeUntil(this.destroy$))
             .subscribe((event: MouseEvent) => {
@@ -394,10 +457,10 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         fromEvent<KeyboardEvent>(document, 'keydown')
             .pipe(
                 takeUntil(this.destroy$),
-                tap(event => {
+                tap((event) => {
                     this.board.globalKeyDown(event);
                 }),
-                filter(event => this.isFocused && !PlaitBoard.hasBeenTextEditing(this.board) && !hasInputOrTextareaTarget(event.target))
+                filter((event) => this.isFocused && !PlaitBoard.hasBeenTextEditing(this.board) && !hasInputOrTextareaTarget(event.target))
             )
             .subscribe((event: KeyboardEvent) => {
                 this.board.keyDown(event);
@@ -446,6 +509,24 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                 setFragment(this.board, WritableClipboardOperationType.cut, event.clipboardData);
                 deleteFragment(this.board);
             });
+
+        fromEvent<DragEvent>(this.host, 'drop')
+            .pipe(
+                takeUntil(this.destroy$),
+                filter(() => !PlaitBoard.isReadonly(this.board))
+            )
+            .subscribe((event: DragEvent) => {
+                event.preventDefault();
+                this.board.drop(event);
+            });
+        fromEvent<DragEvent>(this.host, 'dragover')
+            .pipe(
+                takeUntil(this.destroy$),
+                filter(() => !PlaitBoard.isReadonly(this.board))
+            )
+            .subscribe((event: DragEvent) => {
+                event.preventDefault();
+            });
     }
 
     private initializeListRender() {
@@ -455,7 +536,6 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
 
     private updateListRender() {
         this.listRender.update(this.board.children, this.initializeChildrenContext());
-        PlaitBoard.getBoardContext(this.board).nextStable();
     }
 
     private initializeChildrenContext(): PlaitChildrenContext {
@@ -482,13 +562,6 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                 const { scrollLeft, scrollTop } = event.target as HTMLElement;
                 updateViewportByScrolling(this.board, scrollLeft, scrollTop);
             });
-        fromEvent<MouseEvent>(this.viewportContainer.nativeElement, 'touchmove', { passive: false })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((event: Event) => {
-                if (isPreventTouchMove(this.board)) {
-                    event.preventDefault();
-                }
-            });
     }
 
     private elementResizeListener() {
@@ -501,13 +574,13 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
     }
 
     private initializeIslands() {
-        this.islands?.forEach(island => {
+        this.islands?.forEach((island) => {
             island.initialize(this.board);
         });
     }
 
     private updateIslands() {
-        this.islands?.forEach(island => {
+        this.islands?.forEach((island) => {
             if (hasOnBoardChange(island)) {
                 island.onBoardChange();
             }
@@ -539,7 +612,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
                         -sign *
                         // reduced amplification for small deltas (small movements on a trackpad)
                         Math.min(1, absDelta / 20);
-                    BoardTransforms.updateZoom(this.board, newZoom, false);
+                    BoardTransforms.updateZoom(this.board, newZoom, PlaitBoard.getMovingPointInBoard(this.board));
                 }
             });
     }
@@ -560,6 +633,7 @@ export class PlaitBoardComponent implements BoardComponentInterface, OnInit, OnC
         IS_BOARD_ALIVE.set(this.board, false);
         BOARD_TO_ON_CHANGE.delete(this.board);
         BOARD_TO_AFTER_CHANGE.set(this.board, () => {});
+        KEY_TO_ELEMENT_MAP.delete(this.board);
     }
 
     markForCheck() {

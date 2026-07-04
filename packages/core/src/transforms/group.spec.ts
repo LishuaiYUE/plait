@@ -10,7 +10,6 @@ const children: PlaitElement[] = [
         shape: 'rectangle',
         angle: 0,
         opacity: 1,
-        textHeight: 20,
         text: {
             children: [
                 {
@@ -32,7 +31,6 @@ const children: PlaitElement[] = [
         shape: 'rectangle',
         angle: 0,
         opacity: 1,
-        textHeight: 20,
         text: {
             children: [
                 {
@@ -58,7 +56,6 @@ const children: PlaitElement[] = [
         shape: 'rectangle',
         angle: 0,
         opacity: 1,
-        textHeight: 20,
         text: {
             children: [
                 {
@@ -79,7 +76,6 @@ const children: PlaitElement[] = [
         shape: 'rectangle',
         angle: 0,
         opacity: 1,
-        textHeight: 20,
         text: {
             children: [
                 {
@@ -101,7 +97,6 @@ const children: PlaitElement[] = [
         shape: 'rectangle',
         angle: 0,
         opacity: 1,
-        textHeight: 20,
         text: {
             children: [
                 {
@@ -138,7 +133,7 @@ describe('group transform', () => {
         addSelectedElement(board, children);
         GroupTransforms.addGroup(board);
         expect(board.children.length).toBe(8);
-        const groups = board.children.filter(item => PlaitGroupElement.isGroup(item));
+        const groups = board.children.filter((item) => PlaitGroupElement.isGroup(item));
         expect(groups.length).toBe(3);
         const lastElement = board.children[board.children.length - 1];
         expect(lastElement.groupId).toBe(undefined);
@@ -158,7 +153,7 @@ describe('group transform', () => {
         addSelectedElement(board, children);
         GroupTransforms.removeGroup(board);
         expect(board.children.length).toBe(5);
-        const elementIngroup = board.children.filter(item => item.groupId);
+        const elementIngroup = board.children.filter((item) => item.groupId);
         expect(elementIngroup.length).toBe(0);
     });
 

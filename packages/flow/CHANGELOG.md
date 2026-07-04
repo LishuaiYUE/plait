@@ -1,5 +1,282 @@
 # @plait/flow
 
+## 0.93.2
+
+## 0.93.1
+
+## 0.93.0
+
+## 0.92.3
+
+## 0.92.2
+
+## 0.92.1
+
+## 0.92.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.92.0-next.2
+
+## 0.92.0-next.1
+
+## 0.92.0-next.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.91.0
+
+## 0.90.1
+
+## 0.90.0
+
+## 0.89.2
+
+## 0.89.1
+
+## 0.89.0
+
+## 0.88.1
+
+## 0.88.0
+
+## 0.87.0
+
+## 0.87.0-next.1
+
+## 0.87.0-next.0
+
+## 0.86.1
+
+## 0.86.0
+
+## 0.85.0
+
+## 0.84.0
+
+## 0.83.1
+
+## 0.83.0
+
+## 0.82.0
+
+### Minor Changes
+
+-   [#1069](https://github.com/worktile/plait/pull/1069) [`3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6`](https://github.com/worktile/plait/commit/3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - measureElement need assign board as first param to cache canvas dom element
+    refactor mind node more function
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.82.0-next.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.81.3
+
+## 0.81.2
+
+## 0.81.1
+
+## 0.81.0
+
+## 0.80.0
+
+## 0.79.1
+
+## 0.79.0
+
+## 0.78.2
+
+## 0.78.1
+
+## 0.78.0
+
+### Minor Changes
+
+-   [#1052](https://github.com/worktile/plait/pull/1052) [`688cf253feea7902690af40ded129bd83a4469a7`](https://github.com/worktile/plait/commit/688cf253feea7902690af40ded129bd83a4469a7) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.78.0-next.0
+
+### Minor Changes
+
+-   [`af24487d0cb31303c8600aae655f5825e4c9e918`](https://github.com/worktile/plait/commit/af24487d0cb31303c8600aae655f5825e4c9e918) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.77.3
+
+## 0.77.2
+
+## 0.77.1
+
+## 0.77.0
+
+## 0.76.0
+
+## 0.75.0
+
+## 0.75.0-next.9
+
+## 0.75.0-next.8
+
+## 0.75.0-next.7
+
+## 0.75.0-next.6
+
+## 0.75.0-next.5
+
+## 0.75.0-next.4
+
+## 0.75.0-next.3
+
+## 0.75.0-next.2
+
+## 0.75.0-next.1
+
+## 0.75.0-next.0
+
+## 0.74.0
+
+## 0.73.0
+
+## 0.72.0
+
+## 0.71.0
+
+## 0.70.0
+
+## 0.69.2
+
+## 0.69.1
+
+## 0.69.0
+
+## 0.68.0
+
+## 0.67.2
+
+## 0.67.1
+
+### Patch Changes
+
+-   [#970](https://github.com/worktile/plait/pull/970) [`8efcd0a88`](https://github.com/worktile/plait/commit/8efcd0a8832ced9cae167867cc118e422da8829e) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - append textManage.g when textManage exist
+
+## 0.67.0
+
+## 0.66.1
+
+## 0.66.0
+
+## 0.65.2
+
+## 0.65.1
+
+## 0.65.0
+
+## 0.65.0-next.0
+
+## 0.64.9
+
+## 0.64.8
+
+## 0.64.7
+
+## 0.64.6
+
+## 0.64.5
+
+## 0.64.4
+
+## 0.64.3
+
+## 0.64.2
+
+## 0.64.1
+
+## 0.64.0
+
+## 0.63.0
+
+## 0.62.0
+
+### Minor Changes
+
+-   [#914](https://github.com/worktile/plait/pull/914) [`92436588f`](https://github.com/worktile/plait/commit/92436588fa95557474c8ebc0c282330376622fb4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Framework agnostic refactoring:
+
+    1. Use `measureElement` to measure text width and height
+
+    2. Use `text-manage` in `@plait/common` to render text
+
+    3. Provide an overridable method `renderEmoji` in `@plait/mind` to remove the dependency on Angular and transform the response generator
+
+    4. Provide an overridable method `renderLabelIcon` in `@plait/flow` to remove the dependency on Angular and transform the response generator
+
+    ***
+
+    Framework agnostic 改造:
+
+    1. 改用 `measureElement` 测量文本宽高
+
+    2. 改用 `@plait/common` 中的 `text-manage` 实现文本的渲染
+
+    3. `@plait/mind` 中提供可重写方法 `renderEmoji` 解除对 Angular 的依赖，并且改造响应 generator
+
+    4. `@plait/flow` 中提供可重写方法 `renderLabelIcon` 解除对 Angular 的依赖，并且改造响应 generator
+
+*   [#929](https://github.com/worktile/plait/pull/929) [`7fabbbedb`](https://github.com/worktile/plait/commit/7fabbbedbb78d2dc11e05c36adbf379496726c95) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Only hide related edge label when node is moving
+
+### Patch Changes
+
+-   [#933](https://github.com/worktile/plait/pull/933) [`21b7ccbe8`](https://github.com/worktile/plait/commit/21b7ccbe832169d946acd2773c58e4edbfc3f072) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix node-render error when node is custom node
+
+*   [`ec00cb4f4`](https://github.com/worktile/plait/commit/ec00cb4f4c3cff6fbab7ed7ab67ef48e3efb47ee) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `isPreventClearSelection` in WithSelectionPluginOptions(with-selection)
+
+    extract `getSelectionOptions` and `setSelectionOptions` to set/get options of selection
+
+    rename `isMultipleSelection` to `isMultiple` in WithSelectionPluginOptions(with-selection)
+
+    rename `WithPluginOptions` to `WithSelectionPluginOptions` and rename `PlaitPluginOptions` to `WithPluginOptions`
+
+-   [#917](https://github.com/worktile/plait/pull/917) [`e823756ea`](https://github.com/worktile/plait/commit/e823756eab612423b8678ad8deb8b3feeeebb563) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - 1. hide edge label when moving node element
+
+    2. move node element level to the most front when selected node element
+
+*   [#929](https://github.com/worktile/plait/pull/929) [`ca5c8df4e`](https://github.com/worktile/plait/commit/ca5c8df4e52997e484e9a6f0a08e7140533856aa) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - move node element to the highest layer when node is hovering
+
+-   [`4cc414c3e`](https://github.com/worktile/plait/commit/4cc414c3eb1529f4c9e30f4b06c5c7a35315c6b9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - destroy node g when node is deleted
+
+## 0.62.0-next.10
+
+### Patch Changes
+
+-   [`ec00cb4f4`](https://github.com/worktile/plait/commit/ec00cb4f4c3cff6fbab7ed7ab67ef48e3efb47ee) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `isPreventClearSelection` in WithSelectionPluginOptions(with-selection)
+
+    extract `getSelectionOptions` and `setSelectionOptions` to set/get options of selection
+
+    rename `isMultipleSelection` to `isMultiple` in WithSelectionPluginOptions(with-selection)
+
+    rename `WithPluginOptions` to `WithSelectionPluginOptions` and rename `PlaitPluginOptions` to `WithPluginOptions`
+
+## 0.62.0-next.9
+
+## 0.62.0-next.8
+
+## 0.62.0-next.7
+
+### Minor Changes
+
+-   [#929](https://github.com/worktile/plait/pull/929) [`7fabbbedb`](https://github.com/worktile/plait/commit/7fabbbedbb78d2dc11e05c36adbf379496726c95) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Only hide related edge label when node is moving
+
+### Patch Changes
+
+-   [#933](https://github.com/worktile/plait/pull/933) [`21b7ccbe8`](https://github.com/worktile/plait/commit/21b7ccbe832169d946acd2773c58e4edbfc3f072) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix node-render error when node is custom node
+
+*   [#929](https://github.com/worktile/plait/pull/929) [`ca5c8df4e`](https://github.com/worktile/plait/commit/ca5c8df4e52997e484e9a6f0a08e7140533856aa) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - move node element to the highest layer when node is hovering
+
 ## 0.62.0-next.6
 
 ## 0.62.0-next.5

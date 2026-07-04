@@ -85,6 +85,84 @@
             }
         }
 
+        .fill-style-setting-toolbar {
+            width: 100%;
+        }
+
+        .fill-style-options {
+            display: grid;
+            grid-template-columns: repeat(6, 24px);
+            gap: 6px 4px;
+        }
+
+        .fill-style-button {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border: 1px solid #d6d6d6;
+            border-radius: 4px;
+            padding: 0;
+            position: relative;
+            color: #333333;
+            background-color: #ffffff;
+
+            svg {
+                width: 22px;
+                height: 22px;
+                display: block;
+            }
+
+            .fill-style-icon-frame {
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 1.2;
+            }
+
+            .fill-style-icon-fill {
+                fill: currentColor;
+                opacity: 0.2;
+                stroke: none;
+            }
+
+            path {
+                fill: none;
+                stroke: currentColor;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 1.3;
+            }
+
+            circle {
+                fill: currentColor;
+            }
+
+            &.active {
+                color: #4a47b1;
+            }
+
+            &.active .active-button-outline {
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                box-shadow: 0 0 0 1px #4a47b1;
+                z-index: 1;
+                border-radius: 5px;
+            }
+
+            &:hover::after {
+                content: '';
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                box-shadow: 0 0 0 1px #d6d6d6;
+                border-radius: 5px;
+            }
+        }
+
         .text-setting-toolbar {
             width: 100%;
             .text-setting-items {

@@ -9,7 +9,8 @@ import {
     OnInit,
     Renderer2,
     SimpleChanges,
-    ViewChild
+    ViewChild,
+    inject
 } from '@angular/core';
 import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Element, Text, Transforms, createEditor } from 'slate';
@@ -17,24 +18,27 @@ import { SlateEditable, withAngular } from 'slate-angular';
 import { withHistory } from 'slate-history';
 import { PlaitLinkNodeComponent } from '../plugins/link/link.component';
 import { withMarkHotkey } from '../plugins/mark-hotkey/with-mark-hotkey';
-import { ParagraphElementComponent } from '../plugins/paragraph/paragraph.component';
-import { PlaitTextEditor } from '../plugins/text.editor';
-import { withSelection } from '../plugins/with-selection';
-import { withSingleLine } from '../plugins/with-single';
-import { PlaitTextNodeComponent } from '../text-node/text.component';
+import { withInlineMove } from '../plugins/with-inline-move';
+import { withText } from '../plugins/with-text';
 import { FormsModule } from '@angular/forms';
 import { LinkElement, TextChangeData, TextPlugin } from '@plait/common';
 import { CLIPBOARD_FORMAT_KEY, MarkTypes } from '@plait/text-plugins';
 import { withPasteLink } from '../plugins/link/with-link-insert';
 import { CommonModule } from '@angular/common';
+import { PlaitBoard } from '@plait/core';
+import { ParagraphFlavour } from '../plugins/paragraph/paragraph.flavour';
+import { TextFlavour } from '../text-node/text.flavour';
 
 @Component({
     selector: 'plait-text',
     templateUrl: './text.component.html',
-    standalone: true,
     imports: [SlateEditable, FormsModule, CommonModule]
 })
-export class PlaitTextComponent implements OnInit, AfterViewInit, OnChanges {
+export class PlaitTextComponent implements OnInit, AfterViewInit {
+    renderer2 = inject(Renderer2);
+    private cdr = inject(ChangeDetectorRef);
+    elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
     @HostBinding('class') hostClass = 'plait-text-container';
 
     children: Element[] = [];
@@ -60,27 +64,28 @@ export class PlaitTextComponent implements OnInit, AfterViewInit, OnChanges {
     @Input()
     onComposition!: (event: CompositionEvent) => void;
 
-    editor = withSelection(withPasteLink(withMarkHotkey(withSingleLine(withHistory(withAngular(createEditor(), CLIPBOARD_FORMAT_KEY))))));
+    @Input()
+    board!: PlaitBoard;
+
+    editor = withInlineMove(withPasteLink(withMarkHotkey(withText(withHistory(withAngular(createEditor(), CLIPBOARD_FORMAT_KEY))))));
 
     nativeElement() {
         return this.elementRef.nativeElement;
     }
 
-    constructor(public renderer2: Renderer2, private cdr: ChangeDetectorRef, public elementRef: ElementRef<HTMLElement>) {}
+    constructor() {}
 
     valueChange() {
         this.onChange({ newText: this.editor.children[0] as Element, operations: this.editor.operations });
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-    }
-
     ngOnInit(): void {
         if (this.textPlugins) {
-            this.textPlugins.forEach(plugin => {
+            this.textPlugins.forEach((plugin) => {
                 plugin(this.editor);
             });
         }
+        this.editor.board = this.board;
     }
 
     ngAfterViewInit(): void {
@@ -88,7 +93,7 @@ export class PlaitTextComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     renderElement = (element: Element) => {
-        const render = ((this.editor as unknown) as PlaitTextEditor)?.renderElement;
+        const render = this.editor.renderElement;
         if (render && render(element)) {
             return render(element);
         }
@@ -97,13 +102,13 @@ export class PlaitTextComponent implements OnInit, AfterViewInit, OnChanges {
             return PlaitLinkNodeComponent;
         }
 
-        return ParagraphElementComponent;
+        return ParagraphFlavour;
     };
 
-    renderText: any = (text: Text): PlaitTextNodeComponent | null => {
+    renderText: any = (text: Text) => {
         for (const key in MarkTypes) {
             if ((text as any)[(MarkTypes as any)[key]]) {
-                return PlaitTextNodeComponent as any;
+                return TextFlavour;
             }
         }
         return null;
@@ -127,5 +132,9 @@ export class PlaitTextComponent implements OnInit, AfterViewInit, OnChanges {
             event.preventDefault();
         }
         this.editor.onKeydown(event);
+    };
+
+    scrollSelectionIntoView = () => {
+        // prevent auto scroll
     };
 }

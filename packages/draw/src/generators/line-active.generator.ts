@@ -1,11 +1,21 @@
-import { PlaitBoard, Point, createG, drawRectangle, getSelectedElements } from '@plait/core';
-import { LineShape, PlaitLine } from '../interfaces';
+import {
+    PlaitBoard,
+    Point,
+    SELECTION_RECTANGLE_CLASS_NAME,
+    createG,
+    drawRectangle,
+    getSelectedElements,
+    toActivePointFromViewBoxPoint,
+    toActiveRectangleFromViewBoxRectangle
+} from '@plait/core';
+import { ArrowLineShape, PlaitArrowLine, PlaitDrawElement } from '../interfaces';
 import { Generator, PRIMARY_COLOR, drawFillPrimaryHandle, drawPrimaryHandle } from '@plait/common';
-import { getMiddlePoints } from '../utils/line/line-basic';
-import { getNextRenderPoints } from '../utils/line/elbow';
-import { isUpdatedHandleIndex } from '../utils/line';
+import { getMiddlePoints } from '../utils/line';
+import { getNextRenderPoints } from '../utils/arrow-line/elbow';
+import { isUpdatedHandleIndex } from '../utils/arrow-line';
 import { getHitPointIndex } from '../utils/position/line';
 import { DefaultDrawActiveStyle } from '../constants';
+import { PlaitLine } from '../interfaces/line';
 
 export interface ActiveData {
     selected: boolean;
@@ -14,6 +24,10 @@ export interface ActiveData {
 
 export class LineActiveGenerator extends Generator<PlaitLine, ActiveData> {
     onlySelectedCurrentLine = false;
+
+    constructor(protected board: PlaitBoard, options: { active: boolean } = { active: true }) {
+        super(board, options);
+    }
 
     canDraw(element: PlaitLine, data: ActiveData): boolean {
         if (data.selected) {
@@ -28,25 +42,26 @@ export class LineActiveGenerator extends Generator<PlaitLine, ActiveData> {
         const selectedElements = getSelectedElements(this.board);
         this.onlySelectedCurrentLine = selectedElements.length === 1;
         if (this.onlySelectedCurrentLine) {
-            activeG.classList.add('active');
-            activeG.classList.add('line-handle');
-            const points = PlaitLine.getPoints(this.board, element);
+            activeG.classList.add(SELECTION_RECTANGLE_CLASS_NAME);
+            const points = PlaitDrawElement.isArrowLine(element) ? PlaitArrowLine.getPoints(this.board, element) : element.points;
             let updatePoints = [...points];
             let elbowNextRenderPoints: Point[] = [];
-            if (element.shape === LineShape.elbow) {
+            if (element.shape === ArrowLineShape.elbow) {
                 updatePoints = points.slice(0, 1).concat(points.slice(-1));
                 elbowNextRenderPoints = getNextRenderPoints(this.board, element, data.linePoints);
             }
-            updatePoints.forEach(point => {
+            const activePoints = updatePoints.map((point) => toActivePointFromViewBoxPoint(this.board, point));
+            activePoints.forEach((point) => {
                 const updateHandle = drawPrimaryHandle(this.board, point);
                 activeG.appendChild(updateHandle);
             });
             const middlePoints = getMiddlePoints(this.board, element);
+            const activeMiddlePoints = middlePoints.map((point) => toActivePointFromViewBoxPoint(this.board, point));
             if (!PlaitBoard.hasBeenTextEditing(this.board)) {
-                for (let i = 0; i < middlePoints.length; i++) {
-                    const point = middlePoints[i];
-                    if (element.shape === LineShape.elbow && elbowNextRenderPoints.length) {
-                        const handleIndex = getHitPointIndex(middlePoints, point);
+                for (let i = 0; i < activeMiddlePoints.length; i++) {
+                    const point = activeMiddlePoints[i];
+                    if (element.shape === ArrowLineShape.elbow && elbowNextRenderPoints.length) {
+                        const handleIndex = getHitPointIndex(activeMiddlePoints, point);
                         const isUpdateHandleIndex = isUpdatedHandleIndex(
                             this.board,
                             element,
@@ -65,8 +80,9 @@ export class LineActiveGenerator extends Generator<PlaitLine, ActiveData> {
                 }
             }
         } else {
-            const activeRectangle = this.board.getRectangle(element);
-            if (activeRectangle) {
+            const rectangle = this.board.getRectangle(element);
+            if (rectangle) {
+                const activeRectangle = toActiveRectangleFromViewBoxRectangle(this.board, rectangle);
                 let opacity = '0.5';
                 if (activeRectangle.height === 0 || activeRectangle.width === 0) {
                     opacity = '0.8';

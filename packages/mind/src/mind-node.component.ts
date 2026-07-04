@@ -1,21 +1,18 @@
-import { createG, PlaitBoard, NODE_TO_INDEX, PlaitPluginElementContext, OnContextChanged, RectangleClient } from '@plait/core';
+import { PlaitBoard, NODE_TO_INDEX, PlaitPluginElementContext, OnContextChanged, RectangleClient } from '@plait/core';
 import { isHorizontalLayout, AbstractNode, MindLayoutType } from '@plait/layouts';
 import { RoughSVG } from 'roughjs/bin/svg';
 import { MindElement, PlaitMind } from './interfaces/element';
 import { MindNode } from './interfaces/node';
 import { MindQueries } from './queries';
-import { ELEMENT_TO_NODE } from './utils/weak-maps';
+import { MIND_ELEMENT_TO_NODE } from './utils/weak-maps';
 import { drawAbstractLink } from './utils/draw/node-link/abstract-link';
 import { NodeEmojisGenerator } from './generators/node-emojis.generator';
 import { MindTransforms } from './transforms';
-import { NodePlusGenerator } from './generators/node-plus.generator';
 import { PlaitMindBoard } from './plugins/with-mind.board';
 import { drawLink } from './utils/draw/node-link/draw-link';
 import { getTopicRectangleByNode } from './utils/position/topic';
 import { NodeActiveGenerator } from './generators/node-active.generator';
-import { CollapseGenerator } from './generators/node-collapse.generator';
 import { NodeSpace } from './utils/space/node-space';
-import { NodeTopicThreshold } from './constants/node-topic-style';
 import {
     CommonElementFlavour,
     ImageGenerator,
@@ -27,9 +24,12 @@ import {
 import { NodeShapeGenerator } from './generators/node-shape.generator';
 import { getImageForeignRectangle } from './utils';
 import { ImageData } from './interfaces';
+import { NodeMoreGenerator } from './generators/node-more.generator';
 
-export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMindBoard>
-    implements OnContextChanged<MindElement, PlaitMindBoard> {
+export class MindNodeComponent
+    extends CommonElementFlavour<MindElement, PlaitMindBoard>
+    implements OnContextChanged<MindElement, PlaitMindBoard>
+{
     roughSVG!: RoughSVG;
 
     node!: MindNode;
@@ -38,24 +38,20 @@ export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMi
 
     shapeG: SVGGElement | null = null;
 
-    linkG?: SVGGElement;
-
-    extendG?: SVGGElement;
+    linkLineG?: SVGGElement;
 
     nodeEmojisGenerator!: NodeEmojisGenerator;
 
     nodeShapeGenerator!: NodeShapeGenerator;
 
-    nodePlusGenerator!: NodePlusGenerator;
-
     imageGenerator!: ImageGenerator<MindElement<ImageData>>;
 
     activeGenerator!: NodeActiveGenerator;
 
-    collapseGenerator!: CollapseGenerator;
+    nodeMoreGenerator!: NodeMoreGenerator;
 
     get textManage() {
-        return this.getTextManages()[0];
+        return this.getRef().getTextManages()[0];
     }
 
     constructor() {
@@ -66,8 +62,7 @@ export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMi
         this.nodeShapeGenerator = new NodeShapeGenerator(this.board);
         this.nodeEmojisGenerator = new NodeEmojisGenerator(this.board);
         this.activeGenerator = new NodeActiveGenerator(this.board);
-        this.nodePlusGenerator = new NodePlusGenerator(this.board);
-        this.collapseGenerator = new CollapseGenerator(this.board);
+        this.nodeMoreGenerator = new NodeMoreGenerator(this.board);
         this.imageGenerator = new ImageGenerator<MindElement<ImageData>>(this.board, {
             getRectangle: (element: MindElement<ImageData>) => {
                 return getImageForeignRectangle(this.board as PlaitMindBoard, element);
@@ -83,27 +78,23 @@ export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMi
                 return rect;
             },
             onChange: (data: TextManageChangeData) => {
-                const width = data.width;
-                const height = data.height;
-                if (data.newText) {
-                    MindTransforms.setTopic(this.board, this.element, data.newText as MindElement, width, height);
-                } else {
-                    MindTransforms.setTopicSize(this.board, this.element, width, height);
-                }
+                MindTransforms.setTopic(this.board, this.element, data.newText);
             },
             getMaxWidth: () => {
-                if (this.element.manualWidth) {
-                    return NodeSpace.getNodeDynamicWidth(this.board, this.element);
-                } else {
-                    return Math.max(NodeSpace.getNodeDynamicWidth(this.board, this.element), NodeTopicThreshold.defaultTextMaxWidth);
-                }
+                return NodeSpace.getTopicMaxDynamicWidth(this.board, this.element);
             },
             textPlugins: plugins || []
         });
-        this.initializeTextManages([textManage]);
         this.getRef().addGenerator(NodeActiveGenerator.key, this.activeGenerator);
         this.getRef().addGenerator(NodeEmojisGenerator.key, this.nodeEmojisGenerator);
         this.getRef().addGenerator(ImageGenerator.key, this.imageGenerator);
+        this.getRef().addGenerator(NodeMoreGenerator.key, this.nodeMoreGenerator);
+        this.getRef().initializeTextManage(textManage);
+        this.getRef().updateActiveSection = () => {
+            this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
+                selected: this.selected
+            });
+        };
     }
 
     initialize(): void {
@@ -115,11 +106,11 @@ export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMi
         this.nodeShapeGenerator.processDrawing(this.element, this.getElementG(), { node: this.node });
         this.drawLink();
         this.drawTopic();
-        this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+        this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
             selected: this.selected
         });
+        this.nodeMoreGenerator.processDrawing(this.element, this.getElementG());
         this.drawEmojis();
-        this.drawExtend();
         this.imageGenerator.processDrawing(this.element as MindElement<ImageData>, this.getElementG());
         if (PlaitMind.isMind(this.context.parent)) {
             this.getElementG().classList.add('branch');
@@ -130,19 +121,17 @@ export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMi
         value: PlaitPluginElementContext<MindElement, PlaitMindBoard>,
         previous: PlaitPluginElementContext<MindElement, PlaitMindBoard>
     ) {
-        this.initializeWeakMap();
         const newNode = MindElement.getNode(value.element);
         const isEqualNode = RectangleClient.isEqual(this.node, newNode);
         this.node = newNode;
-        const isChangeTheme = this.board.operations.find(op => op.type === 'set_theme');
-        if (!isEqualNode || value.element !== previous.element || isChangeTheme) {
-            this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+        if (!isEqualNode || value.element !== previous.element || value.hasThemeChanged) {
+            this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
                 selected: this.selected
             });
+            this.nodeMoreGenerator.processDrawing(this.element, this.getElementG(), { isSelected: this.selected });
             this.nodeShapeGenerator.processDrawing(this.element, this.getElementG(), { node: this.node });
             this.drawLink();
             this.drawEmojis();
-            this.drawExtend();
             if (!MindElement.hasImage(previous.element) && MindElement.hasImage(this.element)) {
                 this.imageGenerator.processDrawing(this.element, this.getElementG());
             }
@@ -160,9 +149,12 @@ export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMi
         } else {
             const hasSameSelected = value.selected === previous.selected;
             const hasSameParent = value.parent === previous.parent;
-            if (!hasSameSelected) {
-                this.activeGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+            if (!hasSameSelected || value.selected) {
+                this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
                     selected: this.selected
+                });
+                this.nodeMoreGenerator.processDrawing(this.element, this.getElementG(), {
+                    isSelected: this.selected
                 });
             }
             if (!hasSameParent) {
@@ -186,32 +178,17 @@ export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMi
         const parent = MindElement.getParent(this.element);
         const parentNode = MindElement.getNode(parent);
 
-        if (this.linkG) {
-            this.linkG.remove();
+        if (this.linkLineG) {
+            this.linkLineG.remove();
         }
 
-        const layout = MindQueries.getLayoutByElement(parent) as MindLayoutType;
+        const layout = MindQueries.getCorrectLayoutByElement(this.board, parent) as MindLayoutType;
         if (AbstractNode.isAbstract(this.node.origin)) {
-            this.linkG = drawAbstractLink(this.board, this.node, isHorizontalLayout(layout));
+            this.linkLineG = drawAbstractLink(this.board, this.node, isHorizontalLayout(layout));
         } else {
-            this.linkG = drawLink(this.board, parentNode, this.node, isHorizontalLayout(layout));
+            this.linkLineG = drawLink(this.board, parentNode, this.node, isHorizontalLayout(layout));
         }
-        this.getElementG().append(this.linkG);
-    }
-
-    drawExtend() {
-        if (!this.extendG) {
-            this.extendG = createG();
-            this.extendG.classList.add('extend');
-            this.getElementG().append(this.extendG);
-        }
-        if (this.element.isCollapsed) {
-            this.getElementG().classList.add('collapsed');
-        } else {
-            this.getElementG().classList.remove('collapsed');
-        }
-        this.nodePlusGenerator.processDrawing(this.element, this.extendG!);
-        this.collapseGenerator.processDrawing(this.element, this.extendG!);
+        this.getElementG().append(this.linkLineG);
     }
 
     drawTopic() {
@@ -233,9 +210,9 @@ export class MindNodeComponent extends CommonElementFlavour<MindElement, PlaitMi
         this.nodeEmojisGenerator.destroy();
         this.imageGenerator.destroy();
         this.activeGenerator.destroy();
-        if (ELEMENT_TO_NODE.get(this.element) === this.node) {
-            ELEMENT_TO_NODE.delete(this.element);
+        if (MIND_ELEMENT_TO_NODE.get(this.element) === this.node) {
+            MIND_ELEMENT_TO_NODE.delete(this.element);
         }
-        this.destroyTextManages();
+        this.getRef().destroyTextManage();
     }
 }

@@ -11,8 +11,8 @@ import {
     updateForeignObject
 } from '@plait/core';
 import { Generator, GeneratorExtraData, GeneratorOptions } from '../generators/generator';
-import { CommonImageItem, canResize, getElementOfFocusedImage } from '../utils';
-import { ActiveGenerator } from '../generators/active.generator';
+import { CommonImageItem, hasResizeHandle, getElementOfFocusedImage } from '../utils';
+import { ActiveGenerator, createActiveGenerator } from '../generators/active.generator';
 import { PlaitImageBoard, ImageComponentRef, ImageProps } from './with-image';
 
 export const FOREIGN_OBJECT_IMAGE_CLASS_NAME = 'foreign-object-image';
@@ -62,9 +62,9 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
                 return this.options.getRectangle(element);
             }
         };
-        this.imageComponentRef = ((this.board as unknown) as PlaitImageBoard).renderImage(this.foreignObject, props);
+        this.imageComponentRef = (this.board as unknown as PlaitImageBoard).renderImage(this.foreignObject, props);
 
-        this.activeGenerator = new ActiveGenerator(this.board, {
+        this.activeGenerator = createActiveGenerator(this.board, {
             getStrokeWidth: () => {
                 const selectedElements = getSelectedElements(this.board);
                 if (!(selectedElements.length === 1 && !isSelectionMoving(this.board))) {
@@ -85,7 +85,7 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
                 return this.options.getRectangle(this.element);
             },
             hasResizeHandle: () => {
-                const isSelectedImageElement = canResize(this.board, this.element);
+                const isSelectedImageElement = hasResizeHandle(this.board, this.element);
                 const isSelectedImage = !!getElementOfFocusedImage(this.board);
                 return isSelectedImage || isSelectedImageElement;
             }
@@ -113,16 +113,16 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
             currentForeignObject.x,
             currentForeignObject.y
         );
-        if (currentForeignObject && current.angle) {
+        if (currentForeignObject && current.angle !== undefined) {
             setAngleForG(this.g!, RectangleClient.getCenterPoint(currentForeignObject), current.angle);
         }
-        const activeG = PlaitBoard.getElementActiveHost(this.board);
+        const activeG = PlaitBoard.getActiveHost(this.board);
         this.activeGenerator.processDrawing(current, activeG, { selected: this.isFocus });
     }
 
     setFocus(element: PlaitElement, isFocus: boolean) {
         this.isFocus = isFocus;
-        const activeG = PlaitBoard.getElementActiveHost(this.board);
+        const activeG = PlaitBoard.getActiveHost(this.board);
         this.activeGenerator.processDrawing(element, activeG, { selected: isFocus });
         const props: Partial<ImageProps> = {
             isFocus

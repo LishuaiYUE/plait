@@ -9,7 +9,7 @@ export interface SetOptions<T extends PlaitElement = PlaitElement> {
 
 export const setProperty = <T extends PlaitElement = PlaitElement>(board: PlaitBoard, properties: Partial<T>, options?: SetOptions<T>) => {
     const selectedElements = getSelectedElements(board) as T[];
-    selectedElements.forEach(element => {
+    selectedElements.forEach((element) => {
         if (options?.match && !options?.match(element)) return;
         const path = PlaitBoard.findPath(board, element);
         const memorizeKey = options?.getMemorizeKey ? options?.getMemorizeKey(element) : '';
@@ -28,11 +28,11 @@ const setStrokeStyle = (board: PlaitBoard, strokeStyle: string, options: SetOpti
     setProperty(board, { strokeStyle }, options);
 };
 
-const setFillColor = (board: PlaitBoard, fill: string, options: SetOptions) => {
+const setFillColor = (board: PlaitBoard, fill: string | null, options: SetOptions) => {
     setProperty(board, { fill }, options);
 };
 
-const setStrokeColor = (board: PlaitBoard, strokeColor: string, options: SetOptions) => {
+const setStrokeColor = (board: PlaitBoard, strokeColor: string | null, options: SetOptions) => {
     setProperty(board, { strokeColor }, options);
 };
 

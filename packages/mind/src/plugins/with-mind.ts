@@ -21,13 +21,14 @@ import { withAbstract } from './with-abstract-resize';
 import { withMindExtend } from './with-mind-extend';
 import { withCreateMind } from './with-mind-create';
 import { withMindHotkey } from './with-mind-hotkey';
-import { withNodeHoverHitTest } from './with-node-hover-hit-test';
+import { withNodeMore } from './with-node-more';
 import { withNodeImage } from './with-node-image';
 import { PlaitMindBoard } from './with-mind.board';
 import { withNodeResize } from './with-node-resize';
 import { withNodeImageResize } from './with-node-image-resize';
 import { withMindFragment } from './with-mind-fragment';
 import { withEmoji } from '../emoji/with-emoji';
+import { fixMindElementData, isNormalizedData } from '../utils/normalize';
 
 export const withMind = (baseBoard: PlaitBoard) => {
     const board = baseBoard as PlaitBoard & PlaitMindBoard;
@@ -43,8 +44,21 @@ export const withMind = (baseBoard: PlaitBoard) => {
         isImageBindingAllowed,
         canAddToGroup,
         canSetZIndex,
-        isExpanded
+        isExpanded,
+        getOneHitElement,
+        normalizeElement
     } = board;
+
+    board.normalizeElement = (context: PlaitPluginElementContext) => {
+        if (PlaitMind.isMind(context.element)) {
+            depthFirstRecursion(context.element, (node) => {
+                if (!isNormalizedData(node)) {
+                    fixMindElementData(node);
+                }
+            });
+        }
+        normalizeElement(context);
+    };
 
     board.drawElement = (context: PlaitPluginElementContext) => {
         if (PlaitMind.isMind(context.element)) {
@@ -65,31 +79,31 @@ export const withMind = (baseBoard: PlaitBoard) => {
         }
     };
 
-    board.getRectangle = element => {
-        if (!PlaitElement.hasMounted(element)) {
-            console.error('mind element has not been mounted');
-        }
+    board.getRectangle = (element) => {
         if (MindElement.isMindElement(board, element)) {
+            if (!PlaitElement.hasMounted(element)) {
+                console.error('mind element has not been mounted');
+            }
             return getRectangleByNode(MindElement.getNode(element));
         }
         return getRectangle(element);
     };
 
     board.canAddToGroup = (element: PlaitElement) => {
-        if (MindElement.isMindElement(board, element) && !element.isRoot) {
+        if (MindElement.isMindElement(board, element) && !PlaitMind.isMind(element)) {
             return false;
         }
         return canAddToGroup(element);
     };
 
     board.canSetZIndex = (element: PlaitElement) => {
-        if (MindElement.isMindElement(board, element) && !element.isRoot) {
+        if (MindElement.isMindElement(board, element) && !PlaitMind.isMind(element)) {
             return false;
         }
         return canSetZIndex(element);
     };
 
-    board.isRecursion = element => {
+    board.isRecursion = (element) => {
         if (MindElement.isMindElement(board, element) && element.isCollapsed) {
             return false;
         }
@@ -105,23 +119,31 @@ export const withMind = (baseBoard: PlaitBoard) => {
         return isRectangleHit(element, selection);
     };
 
-    board.isHit = (element, point: Point) => {
+    board.isHit = (element, point: Point, isStrict?: boolean) => {
         if (MindElement.isMindElement(board, element)) {
             const client = getRectangleByNode(MindElement.getNode(element));
             const isHit = RectangleClient.isHit(RectangleClient.getRectangleByPoints([point, point]), client);
             return isHit;
         }
-        return isHit(element, point);
+        return isHit(element, point, isStrict);
     };
 
-    board.isMovable = element => {
-        if (PlaitMind.isMind(element) && element.isRoot) {
+    board.getOneHitElement = (elements, hitPoint: Point) => {
+        const isAllMindElements = elements.every((item) => MindElement.isMindElement(board, item));
+        if (isAllMindElements) {
+            return elements[0];
+        }
+        return getOneHitElement(elements, hitPoint);
+    };
+
+    board.isMovable = (element) => {
+        if (PlaitMind.isMind(element)) {
             return true;
         }
         return isMovable(element);
     };
 
-    board.isImageBindingAllowed = element => {
+    board.isImageBindingAllowed = (element) => {
         if (MindElement.isMindElement(board, element)) {
             return true;
         }
@@ -129,7 +151,7 @@ export const withMind = (baseBoard: PlaitBoard) => {
     };
 
     board.isAlign = (element: PlaitElement) => {
-        if (PlaitMind.isMind(element) && element.isRoot) {
+        if (PlaitMind.isMind(element)) {
             return true;
         }
         return isAlign(element);
@@ -149,11 +171,11 @@ export const withMind = (baseBoard: PlaitBoard) => {
         }
         const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
         board.children
-            .filter(value => PlaitMind.isMind(value))
-            .forEach(mindMap => {
+            .filter((value) => PlaitMind.isMind(value))
+            .forEach((mindMap) => {
                 depthFirstRecursion<MindElement>(
                     mindMap as MindElement,
-                    node => {
+                    (node) => {
                         if (!PlaitBoard.hasBeenTextEditing(board) && isHitMindElement(board, point, node)) {
                             editTopic(node);
                         }
@@ -171,7 +193,7 @@ export const withMind = (baseBoard: PlaitBoard) => {
         withNodeResize(
             withNodeImageResize(
                 withNodeImage(
-                    withNodeHoverHitTest(withMindFragment(withMindHotkey(withMindExtend(withCreateMind(withAbstract(withNodeDnd(board)))))))
+                    withNodeMore(withMindFragment(withMindHotkey(withMindExtend(withCreateMind(withAbstract(withNodeDnd(board)))))))
                 )
             )
         )

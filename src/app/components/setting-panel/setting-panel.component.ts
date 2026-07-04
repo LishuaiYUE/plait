@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, forwardRef, inject } from '@angular/core';
 import {
     PlaitBoard,
     PlaitElement,
@@ -10,33 +10,42 @@ import {
     radiansToDegrees,
     rotateElements,
     canSetZIndex,
-    Path
+    Path,
+    DEFAULT_COLOR
 } from '@plait/core';
-
 import {
     MindElement,
     MindPointerType,
     MindTransforms,
     canSetAbstract,
-    getDefaultMindElementFontSize,
+    getDefaultFontSizeForMindElement,
     getSelectedMindElements
 } from '@plait/mind';
-import { Node, Transforms as SlateTransforms } from 'slate';
+import { BaseEditor, Node, Transforms as SlateTransforms } from 'slate';
 import { AppColorPickerComponent } from '../color-picker/color-picker.component';
 import { FormsModule } from '@angular/forms';
-import { NgClass, NgIf } from '@angular/common';
-import { AlignTransform, Alignment, CustomText, ParagraphElement, PropertyTransforms, getEditingTextEditor, getFirstTextEditor } from '@plait/common';
+import { NgClass } from '@angular/common';
 import {
-    LineShape,
-    LineMarkerType,
-    getSelectedLineElements,
+    AlignTransform,
+    Alignment,
+    CustomText,
+    ParagraphElement,
+    PropertyTransforms,
+    getEditingTextEditor,
+    getFirstTextEditor
+} from '@plait/common';
+import {
+    ArrowLineShape,
+    ArrowLineMarkerType,
+    getSelectedArrowLineElements,
+    getSelectedVectorLineElements,
     isSingleSelectSwimlane,
     getSelectedGeometryElements,
     getSelectedImageElements,
     GeometryShapes,
     DrawTransforms,
     getMemorizeKey,
-    LineHandleKey,
+    ArrowLineHandleKey,
     PlaitSwimlane,
     isDrawElementsIncludeText,
     isDrawElementIncludeText,
@@ -44,7 +53,12 @@ import {
     getSelectedTableElements,
     getGeometryAlign,
     PlaitDrawElement,
-    getSwimlaneCount
+    getSwimlaneCount,
+    getSelectedTableCellsEditor,
+    VectorLineShape,
+    isClosedDrawElement,
+    FillStyle,
+    FILL_STYLES
 } from '@plait/draw';
 import { MindLayoutType } from '@plait/layouts';
 import { FontSizes, LinkEditor, MarkTypes, PlaitMarkEditor, TextTransforms } from '@plait/text-plugins';
@@ -58,15 +72,18 @@ import { OnBoardChange, PlaitIslandBaseComponent } from '@plait/angular-board';
     host: {
         class: 'app-setting-panel plait-board-attached'
     },
-    standalone: true,
-    imports: [NgClass, NgIf, FormsModule, AppColorPickerComponent]
+    imports: [NgClass, FormsModule, AppColorPickerComponent]
 })
 export class AppSettingPanelComponent extends PlaitIslandBaseComponent implements OnBoardChange {
+    cdr = inject(ChangeDetectorRef);
+
     currentFillColor: string | undefined = '';
 
     currentStrokeColor: string | undefined = '';
 
     currentBranchColor: string | undefined = '';
+
+    currentFillStyle: FillStyle = 'solid';
 
     currentMarks: Omit<CustomText, 'text'> = {};
 
@@ -74,11 +91,15 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
 
     MindPointerType = MindPointerType;
 
+    vectorLineShape = VectorLineShape;
+
     markTypes = MarkTypes;
 
     isSelectedMind = false;
 
     isSelectedLine = false;
+
+    isSelectedVectorLine = false;
 
     isSelectSwimlane = false;
 
@@ -86,21 +107,34 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
 
     canSetZIndex = false;
 
-    fillColor = ['#333333', '#e48483', '#69b1e4', '#e681d4', '#a287e1', ''];
+    fillColor = [DEFAULT_COLOR, '#e48483', '#69b1e4', '#e681d4', '#a287e1', ''];
 
-    textColorOptions = ['#333333', '#e03130', '#2f9e44', '#1871c2', '#f08c02', '#c18976'];
+    textColorOptions = [DEFAULT_COLOR, '#e03130', '#2f9e44', '#1871c2', '#f08c02', '#c18976'];
 
     strokeColor = ['#1e1e1e', '#e03130', '#2f9e44', '#1871c2', '#f08c02', '#c18976'];
 
     branchColor = ['#A287E0', '#6E80DB', '#E0B75E', '#B1C675', '#77C386', '#E48484'];
 
+    fillStyles: { value: FillStyle; label: string }[] = FILL_STYLES.map((value) => {
+        const labels: Record<FillStyle, string> = {
+            solid: '实心',
+            hachure: '斜线',
+            zigzag: '锯齿',
+            'cross-hatch': '交叉线',
+            dots: '点状',
+            dashed: '虚线',
+            'zigzag-line': '锯齿线'
+        };
+        return { value, label: labels[value] };
+    });
+
     align = Alignment.center;
 
-    lineShape = LineShape.straight;
+    lineShape = ArrowLineShape.straight;
 
-    lineTargetMarker = LineMarkerType.openTriangle;
+    lineTargetMarker = ArrowLineMarkerType.openTriangle;
 
-    lineSourceMarker = LineMarkerType.openTriangle;
+    lineSourceMarker = ArrowLineMarkerType.openTriangle;
 
     swimlaneOperation = 'addRow';
 
@@ -109,6 +143,10 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
     angle = 0;
 
     swimlaneCount = 3;
+
+    enableSetFillColor = true;
+
+    enableSetFillStyle = false;
 
     @HostBinding('class.visible')
     get isVisible() {
@@ -120,16 +158,20 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
         }
     }
 
-    constructor(protected cdr: ChangeDetectorRef) {
-        super(cdr);
-    }
-
     onBoardChange() {
         const selectedMindElements = getSelectedMindElements(this.board);
-        const selectedLineElements = getSelectedLineElements(this.board);
+        const selectedArrowLineElements = getSelectedArrowLineElements(this.board);
+        const selectedVectorLineElements = getSelectedVectorLineElements(this.board);
+        const selectedDrawElements = getSelectedDrawElements(this.board);
+        const selectedGeometryElements = getSelectedGeometryElements(this.board);
         this.isSelectedMind = !!selectedMindElements.length;
-        this.isSelectedLine = !!selectedLineElements.length;
+        this.isSelectedLine = !!selectedArrowLineElements.length || !!selectedVectorLineElements.length;
+        this.isSelectedVectorLine = !!selectedVectorLineElements.length;
         this.isSelectSwimlane = isSingleSelectSwimlane(this.board);
+        this.enableSetFillColor = selectedDrawElements.some((item) => isClosedDrawElement(item)) || this.isSelectedMind;
+        this.enableSetFillStyle = selectedGeometryElements.some(
+            (item) => isClosedDrawElement(item) && !PlaitDrawElement.isElementByTable(item)
+        );
         if (this.isSelectSwimlane) {
             this.swimlaneCount = getSwimlaneCount(getSelectedElements(this.board)[0] as PlaitSwimlane);
         }
@@ -145,34 +187,41 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
                 this.align = firstMindElement.data.topic.align || Alignment.left;
             }
         }
-
-        const selectedGeometryElements = getSelectedGeometryElements(this.board);
+        const selectedTableCellsEditor = getSelectedTableCellsEditor(this.board);
         const selectedTableElements = getSelectedTableElements(this.board);
         const selectedTableAndGeometryElements = [...selectedGeometryElements, ...selectedTableElements];
         if (selectedTableAndGeometryElements.length) {
-            const firstGeometry = selectedTableAndGeometryElements.find(item => isDrawElementIncludeText(item));
-            if (firstGeometry && PlaitElement.hasMounted(firstGeometry)) {
-                this.currentMarks = PlaitMarkEditor.getMarks(getFirstTextEditor(firstGeometry));
-                this.align = getGeometryAlign(this.board, firstGeometry);
+            const firstClosedGeometry = selectedGeometryElements.find(
+                (item) => isClosedDrawElement(item) && !PlaitDrawElement.isElementByTable(item)
+            );
+            if (firstClosedGeometry) {
+                this.currentFillStyle = firstClosedGeometry.fillStyle || 'solid';
             }
-            setTimeout(() => {
-                const editor = firstGeometry && getEditingTextEditor(this.board, [firstGeometry]);
-                const isEditing = !!editor;
-                if (isEditing) {
-                    this.align = (editor.children[0] as ParagraphElement)?.align || this.align;
-                    this.currentMarks = PlaitMarkEditor.getMarks(editor);
-                    this.cdr.markForCheck();
+            let editor: BaseEditor | undefined;
+            let align: Alignment = this.align;
+            if (selectedTableCellsEditor?.length) {
+                editor = selectedTableCellsEditor[0];
+                align = (editor.children[0] as ParagraphElement)?.align || Alignment.center;
+            } else {
+                const firstGeometry = selectedTableAndGeometryElements.find((item) => isDrawElementIncludeText(item));
+                if (firstGeometry && PlaitElement.hasMounted(firstGeometry)) {
+                    editor = getFirstTextEditor(firstGeometry);
+                    align = getGeometryAlign(this.board, firstGeometry);
+                    this.strokeWidth = firstGeometry?.strokeWidth || 3;
                 }
-            });
-            this.strokeWidth = firstGeometry?.strokeWidth || 3;
+            }
+            if (editor) {
+                this.currentMarks = PlaitMarkEditor.getMarks(editor);
+                this.align = align;
+            }
         }
 
         const selectedImageElements = getSelectedImageElements(this.board);
         const selectedElements = [...selectedImageElements, ...selectedGeometryElements];
         const selectionAngle = getSelectionAngle(selectedElements);
         this.angle = Math.round(radiansToDegrees(selectionAngle));
-        if (selectedLineElements.length) {
-            const firstLine = selectedLineElements[0];
+        if (selectedArrowLineElements.length) {
+            const firstLine = selectedArrowLineElements[0];
             this.lineShape = firstLine.shape;
             this.lineTargetMarker = firstLine.target.marker;
             this.lineSourceMarker = firstLine.source.marker;
@@ -186,7 +235,6 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
                 this.cdr.markForCheck();
             });
         }
-        const selectedDrawElements = getSelectedDrawElements(this.board);
         this.isIncludeText = selectedMindElements.length ? true : isDrawElementsIncludeText(selectedDrawElements);
     }
 
@@ -212,9 +260,9 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
         }
     }
 
-    setLineShape(event: Event) {
-        let value = (event.target as HTMLSelectElement).value as LineShape;
-        DrawTransforms.setLineShape(this.board, { shape: value });
+    setArrowLineShape(event: Event) {
+        let value = (event.target as HTMLSelectElement).value as ArrowLineShape;
+        DrawTransforms.setArrowLineShape(this.board, { shape: value });
     }
 
     changeStrokeStyle(event: Event) {
@@ -226,12 +274,27 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
         PropertyTransforms.setFillColor(this.board, property, {
             getMemorizeKey,
             callback: (element: PlaitElement, path: Path) => {
-                const isSwimlane = PlaitDrawElement.isSwimlane(element);
-                if (isSwimlane) {
-                    DrawTransforms.setSwimlaneFill(this.board, element as PlaitSwimlane, property, path);
+                const tableElement = PlaitDrawElement.isElementByTable(element);
+                if (tableElement) {
+                    DrawTransforms.setTableFill(this.board, element, property, path);
                 } else {
+                    if (PlaitDrawElement.isDrawElement(element) && !isClosedDrawElement(element as PlaitDrawElement)) {
+                        return;
+                    }
                     Transforms.setNode(this.board, { fill: property }, path);
                 }
+            }
+        });
+    }
+
+    changeFillStyle(fillStyle: FillStyle) {
+        this.currentFillStyle = fillStyle;
+        PropertyTransforms.setProperty(this.board, { fillStyle } as Partial<PlaitElement>, {
+            getMemorizeKey,
+            match: (element: PlaitElement) =>
+                PlaitDrawElement.isGeometry(element) && isClosedDrawElement(element) && !PlaitDrawElement.isElementByTable(element),
+            callback: (element: PlaitElement, path: Path) => {
+                Transforms.setNode(this.board, { fillStyle }, path);
             }
         });
     }
@@ -249,16 +312,16 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
         const selectedElements = getSelectedElements(this.board);
 
         if (selectedElements.length) {
-            selectedElements.forEach(element => {
+            selectedElements.forEach((element) => {
                 const path = PlaitBoard.findPath(this.board, element);
                 Transforms.setNode(this.board, { [attribute]: property }, path);
             });
         }
     }
 
-    changeLineMarker(event: Event, key: string) {
+    changeArrowLineMarker(event: Event, key: string) {
         let value = (event.target as HTMLSelectElement).value as any;
-        DrawTransforms.setLineMark(this.board, key as LineHandleKey, value as LineMarkerType);
+        DrawTransforms.setArrowLineMark(this.board, key as ArrowLineHandleKey, value as ArrowLineMarkerType);
     }
 
     changeAngle() {
@@ -268,13 +331,13 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
     }
 
     textColorChange(value: string) {
-        TextTransforms.setTextColor(this.board, value);
+        TextTransforms.setTextColor(this.board, value, undefined, getSelectedTableCellsEditor(this.board));
     }
 
     setAbstract(event: Event) {
         const selectedElements = getSelectedElements(this.board) as MindElement[];
 
-        const ableSetAbstract = selectedElements.every(element => {
+        const ableSetAbstract = selectedElements.every((element) => {
             return canSetAbstract(element);
         });
 
@@ -286,7 +349,7 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
     setTextMark(event: MouseEvent, attribute: string) {
         event.preventDefault();
         event.stopPropagation();
-        TextTransforms.setTextMarks(this.board, attribute as MarkTypes);
+        TextTransforms.setTextMarks(this.board, attribute as MarkTypes, getSelectedTableCellsEditor(this.board));
     }
 
     setLink(event: MouseEvent) {
@@ -321,13 +384,18 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
 
     setFontSize(event: Event) {
         const fontSize = (event.target as HTMLSelectElement).value as FontSizes;
-        TextTransforms.setFontSize(this.board, fontSize, (element: PlaitElement) => {
-            return MindElement.isMindElement(this.board, element) ? getDefaultMindElementFontSize(this.board, element) : undefined;
-        });
+        TextTransforms.setFontSize(
+            this.board,
+            fontSize,
+            (element: PlaitElement) => {
+                return MindElement.isMindElement(this.board, element) ? getDefaultFontSizeForMindElement(element) : undefined;
+            },
+            getSelectedTableCellsEditor(this.board)
+        );
     }
 
     setTextAlign(event: Alignment) {
-        TextTransforms.setTextAlign(this.board, event);
+        TextTransforms.setTextAlign(this.board, event, getSelectedTableCellsEditor(this.board));
     }
 
     setAlign(event: Event) {
@@ -362,5 +430,9 @@ export class AppSettingPanelComponent extends PlaitIslandBaseComponent implement
     updateSwimlaneCount() {
         const selectedElements = getSelectedElements(this.board) as PlaitSwimlane[];
         DrawTransforms.updateSwimlaneCount(this.board, selectedElements[0], this.swimlaneCount);
+    }
+
+    setLineShape(vectorLineShape: VectorLineShape) {
+        DrawTransforms.setVectorLineShape(this.board, { shape: vectorLineShape });
     }
 }

@@ -11,7 +11,7 @@ import {
     initializeViewportContainer
 } from '../utils/viewport';
 import { setViewport } from './viewport';
-import { depthFirstRecursion, getRealScrollBarWidth } from '../utils';
+import { depthFirstRecursion, getRealScrollBarWidth, getSelectedElements } from '../utils';
 import { PlaitElement } from '../interfaces/element';
 import { setTheme } from './theme';
 import { FitViewportOptions } from '../interfaces/viewport';
@@ -27,17 +27,16 @@ function updateViewport(board: PlaitBoard, origination: Point, zoom?: number) {
     clearViewportOrigination(board);
 }
 
-function updateZoom(board: PlaitBoard, newZoom: number, isCenter = true) {
+function updateZoom(board: PlaitBoard, newZoom: number, center?: Point) {
     newZoom = clampZoomLevel(newZoom);
 
-    const movingPoint = PlaitBoard.getMovingPointInBoard(board);
     const nativeElement = PlaitBoard.getBoardContainer(board);
     const nativeElementRect = nativeElement.getBoundingClientRect();
     const boardContainerRect = PlaitBoard.getBoardContainer(board).getBoundingClientRect();
     let focusPoint = [boardContainerRect.width / 2, boardContainerRect.height / 2];
 
-    if (!isCenter && movingPoint && distanceBetweenPointAndRectangle(movingPoint[0], movingPoint[1], nativeElementRect) === 0) {
-        focusPoint = [movingPoint[0] - nativeElementRect.x, movingPoint[1] - nativeElementRect.y];
+    if (center && distanceBetweenPointAndRectangle(center[0], center[1], nativeElementRect) === 0) {
+        focusPoint = [center[0] - nativeElementRect.x, center[1] - nativeElementRect.y];
     }
 
     const zoom = board.viewport.zoom;
@@ -121,7 +120,7 @@ function updateThemeColor(board: PlaitBoard, mode: ThemeColorMode) {
     mode = mode ?? board.theme.themeColorMode;
     setTheme(board, { themeColorMode: mode });
 
-    depthFirstRecursion((board as unknown) as PlaitElement, element => {
+    depthFirstRecursion(board as unknown as PlaitElement, (element) => {
         board.applyTheme(element);
     });
 }
@@ -131,11 +130,35 @@ const updatePointerType = <T extends string = PlaitPointerType>(board: PlaitBoar
     board.pointer = pointer;
 };
 
+function moveToCenter(board: PlaitBoard, centerPoint: Point) {
+    const plaitElement = getSelectedElements(board)?.[0];
+    if (plaitElement) {
+        const boardContainerRect = PlaitBoard.getBoardContainer(board).getBoundingClientRect();
+        const scrollBarWidth = getRealScrollBarWidth(board);
+        const oldCenterPoint = getViewBoxCenterPoint(board);
+        const left = centerPoint[0] - oldCenterPoint[0];
+        const top = centerPoint[1] - oldCenterPoint[1];
+        const zoom = board.viewport.zoom;
+
+        const origination = [
+            left - boardContainerRect.width / 2 / zoom + scrollBarWidth / 2 / zoom,
+            top - boardContainerRect.height / 2 / zoom + scrollBarWidth / 2 / zoom
+        ] as Point;
+
+        setViewport(board, {
+            ...board.viewport,
+            origination
+        });
+        clearViewportOrigination(board);
+    }
+}
+
 export const BoardTransforms = {
     updatePointerType,
     updateViewport,
     fitViewport,
     updateZoom,
     updateThemeColor,
-    fitViewportWidth
+    fitViewportWidth,
+    moveToCenter
 };

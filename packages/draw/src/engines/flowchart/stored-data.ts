@@ -14,17 +14,20 @@ import {
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { Options } from 'roughjs/bin/core';
 import { RectangleEngine } from '../basic-shapes/rectangle';
-import { getTextRectangle } from '../../utils';
+import { getCustomTextRectangle, getTextRectangle } from '../../utils';
 
 export const StoredDataEngine: ShapeEngine = {
     draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
         const rs = PlaitBoard.getRoughSVG(board);
         const shape = rs.path(
-            `M${rectangle.x + rectangle.width / 10} ${rectangle.y} L${rectangle.x + rectangle.width} ${rectangle.y} A  ${rectangle.width /
-                10} ${rectangle.height / 2}, 0, 0, 0,${rectangle.x + rectangle.width} ${rectangle.y + rectangle.height} L${rectangle.x +
-                rectangle.width / 10} ${rectangle.y + rectangle.height}A  ${rectangle.width / 10} ${rectangle.height /
-                2}, 0, 0, 1,${rectangle.x + rectangle.width / 10} ${rectangle.y}`,
-            { ...options, fillStyle: 'solid' }
+            `M${rectangle.x + rectangle.width / 10} ${rectangle.y} L${rectangle.x + rectangle.width} ${rectangle.y} A  ${
+                rectangle.width / 10
+            } ${rectangle.height / 2}, 0, 0, 0,${rectangle.x + rectangle.width} ${rectangle.y + rectangle.height} L${
+                rectangle.x + rectangle.width / 10
+            } ${rectangle.y + rectangle.height}A  ${rectangle.width / 10} ${rectangle.height / 2}, 0, 0, 1,${
+                rectangle.x + rectangle.width / 10
+            } ${rectangle.y}`,
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;
@@ -91,7 +94,7 @@ export const StoredDataEngine: ShapeEngine = {
         const point = [connectionPoint[0] - centerPoint[0], -(connectionPoint[1] - centerPoint[1])];
         const slope = getEllipseTangentSlope(point[0], point[1], a, b) as any;
         const vector = getVectorFromPointAndSlope(point[0], point[1], slope);
-        return isBackEllipse ? (vector.map(num => -num) as Vector) : vector;
+        return isBackEllipse ? (vector.map((num) => -num) as Vector) : vector;
     },
     getConnectorPoints(rectangle: RectangleClient) {
         return [
@@ -101,11 +104,8 @@ export const StoredDataEngine: ShapeEngine = {
             [rectangle.x, rectangle.y + rectangle.height / 2]
         ];
     },
-    getTextRectangle(element: PlaitGeometry) {
-        const rectangle = getTextRectangle(element);
-        const width = rectangle.width;
-        rectangle.width = (rectangle.width * 3) / 4;
-        rectangle.x += width / 8;
-        return rectangle;
+    getTextRectangle(board: PlaitBoard, element: PlaitGeometry) {
+        const widthRatio = 3 / 4;
+        return getCustomTextRectangle(board, element, widthRatio);
     }
 };

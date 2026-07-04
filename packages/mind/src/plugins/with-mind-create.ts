@@ -33,10 +33,9 @@ export const withCreateMind = (board: PlaitBoard) => {
 
     newBoard.pointerDown = (event: PointerEvent) => {
         const isMindPointer = PlaitBoard.isPointer<MindPointerType | PlaitPointerType>(board, MindPointerType.mind);
-        let movingPoint = PlaitBoard.getMovingPointInBoard(board);
-        if (!PlaitBoard.isReadonly(board) && movingPoint && isDrawingMode(board) && isMindPointer) {
-            movingPoint = toViewBoxPoint(board, toHostPoint(board, movingPoint[0], movingPoint[1]));
-            const emptyMind = createEmptyMind(newBoard, movingPoint);
+        if (!PlaitBoard.isReadonly(board) && isDrawingMode(board) && isMindPointer) {
+            const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
+            const emptyMind = createEmptyMind(newBoard, point);
             MindTransforms.insertMind(board as PlaitMindBoard, emptyMind);
             BoardTransforms.updatePointerType(board, PlaitPointerType.selection);
             return;

@@ -1,4 +1,4 @@
-export * from './line/index';
+export * from './arrow-line/index';
 export * from './geometry';
 export * from './multi-text-geometry';
 export * from './uml';
@@ -11,3 +11,6 @@ export * from './snap-resizing';
 export * from './table';
 export * from './table-selected';
 export * from './swimlane';
+export * from './line';
+export * from './vector-line';
+export * from './clipboard';

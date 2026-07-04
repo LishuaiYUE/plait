@@ -9,7 +9,7 @@ HTML 模版：
 
 ```
 <plait-board [plaitPlugins]="plugins" [plaitValue]="value"
-    (plaitBoardInitialized)="plaitBoardInitialized($event)" (plaitChange)="change($event)">
+    (initialized)="initialized($event)" (change)="change($event)">
 </plait-board>
 ```
 
@@ -35,21 +35,18 @@ export class BasicBoardComponent {
     // console.log(event.children);
   }
 
-  plaitBoardInitialized(value: PlaitBoard) {
+  initialized(value: PlaitBoard) {
     this.board = value;
   }
 }
 
 const demoData = [
   {
-    type: 'mindmap',
+    type: 'mind',
     id: '2',
     rightNodeCount: 3,
     data: { topic: { children: [{ text: '思维导图' }] } },
     children: [],
-    width: 72,
-    height: 25,
-    isRoot: true,
     points: [[560, 700]],
   },
 ] as PlaitElement[];

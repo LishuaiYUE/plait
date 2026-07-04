@@ -2,17 +2,19 @@ import { PlaitBoard, PlaitElement, getSelectedElements } from '@plait/core';
 import { Editor, Node, Element } from 'slate';
 import { TextManage } from '../text/text-manage';
 import { Alignment, CustomText, ParagraphElement } from '../text/types';
+import { PlaitCommonElementRef } from '../core';
 
 export interface TextInterface {
     getTextEditors: (board: PlaitBoard, elements?: PlaitElement[]) => Editor[] | undefined;
     findFirstTextEditor: (board: PlaitBoard) => null;
     getFirstTextEditor: (element: PlaitElement) => Editor;
     getTextEditorsByElement: (element: PlaitElement) => Editor[];
-    getEditingTextEditor: (board: PlaitBoard, elements?: PlaitElement[]) => Editor | undefined
+    getEditingTextEditor: (board: PlaitBoard, elements?: PlaitElement[]) => Editor | undefined;
 }
 
 export const getTextManages = (element: PlaitElement) => {
-    return ELEMENT_TO_TEXT_MANAGES.get(element) || [];
+    const ref = PlaitElement.getElementRef<PlaitCommonElementRef>(element);
+    return ref?.getTextManages() || [];
 };
 
 export const getFirstTextManage = (element: PlaitElement) => {
@@ -24,7 +26,7 @@ export const getFirstTextManage = (element: PlaitElement) => {
 };
 
 export const getTextEditorsByElement: TextInterface['getTextEditorsByElement'] = (element: PlaitElement) => {
-    return getTextManages(element).map(manage => {
+    return getTextManages(element).map((manage) => {
         return manage.editor;
     });
 };
@@ -40,7 +42,7 @@ export const getFirstTextEditor: TextInterface['getFirstTextEditor'] = (element:
 export const findFirstTextEditor: TextInterface['findFirstTextEditor'] = (board: PlaitBoard) => {
     const selectedElements = getSelectedElements(board);
     let firstEditor: Editor | null = null;
-    selectedElements.forEach(element => {
+    selectedElements.forEach((element) => {
         const editors = getTextEditorsByElement(element);
         if (!firstEditor && editors && editors.length > 0) {
             firstEditor = editors[0];
@@ -51,12 +53,12 @@ export const findFirstTextEditor: TextInterface['findFirstTextEditor'] = (board:
 
 export const getElementsText = (elements: PlaitElement[]) => {
     return elements
-        .map(item => {
+        .map((item) => {
             try {
                 const editors = getTextEditorsByElement(item);
                 if (editors.length) {
                     return editors
-                        .map(editor => {
+                        .map((editor) => {
                             const textsEntry = Node.texts(editor);
                             return Array.from(textsEntry).reduce((total, text) => (total += text[0].text), '');
                         })
@@ -67,7 +69,7 @@ export const getElementsText = (elements: PlaitElement[]) => {
                 return '';
             }
         })
-        .filter(item => item)
+        .filter((item) => item)
         .join(' ');
 };
 
@@ -75,14 +77,14 @@ export const getTextEditors: TextInterface['getTextEditors'] = (board: PlaitBoar
     const selectedElements = elements || getSelectedElements(board);
     if (selectedElements.length) {
         const textManages: TextManage[] = [];
-        selectedElements.forEach(item => {
+        selectedElements.forEach((item) => {
             textManages.push(...getTextManages(item));
         });
-        const editingTextManage = textManages.find(textManage => textManage.isEditing);
+        const editingTextManage = textManages.find((textManage) => textManage.isEditing);
         if (editingTextManage) {
             return [editingTextManage.editor];
         }
-        return textManages.map(item => {
+        return textManages.map((item) => {
             return item.editor;
         });
     }
@@ -92,10 +94,10 @@ export const getTextEditors: TextInterface['getTextEditors'] = (board: PlaitBoar
 export const getEditingTextEditor: TextInterface['getEditingTextEditor'] = (board: PlaitBoard, elements?: PlaitElement[]) => {
     const selectedElements = elements || getSelectedElements(board);
     const textManages: TextManage[] = [];
-    selectedElements.forEach(item => {
+    selectedElements.forEach((item) => {
         textManages.push(...getTextManages(item));
     });
-    const editingTextManage = textManages.find(textManage => textManage.isEditing);
+    const editingTextManage = textManages.find((textManage) => textManage.isEditing);
     if (editingTextManage) {
         return editingTextManage.editor;
     }
@@ -104,7 +106,7 @@ export const getEditingTextEditor: TextInterface['getEditingTextEditor'] = (boar
 
 export const buildText = (text: string | Element, align?: Alignment, properties?: Partial<CustomText>) => {
     properties = properties || {};
-    const plaitText = typeof text === 'string' ? { children: [{ text, ...properties }] } : text;
+    const plaitText = typeof text === 'string' ? { children: [{ text, ...properties }], type: 'paragraph' } : text;
     if (align) {
         (plaitText as ParagraphElement).align = align;
     }
@@ -115,10 +117,5 @@ export const getLineHeightByFontSize = (fontSize: number) => {
     if (fontSize === 14) {
         return 20;
     }
-    if (fontSize === 18) {
-        return 25;
-    }
     return fontSize * 1.5;
 };
-
-export const ELEMENT_TO_TEXT_MANAGES: WeakMap<PlaitElement, TextManage[]> = new WeakMap();

@@ -9,7 +9,7 @@ import { PathRef, PathRefOptions } from '../interfaces/path-ref';
 import { Path } from '../interfaces/path';
 import { ThemeColorMode } from '../interfaces/theme';
 import { CoreTransforms } from '../transforms/element';
-import { ClipboardData, WritableClipboardContext, WritableClipboardOperationType, drawEntireActiveRectangleG } from '../utils';
+import { ClipboardData, WritableClipboardContext, WritableClipboardOperationType, drawSelectionRectangleG } from '../utils';
 import { Point, RectangleClient } from '../interfaces';
 
 export function createBoard(children: PlaitElement[], options?: PlaitBoardOptions): PlaitBoard {
@@ -83,8 +83,8 @@ export function createBoard(children: PlaitElement[], options?: PlaitBoardOption
         },
         onChange: () => {},
         afterChange: () => {},
-        drawActiveRectangle: () => {
-            return drawEntireActiveRectangleG(board);
+        drawSelectionRectangle: () => {
+            return drawSelectionRectangleG(board);
         },
         mousedown: (event: MouseEvent) => {},
         mousemove: (event: MouseEvent) => {},
@@ -108,26 +108,34 @@ export function createBoard(children: PlaitElement[], options?: PlaitBoardOption
         },
         getDeletedFragment: (data: PlaitElement[]) => data,
         getRelatedFragment: (data: PlaitElement[], originData?: PlaitElement[]) => data,
+        normalizeElement: (context: PlaitPluginElementContext) => {},
         drawElement: (context: PlaitPluginElementContext) => {
             throw new Error(`can not resolve plugin element component type: ${context.element.type}`);
         },
-        isWithinSelection: element => false,
-        isRectangleHit: element => false,
-        isHit: element => false,
-        isInsidePoint: element => false,
-        isRecursion: element => true,
-        isMovable: element => false,
-        getRectangle: element => null,
+        isWithinSelection: (element) => false,
+        isRectangleHit: (element) => false,
+        isHit: (element) => false,
+        isInsidePoint: (element) => false,
+        getOneHitElement: (data: PlaitElement[], hitPoint: Point) => data[0],
+        isRecursion: (element) => true,
+        isMovable: (element) => false,
+        getRectangle: (element) => null,
         applyTheme: (element: PlaitElement) => {},
-        isAlign: element => false,
-        pointerDown: pointer => {},
-        pointerMove: pointer => {},
-        pointerUp: pointer => {},
-        pointerCancel: pointer => {},
-        pointerOut: pointer => {},
-        pointerLeave: pointer => {},
-        globalPointerMove: pointer => {},
-        globalPointerUp: pointer => {},
+        isAlign: (element) => false,
+        pointerDown: (pointer) => {},
+        pointerMove: (pointer) => {},
+        pointerUp: (pointer) => {},
+        pointerCancel: (pointer) => {},
+        pointerOut: (pointer) => {},
+        pointerLeave: (pointer) => {},
+        touchStart: (event: TouchEvent) => {},
+        touchMove: (event: TouchEvent) => {},
+        touchEnd: (event: TouchEvent) => {},
+        globalPointerMove: (pointer) => {},
+        globalPointerUp: (pointer) => {},
+        drop: (event: DragEvent) => {
+            return false;
+        },
         isImageBindingAllowed: (element: PlaitElement) => false,
         canAddToGroup: (element: PlaitElement) => true,
         canSetZIndex: (element: PlaitElement) => true,

@@ -2,6 +2,7 @@ import { PlaitBoard, PlaitElement, Point, RectangleClient } from '../interfaces'
 import { Transforms } from '../transforms';
 import { getRectangleByElements } from './element';
 import { approximately, rotate } from './math';
+import { toActiveRectangleFromViewBoxRectangle } from './to-point';
 
 export const rotatePoints = <T>(points: T, centerPoint: Point, angle?: number): T => {
     if (!angle) {
@@ -10,7 +11,7 @@ export const rotatePoints = <T>(points: T, centerPoint: Point, angle?: number): 
     if (Array.isArray(points) && typeof points[0] === 'number') {
         return rotate(points[0], points[1], centerPoint[0], centerPoint[1], angle) as T;
     } else {
-        return (points as Point[]).map(point => {
+        return (points as Point[]).map((point) => {
             return rotate(point[0], point[1], centerPoint[0], centerPoint[1], angle || 0);
         }) as T;
     }
@@ -18,7 +19,7 @@ export const rotatePoints = <T>(points: T, centerPoint: Point, angle?: number): 
 
 export const getSelectionAngle = (elements: PlaitElement[]) => {
     let angle = elements[0]?.angle || 0;
-    elements.forEach(item => {
+    elements.forEach((item) => {
         if (item.angle !== angle && !approximately(((item.angle || 0) % (Math.PI / 2)) - (angle % (Math.PI / 2)), 0)) {
             angle = 0;
         }
@@ -36,7 +37,7 @@ export const hasSameAngle = (elements: PlaitElement[]) => {
         return false;
     }
 
-    return !elements.some(item => item.angle !== angle);
+    return !elements.some((item) => item.angle !== angle);
 };
 
 export const getRotatedBoundingRectangle = (rectanglesCornerPoints: [Point, Point, Point, Point][], angle: number) => {
@@ -64,11 +65,15 @@ export const getOffsetAfterRotate = (rectangle: RectangleClient, rotateCenterPoi
 
 export const rotatedDataPoints = (points: Point[], rotateCenterPoint: Point, angle: number): Point[] => {
     const { offsetX, offsetY } = getOffsetAfterRotate(RectangleClient.getRectangleByPoints(points), rotateCenterPoint, angle);
-    return points.map(p => [p[0] + offsetX, p[1] + offsetY]) as Point[];
+    return points.map((p) => [p[0] + offsetX, p[1] + offsetY]) as Point[];
 };
 
 export const hasValidAngle = (node: PlaitElement) => {
-    return node.angle && node.angle !== 0;
+    return isValidAngle(node.angle);
+};
+
+export const isValidAngle = (angle: undefined | number) => {
+    return angle && angle !== 0;
 };
 
 export const rotatePointsByElement = <T>(points: T, element: PlaitElement): T | null => {
@@ -81,10 +86,26 @@ export const rotatePointsByElement = <T>(points: T, element: PlaitElement): T | 
     }
 };
 
-export const rotateAntiPointsByElement = <T>(points: T, element: PlaitElement): T | null => {
+export const rotatePointsByAngle = (points: Point[], angle: number | undefined): Point[] | null => {
+    if (isValidAngle(angle)) {
+        let rectangle = RectangleClient.getRectangleByPoints(points);
+        const centerPoint = RectangleClient.getCenterPoint(rectangle);
+        return rotatePoints(points, centerPoint, angle);
+    } else {
+        return null;
+    }
+};
+
+export const rotateAntiPointsByElement = <T>(
+    board: PlaitBoard,
+    points: T,
+    element: PlaitElement,
+    isToActive: boolean = false
+): T | null => {
     if (hasValidAngle(element)) {
         let rectangle = RectangleClient.getRectangleByPoints(element.points!);
-        const centerPoint = RectangleClient.getCenterPoint(rectangle);
+        const activeRectangle = isToActive ? toActiveRectangleFromViewBoxRectangle(board, rectangle) : rectangle;
+        const centerPoint = RectangleClient.getCenterPoint(activeRectangle);
         return rotatePoints(points, centerPoint, element.angle ? -element.angle : 0);
     } else {
         return null;
@@ -116,7 +137,7 @@ export function radiansToDegrees(r: number): number {
 export function rotateElements(board: PlaitBoard, elements: PlaitElement[], angle: number) {
     const selectionRectangle = getRectangleByElements(board, elements, false);
     const selectionCenterPoint = RectangleClient.getCenterPoint(selectionRectangle);
-    elements.forEach(item => {
+    elements.forEach((item) => {
         const originAngle = item.angle;
         const points = rotatedDataPoints(item.points!, selectionCenterPoint, normalizeAngle(angle));
         const path = PlaitBoard.findPath(board, item);

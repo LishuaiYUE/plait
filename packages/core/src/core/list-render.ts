@@ -8,10 +8,11 @@ import {
     PlaitPluginElementContext
 } from '../interfaces';
 import { NODE_TO_INDEX, NODE_TO_PARENT } from '../utils/weak-maps';
-import { addSelectedElement, isSelectedElement, removeSelectedElement } from '../utils/selected-element';
+import { isSelectedElement, replaceSelectedElement } from '../utils/selected-element';
 import { ElementFlavour } from './element/element-flavour';
 import { DefaultIterableDiffer } from '../differs/default_iterable_differ';
 import { IterableChangeRecord, IterableDiffer } from '../differs/iterable_differs';
+import { isDebug } from '../utils/debug';
 
 export class ListRender {
     private children: PlaitElement[] = [];
@@ -51,6 +52,7 @@ export class ListRender {
         if (diffResult) {
             const newContexts: PlaitPluginElementContext[] = [];
             const newInstances: ElementFlavour[] = [];
+            // for moving scene: the current index for first element before moving
             let currentIndexForFirstElement: number | null = null;
             diffResult.forEachItem((record: IterableChangeRecord<PlaitElement>) => {
                 NODE_TO_INDEX.set(record.item, record.currentIndex as number);
@@ -73,7 +75,7 @@ export class ListRender {
                     currentIndexForFirstElement = record.currentIndex;
                 }
             });
-            diffResult.forEachOperation(record => {
+            diffResult.forEachOperation((record) => {
                 // removed
                 if (record.currentIndex === null) {
                     const componentRef = this.instances[record.previousIndex as number];
@@ -128,7 +130,14 @@ const createPluginComponent = (
 ) => {
     const instance = new componentType();
     instance.context = context;
-    instance.initialize();
+    board.normalizeElement(context);
+    try {
+        instance.initialize();
+    } catch (error) {
+        if (isDebug()) {
+            console.error('list-render-initialize', error, 'context', context);
+        }
+    }
     const g = instance.getContainerG();
     mountElementG(context.index, g, childrenContext);
     instance.initializeListRender();
@@ -151,15 +160,15 @@ const getContext = (
     const previousElement = previousContext && previousContext.element;
     if (previousElement && previousElement !== element && isSelectedElement(board, previousElement)) {
         isSelected = true;
-        removeSelectedElement(board, previousElement);
-        addSelectedElement(board, element);
+        replaceSelectedElement(board, previousElement, element);
     }
     const context: PlaitPluginElementContext = {
         element: element,
         parent: parent,
         board: board,
         selected: isSelected,
-        index
+        index,
+        hasThemeChanged: !!board.operations?.find((op) => op.type === 'set_theme')
     };
     return context;
 };
@@ -228,7 +237,7 @@ const mountOnItemMove = (
 ) => {
     const containerG = PlaitElement.getContainerG(element, { suppressThrow: false });
     mountElementG(index, containerG, childrenContext, currentIndexForFirstElement);
-    if (element.children && !PlaitElement.isRootElement(element)) {
+    if (element.children && !PlaitElement.isRootElement(element) && childrenContext.board.isExpanded(element)) {
         element.children.forEach((child, index) => {
             mountOnItemMove(child, index, { ...childrenContext, parent: element }, null);
         });

@@ -1,7 +1,6 @@
-import { PlaitBoard, Point, RectangleClient, createG, preventTouchMove, toHostPoint, toViewBoxPoint } from '@plait/core';
+import { PlaitBoard, Point, RectangleClient, createG, toHostPoint, toViewBoxPoint } from '@plait/core';
 import { PlaitSwimlane, SwimlaneDrawSymbols } from '../interfaces';
 import { insertElement } from '../utils';
-import { getSwimlanePointers } from '../constants';
 import {
     normalizeShapePoints,
     isDndMode,
@@ -13,7 +12,9 @@ import {
 import { isKeyHotkey } from 'is-hotkey';
 import { getSnapResizingRef } from '../utils/snap-resizing';
 import { TableGenerator } from '../generators/table.generator';
-import { createDefaultSwimlane, getDefaultSwimlanePoints } from '../utils/swimlane';
+import { createDefaultSwimlane, getDefaultSwimlanePoints, isSwimlanePointers } from '../utils/swimlane';
+import { getGeometryGeneratorByShape } from '../utils/shape';
+import { DrawPointerType } from '../constants/pointer';
 
 export interface FakeCreateTextRef {
     g: SVGGElement;
@@ -21,15 +22,13 @@ export interface FakeCreateTextRef {
 }
 
 const isSwimlaneDndMode = (board: PlaitBoard) => {
-    const swimlanePointers = getSwimlanePointers();
-    const isSwimlanePointer = PlaitBoard.isInPointer(board, swimlanePointers);
+    const isSwimlanePointer = isSwimlanePointers(board);
     const dndMode = isSwimlanePointer && isDndMode(board);
     return dndMode;
 };
 
 const isSwimlaneDrawingMode = (board: PlaitBoard) => {
-    const swimlanePointers = getSwimlanePointers();
-    const isSwimlanePointer = PlaitBoard.isInPointer(board, swimlanePointers);
+    const isSwimlanePointer = isSwimlanePointers(board);
     const drawingMode = isSwimlanePointer && isDrawingMode(board);
     return drawingMode;
 };
@@ -44,17 +43,16 @@ export const withSwimlaneCreateByDrag = (board: PlaitBoard) => {
     board.pointerMove = (event: PointerEvent) => {
         swimlaneG?.remove();
         swimlaneG = createG();
-
         const tableGenerator = new TableGenerator(board);
+        const pointer = PlaitBoard.getPointer(board) as SwimlaneDrawSymbols;
         const dragMode = isSwimlaneDndMode(board);
         const movingPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
-        const pointer = PlaitBoard.getPointer(board) as SwimlaneDrawSymbols;
 
         if (dragMode) {
             const points = getDefaultSwimlanePoints(pointer, movingPoint);
             temporaryElement = createDefaultSwimlane(pointer, points);
             tableGenerator.processDrawing(temporaryElement, swimlaneG);
-            PlaitBoard.getElementActiveHost(board).append(swimlaneG);
+            PlaitBoard.getElementTopHost(board).append(swimlaneG);
         }
 
         pointerMove(event);
@@ -74,7 +72,6 @@ export const withSwimlaneCreateByDrag = (board: PlaitBoard) => {
         temporaryElement = null;
         swimlaneG?.remove();
         swimlaneG = null;
-        preventTouchMove(board, event, false);
         globalPointerUp(event);
     };
 
@@ -131,11 +128,11 @@ export const withSwimlaneCreateByDrawing = (board: PlaitBoard) => {
                 isCreate: true
             });
             snapG = resizeSnapRef.snapG;
-            PlaitBoard.getElementActiveHost(board).append(snapG);
+            PlaitBoard.getElementTopHost(board).append(snapG);
             points = normalizeShapePoints(resizeSnapRef.activePoints as [Point, Point], isShift);
             temporaryElement = createDefaultSwimlane(pointer, points);
             tableGenerator.processDrawing(temporaryElement, swimlaneG);
-            PlaitBoard.getElementActiveHost(board).append(swimlaneG);
+            PlaitBoard.getElementTopHost(board).append(swimlaneG);
         }
         pointerMove(event);
     };
@@ -157,7 +154,6 @@ export const withSwimlaneCreateByDrawing = (board: PlaitBoard) => {
             swimlaneG = null;
             start = null;
             temporaryElement = null;
-            preventTouchMove(board, event, false);
             return;
         }
         pointerUp(event);

@@ -1,425 +1,558 @@
-<ng-container *ngIf="isIncludeText">
+@if (isIncludeText) {
+  <div class="property-item text-setting-toolbar">
+    <div class="setting-panel-title">文本格式：</div>
+    <div class="text-setting-items">
+      <label class="label-icon" [ngClass]="{ active: currentMarks[markTypes.bold] }" (mousedown)="setTextMark($event, 'bold')"
+        ><svg
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+        fit=""
+        height="1em"
+        width="1em"
+        preserveAspectRatio="xMidYMid meet"
+        focusable="false"
+        >
+        <g id="aepeditor/bold" stroke-width="1" fill-rule="evenodd">
+          <path
+            d="M10.788 6.717c1.796.246 3.143 1.936 3.143 4.05 0 2.285-1.7 4.214-3.713 4.214H3.116V7.823H2.8v-5.47h.325V1h5.479c1.666 0 3.02 1.53 3.02 3.412a3.63 3.63 0 0 1-.836 2.305zm-.57 7.065c1.34 0 2.514-1.41 2.514-3.015 0-1.616-1.054-2.881-2.399-2.881h-6.78v5.896h6.665zM8.604 6.623c.936 0 1.82-1.075 1.82-2.21 0-1.2-.833-2.213-1.82-2.213H3.553v4.423h5.05z"
+            id="aep形状结合"
+          ></path>
+          <path
+            d="M3.1 14.981c-.33 0-.6-.322-.6-.717V1.717c0-.395.27-.717.6-.717.33 0 .6.322.6.717v12.547c0 .395-.27.717-.6.717"
+            id="aepFill-1"
+          ></path>
+        </g></svg
+      ></label>
+      <label class="label-icon" [ngClass]="{ active: currentMarks[markTypes.italic] }" (mousedown)="setTextMark($event, 'italic')"
+        ><svg
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+        fit=""
+        height="1em"
+        width="1em"
+        preserveAspectRatio="xMidYMid meet"
+        focusable="false"
+        >
+        <g id="amyeditor/italic" stroke-width="1" fill-rule="evenodd">
+          <g id="amy文本编辑_倾斜-1.5px-16*16" transform="translate(2 1)">
+            <path d="M3.646 12.8L6.754 1.2H3.5V0H11v1.2H7.996L4.888 12.8H8V14H.5v-1.2h3.146z" id="amy形状结合"></path>
+          </g>
+        </g></svg
+      ></label>
+      <label
+        class="label-icon"
+        [ngClass]="{ active: currentMarks[markTypes.underline] }"
+        (mousedown)="setTextMark($event, 'underlined')"
+        ><svg
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+        fit=""
+        height="1em"
+        width="1em"
+        preserveAspectRatio="xMidYMid meet"
+        focusable="false"
+        >
+        <g id="ayaeditor/underline" stroke-width="1" fill-rule="evenodd">
+          <path d="M13 1v7A5 5 0 0 1 3 8V1h1.2v7a3.8 3.8 0 0 0 7.6 0V1H13zM3 13.8h10V15H3v-1.2z" id="aya形状结合"></path>
+        </g></svg
+      ></label>
+      <label class="label-icon" [ngClass]="{ active: currentMarks[markTypes.strike] }" (mousedown)="setTextMark($event, 'strike')"
+        ><svg
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+        fit=""
+        height="1em"
+        width="1em"
+        preserveAspectRatio="xMidYMid meet"
+        focusable="false"
+        >
+        <g id="avceditor/strike" stroke-width="1" fill-rule="evenodd">
+          <path
+            d="M6 8.6H.894V7.4H3.5c-.62-.67-1-1.565-1-2.55v-.1A3.75 3.75 0 0 1 6.25 1h3.5a3.75 3.75 0 0 1 3.742 3.5h-1.204A2.55 2.55 0 0 0 9.75 2.2h-3.5A2.55 2.55 0 0 0 3.7 4.75v.1A2.55 2.55 0 0 0 6.25 7.4h8.85v1.2h-2.6a3.75 3.75 0 0 1-2.75 6.3h-3.5A3.75 3.75 0 0 1 2.503 11h1.201a2.55 2.55 0 0 0 2.546 2.7h3.5a2.55 2.55 0 0 0 0-5.1h-3.5a2.58 2.58 0 0 0-.25.012V8.6z"
+            id="avc形状结合"
+          ></path>
+        </g></svg
+      ></label>
+      @if (!isSelectedLine) {
+        <label class="label-icon" (mousedown)="setLink($event)"
+          ><svg
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+          fit=""
+          height="1em"
+          width="1em"
+          preserveAspectRatio="xMidYMid meet"
+          focusable="false"
+          >
+          <g id="anqeditor/link-insert" stroke-width="1" fill-rule="evenodd">
+            <path
+              d="M12.253 4.13h-1.2v-1a2.8 2.8 0 0 0-5.6 0v4a2.8 2.8 0 0 0 2.8 2.8v1.2a4 4 0 0 1-4-4v-4a4 4 0 0 1 8 0v1zm-8 8h1.2v1a2.8 2.8 0 0 0 5.6 0v-4a2.8 2.8 0 0 0-2.8-2.8v-1.2a4 4 0 0 1 4 4v4a4 4 0 0 1-8 0v-1z"
+              id="anq形状结合"
+              transform="rotate(46 8.253 8.13)"
+            ></path>
+          </g></svg
+        ></label>
+      }
+    </div>
+  </div>
+  <div class="property-item text-setting-toolbar">
+    <div class="setting-panel-title">文本大小：</div>
+    <select (change)="setFontSize($event)">
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="14">14</option>
+      <option value="15">15</option>
+      <option value="16">16</option>
+      <option value="18">18</option>
+      <option value="20">20</option>
+      <option value="24">24</option>
+      <option value="28">28</option>
+      <option value="32">32</option>
+      <option value="40">40</option>
+      <option value="48">48</option>
+    </select>
+  </div>
+  <div class="property-item text-setting-toolbar">
+    <div class="setting-panel-title">文本颜色：</div>
+    <app-color-picker
+      [defaultColor]="textColorOptions"
+      [currentColor]="currentMarks[markTypes.color]"
+      (colorChangeEvent)="textColorChange($event)"
+    ></app-color-picker>
+  </div>
+  @if (!isSelectedLine) {
     <div class="property-item text-setting-toolbar">
-        <div class="setting-panel-title">文本格式：</div>
-        <div class="text-setting-items">
-            <label class="label-icon" [ngClass]="{ active: currentMarks[markTypes.bold] }" (mousedown)="setTextMark($event, 'bold')"
-                ><svg
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fit=""
-                    height="1em"
-                    width="1em"
-                    preserveAspectRatio="xMidYMid meet"
-                    focusable="false"
-                >
-                    <g id="aepeditor/bold" stroke-width="1" fill-rule="evenodd">
-                        <path
-                            d="M10.788 6.717c1.796.246 3.143 1.936 3.143 4.05 0 2.285-1.7 4.214-3.713 4.214H3.116V7.823H2.8v-5.47h.325V1h5.479c1.666 0 3.02 1.53 3.02 3.412a3.63 3.63 0 0 1-.836 2.305zm-.57 7.065c1.34 0 2.514-1.41 2.514-3.015 0-1.616-1.054-2.881-2.399-2.881h-6.78v5.896h6.665zM8.604 6.623c.936 0 1.82-1.075 1.82-2.21 0-1.2-.833-2.213-1.82-2.213H3.553v4.423h5.05z"
-                            id="aep形状结合"
-                        ></path>
-                        <path
-                            d="M3.1 14.981c-.33 0-.6-.322-.6-.717V1.717c0-.395.27-.717.6-.717.33 0 .6.322.6.717v12.547c0 .395-.27.717-.6.717"
-                            id="aepFill-1"
-                        ></path>
-                    </g></svg
-            ></label>
-            <label class="label-icon" [ngClass]="{ active: currentMarks[markTypes.italic] }" (mousedown)="setTextMark($event, 'italic')"
-                ><svg
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fit=""
-                    height="1em"
-                    width="1em"
-                    preserveAspectRatio="xMidYMid meet"
-                    focusable="false"
-                >
-                    <g id="amyeditor/italic" stroke-width="1" fill-rule="evenodd">
-                        <g id="amy文本编辑_倾斜-1.5px-16*16" transform="translate(2 1)">
-                            <path d="M3.646 12.8L6.754 1.2H3.5V0H11v1.2H7.996L4.888 12.8H8V14H.5v-1.2h3.146z" id="amy形状结合"></path>
-                        </g>
-                    </g></svg
-            ></label>
-            <label
-                class="label-icon"
-                [ngClass]="{ active: currentMarks[markTypes.underline] }"
-                (mousedown)="setTextMark($event, 'underlined')"
-                ><svg
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fit=""
-                    height="1em"
-                    width="1em"
-                    preserveAspectRatio="xMidYMid meet"
-                    focusable="false"
-                >
-                    <g id="ayaeditor/underline" stroke-width="1" fill-rule="evenodd">
-                        <path d="M13 1v7A5 5 0 0 1 3 8V1h1.2v7a3.8 3.8 0 0 0 7.6 0V1H13zM3 13.8h10V15H3v-1.2z" id="aya形状结合"></path>
-                    </g></svg
-            ></label>
-            <label class="label-icon" [ngClass]="{ active: currentMarks[markTypes.strike] }" (mousedown)="setTextMark($event, 'strike')"
-                ><svg
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fit=""
-                    height="1em"
-                    width="1em"
-                    preserveAspectRatio="xMidYMid meet"
-                    focusable="false"
-                >
-                    <g id="avceditor/strike" stroke-width="1" fill-rule="evenodd">
-                        <path
-                            d="M6 8.6H.894V7.4H3.5c-.62-.67-1-1.565-1-2.55v-.1A3.75 3.75 0 0 1 6.25 1h3.5a3.75 3.75 0 0 1 3.742 3.5h-1.204A2.55 2.55 0 0 0 9.75 2.2h-3.5A2.55 2.55 0 0 0 3.7 4.75v.1A2.55 2.55 0 0 0 6.25 7.4h8.85v1.2h-2.6a3.75 3.75 0 0 1-2.75 6.3h-3.5A3.75 3.75 0 0 1 2.503 11h1.201a2.55 2.55 0 0 0 2.546 2.7h3.5a2.55 2.55 0 0 0 0-5.1h-3.5a2.58 2.58 0 0 0-.25.012V8.6z"
-                            id="avc形状结合"
-                        ></path>
-                    </g></svg
-            ></label>
-            <label *ngIf="!isSelectedLine" class="label-icon" (mousedown)="setLink($event)"
-                ><svg
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fit=""
-                    height="1em"
-                    width="1em"
-                    preserveAspectRatio="xMidYMid meet"
-                    focusable="false"
-                >
-                    <g id="anqeditor/link-insert" stroke-width="1" fill-rule="evenodd">
-                        <path
-                            d="M12.253 4.13h-1.2v-1a2.8 2.8 0 0 0-5.6 0v4a2.8 2.8 0 0 0 2.8 2.8v1.2a4 4 0 0 1-4-4v-4a4 4 0 0 1 8 0v1zm-8 8h1.2v1a2.8 2.8 0 0 0 5.6 0v-4a2.8 2.8 0 0 0-2.8-2.8v-1.2a4 4 0 0 1 4 4v4a4 4 0 0 1-8 0v-1z"
-                            id="anq形状结合"
-                            transform="rotate(46 8.253 8.13)"
-                        ></path>
-                    </g></svg
-            ></label>
-        </div>
+      <div class="setting-panel-title">文本对齐：</div>
+      <select [(ngModel)]="align" (ngModelChange)="setTextAlign($event)">
+        <option value="left">居左对齐</option>
+        <option value="center">居中对齐</option>
+        <option value="right">居右对齐</option>
+      </select>
     </div>
-    <div class="property-item text-setting-toolbar">
-        <div class="setting-panel-title">文本大小：</div>
-        <select (change)="setFontSize($event)">
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="18">18</option>
-            <option value="20">20</option>
-            <option value="24">24</option>
-            <option value="28">28</option>
-            <option value="32">32</option>
-            <option value="40">40</option>
-            <option value="48">48</option>
-        </select>
-    </div>
-    <div class="property-item text-setting-toolbar">
-        <div class="setting-panel-title">文本颜色：</div>
-        <app-color-picker
-            [defaultColor]="textColorOptions"
-            [currentColor]="currentMarks[markTypes.color]"
-            (colorChangeEvent)="textColorChange($event)"
-        ></app-color-picker>
-    </div>
-    <div *ngIf="!isSelectedLine" class="property-item text-setting-toolbar">
-        <div class="setting-panel-title">文本对齐：</div>
-        <select [(ngModel)]="align" (ngModelChange)="setTextAlign($event)">
-            <option value="left">居左对齐</option>
-            <option value="center">居中对齐</option>
-            <option value="right">居右对齐</option>
-        </select>
-    </div>
-</ng-container>
+  }
+}
 
 <div class="property-item text-setting-toolbar">
-    <div class="setting-panel-title">图形对齐：</div>
-    <select (change)="setAlign($event)">
-        <option value="alignTop">顶部对齐</option>
-        <option value="alignHorizontalCenter">水平居中</option>
-        <option value="alignBottom">底部对齐</option>
-        <option value="alignLeft">左对齐</option>
-        <option value="alignVerticalCenter">垂直居中</option>
-        <option value="alignRight">右对齐</option>
-        <option value="distributeHorizontal">水平分布</option>
-        <option value="distributeVertical">垂直分布</option>
-    </select>
+  <div class="setting-panel-title">图形对齐：</div>
+  <select (change)="setAlign($event)">
+    <option value="alignTop">顶部对齐</option>
+    <option value="alignHorizontalCenter">水平居中</option>
+    <option value="alignBottom">底部对齐</option>
+    <option value="alignLeft">左对齐</option>
+    <option value="alignVerticalCenter">垂直居中</option>
+    <option value="alignRight">右对齐</option>
+    <option value="distributeHorizontal">水平分布</option>
+    <option value="distributeVertical">垂直分布</option>
+  </select>
 </div>
 
-<div *ngIf="isSelectedMind" class="property-item shape-setting-toolbar">
+@if (isSelectedMind) {
+  <div class="property-item shape-setting-toolbar">
     <div class="setting-panel-title">节点形状：</div>
     <select (change)="propertyChange($event, 'shape')">
-        <option value="round-rectangle">round-rectangle</option>
-        <option value="underline">underline</option>
+      <option value="round-rectangle">round-rectangle</option>
+      <option value="underline">underline</option>
     </select>
-</div>
+  </div>
+}
 
-<div *ngIf="isSelectedMind" class="property-item layout-setting-toolbar">
+@if (isSelectedMind) {
+  <div class="property-item layout-setting-toolbar">
     <div class="setting-panel-title">布局类型：</div>
     <select (change)="layoutChange($event)">
-        <option value="right">right</option>
-        <option value="left">left</option>
-        <option value="standard" selected>standard</option>
-        <option value="upward">upward</option>
-        <option value="downward">downward</option>
-        <option value="right-bottom-indented">right-bottom-indented</option>
-        <option value="right-top-indented">right-top-indented</option>
-        <option value="left-bottom-indented">left-bottom-indented</option>
-        <option value="left-top-indented">left-top-indented</option>
+      <option value="right">right</option>
+      <option value="left">left</option>
+      <option value="standard" selected>standard</option>
+      <option value="upward">upward</option>
+      <option value="downward">downward</option>
+      <option value="right-bottom-indented">right-bottom-indented</option>
+      <option value="right-top-indented">right-top-indented</option>
+      <option value="left-bottom-indented">left-bottom-indented</option>
+      <option value="left-top-indented">left-top-indented</option>
     </select>
-</div>
+  </div>
+}
 
-<div *ngIf="isSelectedMind" class="property-item edge-shape-setting-toolbar">
+@if (isSelectedMind) {
+  <div class="property-item edge-shape-setting-toolbar">
     <div class="setting-panel-title">分支形状：</div>
     <select (change)="propertyChange($event, 'branchShape')">
-        <option value="bight">bight</option>
-        <option value="polyline">polyline</option>
+      <option value="bight">bight</option>
+      <option value="polyline">polyline</option>
     </select>
-</div>
+  </div>
+}
 
-<div *ngIf="isSelectedMind" class="property-item width-setting-toolbar">
+@if (isSelectedMind) {
+  <div class="property-item width-setting-toolbar">
     <div class="setting-panel-title">分支宽度：</div>
     <select (change)="propertyChange($event, 'branchWidth')">
-        <option value="1">1</option>
-        <option value="3">3</option>
-        <option value="5">5</option>
+      <option value="1">1</option>
+      <option value="3">3</option>
+      <option value="5">5</option>
     </select>
-</div>
+  </div>
+}
 
-<div *ngIf="isSelectedMind" class="property-item width-setting-toolbar">
+@if (isSelectedMind) {
+  <div class="property-item width-setting-toolbar">
     <div class="setting-panel-title">边框宽度：</div>
     <select [(ngModel)]="strokeWidth" (change)="propertyChange($event, 'strokeWidth')">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="5">5</option>
-        <option value="7">7</option>
-        <option value="9">9</option>
-        <option value="12">12</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="5">5</option>
+      <option value="7">7</option>
+      <option value="9">9</option>
+      <option value="12">12</option>
     </select>
-</div>
+  </div>
+}
 
-<div *ngIf="!isSelectedMind" class="property-item width-setting-toolbar">
+@if (!isSelectedMind) {
+  <div class="property-item width-setting-toolbar">
     <div class="setting-panel-title">边框宽度：</div>
     <select [(ngModel)]="strokeWidth" (change)="changeStrokeWidth($event)">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="5">5</option>
-        <option value="7">7</option>
-        <option value="9">9</option>
-        <option value="12">12</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="5">5</option>
+      <option value="7">7</option>
+      <option value="9">9</option>
+      <option value="12">12</option>
     </select>
+  </div>
+}
+
+<div class="property-item width-setting-toolbar">
+  <div class="setting-panel-title">边框样式</div>
+  <select (change)="changeStrokeStyle($event)">
+    <option value="solid">实线</option>
+    <option value="dashed">虚线</option>
+    <option value="dotted">点线</option>
+  </select>
 </div>
 
 <div class="property-item width-setting-toolbar">
-    <div class="setting-panel-title">边框样式</div>
-    <select (change)="changeStrokeStyle($event)">
-        <option value="solid">实线</option>
-        <option value="dashed">虚线</option>
-        <option value="dotted">点线</option>
-    </select>
+  <div class="setting-panel-title">修改形状</div>
+  <select (change)="switchGeometryShape($event, 'shape')">
+    <option value="rectangle">rectangle</option>
+    <option value="ellipse">ellipse</option>
+    <option value="diamond">diamond</option>
+    <option value="roundRectangle">roundRectangle</option>
+    <option value="parallelogram">parallelogram</option>
+    <option value="triangle">triangle</option>
+    <option value="leftArrow">leftArrow</option>
+    <option value="trapezoid">trapezoid</option>
+    <option value="rightArrow">rightArrow</option>
+    <option value="cross">cross</option>
+    <option value="star">star</option>
+    <option value="pentagon">pentagon</option>
+    <option value="hexagon">hexagon</option>
+    <option value="octagon">octagon</option>
+    <option value="pentagonArrow">pentagonArrow</option>
+    <option value="processArrow">processArrow</option>
+    <option value="twoWayArrow">twoWayArrow</option>
+    <option value="comment">comment</option>
+    <option value="roundComment">roundComment</option>
+    <option value="cloud">cloud</option>
+  </select>
 </div>
 
-<div class="property-item width-setting-toolbar">
-    <div class="setting-panel-title">修改形状</div>
-    <select (change)="switchGeometryShape($event, 'shape')">
-        <option value="rectangle">rectangle</option>
-        <option value="ellipse">ellipse</option>
-        <option value="diamond">diamond</option>
-        <option value="roundRectangle">roundRectangle</option>
-        <option value="parallelogram">parallelogram</option>
-        <option value="triangle">triangle</option>
-        <option value="leftArrow">leftArrow</option>
-        <option value="trapezoid">trapezoid</option>
-        <option value="rightArrow">rightArrow</option>
-        <option value="cross">cross</option>
-        <option value="star">star</option>
-        <option value="pentagon">pentagon</option>
-        <option value="hexagon">hexagon</option>
-        <option value="octagon">octagon</option>
-        <option value="pentagonArrow">pentagonArrow</option>
-        <option value="processArrow">processArrow</option>
-        <option value="twoWayArrow">twoWayArrow</option>
-        <option value="comment">comment</option>
-        <option value="roundComment">roundComment</option>
-        <option value="cloud">cloud</option>
-    </select>
-</div>
-
-<div *ngIf="isSelectedLine" class="property-item color-setting-toolbar">
+@if (isSelectedLine) {
+  <div class="property-item color-setting-toolbar">
     <div class="setting-panel-title">线条形状：</div>
-    <select [(ngModel)]="lineShape" (change)="setLineShape($event)">
-        <option value="straight">直线</option>
-        <option value="elbow">正交线</option>
-        <option value="curve">曲线</option>
+    <select [(ngModel)]="lineShape" (change)="setArrowLineShape($event)">
+      <option value="straight">直线</option>
+      <option value="elbow">正交线</option>
+      <option value="curve">曲线</option>
     </select>
-</div>
+  </div>
+}
 
-<div *ngIf="isSelectedLine" class="property-item color-setting-toolbar">
+@if (isSelectedLine) {
+  <div class="property-item color-setting-toolbar">
     <div class="setting-panel-title">起点形状：</div>
-    <select [(ngModel)]="lineSourceMarker" (change)="changeLineMarker($event, 'source')">
-        <option value="none">none</option>
-        <option value="arrow">arrow</option>
-        <option value="open-triangle">open-triangle</option>
-        <option value="solid-triangle">solid-triangle</option>
-        <option value="sharp-arrow">sharp-arrow</option>
-        <option value="one-side-up">one-side-up</option>
-        <option value="one-side-down">one-side-down</option>
-        <option value="hollow-triangle">hollow-triangle</option>
-        <option value="single-slash">single-slash</option>
+    <select [(ngModel)]="lineSourceMarker" (change)="changeArrowLineMarker($event, 'source')">
+      <option value="none">none</option>
+      <option value="arrow">arrow</option>
+      <option value="open-triangle">open-triangle</option>
+      <option value="solid-triangle">solid-triangle</option>
+      <option value="sharp-arrow">sharp-arrow</option>
+      <option value="one-side-up">one-side-up</option>
+      <option value="one-side-down">one-side-down</option>
+      <option value="hollow-triangle">hollow-triangle</option>
+      <option value="single-slash">single-slash</option>
     </select>
-</div>
+  </div>
+}
 
-<div *ngIf="isSelectedLine" class="property-item color-setting-toolbar">
+@if (isSelectedLine) {
+  <div class="property-item color-setting-toolbar">
     <div class="setting-panel-title">终点形状：</div>
-    <select [(ngModel)]="lineTargetMarker" (change)="changeLineMarker($event, 'target')">
-        <option value="none">none</option>
-        <option value="arrow">arrow</option>
-        <option value="open-triangle">open-triangle</option>
-        <option value="solid-triangle">solid-triangle</option>
-        <option value="sharp-arrow">sharp-arrow</option>
-        <option value="one-side-up">one-side-up</option>
-        <option value="one-side-down">one-side-down</option>
-        <option value="hollow-triangle">hollow-triangle</option>
-        <option value="single-slash">single-slash</option>
+    <select [(ngModel)]="lineTargetMarker" (change)="changeArrowLineMarker($event, 'target')">
+      <option value="none">none</option>
+      <option value="arrow">arrow</option>
+      <option value="open-triangle">open-triangle</option>
+      <option value="solid-triangle">solid-triangle</option>
+      <option value="sharp-arrow">sharp-arrow</option>
+      <option value="one-side-up">one-side-up</option>
+      <option value="one-side-down">one-side-down</option>
+      <option value="hollow-triangle">hollow-triangle</option>
+      <option value="single-slash">single-slash</option>
     </select>
-</div>
+  </div>
+}
 
-<div *ngIf="!isSelectedLine && !isSelectedMind" class="property-item rotation-toolbar">
+@if (!isSelectedLine && !isSelectedMind) {
+  <div class="property-item rotation-toolbar">
     <div class="setting-panel-title">旋转角度：</div>
     <input type="text" [(ngModel)]="angle" (change)="changeAngle()" />
-</div>
+  </div>
+}
 
-<div *ngIf="!isSelectedLine" class="property-item color-setting-toolbar">
+@if (enableSetFillColor) {
+  <div class="property-item color-setting-toolbar">
     <div class="setting-panel-title">填充颜色：</div>
     <app-color-picker
-        [defaultColor]="fillColor"
-        [currentColor]="currentFillColor"
-        (colorChangeEvent)="changeFill($event)"
+      [defaultColor]="fillColor"
+      [currentColor]="currentFillColor"
+      (colorChangeEvent)="changeFill($event)"
     ></app-color-picker>
-</div>
+  </div>
+}
+
+@if (enableSetFillStyle) {
+  <div class="property-item fill-style-setting-toolbar">
+    <div class="setting-panel-title">填充样式：</div>
+    <div class="fill-style-options">
+      @for (fillStyle of fillStyles; track fillStyle.value) {
+        <button
+          type="button"
+          class="fill-style-button"
+          [title]="fillStyle.label"
+          [ngClass]="{ active: fillStyle.value === currentFillStyle }"
+          (mousedown)="changeFillStyle(fillStyle.value)"
+        >
+          <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <rect class="fill-style-icon-frame" x="4.5" y="4.5" width="15" height="15" rx="3"></rect>
+            @switch (fillStyle.value) {
+              @case ('solid') {
+                <rect class="fill-style-icon-fill" x="7" y="7" width="10" height="10" rx="2"></rect>
+              }
+              @case ('hachure') {
+                <path d="M7 17L17 7M5.5 13.5L13.5 5.5M10.5 18.5L18.5 10.5"></path>
+              }
+              @case ('zigzag') {
+                <path d="M6.5 16L9 8L12 16L15 8L17.5 16"></path>
+              }
+              @case ('cross-hatch') {
+                <path d="M7 17L17 7M5.5 13.5L13.5 5.5M10.5 18.5L18.5 10.5"></path>
+                <path d="M7 7L17 17M5.5 10.5L13.5 18.5M10.5 5.5L18.5 13.5"></path>
+              }
+              @case ('dots') {
+                <circle cx="8" cy="8" r="1"></circle>
+                <circle cx="12" cy="8" r="1"></circle>
+                <circle cx="16" cy="8" r="1"></circle>
+                <circle cx="10" cy="12" r="1"></circle>
+                <circle cx="14" cy="12" r="1"></circle>
+                <circle cx="8" cy="16" r="1"></circle>
+                <circle cx="12" cy="16" r="1"></circle>
+                <circle cx="16" cy="16" r="1"></circle>
+              }
+              @case ('dashed') {
+                <path d="M7 9H10.5M13.5 9H17M7 12H10.5M13.5 12H17M7 15H10.5M13.5 15H17"></path>
+              }
+              @case ('zigzag-line') {
+                <path d="M6.5 9L8.5 7L10.5 9L12.5 7L14.5 9L16.5 7"></path>
+                <path d="M6.5 13L8.5 11L10.5 13L12.5 11L14.5 13L16.5 11"></path>
+                <path d="M6.5 17L8.5 15L10.5 17L12.5 15L14.5 17L16.5 15"></path>
+              }
+            }
+          </svg>
+          <div class="active-button-outline"></div>
+        </button>
+      }
+    </div>
+  </div>
+}
 
 <div class="property-item color-setting-toolbar">
-    <div class="setting-panel-title">边框颜色：</div>
-    <app-color-picker
-        [defaultColor]="strokeColor"
-        [currentColor]="currentStrokeColor"
-        (colorChangeEvent)="changeStroke($event)"
-    ></app-color-picker>
+  <div class="setting-panel-title">边框颜色：</div>
+  <app-color-picker
+    [defaultColor]="strokeColor"
+    [currentColor]="currentStrokeColor"
+    (colorChangeEvent)="changeStroke($event)"
+  ></app-color-picker>
 </div>
 
-<div *ngIf="isSelectedMind" class="property-item color-setting-toolbar">
+@if (isSelectedMind) {
+  <div class="property-item color-setting-toolbar">
     <div class="setting-panel-title">分支颜色：</div>
     <app-color-picker
-        [defaultColor]="branchColor"
-        [currentColor]="currentBranchColor"
-        (colorChangeEvent)="colorChange($event, 'branchColor')"
+      [defaultColor]="branchColor"
+      [currentColor]="currentBranchColor"
+      (colorChangeEvent)="colorChange($event, 'branchColor')"
     ></app-color-picker>
-</div>
+  </div>
+}
 
-<div *ngIf="isSelectedMind" class="property-item">
+@if (isSelectedMind) {
+  <div class="property-item">
     <div class="setting-panel-title">设置概要：</div>
     <div class="abstract-container">
-        <label class="label-icon" [ngClass]="{ active: false }" (click)="setAbstract($event)"
-            ><svg
-                viewBox="0 0 16 16"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                fit=""
-                height="1em"
-                width="1em"
-                preserveAspectRatio="xMidYMid meet"
-                focusable="false"
-            >
-                <g id="aa1.Base基础/1.icon图标/11.editor/-概括" stroke-width="1" fill-rule="evenodd">
-                    <path
-                        d="M2.6009839,1.4 C3.76672464,1.4 4.72876168,2.12152778 4.72876168,3.52777778 L4.72876168,6.27777778 C4.72876168,6.43319518 4.90393822,6.66092469 5.23672797,6.89387751 C5.47900719,7.06347297 5.72750625,7.1877225 5.87937386,7.24846954 C6.0766753,7.32739012 6.19656805,7.48492304 6.23905212,7.65938322 L6.23807296,7 C6.23807296,6.17157288 6.90964584,5.5 7.73807296,5.5 L12.4899649,5.5 C13.318392,5.5 13.9899649,6.17157288 13.9899649,7 L13.9899649,9 C13.9899649,9.82842712 13.318392,10.5 12.4899649,10.5 L7.73807296,10.5 C6.90964584,10.5 6.23807296,9.82842712 6.23807296,9 L6.23908039,7.95161172 C6.19662127,8.12611814 6.07671909,8.28370348 5.87937386,8.36264157 C5.72750625,8.42338861 5.47900719,8.54763814 5.23672797,8.7172336 C4.90393822,8.95018643 4.72876168,9.17791593 4.72876168,9.33333333 L4.72876168,12.6944444 C4.72876168,14.1006944 3.76672464,14.8222222 2.6009839,14.8222222 C2.26961305,14.8222222 2.0009839,14.5535931 2.0009839,14.2222222 C2.0009839,13.8908514 2.26961305,13.6222222 2.6009839,13.6222222 C3.16672464,13.6222222 3.52876168,13.3506944 3.52876168,12.6944444 L3.52876168,9.33333333 C3.52876168,8.74055623 3.86297387,8.25668229 4.39782924,7.84474581 L4.4509839,7.805 L4.39782924,7.7663653 C3.91159708,7.39187759 3.59118574,6.95793743 3.53694758,6.43677195 L3.52876168,6.27777778 L3.52876168,3.52777778 C3.52876168,2.87152778 3.16672464,2.6 2.6009839,2.6 C2.26961305,2.6 2.0009839,2.33137085 2.0009839,2 C2.0009839,1.66862915 2.26961305,1.4 2.6009839,1.4 Z M12.4899649,6.7 L7.73807296,6.7 C7.59605688,6.7 7.47708877,6.7986801 7.44599617,6.93121275 L7.43807296,7 L7.43807296,9 C7.43807296,9.14201608 7.53675306,9.26098419 7.66928571,9.29207679 L7.73807296,9.3 L12.4899649,9.3 C12.631981,9.3 12.7509491,9.2013199 12.7820417,9.06878725 L12.7899649,9 L12.7899649,7 C12.7899649,6.85798392 12.6912848,6.73901581 12.5587521,6.70792321 L12.4899649,6.7 Z"
-                        id="aa形状结合"
-                    ></path>
-                </g></svg
-        ></label>
+      <label class="label-icon" [ngClass]="{ active: false }" (click)="setAbstract($event)"
+        ><svg
+        viewBox="0 0 16 16"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        fit=""
+        height="1em"
+        width="1em"
+        preserveAspectRatio="xMidYMid meet"
+        focusable="false"
+        >
+        <g id="aa1.Base基础/1.icon图标/11.editor/-概括" stroke-width="1" fill-rule="evenodd">
+          <path
+            d="M2.6009839,1.4 C3.76672464,1.4 4.72876168,2.12152778 4.72876168,3.52777778 L4.72876168,6.27777778 C4.72876168,6.43319518 4.90393822,6.66092469 5.23672797,6.89387751 C5.47900719,7.06347297 5.72750625,7.1877225 5.87937386,7.24846954 C6.0766753,7.32739012 6.19656805,7.48492304 6.23905212,7.65938322 L6.23807296,7 C6.23807296,6.17157288 6.90964584,5.5 7.73807296,5.5 L12.4899649,5.5 C13.318392,5.5 13.9899649,6.17157288 13.9899649,7 L13.9899649,9 C13.9899649,9.82842712 13.318392,10.5 12.4899649,10.5 L7.73807296,10.5 C6.90964584,10.5 6.23807296,9.82842712 6.23807296,9 L6.23908039,7.95161172 C6.19662127,8.12611814 6.07671909,8.28370348 5.87937386,8.36264157 C5.72750625,8.42338861 5.47900719,8.54763814 5.23672797,8.7172336 C4.90393822,8.95018643 4.72876168,9.17791593 4.72876168,9.33333333 L4.72876168,12.6944444 C4.72876168,14.1006944 3.76672464,14.8222222 2.6009839,14.8222222 C2.26961305,14.8222222 2.0009839,14.5535931 2.0009839,14.2222222 C2.0009839,13.8908514 2.26961305,13.6222222 2.6009839,13.6222222 C3.16672464,13.6222222 3.52876168,13.3506944 3.52876168,12.6944444 L3.52876168,9.33333333 C3.52876168,8.74055623 3.86297387,8.25668229 4.39782924,7.84474581 L4.4509839,7.805 L4.39782924,7.7663653 C3.91159708,7.39187759 3.59118574,6.95793743 3.53694758,6.43677195 L3.52876168,6.27777778 L3.52876168,3.52777778 C3.52876168,2.87152778 3.16672464,2.6 2.6009839,2.6 C2.26961305,2.6 2.0009839,2.33137085 2.0009839,2 C2.0009839,1.66862915 2.26961305,1.4 2.6009839,1.4 Z M12.4899649,6.7 L7.73807296,6.7 C7.59605688,6.7 7.47708877,6.7986801 7.44599617,6.93121275 L7.43807296,7 L7.43807296,9 C7.43807296,9.14201608 7.53675306,9.26098419 7.66928571,9.29207679 L7.73807296,9.3 L12.4899649,9.3 C12.631981,9.3 12.7509491,9.2013199 12.7820417,9.06878725 L12.7899649,9 L12.7899649,7 C12.7899649,6.85798392 12.6912848,6.73901581 12.5587521,6.70792321 L12.4899649,6.7 Z"
+            id="aa形状结合"
+          ></path>
+        </g></svg
+      ></label>
     </div>
-</div>
+  </div>
+}
 
-<div *ngIf="canSetZIndex" class="property-item">
+@if (canSetZIndex) {
+  <div class="property-item">
     <div class="setting-panel-title">层级：</div>
     <div class="abstract-container">
-        <label class="label-icon" [ngClass]="{ active: false }" (click)="moveToBottom($event)"
-            ><svg
-                width="16px"
-                height="16px"
-                viewBox="0 0 16 16"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-            >
-                <title>置底</title>
-                <g id="置底" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <path
-                        d="M8.13092063,3.75949459 L8.20455455,6.39521267 C8.23952451,7.50698815 9.1626752,8.37381246 10.2666982,8.3390714 L12.2599206,8.27549459 L12.2599206,11.2599206 C12.2599206,11.8122054 11.8122054,12.2599206 11.2599206,12.2599206 L8.09692063,12.2599206 L8.16040566,10.2656291 C8.19165279,9.15480897 7.32174539,8.23456298 6.21761233,8.20351508 L3.75992063,8.13392063 L3.75992063,4.75992063 C3.75992063,4.20763589 4.20763589,3.75992063 4.75992063,3.75992063 L8.13092063,3.75949459 Z"
-                        id="形状结合"
-                        fill="#333333"
-                    ></path>
-                    <rect id="矩形备份-2" stroke="#333333" stroke-width="1.2" x="0.6" y="8.1" width="7.3" height="7.3" rx="1.5"></rect>
-                    <rect id="矩形" stroke="#333333" stroke-width="1.2" x="8.1" y="0.6" width="7.3" height="7.3" rx="1.5"></rect>
-                </g></svg
-        ></label>
-        <label class="label-icon" [ngClass]="{ active: false }" (click)="moveDown($event)"
-            ><svg
-                width="16px"
-                height="16px"
-                viewBox="0 0 16 16"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-            >
-                <title>下移一层</title>
-                <g id="下移一层" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <path
-                        d="M4.888,4 L4.88888889,10.1111111 C4.88888889,10.6633959 5.33660414,11.1111111 5.88888889,11.1111111 L12,11.111 L12,14 C12,14.5522847 11.5522847,15 11,15 L2,15 C1.44771525,15 1,14.5522847 1,14 L1,5 C1,4.44771525 1.44771525,4 2,4 L4.888,4 Z"
-                        id="形状结合"
-                        fill="#333333"
-                    ></path>
-                    <rect id="矩形" stroke="#333333" stroke-width="1.2" x="4.6" y="1.6" width="9.8" height="9.8" rx="1.5"></rect>
-                </g></svg
-        ></label>
-        <label class="label-icon" [ngClass]="{ active: false }" (click)="moveToTop($event)"
-            ><svg
-                width="16px"
-                height="16px"
-                viewBox="0 0 16 16"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-            >
-                <title>置顶</title>
-                <g id="置顶" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <rect id="矩形备份" fill="#333333" x="3.81415976" y="3.78717712" width="8.5" height="8.5" rx="1.5"></rect>
-                    <rect id="矩形备份-2" stroke="#333333" stroke-width="1.2" x="0.6" y="8.1" width="7.3" height="7.3" rx="1.5"></rect>
-                    <path
-                        d="M14.5,0.6 C14.7485281,0.6 14.9735281,0.700735931 15.1363961,0.863603897 C15.2992641,1.02647186 15.4,1.25147186 15.4,1.5 L15.4,7 C15.4,7.24852814 15.2992641,7.47352814 15.1363961,7.6363961 C14.9735281,7.79926407 14.7485281,7.9 14.5,7.9 L9,7.9 C8.75147186,7.9 8.52647186,7.79926407 8.3636039,7.6363961 C8.20073593,7.47352814 8.1,7.24852814 8.1,7 L8.1,1.5 C8.1,1.25147186 8.20073593,1.02647186 8.3636039,0.863603897 C8.52647186,0.700735931 8.75147186,0.6 9,0.6 Z"
-                        id="矩形"
-                        stroke="#333333"
-                        stroke-width="1.2"
-                    ></path>
-                </g></svg
-        ></label>
-        <label class="label-icon" [ngClass]="{ active: false }" (click)="moveUp($event)"
-            ><svg
-                width="16px"
-                height="16px"
-                viewBox="0 0 16 16"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-            >
-                <title>上移一层</title>
-                <g id="上移一层" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <rect id="矩形" stroke="#333333" stroke-width="1.2" x="1.6" y="4.6" width="9.8" height="9.8" rx="1.5"></rect>
-                    <rect id="矩形备份" fill="#333333" x="4" y="1" width="11" height="11" rx="1.5"></rect>
-                </g></svg
-        ></label>
+      <label class="label-icon" [ngClass]="{ active: false }" (click)="moveToBottom($event)"
+        ><svg
+        width="16px"
+        height="16px"
+        viewBox="0 0 16 16"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+        <title>置底</title>
+        <g id="置底" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <path
+            d="M8.13092063,3.75949459 L8.20455455,6.39521267 C8.23952451,7.50698815 9.1626752,8.37381246 10.2666982,8.3390714 L12.2599206,8.27549459 L12.2599206,11.2599206 C12.2599206,11.8122054 11.8122054,12.2599206 11.2599206,12.2599206 L8.09692063,12.2599206 L8.16040566,10.2656291 C8.19165279,9.15480897 7.32174539,8.23456298 6.21761233,8.20351508 L3.75992063,8.13392063 L3.75992063,4.75992063 C3.75992063,4.20763589 4.20763589,3.75992063 4.75992063,3.75992063 L8.13092063,3.75949459 Z"
+            id="形状结合"
+            fill="#333333"
+          ></path>
+          <rect id="矩形备份-2" stroke="#333333" stroke-width="1.2" x="0.6" y="8.1" width="7.3" height="7.3" rx="1.5"></rect>
+          <rect id="矩形" stroke="#333333" stroke-width="1.2" x="8.1" y="0.6" width="7.3" height="7.3" rx="1.5"></rect>
+        </g></svg
+      ></label>
+      <label class="label-icon" [ngClass]="{ active: false }" (click)="moveDown($event)"
+        ><svg
+        width="16px"
+        height="16px"
+        viewBox="0 0 16 16"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+        <title>下移一层</title>
+        <g id="下移一层" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <path
+            d="M4.888,4 L4.88888889,10.1111111 C4.88888889,10.6633959 5.33660414,11.1111111 5.88888889,11.1111111 L12,11.111 L12,14 C12,14.5522847 11.5522847,15 11,15 L2,15 C1.44771525,15 1,14.5522847 1,14 L1,5 C1,4.44771525 1.44771525,4 2,4 L4.888,4 Z"
+            id="形状结合"
+            fill="#333333"
+          ></path>
+          <rect id="矩形" stroke="#333333" stroke-width="1.2" x="4.6" y="1.6" width="9.8" height="9.8" rx="1.5"></rect>
+        </g></svg
+      ></label>
+      <label class="label-icon" [ngClass]="{ active: false }" (click)="moveToTop($event)"
+        ><svg
+        width="16px"
+        height="16px"
+        viewBox="0 0 16 16"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+        <title>置顶</title>
+        <g id="置顶" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <rect id="矩形备份" fill="#333333" x="3.81415976" y="3.78717712" width="8.5" height="8.5" rx="1.5"></rect>
+          <rect id="矩形备份-2" stroke="#333333" stroke-width="1.2" x="0.6" y="8.1" width="7.3" height="7.3" rx="1.5"></rect>
+          <path
+            d="M14.5,0.6 C14.7485281,0.6 14.9735281,0.700735931 15.1363961,0.863603897 C15.2992641,1.02647186 15.4,1.25147186 15.4,1.5 L15.4,7 C15.4,7.24852814 15.2992641,7.47352814 15.1363961,7.6363961 C14.9735281,7.79926407 14.7485281,7.9 14.5,7.9 L9,7.9 C8.75147186,7.9 8.52647186,7.79926407 8.3636039,7.6363961 C8.20073593,7.47352814 8.1,7.24852814 8.1,7 L8.1,1.5 C8.1,1.25147186 8.20073593,1.02647186 8.3636039,0.863603897 C8.52647186,0.700735931 8.75147186,0.6 9,0.6 Z"
+            id="矩形"
+            stroke="#333333"
+            stroke-width="1.2"
+          ></path>
+        </g></svg
+      ></label>
+      <label class="label-icon" [ngClass]="{ active: false }" (click)="moveUp($event)"
+        ><svg
+        width="16px"
+        height="16px"
+        viewBox="0 0 16 16"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+        <title>上移一层</title>
+        <g id="上移一层" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <rect id="矩形" stroke="#333333" stroke-width="1.2" x="1.6" y="4.6" width="9.8" height="9.8" rx="1.5"></rect>
+          <rect id="矩形备份" fill="#333333" x="4" y="1" width="11" height="11" rx="1.5"></rect>
+        </g></svg
+      ></label>
     </div>
-</div>
+  </div>
+}
 
-<div *ngIf="isSelectSwimlane" class="property-item color-setting-toolbar">
+@if (isSelectSwimlane) {
+  <div class="property-item color-setting-toolbar">
     <div class="setting-panel-title">泳道数量：</div>
-    <input type="number" [max]="20" [min]="1"  [(ngModel)]="swimlaneCount" (change)="updateSwimlaneCount()" />
-</div>
+    <input type="number" [max]="20" [min]="1" [(ngModel)]="swimlaneCount" (change)="updateSwimlaneCount()" />
+  </div>
+}
+
+@if (isSelectedVectorLine) {
+  <div class="property-item">
+    <div class="setting-panel-title">设置：</div>
+    <div class="abstract-container">
+      <label class="label-icon" [ngClass]="{ active: false }" (click)="setLineShape(vectorLineShape.straight)"
+        ><svg
+        width="16px"
+        height="16px"
+        viewBox="0 0 16 16"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+        <title>尖角</title>
+        <g id="1.Base基础/1.icon图标/11.editor/尖角" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <path
+            d="M8,3.4 C9.43594035,3.4 10.6,4.56405965 10.6,6 C10.6,6.56620412 10.4190125,7.09013636 10.1117344,7.51709991 L15.8064306,13.0875836 C16.0432882,13.3193272 16.0474339,13.6992036 15.8156902,13.9360612 C15.5839466,14.1729188 15.2040702,14.1770645 14.9672126,13.9453209 L9.20256347,8.30577786 C8.84293991,8.49372179 8.43388126,8.6 8,8.6 C7.57525727,8.6 7.17430251,8.49815157 6.82022556,8.31754453 L1.06742979,13.9453209 C0.830572185,14.1770645 0.450695818,14.1729188 0.218952181,13.9360612 C-0.012791457,13.6992036 -0.0086457647,13.3193272 0.228211844,13.0875836 L5.90224108,7.53633338 C5.58648257,7.10591536 5.4,6.57473535 5.4,6 C5.4,4.56405965 6.56405965,3.4 8,3.4 Z M8,4.6 C7.22680135,4.6 6.6,5.22680135 6.6,6 C6.6,6.77319865 7.22680135,7.4 8,7.4 C8.77319865,7.4 9.4,6.77319865 9.4,6 C9.4,5.22680135 8.77319865,4.6 8,4.6 Z"
+            id="形状结合"
+            fill="#999999"
+          ></path>
+        </g></svg
+      ></label>
+      <label class="label-icon" [ngClass]="{ active: false }" (click)="setLineShape(vectorLineShape.curve)"
+        ><svg
+        width="16px"
+        height="16px"
+        viewBox="0 0 16 16"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+        <title>平滑</title>
+        <g id="1.Base基础/1.icon图标/11.editor/-平滑" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <path
+            d="M8,3.4 C9.2291876,3.4 10.2591511,4.25297986 10.5302652,5.39931435 L12.5,5.4 L12.5,5.24646194 C12.5,4.69417719 12.9477153,4.24646194 13.5,4.24646194 L15,4.24646194 C15.5522847,4.24646194 16,4.69417719 16,5.24646194 L16,6.74646194 C16,7.29874669 15.5522847,7.74646194 15,7.74646194 L13.5,7.74646194 C12.9477153,7.74646194 12.5,7.29874669 12.5,6.74646194 L12.5,6.6 L11.2759596,6.59980269 C14.0607684,7.85085732 16,10.6489627 16,13.9 C16,14.2313708 15.7313708,14.5 15.4,14.5 C15.0686292,14.5 14.8,14.2313708 14.8,13.9 C14.8,10.8986828 12.8555774,8.35150992 10.1577201,7.44946902 C9.69079791,8.14409538 8.89864007,8.6 8,8.6 C7.10135993,8.6 6.30920209,8.14409538 5.84220197,7.45096162 C3.14413193,8.35189067 1.2,10.8989072 1.2,13.9 C1.2,14.2313708 0.93137085,14.5 0.6,14.5 C0.26862915,14.5 0,14.2313708 0,13.9 C0,10.6493522 1.93876702,7.85152777 4.72305169,6.59977597 L3.5,6.6 L3.5,6.74646194 C3.5,7.29874669 3.05228475,7.74646194 2.5,7.74646194 L1,7.74646194 C0.44771525,7.74646194 0,7.29874669 0,6.74646194 L0,5.24646194 C0,4.69417719 0.44771525,4.24646194 1,4.24646194 L2.5,4.24646194 C3.05228475,4.24646194 3.5,4.69417719 3.5,5.24646194 L3.5,5.4 L5.4697348,5.39931435 C5.72866753,4.30448567 6.67979003,3.47724248 7.83557191,3.40511518 Z M8,4.6 C7.22680135,4.6 6.6,5.22680135 6.6,6 C6.6,6.77319865 7.22680135,7.4 8,7.4 C8.77319865,7.4 9.4,6.77319865 9.4,6 C9.4,5.22680135 8.77319865,4.6 8,4.6 Z M2.3,5.44646194 L1.2,5.44646194 L1.2,6.54646194 L2.3,6.54646194 L2.3,5.44646194 Z M14.8,5.44646194 L13.7,5.44646194 L13.7,6.54646194 L14.8,6.54646194 L14.8,5.44646194 Z"
+            id="形状结合"
+            fill="#999999"
+          ></path>
+        </g></svg
+      ></label>
+    </div>
+  </div>
+}

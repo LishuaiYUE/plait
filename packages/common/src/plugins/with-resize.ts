@@ -6,8 +6,6 @@ import {
     Point,
     distanceBetweenPointAndPoint,
     isMainPointer,
-    preventTouchMove,
-    handleTouchTarget,
     throttleRAF,
     toViewBoxPoint,
     toHostPoint,
@@ -27,11 +25,19 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
     board: PlaitBoard,
     options: WithResizeOptions<T, K, P>
 ) => {
-    const { pointerDown, pointerMove, globalPointerUp } = board;
+    const { pointerDown, pointerMove, globalPointerUp, touchStart } = board;
     let resizeHitTestRef: ResizeHitTestRef<T, K, P> | null = null;
     let resizeRef: ResizeRef<T, K, P> | null = null;
     let startPoint: Point | null = null;
     let hoverHitTestRef: ResizeHitTestRef<T, K, P> | null = null;
+
+    board.touchStart = (event: TouchEvent) => {
+        if (resizeRef) {
+            event.preventDefault();
+            return;
+        }
+        touchStart(event);
+    };
 
     board.pointerDown = (event: PointerEvent) => {
         if (!options.canResize() || !generalCanResize(board, event) || !isMainPointer(event)) {
@@ -46,7 +52,7 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
             }
             startPoint = [event.x, event.y];
             const path = Array.isArray(resizeHitTestRef.element)
-                ? resizeHitTestRef.element.map(el => PlaitBoard.findPath(board, el))
+                ? resizeHitTestRef.element.map((el) => PlaitBoard.findPath(board, el))
                 : PlaitBoard.findPath(board, resizeHitTestRef.element);
             resizeRef = {
                 path,
@@ -56,7 +62,6 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
                 rectangle: resizeHitTestRef.rectangle,
                 options: resizeHitTestRef.options
             };
-            preventTouchMove(board, event, true);
             return;
         }
         pointerDown(event);
@@ -99,7 +104,6 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
                 const endPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
                 throttleRAF(board, 'with-common-resize', () => {
                     if (startPoint && resizeRef) {
-                        handleTouchTarget(board);
                         options.onResize(resizeRef, {
                             startPoint: toViewBoxPoint(board, toHostPoint(board, startPoint[0], startPoint[1])),
                             endPoint,
@@ -122,7 +126,6 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
             resizeHitTestRef = null;
             resizeRef = null;
             MERGING.set(board, false);
-            preventTouchMove(board, event, false);
         }
     };
 

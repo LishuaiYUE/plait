@@ -1,10 +1,10 @@
 import { PlaitBoard, Transforms } from '@plait/core';
 import { PlaitMultipleTextGeometry } from '../interfaces';
-import { PlaitDrawShapeText } from '../generators/text.generator';
+import { DrawTextInfo } from '../generators/text.generator';
 
-export const setDrawShapeText = (board: PlaitBoard, element: PlaitMultipleTextGeometry, text: PlaitDrawShapeText) => {
-    const newTexts = element.texts?.map(item => {
-        if (item.key === text.key) {
+export const setDrawTexts = (board: PlaitBoard, element: PlaitMultipleTextGeometry, text: DrawTextInfo) => {
+    const newTexts = element.texts?.map((item) => {
+        if (item.id === text.id) {
             return { ...item, ...text };
         }
         return item;
@@ -12,6 +12,6 @@ export const setDrawShapeText = (board: PlaitBoard, element: PlaitMultipleTextGe
     const newElement = {
         texts: newTexts
     };
-    const path = board.children.findIndex(child => child === element);
+    const path = board.children.findIndex((child) => child === element);
     Transforms.setNode(board, newElement, [path]);
 };

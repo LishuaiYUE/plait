@@ -1,4 +1,4 @@
-import { Point } from '../interfaces';
+import { Point, SVGArcCommand } from '../interfaces';
 import { RectangleClient } from '../interfaces/rectangle-client';
 
 // https://stackoverflow.com/a/6853926/232122
@@ -68,9 +68,12 @@ export function getNearestPointBetweenPointAndSegment(point: Point, linePoints: 
     return [xx, yy] as Point;
 }
 
-export function distanceBetweenPointAndSegments(points: Point[], point: Point) {
+export function distanceBetweenPointAndSegments(point: Point, points: Point[]) {
     const len = points.length;
     let distance = Infinity;
+    if (points.length === 1) {
+        return distanceBetweenPointAndPoint(...points[0], ...point);
+    }
     for (let i = 0; i < len - 1; i++) {
         const p = points[i];
         const p2 = points[i + 1];
@@ -100,7 +103,24 @@ export function getNearestPointBetweenPointAndSegments(point: Point, points: Poi
     return result;
 }
 
-export function getNearestPointBetweenPointAndEllipse(point: Point, center: Point, rx: number, ry: number, rotation: number = 0): Point {
+export function getNearestPointBetweenPointAndDiscreteSegments(point: Point, segments: [Point, Point][]): Point {
+    let minDistance = Infinity;
+    let nearestPoint = point;
+
+    for (const segment of segments) {
+        const currentNearestPoint = getNearestPointBetweenPointAndSegment(point, segment);
+        const currentDistance = distanceBetweenPointAndPoint(point[0], point[1], currentNearestPoint[0], currentNearestPoint[1]);
+
+        if (currentDistance < minDistance) {
+            minDistance = currentDistance;
+            nearestPoint = currentNearestPoint;
+        }
+    }
+
+    return nearestPoint;
+}
+
+export function getNearestPointBetweenPointAndEllipse(point: Point, center: Point, rx: number, ry: number): Point {
     const rectangleClient = {
         x: center[0] - rx,
         y: center[1] - ry,
@@ -117,7 +137,7 @@ export function getNearestPointBetweenPointAndEllipse(point: Point, center: Poin
     const a = Math.abs(rectangleClient.width) / 2;
     const b = Math.abs(rectangleClient.height) / 2;
 
-    [0, 1, 2, 3].forEach(x => {
+    [0, 1, 2, 3].forEach((x) => {
         const xx = a * tx;
         const yy = b * ty;
 
@@ -166,6 +186,10 @@ export function distanceBetweenPointAndRectangle(x: number, y: number, rect: Rec
 }
 
 export const isLineHitLine = (a: Point, b: Point, c: Point, d: Point): boolean => {
+    if (Point.isEquals(a, b) && Point.isEquals(c, d) && !Point.isEquals(a, c)) {
+        return false;
+    }
+
     const crossProduct = (v1: Point, v2: Point) => v1[0] * v2[1] - v1[1] * v2[0];
 
     const ab: Point = [b[0] - a[0], b[1] - a[1]];
@@ -179,24 +203,46 @@ export const isLineHitLine = (a: Point, b: Point, c: Point, d: Point): boolean =
     return crossProduct(ab, ac) * crossProduct(ab, ad) <= 0 && crossProduct(cd, ca) * crossProduct(cd, cb) <= 0;
 };
 
-export const isPolylineHitRectangle = (points: Point[], rectangle: RectangleClient, isClose: boolean = true) => {
+export const isLineHitRectangle = (points: Point[], rectangle: RectangleClient) => {
+    if (points.length === 1) {
+        return RectangleClient.isPointInRectangle(rectangle, points[0]);
+    }
     const rectanglePoints = RectangleClient.getCornerPoints(rectangle);
+    const len = points.length;
+    for (let i = 0; i < len; i++) {
+        const p1 = points[i];
+        const p2 = points[(i + 1) % len];
+        if (i === len - 1 && Point.isEquals(p1, p2)) continue;
+        const isHit = isSingleLineHitRectangleEdge(p1, p2, rectangle);
+        if (isHit || isPointInPolygon(p1, rectanglePoints) || isPointInPolygon(p2, rectanglePoints)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+export const isLineHitRectangleEdge = (points: Point[], rectangle: RectangleClient, isClose: boolean = true) => {
     const len = points.length;
     for (let i = 0; i < len; i++) {
         if (i === len - 1 && !isClose) continue;
         const p1 = points[i];
         const p2 = points[(i + 1) % len];
-        const isHit =
-            isLineHitLine(p1, p2, rectanglePoints[0], rectanglePoints[1]) ||
-            isLineHitLine(p1, p2, rectanglePoints[1], rectanglePoints[2]) ||
-            isLineHitLine(p1, p2, rectanglePoints[2], rectanglePoints[3]) ||
-            isLineHitLine(p1, p2, rectanglePoints[3], rectanglePoints[0]);
-        if (isHit || isPointInPolygon(p1, rectanglePoints) || isPointInPolygon(p2, rectanglePoints)) {
+        const isHit = isSingleLineHitRectangleEdge(p1, p2, rectangle);
+        if (isHit) {
             return true;
         }
     }
-
     return false;
+};
+
+export const isSingleLineHitRectangleEdge = (p1: Point, p2: Point, rectangle: RectangleClient) => {
+    const rectanglePoints = RectangleClient.getCornerPoints(rectangle);
+    return (
+        isLineHitLine(p1, p2, rectanglePoints[0], rectanglePoints[1]) ||
+        isLineHitLine(p1, p2, rectanglePoints[1], rectanglePoints[2]) ||
+        isLineHitLine(p1, p2, rectanglePoints[2], rectanglePoints[3]) ||
+        isLineHitLine(p1, p2, rectanglePoints[3], rectanglePoints[0])
+    );
 };
 
 //https://stackoverflow.com/questions/22521982/check-if-point-is-inside-a-polygon
@@ -262,7 +308,7 @@ export const isPointInRoundRectangle = (point: Point, rectangle: RectangleClient
 };
 
 // https://gist.github.com/nicholaswmin/c2661eb11cad5671d816
-export const catmullRomFitting = function(points: Point[]) {
+export const catmullRomFitting = function (points: Point[]) {
     const alpha = 0.5;
     let p0, p1, p2, p3, bp1, bp2, d1, d2, d3, A, B, N, M;
     var d3powA, d2powA, d3pow2A, d2pow2A, d1pow2A, d1powA;
@@ -360,6 +406,11 @@ export function toFixed(v: number) {
     return +v.toFixed(2);
 }
 
+export function ceilToDecimal(value: number, decimalPlaces: number) {
+    const factor = Math.pow(10, decimalPlaces);
+    return Math.ceil(value * factor) / factor;
+}
+
 /**
  * Whether two numbers numbers a and b are approximately equal.
  *
@@ -418,8 +469,111 @@ export function getCrossingPointsBetweenEllipseAndSegment(
     return (
         tValues
             // Filter to only points that are on the segment.
-            .filter(t => !segment_only || (t >= 0 && t <= 1))
+            .filter((t) => !segment_only || (t >= 0 && t <= 1))
             // Solve for points.
-            .map(t => [startPoint[0] + (endPoint[0] - startPoint[0]) * t + cx, startPoint[1] + (endPoint[1] - startPoint[1]) * t + cy])
+            .map((t) => [startPoint[0] + (endPoint[0] - startPoint[0]) * t + cx, startPoint[1] + (endPoint[1] - startPoint[1]) * t + cy])
     );
+}
+
+/**
+ * Get a point between two points.
+ * @param x0 The x-axis coordinate of the first point.
+ * @param y0 The y-axis coordinate of the first point.
+ * @param x1 The x-axis coordinate of the second point.
+ * @param y1 The y-axis coordinate of the second point.
+ * @param d Normalized
+ */
+export function getPointBetween(x0: number, y0: number, x1: number, y1: number, d = 0.5) {
+    return [x0 + (x1 - x0) * d, y0 + (y1 - y0) * d];
+}
+
+/**
+ * 获取点到半椭圆弧段的最近点
+ * @param point 目标点
+ * @param startPoint 弧段起点
+ * @param arcCommand SVG 弧形命令参数
+ */
+/**
+ * 计算椭圆弧的中心点和实际半径
+ */
+export function getEllipseArcCenter(startPoint: Point, arcCommand: SVGArcCommand): { center: Point; rx: number; ry: number } {
+    // 1. 将坐标转换到标准位置
+    const dx = (arcCommand.endX - startPoint[0]) / 2;
+    const dy = (arcCommand.endY - startPoint[1]) / 2;
+    const cosAngle = Math.cos(arcCommand.xAxisRotation);
+    const sinAngle = Math.sin(arcCommand.xAxisRotation);
+
+    // 旋转到椭圆坐标系
+    const x1 = cosAngle * dx + sinAngle * dy;
+    const y1 = -sinAngle * dx + cosAngle * dy;
+
+    // 2. 计算中心点
+    const rx = Math.abs(arcCommand.rx);
+    const ry = Math.abs(arcCommand.ry);
+
+    // 确保半径足够大
+    const lambda = (x1 * x1) / (rx * rx) + (y1 * y1) / (ry * ry);
+    const factor = lambda > 1 ? Math.sqrt(lambda) : 1;
+
+    const adjustedRx = rx * factor;
+    const adjustedRy = ry * factor;
+
+    // 计算中心点坐标
+    const sign = arcCommand.largeArcFlag === arcCommand.sweepFlag ? -1 : 1;
+    const sq =
+        (adjustedRx * adjustedRx * adjustedRy * adjustedRy - adjustedRx * adjustedRx * y1 * y1 - adjustedRy * adjustedRy * x1 * x1) /
+        (adjustedRx * adjustedRx * y1 * y1 + adjustedRy * adjustedRy * x1 * x1);
+    const coef = sign * Math.sqrt(Math.max(0, sq));
+
+    const centerX = coef * ((adjustedRx * y1) / adjustedRy);
+    const centerY = coef * (-(adjustedRy * x1) / adjustedRx);
+
+    // 3. 转换回原始坐标系
+    const cx = cosAngle * centerX - sinAngle * centerY + (startPoint[0] + arcCommand.endX) / 2;
+    const cy = sinAngle * centerX + cosAngle * centerY + (startPoint[1] + arcCommand.endY) / 2;
+
+    return {
+        center: [cx, cy],
+        rx: adjustedRx,
+        ry: adjustedRy
+    };
+}
+
+export function getNearestPointBetweenPointAndArc(point: Point, startPoint: Point, arcCommand: SVGArcCommand): Point {
+    const { center, rx, ry } = getEllipseArcCenter(startPoint, arcCommand);
+
+    // 获取椭圆上的最近点
+    const nearestPoint = getNearestPointBetweenPointAndEllipse(point, center, rx, ry);
+
+    // 判断最近点是否在弧段上
+    const startAngle = Math.atan2(startPoint[1] - center[1], startPoint[0] - center[0]);
+    const endAngle = Math.atan2(arcCommand.endY - center[1], arcCommand.endX - center[0]);
+    const pointAngle = Math.atan2(nearestPoint[1] - center[1], nearestPoint[0] - center[0]);
+
+    // 检查点是否在弧段范围内
+    const isInArc = isAngleBetween(pointAngle, startAngle, endAngle, arcCommand.sweepFlag === 1);
+
+    if (isInArc) {
+        return nearestPoint;
+    }
+
+    // 如果不在弧段上，返回最近的端点
+    const distanceToStart = distanceBetweenPointAndPoint(point[0], point[1], startPoint[0], startPoint[1]);
+    const distanceToEnd = distanceBetweenPointAndPoint(point[0], point[1], arcCommand.endX, arcCommand.endY);
+    return distanceToStart < distanceToEnd ? startPoint : [arcCommand.endX, arcCommand.endY];
+}
+
+function isAngleBetween(angle: number, start: number, end: number, clockwise: boolean): boolean {
+    // 标准化角度到 [0, 2π]
+    const normalize = (a: number) => ((a % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+
+    const a = normalize(angle);
+    const s = normalize(start);
+    const e = normalize(end);
+
+    if (clockwise) {
+        return s <= e ? a >= s && a <= e : a >= s || a <= e;
+    } else {
+        return s >= e ? a <= s && a >= e : a <= s || a >= e;
+    }
 }

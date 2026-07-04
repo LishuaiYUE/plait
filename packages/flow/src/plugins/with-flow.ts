@@ -4,8 +4,8 @@ import {
     PlaitPluginElementContext,
     PlaitElement,
     PlaitOptionsBoard,
-    WithPluginOptions,
-    PlaitPluginKey
+    PlaitPluginKey,
+    setSelectionOptions
 } from '@plait/core';
 import { FlowNodeComponent } from '../node.component';
 import { FlowEdgeComponent } from '../edge.component';
@@ -49,7 +49,7 @@ export const withFlow: PlaitPlugin = (board: PlaitBoard) => {
         return isRectangleHit(element, range);
     };
 
-    board.isHit = (element, point) => {
+    board.isHit = (element, point, isStrict?: boolean) => {
         if (!board.options.readonly) {
             if (FlowElement.isFlowElement(element) && PlaitElement.hasMounted(element)) {
                 if (FlowNode.isFlowNodeElement(element)) {
@@ -60,17 +60,17 @@ export const withFlow: PlaitPlugin = (board: PlaitBoard) => {
                 }
             }
         }
-        return isHit(element, point);
+        return isHit(element, point, isStrict);
     };
 
-    board.isMovable = element => {
+    board.isMovable = (element) => {
         if (FlowNode.isFlowNodeElement(element as FlowElement)) {
             return true;
         }
         return isMovable(element);
     };
 
-    board.getRectangle = element => {
+    board.getRectangle = (element) => {
         if (FlowNode.isFlowNodeElement(element as FlowElement)) {
             const { width, height, points } = element;
             return {
@@ -91,7 +91,7 @@ export const withFlow: PlaitPlugin = (board: PlaitBoard) => {
         return getRectangle(element);
     };
 
-    (board as PlaitOptionsBoard).setPluginOptions<WithPluginOptions>(PlaitPluginKey.withSelection, { isMultiple: false });
+    setSelectionOptions(board, { isMultipleSelection: false });
 
     (board as PlaitOptionsBoard).setPluginOptions<FlowPluginOptions>(FlowPluginKey.flowOptions, {
         edgeLabelOptions: { height: TEXT_DEFAULT_HEIGHT }

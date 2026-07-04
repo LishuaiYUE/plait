@@ -15,11 +15,14 @@ export class CustomFlowNodeComponent extends FlowNodeComponent {
             }
         });
         this.getRef().addGenerator<NodeActiveGenerator>(NodeActiveGenerator.key, this.nodeActiveGenerator);
+        this.getRef().addGenerator<NodeGenerator>(CustomNodeGenerator.key, this.nodeGenerator);
+        this.getRef().initializeTextManage(this.textManage);
     }
 
     initialize(): void {
         super.initialize();
         this.getElementG().classList.add('flow-custom-node');
+        this.textManage.g.classList.add('flow-custom-node-richtext');
     }
 }
 

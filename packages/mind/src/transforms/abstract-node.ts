@@ -6,6 +6,7 @@ import { divideElementByParent, getFirstLevelElement } from '../utils/mind';
 import { MindQueries } from '../queries';
 import { DefaultAbstractNodeStyle } from '../constants/node-style';
 import { createMindElement } from '../utils/node/create-node';
+import { getAbstractNodeText } from '../utils/common';
 
 export const setAbstractsByRefs = (board: PlaitBoard, abstractRefs: AbstractRefs) => {
     abstractRefs.forEach((newProperty, element) => {
@@ -23,7 +24,7 @@ export const setAbstractsByRefs = (board: PlaitBoard, abstractRefs: AbstractRefs
 
 export const setAbstractByStandardLayout = (board: PlaitBoard, element: MindElement) => {
     const rightNodeCount = element.rightNodeCount!;
-    const abstract = element.children.find(child => {
+    const abstract = element.children.find((child) => {
         return AbstractNode.isAbstract(child) && child.end >= rightNodeCount && child.start < rightNodeCount;
     });
 
@@ -44,21 +45,21 @@ export const insertAbstract = (board: PlaitBoard, elements: PlaitElement[]) => {
 };
 
 const setAbstractByElements = (board: PlaitBoard, groupParent: MindElement, group: MindElement[]) => {
-    const indexArray = group.map(child => groupParent!.children.indexOf(child)).sort((a, b) => a - b);
+    const indexArray = group.map((child) => groupParent!.children.indexOf(child)).sort((a, b) => a - b);
     const rightNodeCount = groupParent?.rightNodeCount;
     const start = indexArray[0],
         end = indexArray[indexArray.length - 1];
 
     if (
-        isStandardLayout(MindQueries.getLayoutByElement(groupParent)) &&
+        isStandardLayout(MindQueries.getCorrectLayoutByElement(board, groupParent)) &&
         rightNodeCount &&
         start < rightNodeCount &&
         end >= rightNodeCount
     ) {
         const childrenLength = groupParent.children.length;
         const path = [...PlaitBoard.findPath(board, groupParent), childrenLength];
-        const leftChildren = indexArray.filter(index => index >= rightNodeCount);
-        const rightChildren = indexArray.filter(index => index < rightNodeCount);
+        const leftChildren = indexArray.filter((index) => index >= rightNodeCount);
+        const rightChildren = indexArray.filter((index) => index < rightNodeCount);
         insertAbstractNode(board, path, rightChildren[0], rightChildren[rightChildren.length - 1]);
         insertAbstractNode(board, Path.next(path), leftChildren[0], leftChildren[leftChildren.length - 1]);
     } else {
@@ -68,7 +69,8 @@ const setAbstractByElements = (board: PlaitBoard, groupParent: MindElement, grou
 };
 
 const insertAbstractNode = (board: PlaitBoard, path: Path, start: number, end: number) => {
-    const mindElement = createMindElement('概要', 28, 20, {
+    const abstractNodeText = getAbstractNodeText(board);
+    const mindElement = createMindElement(abstractNodeText, {
         strokeWidth: DefaultAbstractNodeStyle.branch.width,
         branchWidth: DefaultAbstractNodeStyle.branch.width
     });

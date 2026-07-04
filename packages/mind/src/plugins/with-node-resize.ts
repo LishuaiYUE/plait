@@ -13,8 +13,7 @@ import { getRectangleByNode } from '../utils/position/node';
 import { NodeSpace } from '../utils/space/node-space';
 import { PlaitMindBoard } from './with-mind.board';
 import { MindTransforms } from '../transforms';
-import { EXTEND_OFFSET } from '../constants/default';
-import { isDragging } from '../utils/dnd/common';
+import { RESIZE_HANDLE_BUFFER_DISTANCE } from '../constants/default';
 import { ResizeRef, ResizeState, TextManage, WithResizeOptions, getFirstTextManage, withResize } from '@plait/common';
 
 interface TargetElementRef {
@@ -29,7 +28,7 @@ export const withNodeResize = (board: PlaitBoard) => {
     const options: WithResizeOptions<MindElement, null> = {
         key: 'mind-node',
         canResize: () => {
-            return !isDragging(board);
+            return true;
         },
         hitTest: (point: Point) => {
             const newTargetElement = getSelectedTarget(board as PlaitMindBoard, point);
@@ -45,22 +44,19 @@ export const withNodeResize = (board: PlaitBoard) => {
         beforeResize: (resizeRef: ResizeRef<MindElement, null>) => {
             targetElementRef = {
                 minWidth: NodeSpace.getNodeResizableMinWidth(board as PlaitMindBoard, resizeRef.element),
-                currentWidth: NodeSpace.getNodeDynamicWidth(board as PlaitMindBoard, resizeRef.element),
+                currentWidth: NodeSpace.getTopicDynamicWidth(board as PlaitMindBoard, resizeRef.element),
                 path: PlaitBoard.findPath(board, resizeRef.element),
                 textManage: getFirstTextManage(resizeRef.element)
             };
         },
         onResize: (resizeRef: ResizeRef<MindElement, null>, resizeState: ResizeState) => {
-            const zoom = board.viewport.zoom;
             let resizedWidth = targetElementRef!.currentWidth + Point.getOffsetX(resizeState.startPoint, resizeState.endPoint);
             if (resizedWidth <= targetElementRef!.minWidth) {
                 resizedWidth = targetElementRef!.minWidth;
             }
             const newTarget = PlaitNode.get<MindElement>(board, targetElementRef!.path);
             if (newTarget && NodeSpace.getNodeTopicMinWidth(board as PlaitMindBoard, newTarget) !== resizedWidth) {
-                targetElementRef!.textManage.updateRectangleWidth(resizedWidth);
-                const { height } = targetElementRef!.textManage.getSize();
-                MindTransforms.setNodeManualWidth(board as PlaitMindBoard, newTarget, resizedWidth * zoom, height);
+                MindTransforms.setNodeManualWidth(board as PlaitMindBoard, newTarget, resizedWidth);
             }
         },
         afterResize: (resizeRef: ResizeRef<MindElement, null>) => {
@@ -72,9 +68,9 @@ export const withNodeResize = (board: PlaitBoard) => {
 };
 
 export const getSelectedTarget = (board: PlaitMindBoard, point: Point) => {
-    const selectedElements = getSelectedElements(board).filter(value => MindElement.isMindElement(board, value)) as MindElement[];
+    const selectedElements = getSelectedElements(board).filter((value) => MindElement.isMindElement(board, value)) as MindElement[];
     if (selectedElements.length > 0) {
-        const target = selectedElements.find(value => {
+        const target = selectedElements.find((value) => {
             const rectangle = getResizeActiveRectangle(board, value);
             return distanceBetweenPointAndRectangle(point[0], point[1], rectangle) <= 0;
         });
@@ -86,5 +82,10 @@ export const getSelectedTarget = (board: PlaitMindBoard, point: Point) => {
 export const getResizeActiveRectangle = (board: PlaitBoard, element: MindElement): RectangleClient => {
     const node = MindElement.getNode(element);
     const rectangle = getRectangleByNode(node);
-    return { x: rectangle.x + rectangle.width - EXTEND_OFFSET, y: rectangle.y, width: EXTEND_OFFSET * 2, height: rectangle.height };
+    return {
+        x: rectangle.x + rectangle.width - RESIZE_HANDLE_BUFFER_DISTANCE,
+        y: rectangle.y,
+        width: RESIZE_HANDLE_BUFFER_DISTANCE * 2,
+        height: rectangle.height
+    };
 };

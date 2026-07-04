@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Directive, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Directive, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { PlaitBoard } from '@plait/core';
 import { Subscription } from 'rxjs';
 import { BOARD_TO_COMPONENT } from '../utils/weak-maps';
@@ -12,7 +12,7 @@ import { BoardComponentInterface } from '../board/board.component.interface';
 export abstract class PlaitIslandBaseComponent {
     board!: PlaitBoard;
 
-    constructor(protected cdr: ChangeDetectorRef) {}
+    protected cdr = inject(ChangeDetectorRef);
 
     initialize(board: PlaitBoard) {
         this.board = board;
@@ -34,12 +34,12 @@ export abstract class PlaitIslandPopoverBaseComponent implements OnInit, OnDestr
 
     private subscription?: Subscription;
 
-    constructor(public cdr: ChangeDetectorRef) {}
+    cdr = inject(ChangeDetectorRef);
 
     initialize(board: PlaitBoard) {
         this.board = board;
         const boardComponent = BOARD_TO_COMPONENT.get(board) as BoardComponentInterface;
-        this.subscription = boardComponent.onChange.subscribe(() => {
+        this.subscription = boardComponent.change.subscribe(() => {
             if (hasOnBoardChange(this)) {
                 this.onBoardChange();
             }

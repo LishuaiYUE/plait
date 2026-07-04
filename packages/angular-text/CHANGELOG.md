@@ -1,5 +1,298 @@
 # angular-text
 
+## 0.93.2
+
+## 0.93.1
+
+## 0.93.0
+
+### Minor Changes
+
+-   [#1142](https://github.com/worktile/plait/pull/1142) [`d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5`](https://github.com/worktile/plait/commit/d20dc1ac2d9d522859aaa7b4e63aa94d348f71b5) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - bump angular into 21
+
+## 0.92.3
+
+## 0.92.2
+
+## 0.92.1
+
+## 0.92.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+### Patch Changes
+
+-   [`440abdb19b139c272a4b83ee1f00a609c81b020b`](https://github.com/worktile/plait/commit/440abdb19b139c272a4b83ee1f00a609c81b020b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate-angular and implement paragraph flavour and text flavour to render text
+
+## 0.92.0-next.2
+
+## 0.92.0-next.1
+
+### Patch Changes
+
+-   [`440abdb19b139c272a4b83ee1f00a609c81b020b`](https://github.com/worktile/plait/commit/440abdb19b139c272a4b83ee1f00a609c81b020b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate-angular and implement paragraph flavour and text flavour to render text
+
+## 0.92.0-next.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.91.0
+
+## 0.90.1
+
+## 0.90.0
+
+## 0.89.2
+
+## 0.89.1
+
+## 0.89.0
+
+## 0.88.1
+
+## 0.88.0
+
+## 0.87.0
+
+## 0.87.0-next.1
+
+## 0.87.0-next.0
+
+## 0.86.1
+
+## 0.86.0
+
+## 0.85.0
+
+## 0.84.0
+
+## 0.83.1
+
+## 0.83.0
+
+## 0.82.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.82.0-next.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.81.3
+
+### Patch Changes
+
+-   [#1062](https://github.com/worktile/plait/pull/1062) [`285be735e1b27832adb1b6c1a812e9ec42d035e0`](https://github.com/worktile/plait/commit/285be735e1b27832adb1b6c1a812e9ec42d035e0) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix text can not break line issue
+
+## 0.81.2
+
+### Patch Changes
+
+-   [`0f572da58c9774cf0ed93e0b0c66976563b10305`](https://github.com/worktile/plait/commit/0f572da58c9774cf0ed93e0b0c66976563b10305) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix text can not show \n line break
+
+## 0.81.1
+
+## 0.81.0
+
+## 0.80.0
+
+### Minor Changes
+
+-   [`68d2e57ab0929c95ac6510eee14d91985592a60a`](https://github.com/worktile/plait/commit/68d2e57ab0929c95ac6510eee14d91985592a60a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - optimize text style to avoid text can not show
+
+    1. use pre-wrap replace break-spaces; to avoid text split multiple lines
+    2. add overflow auto for foreignObject
+
+## 0.79.1
+
+## 0.79.0
+
+## 0.78.2
+
+## 0.78.1
+
+## 0.78.0
+
+### Minor Changes
+
+-   [#1052](https://github.com/worktile/plait/pull/1052) [`688cf253feea7902690af40ded129bd83a4469a7`](https://github.com/worktile/plait/commit/688cf253feea7902690af40ded129bd83a4469a7) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.78.0-next.0
+
+### Minor Changes
+
+-   [`af24487d0cb31303c8600aae655f5825e4c9e918`](https://github.com/worktile/plait/commit/af24487d0cb31303c8600aae655f5825e4c9e918) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.77.3
+
+## 0.77.2
+
+### Patch Changes
+
+-   [#1043](https://github.com/worktile/plait/pull/1043) [`83535189077f2d1ac7454674a1da8ede0fadb547`](https://github.com/worktile/plait/commit/83535189077f2d1ac7454674a1da8ede0fadb547) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply font family fallback solution to resolve text width calculation issue in windows #1042
+
+## 0.77.1
+
+## 0.77.0
+
+## 0.76.0
+
+## 0.75.0
+
+## 0.75.0-next.9
+
+## 0.75.0-next.8
+
+## 0.75.0-next.7
+
+## 0.75.0-next.6
+
+## 0.75.0-next.5
+
+## 0.75.0-next.4
+
+## 0.75.0-next.3
+
+## 0.75.0-next.2
+
+## 0.75.0-next.1
+
+## 0.75.0-next.0
+
+## 0.74.0
+
+## 0.73.0
+
+### Minor Changes
+
+-   [#992](https://github.com/worktile/plait/pull/992) [`71a1f3231`](https://github.com/worktile/plait/commit/71a1f3231b57dba77345068543b7932e114631ac) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove useless plugin(withInline) and rename withSelection to withInlineMove
+
+## 0.72.0
+
+## 0.71.0
+
+## 0.70.0
+
+## 0.69.2
+
+## 0.69.1
+
+## 0.69.0
+
+## 0.68.0
+
+## 0.67.2
+
+## 0.67.1
+
+## 0.67.0
+
+## 0.66.1
+
+## 0.66.0
+
+## 0.65.2
+
+## 0.65.1
+
+### Patch Changes
+
+-   [`f27cc216d`](https://github.com/worktile/plait/commit/f27cc216d5d5065032634c739d4f0697b4f9d2a8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate-angular into 18.0.1
+
+## 0.65.0
+
+### Minor Changes
+
+-   [`e667a8e73`](https://github.com/worktile/plait/commit/e667a8e73033087daf672e773eb54da835439f11) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - upgrade angular into 18
+
+## 0.65.0-next.0
+
+### Minor Changes
+
+-   [`3a69e449e`](https://github.com/worktile/plait/commit/3a69e449e758e4d5541855920e3309281e84605d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - upgrade angular into 18
+
+## 0.64.9
+
+## 0.64.8
+
+### Patch Changes
+
+-   [`2c49d77f9`](https://github.com/worktile/plait/commit/2c49d77f910006b8b7aa763115b5707edfdbd8bc) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - invoking updateForeignObject will trigger auto scroll (browser default behavior) which cause board unexceptional scrolling
+
+    so need remove updateForeignObject and invoke immediately onChange to avoid coming up shaking in drawnix
+
+    prevent board children being covered when board is in FLUSHING
+
+## 0.64.7
+
+## 0.64.6
+
+## 0.64.5
+
+## 0.64.4
+
+## 0.64.3
+
+## 0.64.2
+
+## 0.64.1
+
+## 0.64.0
+
+## 0.63.0
+
+### Patch Changes
+
+-   [`611b1bafe`](https://github.com/worktile/plait/commit/611b1bafe27a703c241da9c91e514007b391d980) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - assign `margin` as `0` to resolve the content can not be displayed completely
+
+## 0.62.0
+
+### Minor Changes
+
+-   [#914](https://github.com/worktile/plait/pull/914) [`92436588f`](https://github.com/worktile/plait/commit/92436588fa95557474c8ebc0c282330376622fb4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - 1. Rename package `@plait/text` to `@plait/angular-text`
+
+    2. Move some common processing and plugins into `@plait/text-plugins`
+
+    3. Rename `richtext` component to `text` component
+
+    ***
+
+    1. 将包 `@plait/text` 重命名为 `@plait/angular-text`
+
+    2. 将一些通用处理和插件移入 `@plait/text-plugins` 中
+
+    3. 将 `richtext` 组件重命名 `text` 组件
+
+### Patch Changes
+
+-   [`fbd1bdb3c`](https://github.com/worktile/plait/commit/fbd1bdb3cbd2437eb3531f9ef16d2bf6678418c8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add board property for text-editor
+
+*   [`7625c6cb2`](https://github.com/worktile/plait/commit/7625c6cb228fa66a408b00997a7b81d5fd9d8d6d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update peerDependencies
+
+## 0.62.0-next.10
+
+### Patch Changes
+
+-   [`fbd1bdb3c`](https://github.com/worktile/plait/commit/fbd1bdb3cbd2437eb3531f9ef16d2bf6678418c8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add board property for text-editor
+
+## 0.62.0-next.9
+
+### Patch Changes
+
+-   [`7625c6cb2`](https://github.com/worktile/plait/commit/7625c6cb228fa66a408b00997a7b81d5fd9d8d6d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update peerDependencies
+
+## 0.62.0-next.8
+
+## 0.62.0-next.7
+
 ## 0.62.0-next.6
 
 ## 0.62.0-next.5

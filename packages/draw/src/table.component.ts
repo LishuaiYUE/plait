@@ -7,12 +7,12 @@ import {
     setAngleForG,
     degreesToRadians
 } from '@plait/core';
-import { ActiveGenerator, CommonElementFlavour, TextManageChangeData, canResize } from '@plait/common';
+import { ActiveGenerator, CommonElementFlavour, TextManageChangeData, createActiveGenerator, hasResizeHandle } from '@plait/common';
 import { PlaitTable, PlaitTableBoard, PlaitTableCell, PlaitTableElement } from './interfaces/table';
-import { getTextManage, PlaitDrawShapeText, TextGenerator } from './generators/text.generator';
+import { DrawTextInfo, TextGenerator } from './generators/text.generator';
 import { TableGenerator } from './generators/table.generator';
 import { DrawTransforms } from './transforms';
-import { getCellWithPoints, isCellIncludeText } from './utils/table';
+import { getCellWithPoints, getTextManageByCell, isCellIncludeText } from './utils/table';
 import {
     clearSelectedCells,
     getCellsRectangle,
@@ -23,9 +23,9 @@ import {
 } from './utils';
 import { getEngine } from './engines';
 import { TableSymbols } from './interfaces';
-import { getHorizontalTextRectangle } from './engines/table/table';
+import { getCellTextHeight, getHorizontalTextRectangle } from './engines/table/table';
 import { ShapeDefaultSpace } from './constants';
-import { LineAutoCompleteGenerator } from './generators/line-auto-complete.generator';
+import { ArrowLineAutoCompleteGenerator } from './generators/arrow-line-auto-complete.generator';
 
 export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T, PlaitBoard> implements OnContextChanged<T, PlaitBoard> {
     activeGenerator!: ActiveGenerator<T>;
@@ -34,14 +34,14 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
 
     textGenerator!: TextGenerator<T>;
 
-    lineAutoCompleteGenerator!: LineAutoCompleteGenerator<PlaitTable>;
+    lineAutoCompleteGenerator!: ArrowLineAutoCompleteGenerator<PlaitTable>;
 
     constructor() {
         super();
     }
 
     initializeGenerator() {
-        this.activeGenerator = new ActiveGenerator<T>(this.board, {
+        this.activeGenerator = createActiveGenerator<T>(this.board, {
             getStrokeWidth: () => {
                 return ACTIVE_STROKE_WIDTH;
             },
@@ -60,13 +60,21 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
                 if (cells?.length) {
                     return false;
                 }
-                return canResize(this.board, this.element);
+                return hasResizeHandle(this.board, this.element);
             }
         });
         this.tableGenerator = new TableGenerator<T>(this.board);
         this.initializeTextManage();
-        this.lineAutoCompleteGenerator = new LineAutoCompleteGenerator(this.board);
-        this.getRef().addGenerator(LineAutoCompleteGenerator.key, this.lineAutoCompleteGenerator);
+        this.lineAutoCompleteGenerator = new ArrowLineAutoCompleteGenerator(this.board);
+        this.getRef().addGenerator(ArrowLineAutoCompleteGenerator.key, this.lineAutoCompleteGenerator);
+        this.getRef().updateActiveSection = () => {
+            this.activeGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
+                selected: this.selected
+            });
+            this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
+                selected: this.selected
+            });
+        };
     }
 
     initialize(): void {
@@ -79,19 +87,19 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
         this.tableGenerator.processDrawing(this.element, this.getElementG());
         this.textGenerator.draw(this.getElementG());
         this.rotateVerticalText();
-        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
             selected: this.selected
         });
     }
 
     rotateVerticalText() {
         const table = (this.board as PlaitTableBoard).buildTable(this.element);
-        table.cells.forEach(item => {
+        table.cells.forEach((item) => {
             if (PlaitTableElement.isVerticalText(item)) {
-                const textManage = getTextManage(item.id);
+                const textManage = getTextManageByCell(this.board, item);
                 if (textManage) {
                     const engine = getEngine<PlaitTable>(TableSymbols.table);
-                    const rectangle = engine.getTextRectangle!(this.element, { key: item.id, board: this.board });
+                    const rectangle = engine.getTextRectangle!(this.board, this.element, { id: item.id, board: this.board });
                     textManage.g.classList.add('vertical-cell-text');
                     setAngleForG(textManage.g, RectangleClient.getCenterPoint(rectangle), degreesToRadians(-90));
                 }
@@ -99,14 +107,13 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
         });
     }
 
-    getDrawShapeTexts(cells: PlaitTableCell[]): PlaitDrawShapeText[] {
+    getDrawShapeTexts(cells: PlaitTableCell[]): DrawTextInfo[] {
         return cells
-            .filter(item => isCellIncludeText(item))
-            .map(item => {
+            .filter((item) => isCellIncludeText(item))
+            .map((item) => {
                 return {
-                    key: item.id,
+                    id: item.id,
                     text: item.text!,
-                    textHeight: item.textHeight!,
                     board: this.board
                 };
             });
@@ -115,29 +122,28 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
     initializeTextManage() {
         const texts = this.getDrawShapeTexts(this.element.cells);
         this.textGenerator = new TextGenerator(this.board, this.element, texts, {
-            onChange: (value: PlaitTable, data: TextManageChangeData, text: PlaitDrawShapeText) => {
-                const height = data.height / this.board.viewport.zoom;
+            onChange: (value: PlaitTable, data: TextManageChangeData, text: DrawTextInfo) => {
                 const path = PlaitBoard.findPath(this.board, value);
                 if (data.newText) {
-                    DrawTransforms.setTableText(this.board, path, text.key, data.newText, height);
+                    DrawTransforms.setTableText(this.board, path, text.id, data.newText, data.height);
                 }
                 data.operations && memorizeLatestText(value, data.operations);
             },
-            getRenderRectangle: (value: PlaitTable, text: PlaitDrawShapeText) => {
-                const cell = getCellWithPoints(this.board, value, text.key);
+            getRenderRectangle: (value: PlaitTable, text: DrawTextInfo) => {
+                const cell = getCellWithPoints(this.board, value, text.id);
                 if (PlaitTableElement.isVerticalText(cell)) {
                     const cellRectangle = RectangleClient.getRectangleByPoints(cell.points);
                     const strokeWidth = getStrokeWidthByElement(cell);
-                    const width = cell.textHeight || 0;
-                    const height = cellRectangle.height - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
+                    const width = cellRectangle.height - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
+                    const height = getCellTextHeight(this.board, cell, true);
                     return {
-                        width,
-                        height: height > 0 ? height : 0,
+                        width: height,
+                        height: width > 0 ? width : 0,
                         x: cellRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth,
-                        y: cellRectangle.y + (cellRectangle.height - height) / 2
+                        y: cellRectangle.y + (cellRectangle.height - width) / 2
                     };
                 } else {
-                    return getHorizontalTextRectangle(cell);
+                    return getHorizontalTextRectangle(this.board, cell);
                 }
             }
         });
@@ -145,25 +151,23 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
     }
 
     onContextChanged(value: PlaitPluginElementContext<T, PlaitBoard>, previous: PlaitPluginElementContext<T, PlaitBoard>) {
-        const isChangeTheme = this.board.operations.find(op => op.type === 'set_theme');
-        if (value.element !== previous.element || isChangeTheme) {
+        if (value.element !== previous.element || value.hasThemeChanged) {
             const previousSelectedCells = getSelectedCells(previous.element);
             if (previousSelectedCells?.length) {
                 clearSelectedCells(previous.element);
                 setSelectedCells(value.element, previousSelectedCells);
             }
             this.tableGenerator.processDrawing(value.element, this.getElementG());
-            this.activeGenerator.processDrawing(value.element, PlaitBoard.getElementActiveHost(this.board), { selected: this.selected });
+            this.activeGenerator.processDrawing(value.element, PlaitBoard.getActiveHost(this.board), { selected: this.selected });
             const previousTexts = this.getDrawShapeTexts(previous.element.cells);
             const currentTexts = this.getDrawShapeTexts(value.element.cells);
             this.textGenerator.update(value.element, previousTexts, currentTexts, this.getElementG());
             this.rotateVerticalText();
         } else {
             const hasSameSelected = value.selected === previous.selected;
-            const hasSameHandleState = this.activeGenerator.options.hasResizeHandle() === this.activeGenerator.hasResizeHandle;
             const currentSelectedCells = getSelectedCells(value.element);
-            if (!hasSameSelected || !hasSameHandleState || currentSelectedCells?.length) {
-                this.activeGenerator.processDrawing(value.element, PlaitBoard.getElementActiveHost(this.board), {
+            if (!hasSameSelected || currentSelectedCells?.length || value.selected) {
+                this.activeGenerator.processDrawing(value.element, PlaitBoard.getActiveHost(this.board), {
                     selected: this.selected
                 });
             }
@@ -171,7 +175,7 @@ export class TableComponent<T extends PlaitTable> extends CommonElementFlavour<T
                 clearSelectedCells(value.element);
             }
         }
-        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getElementActiveHost(this.board), {
+        this.lineAutoCompleteGenerator.processDrawing(this.element, PlaitBoard.getActiveHost(this.board), {
             selected: this.selected
         });
     }

@@ -1,15 +1,24 @@
 {
     "name": "@plait/core",
-    "version": "0.62.0-next.6",
+    "version": "0.93.2",
     "peerDependencies": {
         "immer": "^10.0.3",
-        "is-hotkey": "^0.2.0",
-        "rxjs": "~7.8.0",
-        "roughjs": "^4.5.2",
-        "slate": "^0.101.5"
+        "is-hotkey": "^0.2.0"
     },
     "dependencies": {
+        "roughjs": "^4.5.2",
+        "points-on-curve": "^1.0.0",
         "tslib": "^2.3.0"
     },
-    "exports": {}
+    "license": "MIT",
+    "repository": "https://github.com/worktile/plait",
+    "keywords": [
+        "drawing",
+        "whiteboard",
+        "framework",
+        "mind map",
+        "flow chart",
+        "free hand",
+        "open-source"
+    ]
 }

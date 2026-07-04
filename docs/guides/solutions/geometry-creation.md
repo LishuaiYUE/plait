@@ -16,7 +16,7 @@ order: 4
 export enum DrawPointerType {
     text = 'text',
     rectangle = 'rectangle',
-    line = 'line',
+    arrowLine = 'arrow-line',
 	...
 }
 //创建方式
@@ -30,9 +30,9 @@ export enum BoardCreationMode {
 
 使用方：
 
-- 图标 mousedown 执行 setCreationMode 设置 dnd 创建模式 （对应第二种创建模式）
+- 图标 pointerdown 执行 setCreationMode 设置 dnd 创建模式 （对应第二种创建模式）
 
-- 监听 mouseup 执行 setCreationMode 设置 drawing 创建模式（对应第一种和第三种创建模式）	
+- 监听 pointerup 执行 setCreationMode 设置 drawing 创建模式（对应第一种和第三种创建模式）	
 
 底层插件：
 

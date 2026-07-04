@@ -2,12 +2,19 @@ import { RectangleClient, PointOfRectangle, Vector, PlaitBoard, Point, PlaitElem
 import { Options } from 'roughjs/bin/core';
 import { PlaitGeometry } from './geometry';
 
-export interface EngineExtraData {}
+export interface DrawOptions {
+    element: PlaitElement;
+}
+
+export interface TextRectangleOptions {
+    id: string;
+    board?: PlaitBoard;
+}
 
 export interface ShapeEngine<
     T extends PlaitElement = PlaitGeometry,
-    P extends EngineExtraData = EngineExtraData,
-    K extends EngineExtraData = EngineExtraData
+    P extends DrawOptions = DrawOptions,
+    K extends TextRectangleOptions = TextRectangleOptions
 > {
     isInsidePoint: (rectangle: RectangleClient, point: Point) => boolean;
     getNearestPoint: (rectangle: RectangleClient, point: Point) => Point;
@@ -17,5 +24,5 @@ export interface ShapeEngine<
     getEdgeByConnectionPoint?: (rectangle: RectangleClient, point: PointOfRectangle) => [Point, Point] | null;
     getTangentVectorByConnectionPoint?: (rectangle: RectangleClient, point: PointOfRectangle) => Vector | null;
     draw: (board: PlaitBoard, rectangle: RectangleClient, roughOptions: Options, options?: P) => SVGGElement;
-    getTextRectangle?: (element: T, options?: K) => RectangleClient;
+    getTextRectangle?: (board: PlaitBoard, element: T, options?: K) => RectangleClient;
 }

@@ -1,23 +1,24 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef } from '@angular/core';
 import { BoardCreationMode, CommonImageItem, getElementOfFocusedImage, selectImage, setCreationMode } from '@plait/common';
 import { BoardTransforms, PlaitBoard, PlaitPointerType, getSelectedElements } from '@plait/core';
 import {
     DrawPointerType,
     DrawTransforms,
-    LineShape,
-    getLinePointers,
+    ArrowLineShape,
+    getArrowLinePointers,
     BasicShapes,
     FlowchartSymbols,
     UMLSymbols,
-    SwimlaneDrawSymbols
+    SwimlaneDrawSymbols,
+    VectorLinePointerType
 } from '@plait/draw';
 import { MindElement, MindPointerType, MindTransforms } from '@plait/mind';
 import { fromEvent, take } from 'rxjs';
-import { NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { closeAction } from '../../utils/popover';
 import { PlaitIslandBaseComponent } from '@plait/angular-board';
 
-type PointerType = MindPointerType | PlaitPointerType | DrawPointerType | LineShape;
+type PointerType = MindPointerType | PlaitPointerType | DrawPointerType | ArrowLineShape | VectorLinePointerType;
 
 @Component({
     selector: 'app-main-toolbar',
@@ -27,13 +28,14 @@ type PointerType = MindPointerType | PlaitPointerType | DrawPointerType | LineSh
     host: {
         class: 'app-main-toolbar'
     },
-    standalone: true,
-    imports: [NgClass, NgTemplateOutlet, NgIf]
+    imports: [NgClass, NgTemplateOutlet]
 })
 export class AppMainToolbarComponent extends PlaitIslandBaseComponent {
     PlaitPointerType = PlaitPointerType;
 
     MindPointerType = MindPointerType;
+
+    VectorLinePointerType = VectorLinePointerType;
 
     GeometryShapeType = BasicShapes;
 
@@ -43,15 +45,11 @@ export class AppMainToolbarComponent extends PlaitIslandBaseComponent {
 
     UMLSymbols = UMLSymbols;
 
-    LineShapeType = LineShape;
+    ArrowLineShapeType = ArrowLineShape;
 
     BoardCreationMode = BoardCreationMode;
 
     isShowShapePopover = false;
-
-    constructor(protected cdr: ChangeDetectorRef, private elementRef: ElementRef<HTMLElement>) {
-        super(cdr);
-    }
 
     isPointer(pointer: PointerType) {
         return PlaitBoard.isPointer<PointerType>(this.board, pointer);
@@ -63,9 +61,9 @@ export class AppMainToolbarComponent extends PlaitIslandBaseComponent {
 
     setPointer(event: Event, pointer: PointerType) {
         event.preventDefault();
-        const isLinePointer = getLinePointers().includes(pointer);
+        const isArrowLinePointer = getArrowLinePointers().includes(pointer);
         BoardTransforms.updatePointerType<PointerType>(this.board, pointer);
-        if (!isLinePointer) {
+        if (!isArrowLinePointer) {
             setCreationMode(this.board, BoardCreationMode.dnd);
         }
         fromEvent(event.target as HTMLElement, 'mouseup')

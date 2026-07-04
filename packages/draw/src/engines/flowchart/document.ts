@@ -7,11 +7,12 @@ import {
     getNearestPointBetweenPointAndSegments,
     setStrokeLinecap
 } from '@plait/core';
+import { getTextSize } from '../../utils/text-size';
 import { getUnitVectorByPointAndPoint } from '@plait/common';
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { Options } from 'roughjs/bin/core';
 import { RectangleEngine } from '../basic-shapes/rectangle';
-import { getStrokeWidthByElement } from '../../utils';
+import { getStrokeWidthByElement, getCustomTextRectangle } from '../../utils';
 import { ShapeDefaultSpace } from '../../constants';
 import { pointsOnBezierCurves } from 'points-on-curve';
 
@@ -19,15 +20,16 @@ export const DocumentEngine: ShapeEngine = {
     draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
         const rs = PlaitBoard.getRoughSVG(board);
         const shape = rs.path(
-            `M${rectangle.x} ${rectangle.y + rectangle.height - rectangle.height / 9} V${rectangle.y} H${rectangle.x +
-                rectangle.width} V${rectangle.y + rectangle.height - rectangle.height / 9}
-            Q${rectangle.x + rectangle.width - rectangle.width / 4} ${rectangle.y +
-                rectangle.height -
-                (rectangle.height / 9) * 3}, ${rectangle.x + rectangle.width / 2} ${rectangle.y +
-                rectangle.height -
-                rectangle.height / 9} T${rectangle.x} ${rectangle.y + rectangle.height - rectangle.height / 9}           
+            `M${rectangle.x} ${rectangle.y + rectangle.height - rectangle.height / 9} V${rectangle.y} H${rectangle.x + rectangle.width} V${
+                rectangle.y + rectangle.height - rectangle.height / 9
+            }
+            Q${rectangle.x + rectangle.width - rectangle.width / 4} ${rectangle.y + rectangle.height - (rectangle.height / 9) * 3}, ${
+                rectangle.x + rectangle.width / 2
+            } ${rectangle.y + rectangle.height - rectangle.height / 9} T${rectangle.x} ${
+                rectangle.y + rectangle.height - rectangle.height / 9
+            }
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;
@@ -91,16 +93,7 @@ export const DocumentEngine: ShapeEngine = {
         return getUnitVectorByPointAndPoint(connectionPoint, [rectangle.x + rectangle.width / 4, rectangle.y + rectangle.height]);
     },
 
-    getTextRectangle: (element: PlaitGeometry) => {
-        const elementRectangle = RectangleClient.getRectangleByPoints(element.points!);
-        const strokeWidth = getStrokeWidthByElement(element);
-        const height = element.textHeight!;
-        const width = elementRectangle.width - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2 - elementRectangle.width * 0.06 * 2;
-        return {
-            height,
-            width: width > 0 ? width : 0,
-            x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth + elementRectangle.width * 0.06,
-            y: elementRectangle.y + (elementRectangle.height - height) / 2
-        };
+    getTextRectangle: (board: PlaitBoard, element: PlaitGeometry) => {
+        return getCustomTextRectangle(board, element, 0.88);
     }
 };

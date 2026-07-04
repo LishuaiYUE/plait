@@ -21,3 +21,15 @@ export const insertImage = (board: PlaitBoard, imageItem: CommonImageItem, start
     Transforms.insertNode(board, imageElement, [board.children.length]);
     Transforms.addSelectionWithTemporaryElements(board, [imageElement]);
 };
+
+export const createImage = (startPoint: Point, imageItem: CommonImageItem) => {
+    const { width, height, url } = imageItem;
+    const points: Point[] = [startPoint, [startPoint[0] + width, startPoint[1] + height]];
+    const imageElement = {
+        id: idCreator(),
+        type: 'image',
+        points,
+        url
+    };
+    return imageElement;
+};

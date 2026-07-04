@@ -5,7 +5,6 @@ import { createMindElement, INHERIT_ATTRIBUTE_KEYS, InheritAttribute } from './n
 import { MindNode } from '../interfaces/node';
 import { PlaitMindBoard } from '../plugins/with-mind.board';
 import { ROOT_TOPIC_FONT_SIZE, TOPIC_FONT_SIZE } from '../constants/node-topic-style';
-import { TEXT_DEFAULT_HEIGHT } from '@plait/text-plugins';
 
 export const getChildrenCount = (element: MindElement) => {
     const count: number = element.children.reduce((p: number, c: MindElement) => {
@@ -27,8 +26,8 @@ export const isChildElement = (origin: MindElement, child: MindElement) => {
 
 export const getFirstLevelElement = (elements: MindElement[]) => {
     let result: MindElement[] = [];
-    elements.forEach(element => {
-        const isChild = elements.some(node => {
+    elements.forEach((element) => {
+        const isChild = elements.some((node) => {
             return isChildElement(node, element);
         });
 
@@ -39,12 +38,12 @@ export const getFirstLevelElement = (elements: MindElement[]) => {
     return result;
 };
 
-export const isChildRight = (node: MindNode, child: MindNode) => {
-    return node.x < child.x;
+export const isChildRight = (parent: MindNode, child: MindNode) => {
+    return parent.x < child.x;
 };
 
-export const isChildUp = (node: MindNode, child: MindNode) => {
-    return node.y > child.y;
+export const isChildUp = (parent: MindNode, child: MindNode) => {
+    return parent.y > child.y;
 };
 
 export const copyNewNode = (node: MindElement) => {
@@ -60,15 +59,13 @@ export const copyNewNode = (node: MindElement) => {
 
 export const insertMindElement = (board: PlaitMindBoard, inheritNode: MindElement, path: Path) => {
     const newNode: InheritAttribute = {};
-    if (!inheritNode.isRoot) {
-        INHERIT_ATTRIBUTE_KEYS.forEach(attr => {
+    if (!PlaitMind.isMind(inheritNode)) {
+        INHERIT_ATTRIBUTE_KEYS.forEach((attr) => {
             (newNode as any)[attr] = inheritNode[attr];
         });
         delete newNode.layout;
     }
-
-    const newElement = createMindElement('', TOPIC_FONT_SIZE, TEXT_DEFAULT_HEIGHT, newNode);
-
+    const newElement = createMindElement('', newNode);
     Transforms.insertNode(board, newElement, path);
     clearSelectedElement(board);
     addSelectedElement(board, newElement);
@@ -102,11 +99,11 @@ export const divideElementByParent = (elements: MindElement[]) => {
     return { parentElements, abstractIncludedGroups };
 };
 
-export const getDefaultMindElementFontSize = (board: PlaitBoard, element: MindElement) => {
+export const getDefaultFontSizeForMindElement = (element: MindElement) => {
     if (PlaitMind.isMind(element)) {
         return ROOT_TOPIC_FONT_SIZE;
     }
-    if (MindElement.isMindElement(board, element)) {
+    if (MindElement.isMindElement(null, element)) {
         return TOPIC_FONT_SIZE;
     }
     throw new Error('can not find default font-size');

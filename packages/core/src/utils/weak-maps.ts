@@ -16,6 +16,8 @@ export const NODE_TO_INDEX = new WeakMap<PlaitNode, number>();
 
 export const NODE_TO_PARENT = new WeakMap<PlaitNode, Ancestor>();
 
+export const KEY_TO_ELEMENT_MAP = new WeakMap<PlaitBoard, Map<String, PlaitElement>>();
+
 export const NODE_TO_G = new WeakMap<PlaitNode, SVGGElement>();
 
 export const NODE_TO_CONTAINER_G = new WeakMap<PlaitNode, SVGGElement>();
@@ -40,6 +42,7 @@ export const BOARD_TO_ELEMENT_HOST = new WeakMap<
         lowerHost: SVGGElement;
         host: SVGGElement;
         upperHost: SVGGElement;
+        topHost: SVGGElement;
         activeHost: SVGGElement;
         container: HTMLElement;
         viewportContainer: HTMLElement;

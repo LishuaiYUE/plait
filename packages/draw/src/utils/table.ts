@@ -3,17 +3,22 @@ import { PlaitBaseTable, PlaitTable, PlaitTableBoard, PlaitTableCell, PlaitTable
 import { getTextManage } from '../generators/text.generator';
 import { Alignment } from '@plait/common';
 import { TEXT_DEFAULT_HEIGHT } from '@plait/text-plugins';
+import { getSelectedCells, getSelectedTableElements, isSingleSelectTable } from './table-selected';
+import { BaseEditor } from 'slate';
 
 export function getCellsWithPoints(board: PlaitBoard, element: PlaitBaseTable): PlaitTableCellWithPoints[] {
-    const table = (board as PlaitTableBoard).buildTable(element);
+    const table = (board as PlaitTableBoard)?.buildTable(element);
+    if (!table || !table.points || !table.columns || !table.rows) {
+        throw new Error('can not get table cells points');
+    }
     const rectangle = RectangleClient.getRectangleByPoints(table.points);
     const columnsCount = table.columns.length;
     const rowsCount = table.rows.length;
     const cellWidths = calculateCellsSize(table.columns, rectangle.width, columnsCount, true);
     const cellHeights = calculateCellsSize(table.rows, rectangle.height, rowsCount, false);
-    const cells: PlaitTableCellWithPoints[] = table.cells.map(cell => {
-        const rowIdx = table.rows.findIndex(row => row.id === cell.rowId);
-        const columnIdx = table.columns.findIndex(column => column.id === cell.columnId);
+    const cells: PlaitTableCellWithPoints[] = table.cells.map((cell) => {
+        const rowIdx = table.rows.findIndex((row) => row.id === cell.rowId);
+        const columnIdx = table.columns.findIndex((column) => column.id === cell.columnId);
 
         let cellTopLeftX = rectangle.x;
         for (let i = 0; i < columnIdx; i++) {
@@ -44,9 +49,13 @@ export function getCellsWithPoints(board: PlaitBoard, element: PlaitBaseTable): 
 }
 
 export function getCellWithPoints(board: PlaitBoard, table: PlaitBaseTable, cellId: string) {
-    const cells = getCellsWithPoints(board as PlaitTableBoard, table);
-    const cellIndex = table.cells.findIndex(item => item.id === cellId);
-    return cells[cellIndex];
+    try {
+        const cells = getCellsWithPoints(board as PlaitTableBoard, table);
+        const cellIndex = cells && table.cells.findIndex((item) => item.id === cellId);
+        return cells[cellIndex];
+    } catch (error) {
+        throw new Error('can not get table cell points');
+    }
 }
 
 function calculateCellsSize(items: { id: string; [key: string]: any }[], tableSize: number, count: number, isWidth: boolean) {
@@ -64,7 +73,7 @@ function calculateCellsSize(items: { id: string; [key: string]: any }[], tableSi
     });
 
     // Divide the remaining size equally.
-    const remainingItemCount = count - cellSizes.filter(item => !!item).length;
+    const remainingItemCount = count - cellSizes.filter((item) => !!item).length;
     const remainingCellSize = remainingItemCount > 0 ? totalSizeRemaining / remainingItemCount : 0;
     for (let i = 0; i < count; i++) {
         if (!cellSizes[i]) {
@@ -88,23 +97,23 @@ export function getHitCell(board: PlaitTableBoard, element: PlaitBaseTable, poin
     const table = board.buildTable(element);
     const cells = getCellsWithPoints(board, table);
     const rectangle = RectangleClient.getRectangleByPoints([point, point]);
-    const cell = cells.find(item => {
+    const cell = cells.find((item) => {
         const cellRectangle = RectangleClient.getRectangleByPoints(item.points);
         return RectangleClient.isHit(rectangle, cellRectangle);
     });
     if (cell) {
-        return table.cells.find(item => item.id === cell.id);
+        return table.cells.find((item) => item.id === cell.id);
     }
     return null;
 }
 
-export function editCell(cell: PlaitTableCell) {
-    const textManage = getTextManageByCell(cell);
+export function editCell(board: PlaitBoard, cell: PlaitTableCell) {
+    const textManage = getTextManageByCell(board, cell);
     textManage && textManage.edit();
 }
 
-export function getTextManageByCell(cell: PlaitTableCell) {
-    return getTextManage(cell.id);
+export function getTextManageByCell(board: PlaitBoard, cell: PlaitTableCell) {
+    return getTextManage(board, undefined, cell);
 }
 
 export const updateColumns = (
@@ -133,7 +142,7 @@ export const updateRows = (table: PlaitBaseTable, rowId: string, height: number,
 
 export function updateCellIdsByRowOrColumn(cells: PlaitTableCell[], oldId: string, newId: string, type: 'row' | 'column') {
     const id: 'rowId' | 'columnId' = `${type}Id`;
-    cells.forEach(item => {
+    cells.forEach((item) => {
         if (item[id] === oldId) {
             item[id] = newId;
         }
@@ -141,7 +150,7 @@ export function updateCellIdsByRowOrColumn(cells: PlaitTableCell[], oldId: strin
 }
 
 export function updateRowOrColumnIds(element: PlaitTable, type: 'row' | 'column') {
-    element[`${type}s`].forEach(item => {
+    element[`${type}s`].forEach((item) => {
         const newId = idCreator();
         updateCellIdsByRowOrColumn(element.cells, item.id, newId, type);
         item.id = newId;
@@ -149,20 +158,20 @@ export function updateRowOrColumnIds(element: PlaitTable, type: 'row' | 'column'
 }
 
 export function updateCellIds(cells: PlaitTableCell[]) {
-    cells.forEach(item => {
+    cells.forEach((item) => {
         const newId = idCreator();
         item.id = newId;
     });
 }
 
 export function isCellIncludeText(cell: PlaitTableCell) {
-    return cell.text && cell.textHeight;
+    return cell.text;
 }
 
 export function getCellsRectangle(board: PlaitTableBoard, element: PlaitTable, cells: PlaitTableCell[]) {
     const cellsWithPoints = getCellsWithPoints(board as PlaitTableBoard, element);
-    const points = cells.map(cell => {
-        const cellWithPoints = cellsWithPoints.find(item => item.id === cell.id);
+    const points = cells.map((cell) => {
+        const cellWithPoints = cellsWithPoints.find((item) => item.id === cell.id);
         return cellWithPoints!.points;
     });
     return RectangleClient.getRectangleByPoints(points);
@@ -175,11 +184,25 @@ export const createCell = (rowId: string, columnId: string, text: string | null 
         columnId
     };
     if (text !== null) {
-        cell['textHeight'] = TEXT_DEFAULT_HEIGHT;
         cell['text'] = {
             children: [{ text }],
             align: Alignment.center
         };
     }
     return cell;
+};
+
+export const getSelectedTableCellsEditor = (board: PlaitBoard): BaseEditor[] | undefined => {
+    if (isSingleSelectTable(board)) {
+        const elements = getSelectedTableElements(board);
+        const selectedCells = getSelectedCells(elements[0]);
+        const selectedCellsEditor = selectedCells?.map((cell) => {
+            const textManage = getTextManageByCell(board, cell);
+            return textManage?.editor;
+        });
+        if (selectedCellsEditor?.length) {
+            return selectedCellsEditor as BaseEditor[];
+        }
+    }
+    return undefined;
 };

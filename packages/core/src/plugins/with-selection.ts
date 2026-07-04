@@ -11,7 +11,7 @@ import {
     isHitElement,
     removeSelectedElement
 } from '../utils/selected-element';
-import { PlaitElement, PlaitPointerType, SELECTION_BORDER_COLOR, SELECTION_FILL_COLOR } from '../interfaces';
+import { PlaitPointerType, SELECTION_BORDER_COLOR, SELECTION_FILL_COLOR } from '../interfaces';
 import { ATTACHED_ELEMENT_CLASS_NAME } from '../constants/selection';
 import {
     clearSelectionMoving,
@@ -21,32 +21,30 @@ import {
     isDragging,
     isHandleSelection,
     isSelectionMoving,
-    preventTouchMove,
     setSelectionMoving,
     throttleRAF,
     toHostPoint,
     toViewBoxPoint,
     setSelectedElementsWithGroup,
-    hasSetSelectionOperation
+    hasSetSelectionOperation,
+    getSelectionOptions,
+    setSelectionOptions,
+    distanceBetweenPointAndPoint,
+    isMobileDeviceEvent,
+    toActivePoint
 } from '../utils';
-import { PlaitOptionsBoard, PlaitPluginOptions } from './with-options';
-import { PlaitPluginKey } from '../interfaces/plugin-key';
 import { Selection } from '../interfaces/selection';
-import { PRESS_AND_MOVE_BUFFER } from '../constants';
-
-export interface WithPluginOptions extends PlaitPluginOptions {
-    isMultiple: boolean;
-    isDisabledSelect: boolean;
-}
+import { DRAG_SELECTION_PRESS_AND_MOVE_BUFFER } from '../constants';
 
 export function withSelection(board: PlaitBoard) {
-    const { pointerDown, pointerUp, pointerMove, globalPointerUp, onChange, afterChange, drawActiveRectangle } = board;
-    let start: Point | null = null;
-    let end: Point | null = null;
+    const { pointerDown, pointerUp, pointerMove, globalPointerUp, onChange, afterChange, touchStart, touchMove, touchEnd } = board;
+    let screenStart: Point | null = null;
+    let screenEnd: Point | null = null;
     let selectionMovingG: SVGGElement;
     let selectionRectangleG: SVGGElement | null;
-    let previousSelectedElements: PlaitElement[];
     let isShift = false;
+    let timerId: ReturnType<typeof setTimeout> | null = null;
+    let pointerDownEvent: PointerEvent | null = null;
 
     board.pointerDown = (event: PointerEvent) => {
         if (!isShift && event.shiftKey) {
@@ -55,40 +53,78 @@ export function withSelection(board: PlaitBoard) {
         if (isShift && !event.shiftKey) {
             isShift = false;
         }
-        const isHitText = !!(event.target instanceof Element && event.target.closest('.plait-text-container'));
-
         const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
         const isHitTarget = isHitElement(board, point);
-        const options = (board as PlaitOptionsBoard).getPluginOptions<WithPluginOptions>(PlaitPluginKey.withSelection);
-        if (PlaitBoard.isPointer(board, PlaitPointerType.selection) && !isHitTarget && options.isMultiple && !options.isDisabledSelect) {
-            preventTouchMove(board, event, true);
-            // start rectangle selection
-            start = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
+        const options = getSelectionOptions(board);
+        if (
+            PlaitBoard.isPointer(board, PlaitPointerType.selection) &&
+            isMainPointer(event) &&
+            !isHitTarget &&
+            options.isMultipleSelection &&
+            !options.isDisabledSelection
+        ) {
+            if (isMobileDeviceEvent(event)) {
+                if (timerId) {
+                    clearTimeout(timerId);
+                    timerId = null;
+                }
+                timerId = setTimeout(() => {
+                    screenStart = [event.x, event.y];
+                    timerId = null;
+                }, 400);
+            } else {
+                screenStart = [event.x, event.y];
+            }
         }
+        pointerDownEvent = event;
         pointerDown(event);
     };
 
-    board.pointerMove = (event: PointerEvent) => {
-        if (PlaitBoard.isPointer(board, PlaitPointerType.selection) && start) {
-            const movedTarget = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
-            const rectangle = RectangleClient.getRectangleByPoints([start, movedTarget]);
+    board.touchMove = (event: TouchEvent) => {
+        if (screenStart && event.touches.length > 1) {
+            screenStart = null;
             selectionMovingG?.remove();
-            if (Math.hypot(rectangle.width, rectangle.height) > PRESS_AND_MOVE_BUFFER || isSelectionMoving(board)) {
-                end = movedTarget;
-                throttleRAF(board, 'with-selection', () => {
-                    if (start && end) {
-                        Transforms.setSelection(board, { anchor: start, focus: end });
-                    }
-                });
-                setSelectionMoving(board);
-                selectionMovingG = drawRectangle(board, rectangle, {
-                    stroke: SELECTION_BORDER_COLOR,
-                    strokeWidth: 1,
-                    fill: SELECTION_FILL_COLOR,
-                    fillStyle: 'solid'
-                });
-                PlaitBoard.getElementActiveHost(board).append(selectionMovingG);
-            }
+        }
+        if (screenStart) {
+            event.preventDefault();
+            return;
+        }
+        touchMove(event);
+    };
+
+    board.pointerMove = (event: PointerEvent) => {
+        if (
+            timerId &&
+            pointerDownEvent &&
+            distanceBetweenPointAndPoint(pointerDownEvent.x, pointerDownEvent.y, event.x, event.y) > DRAG_SELECTION_PRESS_AND_MOVE_BUFFER
+        ) {
+            clearTimeout(timerId);
+            timerId = null;
+        }
+        if (PlaitBoard.isPointer(board, PlaitPointerType.selection) && screenStart) {
+            event.preventDefault();
+            screenEnd = [event.x, event.y];
+            const rectangle = RectangleClient.getRectangleByPoints([
+                toActivePoint(board, ...screenStart),
+                toActivePoint(board, ...screenEnd)
+            ]);
+            selectionMovingG?.remove();
+            throttleRAF(board, 'with-selection', () => {
+                if (screenStart && screenEnd) {
+                    Transforms.setSelection(board, {
+                        anchor: toViewBoxPoint(board, toHostPoint(board, screenStart[0], screenStart[1])),
+                        focus: toViewBoxPoint(board, toHostPoint(board, screenEnd[0], screenEnd[1]))
+                    });
+                }
+            });
+            setSelectionMoving(board);
+            selectionMovingG = drawRectangle(board, rectangle, {
+                stroke: SELECTION_BORDER_COLOR,
+                strokeWidth: 1,
+                fill: SELECTION_FILL_COLOR,
+                fillStyle: 'solid'
+            });
+            PlaitBoard.getActiveHost(board).append(selectionMovingG);
         }
         pointerMove(event);
     };
@@ -109,35 +145,42 @@ export function withSelection(board: PlaitBoard) {
     };
 
     board.globalPointerUp = (event: PointerEvent) => {
-        if (start && end) {
+        if (screenStart && screenEnd) {
             selectionMovingG?.remove();
             clearSelectionMoving(board);
-            Transforms.setSelection(board, { anchor: start, focus: end });
+            Transforms.setSelection(board, {
+                anchor: toViewBoxPoint(board, toHostPoint(board, screenStart[0], screenStart[1])),
+                focus: toViewBoxPoint(board, toHostPoint(board, screenEnd[0], screenEnd[1]))
+            });
         }
-
-        if (PlaitBoard.isFocus(board)) {
+        const options = getSelectionOptions(board);
+        if (PlaitBoard.isFocus(board) && !options.isPreventClearSelection) {
             const isInBoard = event.target instanceof Node && PlaitBoard.getBoardContainer(board).contains(event.target);
             const isInDocument = event.target instanceof Node && document.contains(event.target);
             const isAttachedElement = event.target instanceof Element && event.target.closest(`.${ATTACHED_ELEMENT_CLASS_NAME}`);
             // Clear selection when mouse board outside area
             // The framework needs to determine whether the board is focused through selection
-            if (!isInBoard && !start && !isAttachedElement && isInDocument) {
+            if (!isInBoard && !screenStart && !isAttachedElement && isInDocument) {
                 Transforms.setSelection(board, null);
             }
         }
-        start = null;
-        end = null;
-        preventTouchMove(board, event, false);
+        screenStart = null;
+        screenEnd = null;
+        if (timerId) {
+            clearTimeout(timerId);
+            timerId = null;
+        }
+        pointerDownEvent = null;
         globalPointerUp(event);
     };
 
     board.onChange = () => {
-        const options = (board as PlaitOptionsBoard).getPluginOptions<WithPluginOptions>(PlaitPluginKey.withSelection);
-        if (options.isDisabledSelect) {
+        const options = getSelectionOptions(board);
+        if (options.isDisabledSelection) {
             clearSelectedElement(board);
         }
         // remove selected element if include
-        board.operations.forEach(op => {
+        board.operations.forEach((op) => {
             if (op.type === 'remove_node') {
                 removeSelectedElement(board, op.node, true);
             }
@@ -152,18 +195,24 @@ export function withSelection(board: PlaitBoard) {
                     cacheSelectedElements(board, [...temporaryElements]);
                 } else {
                     let elements = getHitElementsBySelection(board);
-                    if (!options.isMultiple && elements.length > 1) {
+                    if (!options.isMultipleSelection && elements.length > 1) {
                         elements = [elements[0]];
                     }
-                    const isHitElementWithGroup = elements.some(item => item.groupId);
+                    const isHitElementWithGroup = elements.some((item) => item.groupId);
                     const selectedElements = getSelectedElements(board);
                     if (isHitElementWithGroup) {
                         setSelectedElementsWithGroup(board, elements, isShift);
                     } else {
+                        if (board.selection && Selection.isCollapsed(board.selection)) {
+                            const element = board.getOneHitElement(elements, board.selection.anchor);
+                            if (element) {
+                                elements = [element];
+                            }
+                        }
                         if (isShift) {
                             const newElements = [...selectedElements];
                             if (board.selection && Selection.isCollapsed(board.selection)) {
-                                elements.forEach(element => {
+                                elements.forEach((element) => {
                                     if (newElements.includes(element)) {
                                         newElements.splice(newElements.indexOf(element), 1);
                                     } else {
@@ -172,7 +221,7 @@ export function withSelection(board: PlaitBoard) {
                                 });
                                 cacheSelectedElements(board, newElements);
                             } else {
-                                elements.forEach(element => {
+                                elements.forEach((element) => {
                                     if (!newElements.includes(element)) {
                                         newElements.push(element);
                                     }
@@ -185,13 +234,12 @@ export function withSelection(board: PlaitBoard) {
                     }
                 }
                 const newElements = getSelectedElements(board);
-                previousSelectedElements = newElements;
                 deleteTemporaryElements(board);
                 if (!isSelectionMoving(board)) {
                     selectionRectangleG?.remove();
                     if (newElements.length > 1) {
-                        selectionRectangleG = board.drawActiveRectangle();
-                        PlaitBoard.getElementActiveHost(board).append(selectionRectangleG!);
+                        selectionRectangleG = board.drawSelectionRectangle();
+                        PlaitBoard.getActiveHost(board).append(selectionRectangleG!);
                     }
                 }
             } catch (error) {
@@ -206,16 +254,9 @@ export function withSelection(board: PlaitBoard) {
             try {
                 const currentSelectedElements = getSelectedElements(board);
                 if (currentSelectedElements.length && currentSelectedElements.length > 1) {
-                    if (
-                        previousSelectedElements &&
-                        (currentSelectedElements.length !== previousSelectedElements.length ||
-                            currentSelectedElements.some((c, index) => c !== previousSelectedElements[index]))
-                    ) {
-                        selectionRectangleG?.remove();
-                        selectionRectangleG = board.drawActiveRectangle();
-                        PlaitBoard.getElementActiveHost(board).append(selectionRectangleG!);
-                        previousSelectedElements = currentSelectedElements;
-                    }
+                    selectionRectangleG?.remove();
+                    selectionRectangleG = board.drawSelectionRectangle();
+                    PlaitBoard.getActiveHost(board).append(selectionRectangleG!);
                 } else {
                     selectionRectangleG?.remove();
                 }
@@ -226,9 +267,10 @@ export function withSelection(board: PlaitBoard) {
         afterChange();
     };
 
-    (board as PlaitOptionsBoard).setPluginOptions<WithPluginOptions>(PlaitPluginKey.withSelection, {
-        isMultiple: true,
-        isDisabledSelect: false
+    setSelectionOptions(board, {
+        isMultipleSelection: true,
+        isDisabledSelection: false,
+        isPreventClearSelection: false
     });
 
     return board;

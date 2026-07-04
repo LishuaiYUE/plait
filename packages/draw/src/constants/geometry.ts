@@ -1,6 +1,6 @@
-import { ACTIVE_STROKE_WIDTH } from '@plait/core';
-import { BasicShapes, FlowchartSymbols, GeometryShapes, MultipleTextGeometryCommonTextKeys, UMLSymbols } from '../interfaces';
-import { Alignment } from '@plait/common';
+import { ACTIVE_STROKE_WIDTH, DEFAULT_COLOR } from '@plait/core';
+import { BasicShapes, FlowchartSymbols, GeometryShapes, GeometryCommonTextKeys, UMLSymbols } from '../interfaces';
+import { Alignment, DEFAULT_FILL } from '@plait/common';
 
 export const ShapeDefaultSpace = {
     rectangleAndText: 4
@@ -10,7 +10,7 @@ export const DefaultDrawStyle = {
     strokeWidth: 2,
     defaultRadius: 4,
     strokeColor: '#000',
-    fill: 'none'
+    fill: DEFAULT_FILL
 };
 
 export const DefaultDrawActiveStyle = {
@@ -21,7 +21,7 @@ export const DefaultDrawActiveStyle = {
 export const DefaultBasicShapeProperty = {
     width: 100,
     height: 100,
-    strokeColor: '#333',
+    strokeColor: DEFAULT_COLOR,
     strokeWidth: 2
 };
 
@@ -125,12 +125,12 @@ export const DefaultPackageProperty = {
     height: 150,
     texts: [
         {
-            key: MultipleTextGeometryCommonTextKeys.name,
+            id: GeometryCommonTextKeys.name,
             text: '包名',
             align: Alignment.left
         },
         {
-            key: MultipleTextGeometryCommonTextKeys.content,
+            id: GeometryCommonTextKeys.content,
             text: '',
             align: Alignment.left
         }
@@ -182,12 +182,12 @@ export const DefaultCombinedFragmentProperty = {
     height: 280,
     texts: [
         {
-            key: MultipleTextGeometryCommonTextKeys.name,
+            id: GeometryCommonTextKeys.name,
             text: 'Opt | Alt | Loop',
             align: Alignment.left
         },
         {
-            key: MultipleTextGeometryCommonTextKeys.content,
+            id: GeometryCommonTextKeys.content,
             text: '[Condition]',
             align: Alignment.left
         }
@@ -283,15 +283,17 @@ export const DefaultUMLPropertyMap = {
 };
 
 export const MultipleTextGeometryTextKeys: { [key in GeometryShapes]?: string[] } = {
-    [UMLSymbols.package]: Object.keys(MultipleTextGeometryCommonTextKeys),
-    [UMLSymbols.combinedFragment]: Object.keys(MultipleTextGeometryCommonTextKeys)
+    [UMLSymbols.package]: Object.keys(GeometryCommonTextKeys),
+    [UMLSymbols.combinedFragment]: Object.keys(GeometryCommonTextKeys)
 };
 
-export const LINE_HIT_GEOMETRY_BUFFER = 10;
+export const LINE_HIT_GEOMETRY_BUFFER = 4;
 
-export const LINE_SNAPPING_BUFFER = 6;
+export const LINE_SNAPPING_BUFFER = 4;
 
-export const LINE_SNAPPING_CONNECTOR_BUFFER = 8;
+export const LINE_SNAPPING_CONNECTOR_BUFFER = 4;
+
+export const LINE_ALIGN_TOLERANCE = 4;
 
 export const GEOMETRY_WITHOUT_TEXT = [
     FlowchartSymbols.or,
@@ -306,3 +308,11 @@ export const GEOMETRY_WITHOUT_TEXT = [
 ] as GeometryShapes[];
 
 export const GEOMETRY_WITH_MULTIPLE_TEXT = [UMLSymbols.package, UMLSymbols.combinedFragment];
+
+export const GEOMETRY_NOT_CLOSED = [
+    FlowchartSymbols.noteCurlyLeft,
+    FlowchartSymbols.noteCurlyRight,
+    FlowchartSymbols.noteSquare,
+    UMLSymbols.requiredInterface,
+    UMLSymbols.deletion
+] as GeometryShapes[];

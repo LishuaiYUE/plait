@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef } from '@angular/core';
 import { BoardTransforms } from '@plait/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { OnBoardChange, PlaitIslandBaseComponent } from '@plait/angular-board';
@@ -11,14 +11,9 @@ import { OnBoardChange, PlaitIslandBaseComponent } from '@plait/angular-board';
     host: {
         class: 'app-zoom-toolbar'
     },
-    standalone: true,
     imports: [NgTemplateOutlet]
 })
 export class AppZoomToolbarComponent extends PlaitIslandBaseComponent implements OnBoardChange {
-    constructor(protected cdr: ChangeDetectorRef) {
-        super(cdr);
-    }
-
     get zoom() {
         let zoom = 1;
         if (this.board) {

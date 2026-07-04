@@ -1,6 +1,5 @@
-import { PlaitBoard, Point, RectangleClient, createG, preventTouchMove, toHostPoint, toViewBoxPoint } from '@plait/core';
-import { BasicShapes, GeometryShapes, PlaitCommonGeometry, PlaitDrawElement, PlaitGeometry } from '../interfaces';
-import { GeometryShapeGenerator } from '../generators/geometry-shape.generator';
+import { PlaitBoard, Point, RectangleClient, createG, toHostPoint, toViewBoxPoint } from '@plait/core';
+import { BasicShapes, GeometryShapes, PlaitCommonGeometry, PlaitGeometry } from '../interfaces';
 import {
     createDefaultGeometry,
     createTextElement,
@@ -8,9 +7,10 @@ import {
     getTextShapeProperty,
     getMemorizedLatestByPointer,
     getTextRectangle,
-    insertElement
+    insertElement,
+    getDefaultGeometryText
 } from '../utils';
-import { DefaultTextProperty, DrawPointerType, getGeometryPointers } from '../constants';
+import { DrawPointerType, getGeometryPointers } from '../constants';
 import {
     normalizeShapePoints,
     isDndMode,
@@ -20,9 +20,8 @@ import {
     TextManage
 } from '@plait/common';
 import { isKeyHotkey } from 'is-hotkey';
-import { NgZone } from '@angular/core';
 import { getSnapResizingRef } from '../utils/snap-resizing';
-import { TableGenerator } from '../generators/table.generator';
+import { getGeometryGeneratorByShape } from '../utils/shape';
 
 export interface FakeCreateTextRef {
     g: SVGGElement;
@@ -41,14 +40,6 @@ const isGeometryDrawingMode = (board: PlaitBoard) => {
     const isGeometryPointer = PlaitBoard.isInPointer(board, geometryPointers);
     const drawingMode = isGeometryPointer && isDrawingMode(board);
     return drawingMode;
-};
-
-const getGeometryGeneratorByShape = (board: PlaitBoard, shape: DrawPointerType) => {
-    if (PlaitDrawElement.isUMLClassOrInterface({ shape: shape })) {
-        return new TableGenerator<PlaitGeometry>(board);
-    } else {
-        return new GeometryShapeGenerator(board);
-    }
 };
 
 export const withGeometryCreateByDrag = (board: PlaitBoard) => {
@@ -73,15 +64,15 @@ export const withGeometryCreateByDrag = (board: PlaitBoard) => {
         if (dragMode) {
             const memorizedLatest = getMemorizedLatestByPointer(pointer);
             if (pointer === BasicShapes.text) {
-                const property = getTextShapeProperty(board, DefaultTextProperty.text, memorizedLatest.textProperties['font-size']);
+                const property = getTextShapeProperty(board, getDefaultGeometryText(board), memorizedLatest.textProperties['font-size']);
                 const points = RectangleClient.getPoints(
                     RectangleClient.getRectangleByCenterPoint(movingPoint, property.width, property.height)
                 );
-                temporaryElement = createTextElement(board, points);
+                temporaryElement = createTextElement(board, points, getDefaultGeometryText(board));
                 if (!fakeCreateTextRef) {
                     const textManage = new TextManage(board, {
                         getRectangle: () => {
-                            return getTextRectangle(temporaryElement!);
+                            return getTextRectangle(board, temporaryElement!);
                         }
                     });
                     textManage.draw(temporaryElement!.text);
@@ -100,7 +91,7 @@ export const withGeometryCreateByDrag = (board: PlaitBoard) => {
                 const points = getDefaultGeometryPoints(pointer, movingPoint);
                 temporaryElement = createDefaultGeometry(board, points, pointer as GeometryShapes);
                 geometryGenerator.processDrawing(temporaryElement as PlaitGeometry, geometryShapeG);
-                PlaitBoard.getElementActiveHost(board).append(geometryShapeG);
+                PlaitBoard.getElementTopHost(board).append(geometryShapeG);
             }
         }
 
@@ -124,7 +115,6 @@ export const withGeometryCreateByDrag = (board: PlaitBoard) => {
         temporaryElement = null;
         geometryShapeG?.remove();
         geometryShapeG = null;
-        preventTouchMove(board, event, false);
         globalPointerUp(event);
     };
 
@@ -132,7 +122,7 @@ export const withGeometryCreateByDrag = (board: PlaitBoard) => {
 };
 
 export const withGeometryCreateByDrawing = (board: PlaitBoard) => {
-    const { pointerDown, pointerMove, pointerUp, keyDown, keyUp } = board;
+    const { pointerDown, pointerMove, pointerUp, keyDown, keyUp, touchMove } = board;
     let start: Point | null = null;
 
     let geometryShapeG: SVGGElement | null = null;
@@ -158,17 +148,23 @@ export const withGeometryCreateByDrawing = (board: PlaitBoard) => {
             const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
             start = point;
             const pointer = PlaitBoard.getPointer(board) as DrawPointerType;
-            preventTouchMove(board, event, true);
             if (pointer === BasicShapes.text) {
                 const memorizedLatest = getMemorizedLatestByPointer(pointer);
-                const property = getTextShapeProperty(board, DefaultTextProperty.text, memorizedLatest.textProperties['font-size']);
+                const property = getTextShapeProperty(board, getDefaultGeometryText(board), memorizedLatest.textProperties['font-size']);
                 const points = RectangleClient.getPoints(RectangleClient.getRectangleByCenterPoint(point, property.width, property.height));
-                const textElement = createTextElement(board, points);
+                const textElement = createTextElement(board, points, getDefaultGeometryText(board));
                 insertElement(board, textElement);
                 start = null;
             }
         }
         pointerDown(event);
+    };
+
+    board.touchMove = (event: TouchEvent) => {
+        if (start && isGeometryDrawingMode(board)) {
+            event.preventDefault();
+        }
+        touchMove(event);
     };
 
     board.pointerMove = (event: PointerEvent) => {
@@ -192,11 +188,11 @@ export const withGeometryCreateByDrawing = (board: PlaitBoard) => {
                 isCreate: true
             });
             snapG = resizeSnapRef.snapG;
-            PlaitBoard.getElementActiveHost(board).append(snapG);
+            PlaitBoard.getElementTopHost(board).append(snapG);
             points = normalizeShapePoints(resizeSnapRef.activePoints as [Point, Point], isShift);
             temporaryElement = createDefaultGeometry(board, points, pointer as GeometryShapes);
             geometryGenerator.processDrawing(temporaryElement as PlaitGeometry, geometryShapeG);
-            PlaitBoard.getElementActiveHost(board).append(geometryShapeG);
+            PlaitBoard.getElementTopHost(board).append(geometryShapeG);
         }
         pointerMove(event);
     };
@@ -220,7 +216,6 @@ export const withGeometryCreateByDrawing = (board: PlaitBoard) => {
             geometryShapeG = null;
             start = null;
             temporaryElement = null;
-            preventTouchMove(board, event, false);
             return;
         }
         pointerUp(event);

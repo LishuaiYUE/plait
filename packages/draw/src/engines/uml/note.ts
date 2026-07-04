@@ -9,6 +9,7 @@ import {
     setStrokeLinecap,
     getNearestPointBetweenPointAndEllipse
 } from '@plait/core';
+import { getTextSize } from '../../utils/text-size';
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { Options } from 'roughjs/bin/core';
 import { RectangleEngine } from '../basic-shapes/rectangle';
@@ -29,7 +30,7 @@ export const NoteEngine: ShapeEngine = {
             M${rectangle.x + rectangle.width - 16} ${rectangle.y} 
             A16 16, 0,0,1, ${rectangle.x + rectangle.width} ${rectangle.y + 16}
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 
@@ -59,16 +60,17 @@ export const NoteEngine: ShapeEngine = {
     getConnectorPoints(rectangle: RectangleClient) {
         return RectangleClient.getEdgeCenterPoints(rectangle);
     },
-    getTextRectangle: (element: PlaitGeometry) => {
+    getTextRectangle: (board: PlaitBoard, element: PlaitGeometry) => {
         const elementRectangle = RectangleClient.getRectangleByPoints(element.points!);
         const strokeWidth = getStrokeWidthByElement(element);
-        const height = element.textHeight!;
         const width = elementRectangle.width - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth - 15;
+        const text = element.text!;
+        const textSize = getTextSize(board, text, width);
         return {
-            height,
+            height: textSize.height,
             width: width > 0 ? width : 0,
             x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth,
-            y: elementRectangle.y + (elementRectangle.height - height) / 2
+            y: elementRectangle.y + (elementRectangle.height - textSize.height) / 2
         };
     }
 };

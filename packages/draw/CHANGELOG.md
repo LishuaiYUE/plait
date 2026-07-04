@@ -1,5 +1,553 @@
 # @plait/draw
 
+## 0.93.2
+
+### Patch Changes
+
+-   [`d264796e3d4fd541f0b132a5007b27638cbac00e`](https://github.com/worktile/plait/commit/d264796e3d4fd541f0b132a5007b27638cbac00e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - render fill as none when fill is transparent
+
+## 0.93.1
+
+## 0.93.0
+
+### Minor Changes
+
+-   [`983b4158099ed1e68815e3870eaa0a9c200dfbaf`](https://github.com/worktile/plait/commit/983b4158099ed1e68815e3870eaa0a9c200dfbaf) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - getOneHitElement support hitPoint
+
+## 0.92.3
+
+### Patch Changes
+
+-   [#1136](https://github.com/worktile/plait/pull/1136) [`3c383b538f75bf60631fb37e11505bd847ad0535`](https://github.com/worktile/plait/commit/3c383b538f75bf60631fb37e11505bd847ad0535) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix multiple points align problem
+    fix straight line points align problem
+    fix connector point align problem
+
+## 0.92.2
+
+### Patch Changes
+
+-   [#1134](https://github.com/worktile/plait/pull/1134) [`2b527e1ecabd57af8734947fa8fd38860cd20957`](https://github.com/worktile/plait/commit/2b527e1ecabd57af8734947fa8fd38860cd20957) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - need to prevent dblClick when enter text editing, will fix the issue mentioned in https://github.com/plait-board/drawnix/issues/364
+
+    when line element is on other elements will double click the line will trigger both line and the bottom shape enter editing state
+
+-   [#1135](https://github.com/worktile/plait/pull/1135) [`b3ecf77a98b0f1bd0d400d8e82b8279449a50ef9`](https://github.com/worktile/plait/commit/b3ecf77a98b0f1bd0d400d8e82b8279449a50ef9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support movingPoint align to neighbor point when resize or create arrow line
+
+    remove alignPoints handing on hitElement is undefined since it has been handled in before
+
+    add some notes arrow line align
+
+## 0.92.1
+
+## 0.92.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+### Patch Changes
+
+-   [#1132](https://github.com/worktile/plait/pull/1132) [`197ae369c2848a91c90aceaf8b9ec8e5bcd66509`](https://github.com/worktile/plait/commit/197ae369c2848a91c90aceaf8b9ec8e5bcd66509) Thanks [@minlovehua](https://github.com/minlovehua)! - fix export issue
+
+## 0.92.0-next.2
+
+### Patch Changes
+
+-   [#1132](https://github.com/worktile/plait/pull/1132) [`197ae369c2848a91c90aceaf8b9ec8e5bcd66509`](https://github.com/worktile/plait/commit/197ae369c2848a91c90aceaf8b9ec8e5bcd66509) Thanks [@minlovehua](https://github.com/minlovehua)! - fix export issue
+
+## 0.92.0-next.1
+
+## 0.92.0-next.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.91.0
+
+## 0.90.1
+
+## 0.90.0
+
+## 0.89.2
+
+### Patch Changes
+
+-   [#1113](https://github.com/worktile/plait/pull/1113) [`11ec882fb236155aa36438d84d61cbfb7736320a`](https://github.com/worktile/plait/commit/11ec882fb236155aa36438d84d61cbfb7736320a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - compatible interaction with touch device, select end when start text editing on touch device
+
+## 0.89.1
+
+## 0.89.0
+
+## 0.88.1
+
+### Patch Changes
+
+-   [#1101](https://github.com/worktile/plait/pull/1101) [`37c2c6d9889fc003fc0331d33e46af7a9673cab2`](https://github.com/worktile/plait/commit/37c2c6d9889fc003fc0331d33e46af7a9673cab2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix text occur overflow
+
+## 0.88.0
+
+### Minor Changes
+
+-   [#1097](https://github.com/worktile/plait/pull/1097) [`e646c54bb90e2cf4519a3a098039b35e2d9eff4b`](https://github.com/worktile/plait/commit/e646c54bb90e2cf4519a3a098039b35e2d9eff4b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - calculating text width by correct max width
+
+## 0.87.0
+
+### Minor Changes
+
+-   [#1085](https://github.com/worktile/plait/pull/1085) [`a54fc193165b94a4bb14043d96f8a94464f82387`](https://github.com/worktile/plait/commit/a54fc193165b94a4bb14043d96f8a94464f82387) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove textHeigh for all draw elements and calculate and cache textHeight for them on using
+
+### Patch Changes
+
+-   [#1093](https://github.com/worktile/plait/pull/1093) [`f72bb38b7bffe76be51eb13ee515539be26a47b9`](https://github.com/worktile/plait/commit/f72bb38b7bffe76be51eb13ee515539be26a47b9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix: table row height not update when text height is greater than row height
+
+## 0.87.0-next.1
+
+### Patch Changes
+
+-   [#1093](https://github.com/worktile/plait/pull/1093) [`f72bb38b7bffe76be51eb13ee515539be26a47b9`](https://github.com/worktile/plait/commit/f72bb38b7bffe76be51eb13ee515539be26a47b9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix: table row height not update when text height is greater than row height
+
+-   [#1091](https://github.com/worktile/plait/pull/1091) [`2f2eaef8ae2130d067f9216608853fc064a787be`](https://github.com/worktile/plait/commit/2f2eaef8ae2130d067f9216608853fc064a787be) Thanks [@NaoCoding](https://github.com/NaoCoding)! - making the insertElement will not change the state of pointer and select the element just created
+
+## 0.87.0-next.0
+
+### Minor Changes
+
+-   [#1085](https://github.com/worktile/plait/pull/1085) [`a54fc193165b94a4bb14043d96f8a94464f82387`](https://github.com/worktile/plait/commit/a54fc193165b94a4bb14043d96f8a94464f82387) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove textHeigh for all draw elements and calculate and cache textHeight for them on using
+
+## 0.86.1
+
+## 0.86.0
+
+## 0.85.0
+
+## 0.84.0
+
+## 0.83.1
+
+### Patch Changes
+
+-   [#1075](https://github.com/worktile/plait/pull/1075) [`67cac99176fa8d2540b9ac20cc623e6346ec327d`](https://github.com/worktile/plait/commit/67cac99176fa8d2540b9ac20cc623e6346ec327d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve hover to preview and click to commit(prevent text and swimlane)
+
+## 0.83.0
+
+### Minor Changes
+
+-   [`86b676d13109f81f3fe51afde5ff11bf836f0119`](https://github.com/worktile/plait/commit/86b676d13109f81f3fe51afde5ff11bf836f0119) Thanks [@luBenWei-55kai](https://github.com/luBenWei-55kai)! - support hover the handle of selected element to preview elements and click to commit elements
+
+-   [#1073](https://github.com/worktile/plait/pull/1073) [`34f5a6b32955248d97d52fda5516cafb5090efc5`](https://github.com/worktile/plait/commit/34f5a6b32955248d97d52fda5516cafb5090efc5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract point-placement to common package
+    optimize flowchart's hover to preview and click to commit function
+
+## 0.82.0
+
+### Minor Changes
+
+-   [#1069](https://github.com/worktile/plait/pull/1069) [`3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6`](https://github.com/worktile/plait/commit/3b9f67eb8aee466aa2a3c9b6c0f08f302dea93a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - measureElement need assign board as first param to cache canvas dom element
+    refactor mind node more function
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.82.0-next.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.81.3
+
+## 0.81.2
+
+## 0.81.1
+
+### Patch Changes
+
+-   [`a659fb01b12c257e3b4e7556f11274122910d98f`](https://github.com/worktile/plait/commit/a659fb01b12c257e3b4e7556f11274122910d98f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add merging on rotating
+
+## 0.81.0
+
+### Minor Changes
+
+-   [`44b8138fc06c79e17ba62df6f1cf613ec21fbdd7`](https://github.com/worktile/plait/commit/44b8138fc06c79e17ba62df6f1cf613ec21fbdd7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct getSolidElements method
+
+## 0.80.0
+
+## 0.79.1
+
+## 0.79.0
+
+## 0.78.2
+
+### Patch Changes
+
+-   [#1057](https://github.com/worktile/plait/pull/1057) [`5c889a1185ba0f0ca090c418016f16a8e85f2836`](https://github.com/worktile/plait/commit/5c889a1185ba0f0ca090c418016f16a8e85f2836) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - export getHitConnectionFromConnectionPoint method in @plait/draw
+    optimize the selection logic in group scene
+
+## 0.78.1
+
+## 0.78.0
+
+### Minor Changes
+
+-   [#1052](https://github.com/worktile/plait/pull/1052) [`688cf253feea7902690af40ded129bd83a4469a7`](https://github.com/worktile/plait/commit/688cf253feea7902690af40ded129bd83a4469a7) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.78.0-next.0
+
+### Minor Changes
+
+-   [`af24487d0cb31303c8600aae655f5825e4c9e918`](https://github.com/worktile/plait/commit/af24487d0cb31303c8600aae655f5825e4c9e918) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.77.3
+
+### Patch Changes
+
+-   [#1046](https://github.com/worktile/plait/pull/1046) [`f511044e084a0a9620ec5d2ce49aa0f73ae03c59`](https://github.com/worktile/plait/commit/f511044e084a0a9620ec5d2ce49aa0f73ae03c59) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the image layer issue on export as image
+    fix hitting check issue for multiple image
+
+## 0.77.2
+
+## 0.77.1
+
+## 0.77.0
+
+### Patch Changes
+
+-   [#1034](https://github.com/worktile/plait/pull/1034) [`8506a92a320e799f6338d42261491b3b581b9d97`](https://github.com/worktile/plait/commit/8506a92a320e799f6338d42261491b3b581b9d97) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix resize handles repeated issue, fix table resize check area issue
+
+-   [#1034](https://github.com/worktile/plait/pull/1034) [`70e2b67e12b101bfc788cac41a2954077ae6d699`](https://github.com/worktile/plait/commit/70e2b67e12b101bfc788cac41a2954077ae6d699) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix table element isHit handle warning
+
+## 0.76.0
+
+## 0.75.0
+
+### Minor Changes
+
+-   [#1010](https://github.com/worktile/plait/pull/1010) [`26973adcd4eda7143649e9b97b5a14e7628bd264`](https://github.com/worktile/plait/commit/26973adcd4eda7143649e9b97b5a14e7628bd264) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support to hit the could'stroke precisely
+
+-   [#1003](https://github.com/worktile/plait/pull/1003) [`37abf30a4f600db68d2e804d851328e9453e953f`](https://github.com/worktile/plait/commit/37abf30a4f600db68d2e804d851328e9453e953f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - refactor vector line creating plugin
+
+-   [#1002](https://github.com/worktile/plait/pull/1002) [`95947209ecea26c7686f037a0e364e8d5403e0a2`](https://github.com/worktile/plait/commit/95947209ecea26c7686f037a0e364e8d5403e0a2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - isHitDrawElement support isStrict mode to match dblClick editing scene(isStrict is false)
+
+-   [#1022](https://github.com/worktile/plait/pull/1022) [`e7fcaa9e926cc4f639aad4512bc24ec3628c10ca`](https://github.com/worktile/plait/commit/e7fcaa9e926cc4f639aad4512bc24ec3628c10ca) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve component、package、noteCurlyLeft、noteCurlyRight、Actor、Assembly、RequiredInterface、Deletion and so on draw and getNearestPoint logic #1008
+
+### Patch Changes
+
+-   [#1004](https://github.com/worktile/plait/pull/1004) [`69b8602335005173417d0ca544bba9951b398052`](https://github.com/worktile/plait/commit/69b8602335005173417d0ca544bba9951b398052) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prevent vector line resize handles
+
+-   [#999](https://github.com/worktile/plait/pull/999) [`9ce99cab038f47e6aa10a023c508612da7593354`](https://github.com/worktile/plait/commit/9ce99cab038f47e6aa10a023c508612da7593354) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename isDrawElementClosed to isClosedDrawElement and add isDrawElement condition
+    rename isCustomGeometryClosed to isClosedCustomGeometry
+
+-   [#1012](https://github.com/worktile/plait/pull/1012) [`fd5bca5be7d8a766833e4cc6330a1144e9e1d623`](https://github.com/worktile/plait/commit/fd5bca5be7d8a766833e4cc6330a1144e9e1d623) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - clear selected elements when enter arrow line auto complete mode
+
+-   [#1023](https://github.com/worktile/plait/pull/1023) [`a181c47de84345a5dbb50bcedd3cd1a195fec243`](https://github.com/worktile/plait/commit/a181c47de84345a5dbb50bcedd3cd1a195fec243) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix table hit issue and geometry can not hitting when drag selection at left edge
+
+## 0.75.0-next.9
+
+### Patch Changes
+
+-   [#1012](https://github.com/worktile/plait/pull/1012) [`fd5bca5be7d8a766833e4cc6330a1144e9e1d623`](https://github.com/worktile/plait/commit/fd5bca5be7d8a766833e4cc6330a1144e9e1d623) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - clear selected elements when enter arrow line auto complete mode
+
+## 0.75.0-next.8
+
+### Minor Changes
+
+-   [#1010](https://github.com/worktile/plait/pull/1010) [`26973adcd4eda7143649e9b97b5a14e7628bd264`](https://github.com/worktile/plait/commit/26973adcd4eda7143649e9b97b5a14e7628bd264) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support to hit the could'stroke precisely
+
+## 0.75.0-next.7
+
+## 0.75.0-next.6
+
+## 0.75.0-next.5
+
+## 0.75.0-next.4
+
+## 0.75.0-next.3
+
+## 0.75.0-next.2
+
+## 0.75.0-next.1
+
+## 0.75.0-next.0
+
+### Minor Changes
+
+-   [#1003](https://github.com/worktile/plait/pull/1003) [`37abf30a4f600db68d2e804d851328e9453e953f`](https://github.com/worktile/plait/commit/37abf30a4f600db68d2e804d851328e9453e953f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - refactor vector line creating plugin
+
+-   [#1002](https://github.com/worktile/plait/pull/1002) [`95947209ecea26c7686f037a0e364e8d5403e0a2`](https://github.com/worktile/plait/commit/95947209ecea26c7686f037a0e364e8d5403e0a2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - isHitDrawElement support isStrict mode to match dblClick editing scene(isStrict is false)
+
+### Patch Changes
+
+-   [#1004](https://github.com/worktile/plait/pull/1004) [`69b8602335005173417d0ca544bba9951b398052`](https://github.com/worktile/plait/commit/69b8602335005173417d0ca544bba9951b398052) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prevent vector line resize handles
+
+-   [#999](https://github.com/worktile/plait/pull/999) [`9ce99cab038f47e6aa10a023c508612da7593354`](https://github.com/worktile/plait/commit/9ce99cab038f47e6aa10a023c508612da7593354) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename isDrawElementClosed to isClosedDrawElement and add isDrawElement condition
+    rename isCustomGeometryClosed to isClosedCustomGeometry
+
+## 0.74.0
+
+### Patch Changes
+
+-   [#997](https://github.com/worktile/plait/pull/997) [`58d14d6eb`](https://github.com/worktile/plait/commit/58d14d6eb8576f9ce2ca676622c6db5a98d340f1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply default fill just element is flowchart element
+
+## 0.73.0
+
+### Minor Changes
+
+-   [#993](https://github.com/worktile/plait/pull/993) [`60a7c164c`](https://github.com/worktile/plait/commit/60a7c164ccc2119624be4d891fea3bdb4b95fba7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - disable arrowLine rotation
+
+### Patch Changes
+
+-   [#995](https://github.com/worktile/plait/pull/995) [`20b7b661a`](https://github.com/worktile/plait/commit/20b7b661a319210d1e2fbc5db1f858c0528081e7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix resize single image issue
+
+*   [#994](https://github.com/worktile/plait/pull/994) [`4792c7067`](https://github.com/worktile/plait/commit/4792c706710cd907df88c60d673373b99b413cf8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix swimlane text position issue and add strict type for engine options
+
+## 0.72.0
+
+### Minor Changes
+
+-   [#991](https://github.com/worktile/plait/pull/991) [`343686bc2`](https://github.com/worktile/plait/commit/343686bc211d33bce89ff2a93855b8716ed3e653) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove withGeometryResize plugin and withDrawResize support single element resize
+
+    all draw elements and custom geometry elements support rotation
+
+*   [#979](https://github.com/worktile/plait/pull/979) [`9933b62e9`](https://github.com/worktile/plait/commit/9933b62e97c59be59ba06ed5dcb204deda2474f4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract buildClipboardData and insertClipboardData to common and support scalable fun
+
+    rewrite buildClipboardData and insertClipboardData by basic method
+
+    fix copy arrow-line error
+
+-   [#981](https://github.com/worktile/plait/pull/981) [`8d343b564`](https://github.com/worktile/plait/commit/8d343b5644d2be3e772470721c450f50f64d0277) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support custom geometry
+
+*   [#986](https://github.com/worktile/plait/pull/986) [`398dc4451`](https://github.com/worktile/plait/commit/398dc44513468ea33c60d0884dad238db0ce9706) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract isRectangleHitRotatedPoints to calculate rectangle hit rotate points
+
+-   [#978](https://github.com/worktile/plait/pull/978) [`3409c8bf9`](https://github.com/worktile/plait/commit/3409c8bf92c17091e85e09bc7d1df3d122a6996b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename line -> vector-line
+
+### Patch Changes
+
+-   [#987](https://github.com/worktile/plait/pull/987) [`c759b8c0b`](https://github.com/worktile/plait/commit/c759b8c0bc95023cc45624814e1cad96e7b6fb6f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - should rewrite clipboardContext after invoking addOrCreateClipboardContext
+
+## 0.71.0
+
+## 0.70.0
+
+## 0.69.2
+
+## 0.69.1
+
+## 0.69.0
+
+### Minor Changes
+
+-   [`0f8bb0f51`](https://github.com/worktile/plait/commit/0f8bb0f51a0cd95b322712d9812a3ccd35cd47a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove touch handle and use touchstart event to prevent container scrolling on mobile device
+
+## 0.68.0
+
+### Minor Changes
+
+-   [`c743b0245`](https://github.com/worktile/plait/commit/c743b0245cec060c344b8101afb8f0e1c4e22e06) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support set null to remove color property
+
+## 0.67.2
+
+### Patch Changes
+
+-   [`e0674af84`](https://github.com/worktile/plait/commit/ca05380e50dc90decad34ce63996266e0674af84) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix rotate error #WIK-16663
+
+## 0.67.1
+
+## 0.67.0
+
+### Minor Changes
+
+-   [`4bd3e8316`](https://github.com/worktile/plait/commit/4bd3e83162527e8bc460b58db20ef85614c30cc5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use global selection class (`selection-rectangle`), and use global dragging state for mind node dnd
+
+## 0.66.1
+
+## 0.66.0
+
+### Patch Changes
+
+-   [`c118c6d67`](https://github.com/worktile/plait/commit/c118c6d6702c4de7b6d527e48e7cf77d5ee39e7c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - resolve batch resize geometry issue
+
+*   [#966](https://github.com/worktile/plait/pull/966) [`f284daabf`](https://github.com/worktile/plait/commit/f284daabfe830dc5407a9fa47118ca9ebac5b282) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - add clipboard test
+
+## 0.65.2
+
+### Patch Changes
+
+-   [#964](https://github.com/worktile/plait/pull/964) [`99ec49df0`](https://github.com/worktile/plait/commit/99ec49df010875f4b4fb61705f82a864df84ccee) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix insertClipboardData order error
+
+## 0.65.1
+
+## 0.65.0
+
+## 0.65.0-next.0
+
+## 0.64.9
+
+### Patch Changes
+
+-   [#960](https://github.com/worktile/plait/pull/960) [`56c04df75`](https://github.com/worktile/plait/commit/56c04df75aa8b9d8140edd274fafa5b1dd99d32f) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - set textManage key to board
+
+## 0.64.8
+
+## 0.64.7
+
+## 0.64.6
+
+## 0.64.5
+
+### Patch Changes
+
+-   [`fe711d3e0`](https://github.com/worktile/plait/commit/fe711d3e037dd72fb5d23ad02fb4c809cc8a1de1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct height, textHeight, width when zoom is not 100% for operations: resize, remove image, add image and so on
+
+## 0.64.4
+
+## 0.64.3
+
+## 0.64.2
+
+### Patch Changes
+
+-   [#959](https://github.com/worktile/plait/pull/959) [`a47f09a6f`](https://github.com/worktile/plait/commit/a47f09a6f8fdef405d8cdd8de36470c04c5d2f2d) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix defects in dblclick and moving
+
+## 0.64.1
+
+### Patch Changes
+
+-   [#956](https://github.com/worktile/plait/pull/956) [`507762a38`](https://github.com/worktile/plait/commit/507762a3815fe4a561e1a09b905ffe9b9fbc6bf6) Thanks [@MissLixf](https://github.com/MissLixf)! - fix vector line hit and rectangle hit
+
+## 0.64.0
+
+### Minor Changes
+
+-   [#943](https://github.com/worktile/plait/pull/943) [`d66c77e70`](https://github.com/worktile/plait/commit/d66c77e70ffd90f51798227b3bc341112e005a88) Thanks [@MissLixf](https://github.com/MissLixf)! - support vector pen
+
+## 0.63.0
+
+## 0.62.0
+
+### Minor Changes
+
+-   [#914](https://github.com/worktile/plait/pull/914) [`92436588f`](https://github.com/worktile/plait/commit/92436588fa95557474c8ebc0c282330376622fb4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Framework agnostic refactoring:
+
+    1. Use `measureElement` to measure text width and height
+
+    2. Use `text-manage` in `@plait/common` to render text
+
+    3. Provide an overridable method `renderEmoji` in `@plait/mind` to remove the dependency on Angular and transform the response generator
+
+    4. Provide an overridable method `renderLabelIcon` in `@plait/flow` to remove the dependency on Angular and transform the response generator
+
+    ***
+
+    Framework agnostic 改造:
+
+    1. 改用 `measureElement` 测量文本宽高
+
+    2. 改用 `@plait/common` 中的 `text-manage` 实现文本的渲染
+
+    3. `@plait/mind` 中提供可重写方法 `renderEmoji` 解除对 Angular 的依赖，并且改造响应 generator
+
+    4. `@plait/flow` 中提供可重写方法 `renderLabelIcon` 解除对 Angular 的依赖，并且改造响应 generator
+
+*   [#922](https://github.com/worktile/plait/pull/922) [`0e1ddecc4`](https://github.com/worktile/plait/commit/0e1ddecc45b76f4093944d340bfe5670a80e2b1b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - refactor getHitElementByPoint return value
+
+    add getHitElement to board, the hit element is determined by the plugin
+
+-   [#923](https://github.com/worktile/plait/pull/923) [`e3247409b`](https://github.com/worktile/plait/commit/e3247409b6edd8b5001d3bfb892afe65d8e291d2) Thanks [@MissLixf](https://github.com/MissLixf)! - change PlaitLine to PlaitArrowLine; and change bound function with arrowLine
+
+*   [#918](https://github.com/worktile/plait/pull/918) [`6fff37862`](https://github.com/worktile/plait/commit/6fff37862833aa0ee43adec1c3b266ea9fb2d602) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - support set border style for table border
+
+### Patch Changes
+
+-   [#921](https://github.com/worktile/plait/pull/921) [`2d8b964d0`](https://github.com/worktile/plait/commit/2d8b964d06443c1643d4c26abe6a2899f4e29e7b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix set text property error when select table
+
+*   [#939](https://github.com/worktile/plait/pull/939) [`1c58e3448`](https://github.com/worktile/plait/commit/1c58e34484c99afdb36ff9a1ae75664949b1797d) Thanks [@MissLixf](https://github.com/MissLixf)! - add isDrawElementClosed function
+
+-   [`ec00cb4f4`](https://github.com/worktile/plait/commit/ec00cb4f4c3cff6fbab7ed7ab67ef48e3efb47ee) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `isPreventClearSelection` in WithSelectionPluginOptions(with-selection)
+
+    extract `getSelectionOptions` and `setSelectionOptions` to set/get options of selection
+
+    rename `isMultipleSelection` to `isMultiple` in WithSelectionPluginOptions(with-selection)
+
+    rename `WithPluginOptions` to `WithSelectionPluginOptions` and rename `PlaitPluginOptions` to `WithPluginOptions`
+
+*   [#920](https://github.com/worktile/plait/pull/920) [`4bd014d33`](https://github.com/worktile/plait/commit/4bd014d33aa84b34d96344bbf7bda5b6c23c2011) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - memorize line text property
+
+-   [#935](https://github.com/worktile/plait/pull/935) [`716e8f23f`](https://github.com/worktile/plait/commit/716e8f23fbfd6394b917b1e35ff3cb34d4d848dc) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - handle enter event when editing text
+
+*   [#924](https://github.com/worktile/plait/pull/924) [`9c1e653e9`](https://github.com/worktile/plait/commit/9c1e653e9767c07677af40017eaa0fa4637123c5) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix create swimlane error by drawing
+
+-   [#942](https://github.com/worktile/plait/pull/942) [`7d1e71348`](https://github.com/worktile/plait/commit/7d1e71348f2c4da4c86df5b6402f2e8cef9a8508) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - throw new Error when get cell points
+
+*   [#925](https://github.com/worktile/plait/pull/925) [`9acb332fc`](https://github.com/worktile/plait/commit/9acb332fc2d9dd4f87ce226a725226769508a2af) Thanks [@MissLixf](https://github.com/MissLixf)! - set the fill property of unclosed path to be transparent
+
+-   [#930](https://github.com/worktile/plait/pull/930) [`48a780120`](https://github.com/worktile/plait/commit/48a780120c4ed9d2106dc2e153fd30840a1953f2) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - support set cell text property
+
+*   [#940](https://github.com/worktile/plait/pull/940) [`ff83a2706`](https://github.com/worktile/plait/commit/ff83a27067e09169eb9caa818e5d419a8a47b5b1) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix link swimlane error by autocomplete
+
+-   [#926](https://github.com/worktile/plait/pull/926) [`42b285ce7`](https://github.com/worktile/plait/commit/42b285ce718f04f4ef67b16d1be2d9a178e15dc3) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - support set table fill
+
+*   [`7625c6cb2`](https://github.com/worktile/plait/commit/7625c6cb228fa66a408b00997a7b81d5fd9d8d6d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update peerDependencies
+
+-   [#934](https://github.com/worktile/plait/pull/934) [`1af156157`](https://github.com/worktile/plait/commit/1af156157cb606c043084e6fae339be5987f14d5) Thanks [@MissLixf](https://github.com/MissLixf)! - fix resize geometry without text error
+
+*   [#941](https://github.com/worktile/plait/pull/941) [`b6aad2054`](https://github.com/worktile/plait/commit/b6aad2054861240ebab57e165c675594c8826a2d) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - adjust line dash value for dotted
+
+## 0.62.0-next.10
+
+### Patch Changes
+
+-   [`ec00cb4f4`](https://github.com/worktile/plait/commit/ec00cb4f4c3cff6fbab7ed7ab67ef48e3efb47ee) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `isPreventClearSelection` in WithSelectionPluginOptions(with-selection)
+
+    extract `getSelectionOptions` and `setSelectionOptions` to set/get options of selection
+
+    rename `isMultipleSelection` to `isMultiple` in WithSelectionPluginOptions(with-selection)
+
+    rename `WithPluginOptions` to `WithSelectionPluginOptions` and rename `PlaitPluginOptions` to `WithPluginOptions`
+
+## 0.62.0-next.9
+
+### Patch Changes
+
+-   [`7625c6cb2`](https://github.com/worktile/plait/commit/7625c6cb228fa66a408b00997a7b81d5fd9d8d6d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update peerDependencies
+
+## 0.62.0-next.8
+
+### Patch Changes
+
+-   [#939](https://github.com/worktile/plait/pull/939) [`1c58e3448`](https://github.com/worktile/plait/commit/1c58e34484c99afdb36ff9a1ae75664949b1797d) Thanks [@MissLixf](https://github.com/MissLixf)! - add isDrawElementClosed function
+
+*   [#935](https://github.com/worktile/plait/pull/935) [`716e8f23f`](https://github.com/worktile/plait/commit/716e8f23fbfd6394b917b1e35ff3cb34d4d848dc) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - handle enter event when editing text
+
+-   [#942](https://github.com/worktile/plait/pull/942) [`7d1e71348`](https://github.com/worktile/plait/commit/7d1e71348f2c4da4c86df5b6402f2e8cef9a8508) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - throw new Error when get cell points
+
+*   [#940](https://github.com/worktile/plait/pull/940) [`ff83a2706`](https://github.com/worktile/plait/commit/ff83a27067e09169eb9caa818e5d419a8a47b5b1) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix link swimlane error by autocomplete
+
+-   [#941](https://github.com/worktile/plait/pull/941) [`b6aad2054`](https://github.com/worktile/plait/commit/b6aad2054861240ebab57e165c675594c8826a2d) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - adjust line dash value for dotted
+
+## 0.62.0-next.7
+
+### Minor Changes
+
+-   [#922](https://github.com/worktile/plait/pull/922) [`0e1ddecc4`](https://github.com/worktile/plait/commit/0e1ddecc45b76f4093944d340bfe5670a80e2b1b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - refactor getHitElementByPoint return value
+
+    add getHitElement to board, the hit element is determined by the plugin
+
+*   [#923](https://github.com/worktile/plait/pull/923) [`e3247409b`](https://github.com/worktile/plait/commit/e3247409b6edd8b5001d3bfb892afe65d8e291d2) Thanks [@MissLixf](https://github.com/MissLixf)! - change PlaitLine to PlaitArrowLine; and change bound function with arrowLine
+
+### Patch Changes
+
+-   [#921](https://github.com/worktile/plait/pull/921) [`2d8b964d0`](https://github.com/worktile/plait/commit/2d8b964d06443c1643d4c26abe6a2899f4e29e7b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix set text property error when select table
+
+*   [#920](https://github.com/worktile/plait/pull/920) [`4bd014d33`](https://github.com/worktile/plait/commit/4bd014d33aa84b34d96344bbf7bda5b6c23c2011) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - memorize line text property
+
+-   [#924](https://github.com/worktile/plait/pull/924) [`9c1e653e9`](https://github.com/worktile/plait/commit/9c1e653e9767c07677af40017eaa0fa4637123c5) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix create swimlane error by drawing
+
+*   [#925](https://github.com/worktile/plait/pull/925) [`9acb332fc`](https://github.com/worktile/plait/commit/9acb332fc2d9dd4f87ce226a725226769508a2af) Thanks [@MissLixf](https://github.com/MissLixf)! - set the fill property of unclosed path to be transparent
+
+-   [#930](https://github.com/worktile/plait/pull/930) [`48a780120`](https://github.com/worktile/plait/commit/48a780120c4ed9d2106dc2e153fd30840a1953f2) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - support set cell text property
+
+*   [#926](https://github.com/worktile/plait/pull/926) [`42b285ce7`](https://github.com/worktile/plait/commit/42b285ce718f04f4ef67b16d1be2d9a178e15dc3) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - support set table fill
+
+-   [#934](https://github.com/worktile/plait/pull/934) [`1af156157`](https://github.com/worktile/plait/commit/1af156157cb606c043084e6fae339be5987f14d5) Thanks [@MissLixf](https://github.com/MissLixf)! - fix resize geometry without text error
+
 ## 0.62.0-next.6
 
 ## 0.62.0-next.5
@@ -570,7 +1118,7 @@
 
 *   [#677](https://github.com/worktile/plait/pull/677) [`af8b682e`](https://github.com/worktile/plait/commit/af8b682e309c70ffbcb0f84ee028fe4bcfc96941) Thanks [@WBbug](https://github.com/WBbug)! - change text moving style
 
--   [`07eaf04d`](https://github.com/worktile/plait/commit/07eaf04d7a74f1b9fc67e5822ba01bf5e7e8e469) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add afterChange method and move the timing of plaitChange event trigging to afterChange
+-   [`07eaf04d`](https://github.com/worktile/plait/commit/07eaf04d7a74f1b9fc67e5822ba01bf5e7e8e469) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add afterChange method and move the timing of change event trigging to afterChange
     overriding the afterChange method of board can handle some things between the component update and the component triggering the change event.
 
 *   [#682](https://github.com/worktile/plait/pull/682) [`7ff83a5f`](https://github.com/worktile/plait/commit/7ff83a5fae97f3b770aab04b7eb05bc3f7541ba6) Thanks [@WBbug](https://github.com/WBbug)! - add collect refs

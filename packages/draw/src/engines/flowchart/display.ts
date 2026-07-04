@@ -11,9 +11,10 @@ import {
     isPointInPolygon,
     setStrokeLinecap
 } from '@plait/core';
+import { getTextSize } from '../../utils/text-size';
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { Options } from 'roughjs/bin/core';
-import { getStrokeWidthByElement } from '../../utils';
+import { getStrokeWidthByElement, getCustomTextRectangle } from '../../utils';
 
 export const getDisplayPoints = (rectangle: RectangleClient): Point[] => {
     return [
@@ -31,14 +32,14 @@ export const DisplayEngine: ShapeEngine = {
         const shape = rs.path(
             `M${rectangle.x + rectangle.width * 0.15} ${rectangle.y} 
             H${rectangle.x + rectangle.width - rectangle.width * 0.1} 
-            A ${rectangle.width * 0.1} ${rectangle.height / 2}, 0, 0, 1,${rectangle.x +
-                rectangle.width -
-                rectangle.width * 0.1} ${rectangle.y + rectangle.height}
+            A ${rectangle.width * 0.1} ${rectangle.height / 2}, 0, 0, 1,${rectangle.x + rectangle.width - rectangle.width * 0.1} ${
+                rectangle.y + rectangle.height
+            }
             H${rectangle.x + rectangle.width * 0.15}
             L${rectangle.x} ${rectangle.y + rectangle.height / 2}
             Z
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 
@@ -89,16 +90,7 @@ export const DisplayEngine: ShapeEngine = {
     getConnectorPoints(rectangle: RectangleClient) {
         return RectangleClient.getEdgeCenterPoints(rectangle);
     },
-    getTextRectangle: (element: PlaitGeometry) => {
-        const elementRectangle = RectangleClient.getRectangleByPoints(element.points!);
-        const strokeWidth = getStrokeWidthByElement(element);
-        const height = element.textHeight!;
-        const width = elementRectangle.width - strokeWidth * 2 - elementRectangle.width * 0.25;
-        return {
-            width: width > 0 ? width : 0,
-            height: height,
-            x: elementRectangle.x + strokeWidth + elementRectangle.width * 0.15,
-            y: elementRectangle.y + (elementRectangle.height - height) / 2
-        };
+    getTextRectangle: (board: PlaitBoard, element: PlaitGeometry) => {
+        return getCustomTextRectangle(board, element, 0.75);
     }
 };

@@ -1,4 +1,4 @@
-import { ACTIVE_STROKE_WIDTH, SELECTION_RECTANGLE_CLASS_NAME } from '../constants';
+import { ACTIVE_STROKE_WIDTH, SELECTION_RECTANGLE_BOUNDING_CLASS_NAME, SELECTION_RECTANGLE_CLASS_NAME } from '../constants';
 import {
     PlaitBoard,
     PlaitElement,
@@ -6,8 +6,10 @@ import {
     PlaitOperation,
     PlaitPluginKey,
     PlaitPointerType,
+    Point,
     RectangleClient,
-    SELECTION_BORDER_COLOR
+    SELECTION_BORDER_COLOR,
+    WithSelectionPluginOptions
 } from '../interfaces';
 import { setDragging } from './dnd';
 import { getRectangleByElements } from './element';
@@ -19,7 +21,7 @@ import { filterSelectedGroups, getAllElementsInGroup, getElementsInGroup, getEle
 import { uniqueById } from './helper';
 import { Selection } from '../interfaces/selection';
 import { PlaitOptionsBoard } from '../plugins/with-options';
-import { WithPluginOptions } from '../plugins/with-selection';
+import { toActiveRectangleFromViewBoxRectangle } from './to-point';
 
 export function isSelectionMoving(board: PlaitBoard) {
     return !!BOARD_TO_IS_SELECTION_MOVING.get(board);
@@ -38,12 +40,12 @@ export function clearSelectionMoving(board: PlaitBoard) {
 }
 
 export function isHandleSelection(board: PlaitBoard) {
-    const options = (board as PlaitOptionsBoard).getPluginOptions<WithPluginOptions>(PlaitPluginKey.withSelection);
-    return board.pointer !== PlaitPointerType.hand && !options.isDisabledSelect && !PlaitBoard.isReadonly(board);
+    const options = getSelectionOptions(board);
+    return board.pointer !== PlaitPointerType.hand && !options.isDisabledSelection && !PlaitBoard.isReadonly(board);
 }
 
 export function hasSetSelectionOperation(board: PlaitBoard) {
-    return !!board.operations.find(op => PlaitOperation.isSetSelectionOperation(op));
+    return !!board.operations.find((op) => PlaitOperation.isSetSelectionOperation(op));
 }
 
 export function getTemporaryElements(board: PlaitBoard) {
@@ -63,19 +65,20 @@ export function deleteTemporaryElements(board: PlaitBoard) {
     BOARD_TO_TEMPORARY_ELEMENTS.delete(board);
 }
 
-export function drawEntireActiveRectangleG(board: PlaitBoard) {
+export function drawSelectionRectangleG(board: PlaitBoard) {
     const elements = getSelectedElements(board);
     const rectangle = getRectangleByElements(board, elements, false);
-    if (rectangle.width > 0 && rectangle.height > 0 && elements.length > 1) {
-        const selectionRectangleG = drawRectangle(board, RectangleClient.inflate(rectangle, ACTIVE_STROKE_WIDTH), {
+    const activeRectangle = toActiveRectangleFromViewBoxRectangle(board, rectangle);
+    if (activeRectangle.width > 0 && activeRectangle.height > 0 && elements.length > 1) {
+        const selectionRectangleG = drawRectangle(board, RectangleClient.inflate(activeRectangle, ACTIVE_STROKE_WIDTH), {
             stroke: SELECTION_BORDER_COLOR,
             strokeWidth: ACTIVE_STROKE_WIDTH,
             fillStyle: 'solid'
         });
-        selectionRectangleG.classList.add(SELECTION_RECTANGLE_CLASS_NAME);
+        selectionRectangleG.classList.add(SELECTION_RECTANGLE_CLASS_NAME, SELECTION_RECTANGLE_BOUNDING_CLASS_NAME);
         const angle = getSelectionAngle(elements);
         if (angle) {
-            setAngleForG(selectionRectangleG, RectangleClient.getCenterPoint(rectangle), angle);
+            setAngleForG(selectionRectangleG, RectangleClient.getCenterPoint(activeRectangle), angle);
         }
         return selectionRectangleG;
     }
@@ -89,7 +92,7 @@ export function setSelectedElementsWithGroup(board: PlaitBoard, elements: PlaitE
     const selectedElements = getSelectedElements(board);
     if (!Selection.isCollapsed(board.selection)) {
         let newElements = [...selectedElements];
-        elements.forEach(item => {
+        elements.forEach((item) => {
             if (!item.groupId) {
                 newElements.push(item);
             } else {
@@ -102,13 +105,15 @@ export function setSelectedElementsWithGroup(board: PlaitBoard, elements: PlaitE
     if (Selection.isCollapsed(board.selection)) {
         const hitElement = elements[0];
         const hitElementGroups = getGroupByElement(board, hitElement, true) as PlaitGroup[];
-        if (hitElementGroups.length) {
+        if (hitElementGroups.length > 0) {
             const elementsInHighestGroup = getElementsInGroup(board, hitElementGroups[hitElementGroups.length - 1], true) || [];
-            const isSelectGroupElement = selectedElements.some(element => elementsInHighestGroup.map(item => item.id).includes(element.id));
+            const isSelectGroupElement = selectedElements.some((element) =>
+                elementsInHighestGroup.map((item) => item.id).includes(element.id)
+            );
             if (isShift) {
                 cacheSelectedElementsWithGroupOnShift(board, elements, isSelectGroupElement, elementsInHighestGroup);
             } else {
-                cacheSelectedElementsWithGroup(board, elements, isSelectGroupElement, hitElementGroups);
+                cacheSelectedElementsWithGroup(board, elements, isSelectGroupElement, hitElementGroups, board.selection.anchor);
             }
         }
     }
@@ -127,15 +132,15 @@ export function cacheSelectedElementsWithGroupOnShift(
     if (!isSelectGroupElement) {
         pendingElements = elementsInHighestGroup;
     } else {
-        const isHitSelectedElement = selectedElements.some(item => item.id === hitElement.id);
-        const selectedElementsInGroup = elementsInHighestGroup.filter(item => selectedElements.includes(item));
+        const isHitSelectedElement = selectedElements.some((item) => item.id === hitElement.id);
+        const selectedElementsInGroup = elementsInHighestGroup.filter((item) => selectedElements.includes(item));
         if (isHitSelectedElement) {
-            pendingElements = selectedElementsInGroup.filter(item => item.id !== hitElement.id);
+            pendingElements = selectedElementsInGroup.filter((item) => item.id !== hitElement.id);
         } else {
             pendingElements.push(...selectedElementsInGroup, ...elements);
         }
     }
-    elementsInHighestGroup.forEach(element => {
+    elementsInHighestGroup.forEach((element) => {
         if (newElements.includes(element)) {
             newElements.splice(newElements.indexOf(element), 1);
         }
@@ -150,19 +155,39 @@ export function cacheSelectedElementsWithGroup(
     board: PlaitBoard,
     elements: PlaitElement[],
     isSelectGroupElement: boolean,
-    hitElementGroups: PlaitGroup[]
+    hitElementGroups: PlaitGroup[],
+    hitPoint: Point
 ) {
     let newElements = [...elements];
     const selectedGroups = filterSelectedGroups(board, hitElementGroups);
     if (selectedGroups.length > 0) {
         if (selectedGroups.length > 1) {
             newElements = getAllElementsInGroup(board, selectedGroups[selectedGroups.length - 2], true);
+        } else {
+            const element = board.getOneHitElement(elements, hitPoint);
+            if (element) {
+                newElements = [element];
+            }
         }
     } else {
         const elementsInGroup = getAllElementsInGroup(board, hitElementGroups[hitElementGroups.length - 1], true);
         if (!isSelectGroupElement) {
             newElements = elementsInGroup;
+        } else {
+            const element = board.getOneHitElement(elements, hitPoint);
+            if (element) {
+                newElements = [element];
+            }
         }
     }
     cacheSelectedElements(board, uniqueById(newElements));
 }
+
+export const getSelectionOptions = (board: PlaitBoard) => {
+    const options = (board as PlaitOptionsBoard).getPluginOptions<WithSelectionPluginOptions>(PlaitPluginKey.withSelection);
+    return options;
+};
+
+export const setSelectionOptions = (board: PlaitBoard, options: Partial<WithSelectionPluginOptions>) => {
+    (board as PlaitOptionsBoard).setPluginOptions<WithSelectionPluginOptions>(PlaitPluginKey.withSelection, options);
+};

@@ -9,9 +9,8 @@ import {
     WritableClipboardContext,
     WritableClipboardOperationType,
     WritableClipboardType,
-    addClipboardContext,
-    addSelectedElement,
-    createClipboardContext
+    addOrCreateClipboardContext,
+    addSelectedElement
 } from '@plait/core';
 import { MindElement } from '../interfaces';
 import { AbstractNode } from '@plait/layouts';
@@ -65,22 +64,19 @@ export const withMindFragment = (baseBoard: PlaitBoard) => {
         if (firstLevelElements.length) {
             const elements = buildClipboardData(board, firstLevelElements, rectangle ? [rectangle.x, rectangle.y] : [0, 0]);
             const text = getElementsText(targetMindElements);
-            if (!clipboardContext) {
-                clipboardContext = createClipboardContext(WritableClipboardType.elements, elements, text);
-            } else {
-                clipboardContext = addClipboardContext(clipboardContext, {
-                    text,
-                    type: WritableClipboardType.elements,
-                    elements
-                });
-            }
+            const addition: WritableClipboardContext = {
+                text,
+                type: WritableClipboardType.elements,
+                elements: elements
+            };
+            clipboardContext = addOrCreateClipboardContext(clipboardContext, addition);
         }
         return buildFragment(clipboardContext, rectangle, operationType, originData);
     };
 
     board.insertFragment = (clipboardData: ClipboardData | null, targetPoint: Point, operationType?: WritableClipboardOperationType) => {
         if (clipboardData?.elements?.length) {
-            const mindElements = clipboardData.elements?.filter(value => MindElement.isMindElement(board, value));
+            const mindElements = clipboardData.elements?.filter((value) => MindElement.isMindElement(board, value));
             if (mindElements && mindElements.length > 0) {
                 insertClipboardData(board, mindElements, targetPoint, operationType);
             }
@@ -124,7 +120,7 @@ export const getNextSelectedElement = (board: PlaitBoard, firstLevelElements: Mi
 
     const firstElement = firstLevelElements[0];
     const firstElementParent = MindElement.findParent(firstElement);
-    const hasSameParent = firstLevelElements.every(element => {
+    const hasSameParent = firstLevelElements.every((element) => {
         return MindElement.findParent(element) === firstElementParent;
     });
     if (firstElementParent && hasSameParent && !activeElement) {

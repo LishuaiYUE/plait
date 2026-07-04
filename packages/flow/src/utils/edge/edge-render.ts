@@ -7,7 +7,7 @@ import { EdgeLabelGenerator } from '../../generators/edge-label-generator';
 
 export const updateRelatedEdgeHighlight = (board: PlaitBoard, nodeId: string, highlight: boolean) => {
     const relationEdges = getEdgesByNodeId(board, nodeId);
-    (relationEdges || []).forEach(edge => {
+    (relationEdges || []).forEach((edge) => {
         const elementRef = PlaitElement.getElementRef<EdgeElementRef>(edge);
         const currentState = elementRef.getState();
         const state = highlight
@@ -20,7 +20,7 @@ export const updateRelatedEdgeHighlight = (board: PlaitBoard, nodeId: string, hi
     });
 };
 
-export const renderEdge = (board: PlaitBoard, edge: FlowEdge, state?: EdgeState) => {
+export const renderEdge = (board: PlaitBoard, edge: FlowEdge, state?: EdgeState, labelClassName = '') => {
     const elementRef = PlaitElement.getElementRef<EdgeElementRef>(edge);
     const edgeGenerator = elementRef.getGenerator<EdgeGenerator>(EdgeGenerator.key);
     const edgeLabelGenerator = elementRef.getGenerator<EdgeLabelGenerator>(EdgeLabelGenerator.key);
@@ -30,7 +30,7 @@ export const renderEdge = (board: PlaitBoard, edge: FlowEdge, state?: EdgeState)
     }
     const renderState = state || elementRef.getState();
     edgeGenerator.processDrawing(edge, getEdgeLayer(board, edge, renderState), { state: renderState });
-    edgeLabelGenerator.processDrawing(edge, PlaitElement.getElementG(edge), { state: renderState });
+    edgeLabelGenerator.processDrawing(edge, PlaitElement.getElementG(edge), { state: renderState, className: labelClassName });
     if (renderState !== EdgeStableState['']) {
         const upperHost = PlaitBoard.getElementUpperHost(board);
         const elementG = PlaitElement.getElementG(edge);
@@ -44,7 +44,7 @@ export const renderEdge = (board: PlaitBoard, edge: FlowEdge, state?: EdgeState)
 
 export const renderRelatedEdges = (board: PlaitBoard, nodeId: string, state?: EdgeState) => {
     const relationEdges = getEdgesByNodeId(board, nodeId);
-    (relationEdges || []).forEach(edge => {
+    (relationEdges || []).forEach((edge) => {
         renderEdge(board, edge, state);
     });
 };

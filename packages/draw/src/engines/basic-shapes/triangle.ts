@@ -1,9 +1,8 @@
-import { Point, RectangleClient } from '@plait/core';
+import { PlaitBoard, Point, RectangleClient } from '@plait/core';
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { createPolygonEngine } from './polygon';
-import { ShapeDefaultSpace } from '../../constants';
 import { getCenterPointsOnPolygon } from '../../utils/polygon';
-import { getStrokeWidthByElement } from '../../utils';
+import { getCustomTextRectangle } from '../../utils';
 
 export const getTrianglePoints = (rectangle: RectangleClient): Point[] => {
     return [
@@ -20,17 +19,13 @@ export const TriangleEngine: ShapeEngine = createPolygonEngine({
         const lineCenterPoints = getCenterPointsOnPolygon(cornerPoints);
         return [...lineCenterPoints, ...cornerPoints];
     },
-    getTextRectangle(element: PlaitGeometry) {
+    getTextRectangle: (board: PlaitBoard, element: PlaitGeometry) => {
+        const customTextRectangle = getCustomTextRectangle(board, element, 1 / 2);
         const elementRectangle = RectangleClient.getRectangleByPoints(element.points!);
-        const strokeWidth = getStrokeWidthByElement(element);
-        const height = element.textHeight!;
-        const originWidth = elementRectangle.width - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
-        const width = (originWidth * 2) / 3;
-        return {
-            height,
-            width: width > 0 ? width : 0,
-            x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth + originWidth / 6,
-            y: elementRectangle.y + (elementRectangle.height * 3) / 5 + ((elementRectangle.height * 2) / 5 - height) / 2
-        };
+        customTextRectangle.y =
+            elementRectangle.y +
+            (elementRectangle.height * 2.5) / 5 +
+            (elementRectangle.height - (elementRectangle.height * 2.5) / 5 - customTextRectangle.height) / 2;
+        return customTextRectangle;
     }
 });

@@ -1,23 +1,19 @@
 import { isIndentedLayout, MindLayoutType } from '@plait/layouts';
 import { NODE_TO_PARENT, Path, PlaitBoard, PlaitElement, PlaitNode, Point } from '@plait/core';
 import { MindQueries } from '../queries';
-import { ELEMENT_TO_NODE } from '../utils';
 import { BaseData, EmojiData, ImageData } from './element-data';
-import { MindNodeComponent } from '../mind-node.component';
+import { StrokeStyle } from '@plait/common';
+import { MIND_ELEMENT_TO_NODE } from '../utils/weak-maps';
 
-export interface MindElement<T = BaseData> extends PlaitElement {
-    data: T;
-    children: MindElement[];
+export interface BaseMindElement extends PlaitElement {
     rightNodeCount?: number;
-    width: number;
     manualWidth?: number;
-    height: number;
-    isRoot?: boolean;
 
     // node style attributes
     fill?: string;
     strokeColor?: string;
     strokeWidth?: number;
+    strokeStyle?: StrokeStyle;
     shape?: MindElementShape;
 
     // link style attributes
@@ -33,28 +29,32 @@ export interface MindElement<T = BaseData> extends PlaitElement {
     end?: number;
 }
 
-export interface PlaitMind extends MindElement {
-    type: 'mindmap';
+const LEGACY_MIND_TYPE = 'mindmap';
+
+export interface MindElement<T = BaseData> extends BaseMindElement {
+    type: 'mind_child' | 'mind' | 'mindmap';
+    children: MindElement[];
+    data: T;
+}
+
+export interface PlaitMind<T = BaseData> extends MindElement<T> {
+    type: 'mind' | 'mindmap';
     points: Point[];
 }
 
 export const PlaitMind = {
     isMind: (value: any): value is PlaitMind => {
-        return value.type === 'mindmap';
+        return value.type === 'mind' || value.type === LEGACY_MIND_TYPE;
     }
 };
 
 export const MindElement = {
-    hasLayout(value: MindElement, layout: MindLayoutType) {
-        const _layout = MindQueries.getLayoutByElement(value);
-        return _layout === layout;
-    },
-    isIndentedLayout(value: MindElement) {
-        const _layout = MindQueries.getLayoutByElement(value) as MindLayoutType;
+    isIndentedLayout(board: PlaitBoard, value: MindElement) {
+        const _layout = MindQueries.getCorrectLayoutByElement(board, value) as MindLayoutType;
         return isIndentedLayout(_layout);
     },
-    isMindElement(board: PlaitBoard, element: PlaitElement): element is MindElement {
-        if (element.data && element.data.topic && element.width && element.height) {
+    isMindElement(board: PlaitBoard | null, element: PlaitElement): element is MindElement {
+        if ((element.data && element.data.topic) || element.type === 'mind_child') {
             return true;
         } else {
             return false;
@@ -90,7 +90,7 @@ export const MindElement = {
         return parents;
     },
     getNode(element: MindElement) {
-        const node = ELEMENT_TO_NODE.get(element);
+        const node = MIND_ELEMENT_TO_NODE.get(element);
         if (!node) {
             throw new Error(`can not get node from ${JSON.stringify(element)}`);
         }

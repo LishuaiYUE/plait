@@ -1,27 +1,26 @@
 import { isHotkey, isKeyHotkey } from 'is-hotkey';
-import { Ancestor, PlaitBoard, PlaitElement, PlaitPluginKey, Point } from '../interfaces';
+import { Ancestor, PlaitBoard, PlaitElement, PlaitPluginKey, WithSelectionPluginOptions } from '../interfaces';
 import { BoardTransforms, Transforms } from '../transforms';
-import { deleteFragment, depthFirstRecursion, duplicateElements, getRectangleByElements, getSelectedElements, hotkeys } from '../utils';
+import { deleteFragment, depthFirstRecursion, duplicateElements, getSelectedElements, hotkeys } from '../utils';
 import { PlaitOptionsBoard } from './with-options';
-import { WithPluginOptions } from './with-selection';
 
 export const withHotkey = (board: PlaitBoard) => {
     const { keyDown, keyUp, globalKeyDown } = board;
 
     board.keyDown = (event: KeyboardEvent) => {
-        const options = (board as PlaitOptionsBoard).getPluginOptions<WithPluginOptions>(PlaitPluginKey.withSelection);
-        if (!PlaitBoard.isReadonly(board) && options.isMultiple && isHotkey('mod+a', event)) {
+        const options = (board as PlaitOptionsBoard).getPluginOptions<WithSelectionPluginOptions>(PlaitPluginKey.withSelection);
+        if (!PlaitBoard.isReadonly(board) && options.isMultipleSelection && isHotkey('mod+a', event)) {
             event.preventDefault();
             let elements: PlaitElement[] = [];
             depthFirstRecursion<Ancestor>(
                 board,
-                node => {
+                (node) => {
                     if (PlaitBoard.isBoard(node)) {
                         return;
                     }
                     elements.push(node as PlaitElement);
                 },
-                node => {
+                (node) => {
                     if (PlaitBoard.isBoard(node) || board.isRecursion(node)) {
                         return true;
                     } else {
@@ -84,7 +83,7 @@ export const withHotkey = (board: PlaitBoard) => {
         if (PlaitBoard.getMovingPointInBoard(board) || PlaitBoard.isMovingPointInBoard(board)) {
             if (isHotkey(['mod+=', 'mod++'], { byKey: true })(event)) {
                 event.preventDefault();
-                BoardTransforms.updateZoom(board, board.viewport.zoom + 0.1, false);
+                BoardTransforms.updateZoom(board, board.viewport.zoom + 0.1);
                 return;
             }
             if (isHotkey(['mod+shift+=', 'mod+shift++'], { byKey: true })(event)) {

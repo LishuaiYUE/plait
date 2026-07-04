@@ -5,14 +5,14 @@ import {
     RectangleClient,
     getNearestPointBetweenPointAndSegments,
     isPointInPolygon,
-    isPointInRoundRectangle
+    isPointInRoundRectangle,
+    setStrokeLinecap
 } from '@plait/core';
 import { PlaitGeometry, ShapeEngine } from '../../interfaces';
 import { Options } from 'roughjs/bin/core';
-import { ShapeDefaultSpace } from '../../constants';
 import { getRoundRectangleRadius } from './round-rectangle';
 import { getPolygonEdgeByConnectionPoint } from '../../utils/polygon';
-import { getStrokeWidthByElement } from '../../utils/common';
+import { getTextRectangle } from '../../utils/common';
 
 const heightRatio = 3 / 4;
 
@@ -38,10 +38,12 @@ export const RoundCommentEngine: ShapeEngine = {
         const point10 = [x1 + rectangle.width / 4, rectangle.y + rectangle.height];
         const point11 = [x1 + rectangle.width / 2, y2];
 
-        return rs.path(
+        const shape = rs.path(
             `M${point2[0]} ${point2[1]} A ${radius} ${radius}, 0, 0, 1, ${point3[0]} ${point3[1]} L ${point4[0]} ${point4[1]} A ${radius} ${radius}, 0, 0, 1, ${point5[0]} ${point5[1]} L    ${point11[0]} ${point11[1]}  ${point10[0]} ${point10[1]}   ${point9[0]} ${point9[1]}   ${point6[0]} ${point6[1]} A ${radius} ${radius}, 0, 0, 1, ${point7[0]} ${point7[1]} L ${point8[0]} ${point8[1]} A ${radius} ${radius}, 0, 0, 1, ${point1[0]} ${point1[1]} Z`,
-            { ...options, fillStyle: 'solid' }
+            options
         );
+        setStrokeLinecap(shape, 'round');
+        return shape;
     },
     isInsidePoint(rectangle: RectangleClient, point: Point) {
         const points: Point[] = [
@@ -71,17 +73,11 @@ export const RoundCommentEngine: ShapeEngine = {
             [rectangle.x, rectangle.y + rectangle.height / 2]
         ];
     },
-    getTextRectangle(element: PlaitGeometry) {
+    getTextRectangle: (board: PlaitBoard, element: PlaitGeometry) => {
         const elementRectangle = RectangleClient.getRectangleByPoints(element.points!);
-        const strokeWidth = getStrokeWidthByElement(element);
-        const height = element.textHeight!;
-        const width = elementRectangle.width - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
-        return {
-            height,
-            width: width > 0 ? width : 0,
-            x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth,
-            y: elementRectangle.y + (elementRectangle.height * heightRatio - height) / 2
-        };
+        const textRectangle = getTextRectangle(board, element);
+        textRectangle.y = elementRectangle.y + (elementRectangle.height * heightRatio - textRectangle.height) / 2;
+        return textRectangle;
     }
 };
 

@@ -1,32 +1,43 @@
-import { insertText, insertGeometry, resizeGeometry, switchGeometryShape, insertGeometryByVector } from './geometry';
+import { insertText, insertGeometry, resizeGeometry, switchGeometryShape } from './geometry';
 import { setText, setTextSize } from './geometry-text';
 import { insertImage } from './image';
-import { connectLineToGeometry, removeLineText, resizeLine, setLineMark, setLineShape, setLineTexts } from './line';
-import { addSwimlaneColumn, addSwimlaneRow, removeSwimlaneColumn, removeSwimlaneRow, setSwimlaneFill, updateSwimlaneCount } from './swimlane';
-import { setDrawShapeText } from './multi-text-geometry-text';
+import {
+    connectArrowLineToDraw,
+    removeArrowLineText,
+    resizeArrowLine,
+    setArrowLineMark,
+    setArrowLineShape,
+    setArrowLineTexts
+} from './arrow-line';
+import { addSwimlaneColumn, addSwimlaneRow, removeSwimlaneColumn, removeSwimlaneRow, updateSwimlaneCount } from './swimlane';
+import { setDrawTexts } from './multi-text-geometry-text';
 import { setTableText } from './table-text';
+import { setTableFill } from './table';
+import { setVectorLineShape } from './vector-line';
+import { insertDrawByVector } from './common';
 
 export const DrawTransforms = {
     setText,
-    setDrawShapeText,
+    setDrawTexts,
     insertGeometry,
     resizeGeometry,
     insertText,
     setTextSize,
-    resizeLine,
-    setLineTexts,
-    removeLineText,
-    setLineMark,
-    setLineShape,
+    resizeArrowLine,
+    setArrowLineTexts,
+    removeArrowLineText,
+    setArrowLineMark,
+    setArrowLineShape,
+    setVectorLineShape,
     insertImage,
+    connectArrowLineToDraw,
     switchGeometryShape,
-    connectLineToGeometry,
-    insertGeometryByVector,
     setTableText,
     addSwimlaneRow,
     addSwimlaneColumn,
     removeSwimlaneRow,
     removeSwimlaneColumn,
-    setSwimlaneFill,
-    updateSwimlaneCount
+    updateSwimlaneCount,
+    setTableFill,
+    insertDrawByVector
 };

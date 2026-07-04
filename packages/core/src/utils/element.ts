@@ -1,6 +1,7 @@
 import { Ancestor, PlaitBoard, PlaitElement, Point, RectangleClient } from '../interfaces';
 import { getSelectionAngle, hasSameAngle, getRotatedBoundingRectangle, rotatePointsByElement, getRectangleByAngle } from './angle';
 import { depthFirstRecursion, getIsRecursionFunc } from './tree';
+import { KEY_TO_ELEMENT_MAP } from './weak-maps';
 
 export function getRectangleByElements(board: PlaitBoard, elements: PlaitElement[], recursion: boolean): RectangleClient {
     const rectanglesCornerPoints: [Point, Point, Point, Point][] = [];
@@ -14,12 +15,12 @@ export function getRectangleByElements(board: PlaitBoard, elements: PlaitElement
             console.error(`can not get rectangle of element:`, node);
         }
     };
-    elements.forEach(element => {
+    elements.forEach((element) => {
         if (recursion) {
             depthFirstRecursion(
                 element,
-                node => callback(node),
-                node => board.isRecursion(node)
+                (node) => callback(node),
+                (node) => board.isRecursion(node)
             );
         } else {
             callback(element);
@@ -60,11 +61,23 @@ export function getElementById<T extends PlaitElement = PlaitElement>(
     id: string,
     dataSource?: PlaitElement[]
 ): T | undefined {
-    if (!dataSource) {
-        dataSource = findElements(board, { match: element => true, recursion: element => true });
+    const cachedElement = !dataSource && getElementMap(board).get(id);
+    if (cachedElement) {
+        return cachedElement as T;
     }
-    let element = dataSource.find(element => element.id === id) as T;
+    if (!dataSource) {
+        dataSource = findElements(board, { match: (element) => true, recursion: (element) => true });
+    }
+    let element = dataSource.find((element) => element.id === id) as T;
     return element;
+}
+
+export function getElementMap(board: PlaitBoard) {
+    const elementMap = KEY_TO_ELEMENT_MAP.get(board);
+    if (!elementMap) {
+        throw new Error('can not resolve element map');
+    }
+    return elementMap;
 }
 
 export function findElements<T extends PlaitElement = PlaitElement>(
@@ -79,7 +92,7 @@ export function findElements<T extends PlaitElement = PlaitElement>(
     const isReverse = options.isReverse ?? true;
     depthFirstRecursion<Ancestor>(
         board,
-        node => {
+        (node) => {
             if (!PlaitBoard.isBoard(node) && options.match(node)) {
                 elements.push(node as T);
             }

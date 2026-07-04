@@ -18,8 +18,8 @@ export function normalizePoint(point: number[]) {
         : point;
 }
 
-export const RgbaToHEX = (Rgb: string, opacity: number) => {
-    return Rgb + Math.floor(opacity * 255).toString(16);
+export const rgbaToHEX = (rgb: string, opacity: number) => {
+    return rgb + Math.floor(opacity * 255).toString(16);
 };
 
 export function isContextmenu(event: MouseEvent) {
@@ -29,7 +29,7 @@ export function isContextmenu(event: MouseEvent) {
 export function uniqueById(elements: PlaitElement[]) {
     const uniqueMap = new Map();
 
-    elements.forEach(item => {
+    elements.forEach((item) => {
         if (!uniqueMap.has(item.id)) {
             uniqueMap.set(item.id, item);
         }

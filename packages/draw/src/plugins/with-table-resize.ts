@@ -1,4 +1,4 @@
-import { getHitElementByPoint, PlaitBoard, Point, RectangleClient, Transforms, isSelectedElement } from '@plait/core';
+import { PlaitBoard, Point, RectangleClient, Transforms, isSelectedElement, getSelectedElements, hasValidAngle } from '@plait/core';
 import { PlaitBaseTable, PlaitTableBoard, PlaitTableCell, PlaitTableCellWithPoints } from '../interfaces/table';
 import {
     getIndexByResizeHandle,
@@ -16,7 +16,10 @@ import { getHitRectangleResizeHandleRef } from '../utils/position/geometry';
 import { getResizeOriginPointAndHandlePoint, getResizeZoom, movePointByZoomAndOriginPoint } from './with-draw-resize';
 import { getSnapResizingRef, getSnapResizingRefOptions } from '../utils/snap-resizing';
 import { PlaitDrawElement } from '../interfaces';
-import { isSingleSelectElementByTable } from '../utils';
+import { isSingleSelectTable } from '../utils';
+
+// const debugKey = 'debug:plait:table:resize';
+// const debugGenerator = createDebugGenerator(debugKey);
 
 interface TableResizeOptions extends ResizeOptions {
     cell: PlaitTableCellWithPoints;
@@ -30,10 +33,13 @@ export function withTableResize(board: PlaitTableBoard) {
     const options: WithResizeOptions<PlaitBaseTable, ResizeHandle, TableResizeOptions> = {
         key: 'draw-table',
         canResize: () => {
-            return true;
+            const selectedElements = getSelectedElements(board);
+            return isSingleSelectTable(board) && !hasValidAngle(selectedElements[0]);
         },
         hitTest: (point: Point) => {
-            const hitElement = getHitElementByPoint(board, point);
+            const selectedElements = getSelectedElements(board);
+            const hitElement = selectedElements[0];
+            // debugGenerator.clear();
             if (hitElement && PlaitDrawElement.isElementByTable(hitElement)) {
                 const cells = getCellsWithPoints(board, hitElement);
                 for (let i = 0; i < cells.length; i++) {
@@ -55,10 +61,7 @@ export function withTableResize(board: PlaitTableBoard) {
                 const handleRef = getHitRectangleResizeHandleRef(board, rectangle, point, hitElement.angle);
                 if (handleRef) {
                     const selectElement = isSelectedElement(board, hitElement);
-                    if (
-                        (selectElement && isSingleSelectElementByTable(board)) ||
-                        (!selectElement && !isCornerHandle(board, handleRef.handle))
-                    ) {
+                    if ((selectElement && isSingleSelectTable(board)) || (!selectElement && !isCornerHandle(board, handleRef.handle))) {
                         return {
                             element: hitElement,
                             handle: handleRef.handle,
@@ -80,7 +83,7 @@ export function withTableResize(board: PlaitTableBoard) {
                 const resizePoints: [Point, Point] = [resizeState.startPoint, resizeState.endPoint];
                 const { xZoom, yZoom } = getResizeZoom(resizePoints, originPoint, handlePoint, false, false);
                 const originPoints = resizeRef.options?.cell.points;
-                const targetPoints = originPoints.map(p => {
+                const targetPoints = originPoints.map((p) => {
                     return movePointByZoomAndOriginPoint(p, originPoint, xZoom, yZoom);
                 }) as [Point, Point];
 
@@ -143,7 +146,7 @@ export function withTableResize(board: PlaitTableBoard) {
                     );
                     const resizeSnapRef = getSnapResizingRef(board, [resizeRef.element], resizeSnapRefOptions);
                     snapG = resizeSnapRef.snapG;
-                    PlaitBoard.getElementActiveHost(board).append(snapG);
+                    PlaitBoard.getActiveHost(board).append(snapG);
                     const points = resizeSnapRef.activePoints as [Point, Point];
                     const originPoints = resizeRef.element.points;
                     const originRect = RectangleClient.getRectangleByPoints(originPoints);
@@ -180,7 +183,7 @@ function calculateRowsOrColumns(
     isRow: boolean
 ) {
     const dimension = isRow ? 'height' : 'width';
-    return data.map(item => {
+    return data.map((item) => {
         if (item[dimension]) {
             const value = item[dimension]! + offset * (item[dimension]! / originSize);
             return {
@@ -206,7 +209,7 @@ function getResizeColumnOrRowIndex(element: PlaitBaseTable, resizeCell: PlaitTab
     const data = isRow ? element.rows : element.columns;
     const id = isRow ? resizeCell.rowId : resizeCell.columnId;
     const span = isRow ? resizeCell.rowspan : resizeCell.colspan;
-    let index = data.findIndex(item => item.id === id);
+    let index = data.findIndex((item) => item.id === id);
     if (direction === 'end' && span && span !== 1) {
         index += span - 1;
     }

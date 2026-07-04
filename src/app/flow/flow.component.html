@@ -3,17 +3,16 @@
         <div class="menu-item overview" (click)="selectChange('default')" [ngClass]="{ active: activeKey === 'default' }">Overview</div>
     </div>
 
-    <div *ngFor="let menu of menus" class="menu">
+    @for (menu of menus; track $index) {
+    <div class="menu">
         <h3 class="title">{{ menu.name }}</h3>
-        <div
-            *ngFor="let item of menu.children"
-            class="menu-item"
-            (click)="selectChange(item.key)"
-            [ngClass]="{ active: activeKey === item.key }"
-        >
+        @for (item of menu.children; track $index) {
+        <div class="menu-item" (click)="selectChange(item.key)" [ngClass]="{ active: activeKey === item.key }">
             <span>{{ item.name }}</span>
         </div>
+        }
     </div>
+    }
 </div>
 <plait-board
     class="content"
@@ -21,7 +20,7 @@
     [plaitValue]="value"
     [plaitViewport]="viewport"
     [plaitOptions]="options"
-    (plaitBoardInitialized)="plaitBoardInitialized($event)"
-    (onChange)="change($event)"
+    (initialized)="initialized($event)"
+    (change)="change($event)"
 >
 </plait-board>

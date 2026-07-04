@@ -47,7 +47,7 @@ export interface PlaitBoard {
     apply: (operation: PlaitOperation) => void;
     onChange: () => void;
     afterChange: () => void;
-    drawActiveRectangle: () => SVGGElement | null;
+    drawSelectionRectangle: () => SVGGElement | null;
     mousedown: (event: MouseEvent) => void;
     mousemove: (event: MouseEvent) => void;
     mouseleave: (event: MouseEvent) => void;
@@ -68,11 +68,14 @@ export interface PlaitBoard {
     getDeletedFragment: (data: PlaitElement[]) => PlaitElement[];
     getRelatedFragment: (data: PlaitElement[], originData?: PlaitElement[]) => PlaitElement[];
     dblClick: (event: MouseEvent) => void;
+    normalizeElement: (context: PlaitPluginElementContext) => void;
     drawElement: (context: PlaitPluginElementContext) => ComponentType<ElementFlavour>;
     isRectangleHit: (element: PlaitElement, range: Selection) => boolean;
     // When the element has no fill color, it is considered a hit only if it hits the border.
-    isHit: (element: PlaitElement, point: Point) => boolean;
+    isHit: (element: PlaitElement, point: Point, isStrict?: boolean) => boolean;
     isInsidePoint: (element: PlaitElement, point: Point) => boolean;
+    // the hit element is determined by the plugin
+    getOneHitElement: (hitElements: PlaitElement[], hitPoint: Point) => PlaitElement;
     isRecursion: (element: PlaitElement) => boolean;
     isMovable: (element: PlaitElement) => boolean;
     getRectangle: (element: PlaitElement) => RectangleClient | null;
@@ -94,6 +97,10 @@ export interface PlaitBoard {
     pointerLeave: (pointer: PointerEvent) => void;
     globalPointerMove: (pointer: PointerEvent) => void;
     globalPointerUp: (pointer: PointerEvent) => void;
+    drop: (event: DragEvent) => boolean;
+    touchStart: (event: TouchEvent) => void;
+    touchMove: (event: TouchEvent) => void;
+    touchEnd: (event: TouchEvent) => void;
 }
 
 export interface PlaitBoardOptions {
@@ -155,7 +162,10 @@ export const PlaitBoard = {
     getElementUpperHost(board: PlaitBoard) {
         return BOARD_TO_ELEMENT_HOST.get(board)?.upperHost as SVGSVGElement;
     },
-    getElementActiveHost(board: PlaitBoard) {
+    getElementTopHost(board: PlaitBoard) {
+        return BOARD_TO_ELEMENT_HOST.get(board)?.topHost as SVGSVGElement;
+    },
+    getActiveHost(board: PlaitBoard) {
         return BOARD_TO_ELEMENT_HOST.get(board)?.activeHost as SVGSVGElement;
     },
     getRoughSVG(board: PlaitBoard) {

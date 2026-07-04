@@ -15,7 +15,7 @@ import { getCrossingPointBetweenPointAndPolygon, getPolygonEdgeByConnectionPoint
 export interface CreateOptions {
     getPolygonPoints: (rectangle: RectangleClient) => Point[];
     getConnectorPoints?: (rectangle: RectangleClient) => Point[];
-    getTextRectangle?: (element: PlaitGeometry) => RectangleClient;
+    getTextRectangle?: (board: PlaitBoard, element: PlaitGeometry) => RectangleClient;
 }
 
 export function createPolygonEngine(options: CreateOptions): ShapeEngine {
@@ -24,7 +24,7 @@ export function createPolygonEngine(options: CreateOptions): ShapeEngine {
         draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
             const points = getPoints(rectangle);
             const rs = PlaitBoard.getRoughSVG(board);
-            const polygon = rs.polygon(points, { ...options, fillStyle: 'solid' });
+            const polygon = rs.polygon(points, options);
             setStrokeLinecap(polygon, 'round');
             return polygon;
         },
@@ -45,7 +45,7 @@ export function createPolygonEngine(options: CreateOptions): ShapeEngine {
             let nearestDistance = distanceBetweenPointAndPoint(point[0], point[1], nearestPoint[0], nearestPoint[1]);
             crossingPoints
                 .filter((v, index) => index > 0)
-                .forEach(crossingPoint => {
+                .forEach((crossingPoint) => {
                     let distance = distanceBetweenPointAndPoint(point[0], point[1], crossingPoint[0], crossingPoint[1]);
                     if (distance < nearestDistance) {
                         nearestDistance = distance;

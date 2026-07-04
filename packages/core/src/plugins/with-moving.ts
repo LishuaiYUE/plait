@@ -4,15 +4,12 @@ import { createG, isMainPointer } from '../utils/dom/common';
 import { Point } from '../interfaces/point';
 import { Transforms } from '../transforms';
 import { PlaitElement } from '../interfaces/element';
-import { getHitElementByPoint, getSelectedElements } from '../utils/selected-element';
+import { getHitElementByPoint, getSelectedElements, isHitSelectedRectangle } from '../utils/selected-element';
 import { PlaitNode } from '../interfaces/node';
 import { throttleRAF } from '../utils/common';
 import { cacheMovingElements, getMovingElements, isMovingElements, removeMovingElements } from '../utils/moving-element';
 import { MERGING } from '../interfaces/history';
 import {
-    isPreventTouchMove,
-    preventTouchMove,
-    handleTouchTarget,
     getRectangleByElements,
     distanceBetweenPointAndPoint,
     toHostPoint,
@@ -25,7 +22,8 @@ import {
     drawRectangle,
     depthFirstRecursion,
     getAngleByElement,
-    setAngleForG
+    setAngleForG,
+    NODE_TO_INDEX
 } from '../utils';
 import { getSnapMovingRef } from '../utils/snap/snap-moving';
 import { PlaitGroupElement, PlaitPointerType, RectangleClient, SELECTION_BORDER_COLOR, SELECTION_FILL_COLOR } from '../interfaces';
@@ -34,7 +32,7 @@ import { addSelectionWithTemporaryElements } from '../transforms/selection';
 import { isKeyHotkey } from 'is-hotkey';
 
 export function withMoving(board: PlaitBoard) {
-    const { pointerDown, pointerMove, globalPointerUp, globalPointerMove, globalKeyDown, keyUp } = board;
+    const { pointerDown, pointerMove, globalPointerUp, globalPointerMove, globalKeyDown, keyUp, touchStart, touchMove, touchEnd } = board;
 
     let offsetX = 0;
     let offsetY = 0;
@@ -47,14 +45,18 @@ export function withMoving(board: PlaitBoard) {
     let hitTargetElement: PlaitElement | undefined = undefined;
     let isHitSelectedTarget: boolean | undefined = undefined;
     let pendingNodesG: SVGGElement | null = null;
+    let pointerId: null | number = null;
 
     board.globalKeyDown = (event: KeyboardEvent) => {
         if (!PlaitBoard.isReadonly(board)) {
             if (isKeyHotkey('option', event)) {
                 event.preventDefault();
                 if (startPoint && activeElements.length && !PlaitBoard.hasBeenTextEditing(board)) {
+                    if (pendingNodesG) {
+                        PlaitBoard.getElementTopHost(board).removeChild(pendingNodesG);
+                    }
                     pendingNodesG = drawPendingNodesG(board, activeElements, offsetX, offsetY);
-                    pendingNodesG && PlaitBoard.getElementActiveHost(board).append(pendingNodesG);
+                    pendingNodesG && PlaitBoard.getElementTopHost(board).append(pendingNodesG);
                 }
             }
         }
@@ -75,30 +77,25 @@ export function withMoving(board: PlaitBoard) {
     };
 
     board.pointerDown = (event: PointerEvent) => {
-        if (
-            PlaitBoard.isReadonly(board) ||
-            !PlaitBoard.isPointer(board, PlaitPointerType.selection) ||
-            isPreventTouchMove(board) ||
-            !isMainPointer(event)
-        ) {
+        if (PlaitBoard.isReadonly(board) || !PlaitBoard.isPointer(board, PlaitPointerType.selection) || !isMainPointer(event)) {
             pointerDown(event);
             return;
         }
         const point = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
-        hitTargetElement = getHitElementByPoint(board, point, el => board.isMovable(el));
+        hitTargetElement = getHitElementByPoint(board, point, (el) => board.isMovable(el));
         selectedTargetElements = getSelectedTargetElements(board);
         isHitSelectedTarget = hitTargetElement && selectedTargetElements.includes(hitTargetElement);
-        if (hitTargetElement && isHitSelectedTarget) {
+        if (hitTargetElement && (isHitSelectedTarget || isHitSelectedRectangle(board, point))) {
             startPoint = point;
+            pointerId = event.pointerId;
             activeElements = selectedTargetElements;
             activeElementsRectangle = getRectangleByElements(board, activeElements, true);
-            preventTouchMove(board, event, true);
         } else if (hitTargetElement) {
             startPoint = point;
+            pointerId = event.pointerId;
             const relatedElements = board.getRelatedFragment([], [hitTargetElement]);
             activeElements = [...getElementsInGroupByElement(board, hitTargetElement), ...relatedElements];
             activeElementsRectangle = getRectangleByElements(board, activeElements, true);
-            preventTouchMove(board, event, true);
         } else {
             // 只有判定用户未击中元素之后才可以验证用户是否击中了已选元素所在的空白区域
             // Only after it is determined that the user has not hit the element can it be verified whether the user hit the blank area where the selected element is located.
@@ -106,16 +103,24 @@ export function withMoving(board: PlaitBoard) {
             const isHitInTargetRectangle = targetRectangle && RectangleClient.isPointInRectangle(targetRectangle, point);
             if (isHitInTargetRectangle) {
                 startPoint = point;
+                pointerId = event.pointerId;
                 activeElements = selectedTargetElements;
                 activeElementsRectangle = targetRectangle;
-                preventTouchMove(board, event, true);
             }
         }
         pointerDown(event);
     };
 
+    board.touchMove = (event: TouchEvent) => {
+        if (startPoint && activeElements.length) {
+            event.preventDefault();
+            return;
+        }
+        touchMove(event);
+    };
+
     board.pointerMove = (event: PointerEvent) => {
-        if (startPoint && activeElements.length && !PlaitBoard.hasBeenTextEditing(board)) {
+        if (startPoint && activeElements.length && !PlaitBoard.hasBeenTextEditing(board) && pointerId === event.pointerId) {
             if (!isPreventDefault) {
                 isPreventDefault = true;
             }
@@ -147,11 +152,10 @@ export function withMoving(board: PlaitBoard) {
                     offsetY += ref.deltaY;
                     snapG = ref.snapG;
                     snapG.classList.add(ACTIVE_MOVING_CLASS_NAME);
-                    PlaitBoard.getElementActiveHost(board).append(snapG);
-                    handleTouchTarget(board);
+                    PlaitBoard.getElementTopHost(board).append(snapG);
                     if (event.altKey) {
                         pendingNodesG = drawPendingNodesG(board, activeElements, offsetX, offsetY);
-                        pendingNodesG && PlaitBoard.getElementActiveHost(board).append(pendingNodesG);
+                        pendingNodesG && PlaitBoard.getElementTopHost(board).append(pendingNodesG);
                     } else {
                         const currentElements = updatePoints(board, activeElements, offsetX, offsetY);
                         PlaitBoard.getBoardContainer(board).classList.add('element-moving');
@@ -177,7 +181,7 @@ export function withMoving(board: PlaitBoard) {
         globalPointerMove(event);
     };
 
-    board.globalPointerUp = event => {
+    board.globalPointerUp = (event) => {
         if (event.altKey && activeElements.length) {
             const validElements = getValidElements(board, activeElements);
             const rectangle = getRectangleByElements(board, validElements, false);
@@ -190,7 +194,6 @@ export function withMoving(board: PlaitBoard) {
         if (startPoint) {
             cancelMove(board);
         }
-        preventTouchMove(board, event, false);
         globalPointerUp(event);
     };
 
@@ -198,6 +201,7 @@ export function withMoving(board: PlaitBoard) {
         snapG?.remove();
         pendingNodesG?.remove();
         startPoint = null;
+        pointerId = null;
         activeElementsRectangle = null;
         offsetX = 0;
         offsetY = 0;
@@ -256,8 +260,8 @@ export function withArrowMoving(board: PlaitBoard) {
 
 export function getSelectedTargetElements(board: PlaitBoard) {
     const selectedElements = getSelectedElements(board);
-    const movableElements = board.children.filter(item => board.isMovable(item));
-    const targetElements = selectedElements.filter(element => {
+    const movableElements = board.children.filter((item) => board.isMovable(item));
+    const targetElements = selectedElements.filter((element) => {
         return movableElements.includes(element);
     });
     const relatedElements = board.getRelatedFragment([]);
@@ -267,17 +271,17 @@ export function getSelectedTargetElements(board: PlaitBoard) {
 
 export function getValidElements(board: PlaitBoard, activeElements: PlaitElement[]) {
     const validElements = [...activeElements].filter(
-        element => !PlaitGroupElement.isGroup(element) && board.children.findIndex(item => item.id === element.id) > -1
+        (element) => !PlaitGroupElement.isGroup(element) && PlaitElement.isRootElement(element)
     );
     return validElements;
 }
 
 export function updatePoints(board: PlaitBoard, activeElements: PlaitElement[], offsetX: number, offsetY: number) {
     const validElements = getValidElements(board, activeElements);
-    const currentElements = validElements.map(element => {
+    const currentElements = validElements.map((element) => {
         const points = element.points || [];
-        const newPoints = points.map(p => [p[0] + offsetX, p[1] + offsetY]) as Point[];
-        const index = board.children.findIndex(item => item.id === element.id);
+        const newPoints = points.map((p) => [p[0] + offsetX, p[1] + offsetY]) as Point[];
+        const index = NODE_TO_INDEX.get(element as PlaitElement) as number;
         Transforms.setNode(
             board,
             {
@@ -295,38 +299,40 @@ export function drawPendingNodesG(board: PlaitBoard, activeElements: PlaitElemen
     let pendingNodesG: SVGElement | null = null;
     const elements: PlaitElement[] = [];
     const validElements = getValidElements(board, activeElements);
-    validElements.forEach(element => {
+    validElements.forEach((element) => {
         depthFirstRecursion(
             element,
-            node => {
+            (node) => {
                 elements.push(node);
             },
             () => true
         );
     });
-    elements.forEach(item => {
-        let rectangle = board.getRectangle(item);
-        if (rectangle) {
-            rectangle = {
-                x: rectangle.x + offsetX,
-                y: rectangle.y + offsetY,
-                width: rectangle.width,
-                height: rectangle.height
-            };
-            const movingG = drawRectangle(board, rectangle!, {
-                stroke: SELECTION_BORDER_COLOR,
-                strokeWidth: 1,
-                fill: SELECTION_FILL_COLOR,
-                fillStyle: 'solid'
-            });
-            if (!pendingNodesG) {
-                pendingNodesG = createG();
-                pendingNodesG.classList.add(ACTIVE_MOVING_CLASS_NAME);
+    elements
+        .filter((value) => PlaitElement.hasMounted(value))
+        .forEach((item) => {
+            let rectangle = board.getRectangle(item);
+            if (rectangle) {
+                rectangle = {
+                    x: rectangle.x + offsetX,
+                    y: rectangle.y + offsetY,
+                    width: rectangle.width,
+                    height: rectangle.height
+                };
+                const movingG = drawRectangle(board, rectangle!, {
+                    stroke: SELECTION_BORDER_COLOR,
+                    strokeWidth: 1,
+                    fill: SELECTION_FILL_COLOR,
+                    fillStyle: 'solid'
+                });
+                if (!pendingNodesG) {
+                    pendingNodesG = createG();
+                    pendingNodesG.classList.add(ACTIVE_MOVING_CLASS_NAME);
+                }
+                const angle = getAngleByElement(item);
+                angle && setAngleForG(movingG, RectangleClient.getCenterPoint(rectangle), angle);
+                pendingNodesG.append(movingG);
             }
-            const angle = getAngleByElement(item);
-            angle && setAngleForG(movingG, RectangleClient.getCenterPoint(rectangle), angle);
-            pendingNodesG.append(movingG);
-        }
-    });
+        });
     return pendingNodesG;
 }

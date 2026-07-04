@@ -1,38 +1,41 @@
 import { pointsOnBezierCurves } from 'points-on-curve';
 import { MindNode } from '../../../interfaces/node';
 import { PlaitBoard, Point, drawBezierPath, drawLinearPath } from '@plait/core';
-import { getShapeByElement, getRectangleByNode, isChildUp } from '../..';
+import { getShapeByElement, getRectangleByNode, isChildUp, getStrokeStyleByElement } from '../..';
 import { getBranchColorByMindElement, getBranchShapeByMindElement, getBranchWidthByMindElement } from '../../node-style/branch';
 import { BranchShape, MindElementShape } from '../../../interfaces/element';
+import { getStrokeLineDash, StrokeStyle } from '@plait/common';
 
 export function drawIndentedLink(
     board: PlaitBoard,
-    node: MindNode,
+    parent: MindNode,
     child: MindNode,
-    defaultStroke: string | null = null,
     needDrawUnderline = true,
-    defaultStrokeWidth?: number
+    defaultStrokeColor: string | null = null,
+    defaultStrokeWidth?: number,
+    defaultStrokeStyle?: StrokeStyle
 ) {
-    const branchShape = getBranchShapeByMindElement(board, node.origin);
-    const branchWidth = defaultStrokeWidth || getBranchWidthByMindElement(board, node.origin);
-    const branchColor = defaultStroke || node.origin?.branchColor || getBranchColorByMindElement(board, child.origin);
+    const branchShape = getBranchShapeByMindElement(board, parent.origin);
+    const branchWidth = defaultStrokeWidth || getBranchWidthByMindElement(board, child.origin);
+    const branchColor = defaultStrokeColor || getBranchColorByMindElement(board, child.origin);
+    const strokeStyle = defaultStrokeStyle || getStrokeStyleByElement(board, child.origin);
 
     const isUnderlineShape = (getShapeByElement(board, child.origin) as MindElementShape) === MindElementShape.underline;
     let beginX,
         beginY,
         endX,
         endY,
-        beginNode = node,
+        beginNode = parent,
         endNode = child;
     const beginRectangle = getRectangleByNode(beginNode);
     const endRectangle = getRectangleByNode(endNode);
 
     beginX = beginNode.x + beginNode.width / 2;
-    beginY = isChildUp(node, child) ? beginRectangle.y : beginRectangle.y + beginRectangle.height;
-    endX = node.left ? endNode.x + endNode.hGap + endRectangle.width : endNode.x + endNode.hGap;
+    beginY = isChildUp(parent, child) ? beginRectangle.y : beginRectangle.y + beginRectangle.height;
+    endX = parent.left ? endNode.x + endNode.hGap + endRectangle.width : endNode.x + endNode.hGap;
     endY = isUnderlineShape ? endNode.y + endNode.height - endNode.vGap : endNode.y + endNode.height / 2;
 
-    let plusMinus = isChildUp(node, child) ? (node.left ? [-1, -1] : [1, -1]) : node.left ? [-1, 1] : [1, 1];
+    let plusMinus = isChildUp(parent, child) ? (parent.left ? [-1, -1] : [1, -1]) : parent.left ? [-1, 1] : [1, 1];
 
     let curve: Point[] = [
         [beginX, beginY],
@@ -46,7 +49,7 @@ export function drawIndentedLink(
         isUnderlineShape && needDrawUnderline ? [endX + (endNode.width - endNode.hGap * 2) * plusMinus[0], endY] : [endX, endY],
         isUnderlineShape && needDrawUnderline ? [endX + (endNode.width - endNode.hGap * 2) * plusMinus[0], endY] : [endX, endY]
     ];
-
+    const strokeLineDash = getStrokeLineDash(strokeStyle, branchWidth);
     if (branchShape === BranchShape.polyline) {
         const polylinePoints = [
             [beginX, beginY],
@@ -55,9 +58,9 @@ export function drawIndentedLink(
             isUnderlineShape && needDrawUnderline ? [endX + (endNode.width - endNode.hGap * 2) * plusMinus[0], endY] : [endX, endY]
         ];
 
-        return drawLinearPath(polylinePoints as Point[], { stroke: branchColor, strokeWidth: branchWidth });
+        return drawLinearPath(polylinePoints as Point[], { stroke: branchColor, strokeWidth: branchWidth, strokeLineDash });
     }
 
     const points = pointsOnBezierCurves(curve, 0.001);
-    return drawBezierPath(points as Point[], { stroke: branchColor, strokeWidth: branchWidth });
+    return drawBezierPath(points as Point[], { stroke: branchColor, strokeWidth: branchWidth, strokeLineDash });
 }

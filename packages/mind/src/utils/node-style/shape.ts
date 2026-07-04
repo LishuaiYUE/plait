@@ -5,8 +5,9 @@ import { getDefaultBranchColor, getMindThemeColor } from './branch';
 import { AbstractNode } from '@plait/layouts';
 import { isChildOfAbstract } from '../abstract/common';
 import { DefaultAbstractNodeStyle, DefaultNodeStyle } from '../../constants/node-style';
+import { StrokeStyle } from '@plait/common';
 
-export const getStrokeByMindElement = (board: PlaitBoard, element: MindElement) => {
+export const getStrokeColorByElement = (board: PlaitBoard, element: MindElement) => {
     if (PlaitMind.isMind(element)) {
         const defaultRootStroke = getMindThemeColor(board).rootFill;
         return element.strokeColor || defaultRootStroke;
@@ -17,6 +18,10 @@ export const getStrokeByMindElement = (board: PlaitBoard, element: MindElement) 
     }
 
     return getAvailableProperty(board, element, 'strokeColor') || getDefaultBranchColor(board, element);
+};
+
+export const getStrokeStyleByElement = (board: PlaitBoard, element: MindElement) => {
+    return element.strokeStyle || StrokeStyle.solid;
 };
 
 export const getStrokeWidthByElement = (board: PlaitBoard, element: MindElement) => {
@@ -31,7 +36,7 @@ export const getFillByElement = (board: PlaitBoard, element: MindElement) => {
         return element.fill;
     }
     const defaultRootFill = getMindThemeColor(board).rootFill;
-    return element.isRoot ? defaultRootFill : DefaultNodeStyle.shape.fill;
+    return PlaitMind.isMind(element) ? defaultRootFill : DefaultNodeStyle.shape.fill;
 };
 
 export const getShapeByElement = (board: PlaitBoard, element: MindElement): MindElementShape => {

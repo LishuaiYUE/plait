@@ -1,6 +1,6 @@
 {
   "name": "@plait/flow",
-  "version": "0.62.0-next.6",
+  "version": "0.93.2",
   "peerDependencies": {},
   "dependencies": {
     "tslib": "^2.3.0"
@@ -12,5 +12,13 @@
     "./styles/*": {
       "sass": "./styles/*"
     }
-  }
+  },
+  "license": "MIT",
+  "repository": "https://github.com/worktile/plait",
+  "keywords": [
+    "node-based",
+    "flow process",
+    "framework",
+    "open-source"
+  ]
 }

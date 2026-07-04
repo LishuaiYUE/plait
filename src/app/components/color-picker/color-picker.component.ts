@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgFor, NgClass, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
     selector: 'app-color-picker',
@@ -8,8 +8,7 @@ import { NgFor, NgClass, NgStyle } from '@angular/common';
     host: {
         class: 'app-color-picker'
     },
-    standalone: true,
-    imports: [NgFor, NgClass, NgStyle]
+    imports: [NgClass, NgStyle]
 })
 export class AppColorPickerComponent {
     @Input() defaultColor!: string[];

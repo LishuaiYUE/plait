@@ -11,6 +11,7 @@ packages=(
   "layouts"
   "mind"
   "text-plugins"
+  "graph-viz"
   "angular-text"
   "angular-board"
 )

@@ -1,6 +1,6 @@
 import { PlaitBoard, PlaitElement, Point } from '@plait/core';
-import { EngineExtraData } from './engine';
 import { ParagraphElement } from '@plait/common';
+import { DrawOptions } from './engine';
 
 export enum TableSymbols {
     table = 'table'
@@ -36,11 +36,10 @@ export interface PlaitTableCell {
     colspan?: number;
     rowspan?: number;
     text?: PlaitTableCellParagraph;
-    textHeight?: number;
     fill?: string;
 }
 
-export interface PlaitTableDrawOptions extends EngineExtraData {
+export interface PlaitTableDrawOptions extends DrawOptions {
     element: PlaitTable;
 }
 

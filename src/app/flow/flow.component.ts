@@ -1,10 +1,10 @@
-import { Component, OnInit, Injector, HostBinding, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Injector, HostBinding, ChangeDetectorRef, inject } from '@angular/core';
 import { BoardTransforms, PlaitBoardOptions, PlaitElement, Viewport } from '@plait/core';
 import { withFlow } from '@plait/flow';
 import { withCommon } from './plugins/with-common';
 import { withDraw } from './plugins/with-draw';
 import { CustomBoard } from './interfaces/board';
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { mockBasicEdges, mockMarkEdges, mockIconEdges, mockShapeEdges } from './flow-edge-data';
 import { mockBasicNodes, mockCustomNodes, mockCustomHandles, mockUndeletableNodes } from './flow-node-data';
 import { mockFlowData } from './flow-data';
@@ -15,10 +15,12 @@ const LOCAL_DATA_KEY = 'plait-board-flow-change-data';
 @Component({
     selector: 'app-basic-flow',
     templateUrl: './flow.component.html',
-    standalone: true,
-    imports: [PlaitBoardComponent, NgFor, NgClass]
+    imports: [PlaitBoardComponent, NgClass]
 })
 export class BasicFlowComponent implements OnInit {
+    private injector = inject(Injector);
+    private cdr = inject(ChangeDetectorRef);
+
     @HostBinding('class') hostClass = 'app-flow';
 
     plugins = [withCommon, withFlow, withDraw];
@@ -82,7 +84,7 @@ export class BasicFlowComponent implements OnInit {
         }
     ];
 
-    constructor(private injector: Injector, private cdr: ChangeDetectorRef) {}
+    constructor() {}
 
     ngOnInit(): void {
         this.value = mockFlowData;
@@ -96,7 +98,7 @@ export class BasicFlowComponent implements OnInit {
         localStorage.setItem(`${LOCAL_DATA_KEY}`, data);
     }
 
-    plaitBoardInitialized(value: CustomBoard) {
+    initialized(value: CustomBoard) {
         this.board = value;
         this.board.injector = this.injector;
     }

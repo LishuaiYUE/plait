@@ -6,15 +6,16 @@ import {
     getNearestPointBetweenPointAndSegments,
     setStrokeLinecap
 } from '@plait/core';
-import { MultipleTextGeometryCommonTextKeys, PlaitMultipleTextGeometry, ShapeEngine } from '../../interfaces';
+import { DrawOptions, GeometryCommonTextKeys, PlaitMultipleTextGeometry, ShapeEngine } from '../../interfaces';
 import { Options } from 'roughjs/bin/core';
 import { getPolygonEdgeByConnectionPoint } from '../../utils/polygon';
 import { RectangleEngine } from '../basic-shapes/rectangle';
 import { getStrokeWidthByElement } from '../../utils';
 import { ShapeDefaultSpace } from '../../constants';
-import { PlaitDrawShapeText } from '../../generators/text.generator';
+import { DrawTextInfo } from '../../generators/text.generator';
+import { getTextSize } from '../../utils/text-size';
 
-export const CombinedFragmentEngine: ShapeEngine<PlaitMultipleTextGeometry, {}, PlaitDrawShapeText> = {
+export const CombinedFragmentEngine: ShapeEngine<PlaitMultipleTextGeometry, DrawOptions, DrawTextInfo> = {
     draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
         const rs = PlaitBoard.getRoughSVG(board);
         const shape = rs.path(
@@ -29,7 +30,7 @@ export const CombinedFragmentEngine: ShapeEngine<PlaitMultipleTextGeometry, {}, 
             V${rectangle.y}
             `,
 
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
 
@@ -53,23 +54,25 @@ export const CombinedFragmentEngine: ShapeEngine<PlaitMultipleTextGeometry, {}, 
     getConnectorPoints(rectangle: RectangleClient) {
         return RectangleClient.getEdgeCenterPoints(rectangle);
     },
-    getTextRectangle(element: PlaitMultipleTextGeometry, options?: PlaitDrawShapeText) {
+    getTextRectangle(board: PlaitBoard, element: PlaitMultipleTextGeometry, options?: DrawTextInfo) {
         const elementRectangle = RectangleClient.getRectangleByPoints(element.points!);
         const strokeWidth = getStrokeWidthByElement(element);
-        const textHeight = element.texts?.find(item => item.key === options?.key)?.textHeight!;
-        if (options?.key === MultipleTextGeometryCommonTextKeys.name) {
+        const textInfo = element.texts?.find((item) => item.id === options?.id);
+        if (options?.id === GeometryCommonTextKeys.name && textInfo) {
             const width = elementRectangle.width / 3 - 8 - ShapeDefaultSpace.rectangleAndText - strokeWidth;
+            const textSize = getTextSize(board, textInfo!.text, width);
             return {
-                height: textHeight,
+                height: textSize.height,
                 width: width > 0 ? width : 0,
                 x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth,
-                y: elementRectangle.y + (25 - textHeight) / 2
+                y: elementRectangle.y + (25 - textSize.height) / 2
             };
         }
-        if (options?.key === MultipleTextGeometryCommonTextKeys.content) {
+        if (options?.id === GeometryCommonTextKeys.content && textInfo) {
             const width = elementRectangle.width - ShapeDefaultSpace.rectangleAndText * 2 - strokeWidth * 2;
+            const textSize = getTextSize(board, textInfo!.text, width);
             return {
-                height: textHeight,
+                height: textSize.height,
                 width: width > 0 ? width : 0,
                 x: elementRectangle.x + ShapeDefaultSpace.rectangleAndText + strokeWidth,
                 y: elementRectangle.y + 25 + ShapeDefaultSpace.rectangleAndText + strokeWidth

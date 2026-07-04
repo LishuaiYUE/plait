@@ -32,7 +32,7 @@ export const setStrokeLinecap = (g: SVGGElement, value: 'round' | 'square') => {
 };
 
 export const setPathStrokeLinecap = (g: SVGGElement, value: 'round' | 'square') => {
-    g.querySelectorAll('path').forEach(path => {
+    g.querySelectorAll('path').forEach((path) => {
         path.setAttribute('stroke-linecap', value);
     });
 };
@@ -84,4 +84,8 @@ export const isSecondaryPointer = (event: MouseEvent) => {
 
 export const isMainPointer = (event: MouseEvent) => {
     return event.button === POINTER_BUTTON.MAIN;
+};
+
+export const isWheelPointer = (event: MouseEvent) => {
+    return event.button === POINTER_BUTTON.WHEEL;
 };

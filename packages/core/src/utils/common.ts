@@ -1,6 +1,5 @@
 import { Path, PlaitElement } from '../interfaces';
 import { PlaitBoard } from '../interfaces/board';
-import { Subscription, timer } from 'rxjs';
 import { NodeTransforms } from '../transforms/node';
 import { sortElements } from './position';
 
@@ -39,21 +38,25 @@ export const throttleRAF = (board: PlaitBoard, key: string, fn: () => void) => {
     scheduleFunc();
 };
 
-export const debounce = (func: () => void, wait: number, options?: { leading: boolean }) => {
-    let timerSubscription: Subscription | null = null;
-    return () => {
-        if (timerSubscription && !timerSubscription.closed) {
-            timerSubscription.unsubscribe();
-            timerSubscription = timer(wait).subscribe(() => {
-                func();
-            });
+export const debounce = <T>(func: (args?: T) => void, wait: number, options?: { leading: boolean }) => {
+    let timeoutId: any = null;
+    return (args?: T) => {
+        if (timeoutId !== null) {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                func(args);
+                timeoutId = null;
+            }, wait);
         } else {
             if (options?.leading) {
-                timer(0).subscribe(() => {
-                    func();
-                });
+                func(args);
             }
-            timerSubscription = timer(wait).subscribe();
+            timeoutId = setTimeout(() => {
+                timeoutId = null;
+                if (!options?.leading) {
+                    func(args);
+                }
+            }, wait);
         }
     };
 };
@@ -61,10 +64,10 @@ export const debounce = (func: () => void, wait: number, options?: { leading: bo
 export const getElementsIndices = (board: PlaitBoard, elements: PlaitElement[]): number[] => {
     sortElements(board, elements);
     return elements
-        .map(item => {
-            return board.children.map(item => item.id).indexOf(item.id);
+        .map((item) => {
+            return board.children.map((item) => item.id).indexOf(item.id);
         })
-        .filter(item => item >= 0);
+        .filter((item) => item >= 0);
 };
 
 export const getHighestIndexOfElement = (board: PlaitBoard, elements: PlaitElement[]) => {
@@ -74,7 +77,7 @@ export const getHighestIndexOfElement = (board: PlaitBoard, elements: PlaitEleme
 
 export const moveElementsToNewPath = (board: PlaitBoard, moveOptions: MoveNodeOption[]) => {
     moveOptions
-        .map(item => {
+        .map((item) => {
             const path = PlaitBoard.findPath(board, item.element);
             const ref = board.pathRef(path);
             return () => {
@@ -82,7 +85,7 @@ export const moveElementsToNewPath = (board: PlaitBoard, moveOptions: MoveNodeOp
                 ref.unref();
             };
         })
-        .forEach(action => {
+        .forEach((action) => {
             action();
         });
 };

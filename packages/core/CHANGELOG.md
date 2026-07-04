@@ -1,5 +1,603 @@
 # plait
 
+## 0.93.2
+
+## 0.93.1
+
+## 0.93.0
+
+### Minor Changes
+
+-   [`983b4158099ed1e68815e3870eaa0a9c200dfbaf`](https://github.com/worktile/plait/commit/983b4158099ed1e68815e3870eaa0a9c200dfbaf) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - getOneHitElement support hitPoint
+
+### Patch Changes
+
+-   [`44af7bf22fab90a4f0d061c915245ea1567b6c7f`](https://github.com/worktile/plait/commit/44af7bf22fab90a4f0d061c915245ea1567b6c7f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - allow move selected element when user hit selected rectangle
+
+-   [`980db5a805fa80522665c4865ba6dfc14e75d48f`](https://github.com/worktile/plait/commit/980db5a805fa80522665c4865ba6dfc14e75d48f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify HIT_DISTANCE_BUFFER to 2 to improve hit accuracy #WIK-19887
+
+    if hit multiple elements, return the first element in flow chart scenario, so reduce the buffer to 2
+
+-   [`44af7bf22fab90a4f0d061c915245ea1567b6c7f`](https://github.com/worktile/plait/commit/44af7bf22fab90a4f0d061c915245ea1567b6c7f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - modify HIT_DISTANCE_BUFFER to 3 to avoid ellipse hit is difficult
+
+## 0.92.3
+
+## 0.92.2
+
+## 0.92.1
+
+### Patch Changes
+
+-   [#1133](https://github.com/worktile/plait/pull/1133) [`de069e80bafc965d47b0ea35f410e0ecf99d9dfc`](https://github.com/worktile/plait/commit/de069e80bafc965d47b0ea35f410e0ecf99d9dfc) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `toSvg` method to export svg file and optimize export style
+
+## 0.92.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.92.0-next.2
+
+## 0.92.0-next.1
+
+## 0.92.0-next.0
+
+### Minor Changes
+
+-   [#1129](https://github.com/worktile/plait/pull/1129) [`76e419d4fda3d836fdb6177ceb12cc5b0d617e74`](https://github.com/worktile/plait/commit/76e419d4fda3d836fdb6177ceb12cc5b0d617e74) Thanks [@HandsomeButterball](https://github.com/HandsomeButterball)! - upgrade angular v20
+
+## 0.91.0
+
+## 0.90.1
+
+### Patch Changes
+
+-   [#1127](https://github.com/worktile/plait/pull/1127) [`b0bbe1a90981c28724dd9d407b33b3cfc16f290d`](https://github.com/worktile/plait/commit/b0bbe1a90981c28724dd9d407b33b3cfc16f290d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support cache clipboard data on paste
+
+## 0.90.0
+
+## 0.89.2
+
+## 0.89.1
+
+## 0.89.0
+
+### Minor Changes
+
+-   [#1096](https://github.com/worktile/plait/pull/1096) [`ce3691736765c896343b153b3a6a82a10ab9b852`](https://github.com/worktile/plait/commit/ce3691736765c896343b153b3a6a82a10ab9b852) Thanks [@NaoCoding](https://github.com/NaoCoding)! - adding secondary mouse button as a method of viewport moving
+
+## 0.88.1
+
+## 0.88.0
+
+## 0.87.0
+
+### Minor Changes
+
+-   [#1089](https://github.com/worktile/plait/pull/1089) [`2f397b76631e88df5b4c4b52529a3c9f641ce66c`](https://github.com/worktile/plait/commit/2f397b76631e88df5b4c4b52529a3c9f641ce66c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix alt duplicating issue on including collapsed mind node
+
+### Patch Changes
+
+-   [`2ea6e5caacfc16a20272780e62d146a08b2ec533`](https://github.com/worktile/plait/commit/2ea6e5caacfc16a20272780e62d146a08b2ec533) Thanks [@NaoCoding](https://github.com/NaoCoding)! - fix infinite pendingNodesG appear when holding alt key
+
+## 0.87.0-next.1
+
+### Minor Changes
+
+-   [#1089](https://github.com/worktile/plait/pull/1089) [`2f397b76631e88df5b4c4b52529a3c9f641ce66c`](https://github.com/worktile/plait/commit/2f397b76631e88df5b4c4b52529a3c9f641ce66c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix alt duplicating issue on including collapsed mind node
+
+### Patch Changes
+
+-   [`2ea6e5caacfc16a20272780e62d146a08b2ec533`](https://github.com/worktile/plait/commit/2ea6e5caacfc16a20272780e62d146a08b2ec533) Thanks [@NaoCoding](https://github.com/NaoCoding)! - fix infinite pendingNodesG appear when holding alt key
+
+## 0.87.0-next.0
+
+## 0.86.1
+
+### Patch Changes
+
+-   [#1084](https://github.com/worktile/plait/pull/1084) [`2821f046fbe0450f250ec3a77a7ccee7329c3608`](https://github.com/worktile/plait/commit/2821f046fbe0450f250ec3a77a7ccee7329c3608) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Remove rxjs independency from plait/common、plait/core
+
+    Redraw group's boundary in onChange, which was handled by onStable mechanism (use rxjs). Since it need be handle after all others elements be handled.
+
+## 0.86.0
+
+## 0.85.0
+
+## 0.84.0
+
+## 0.83.1
+
+## 0.83.0
+
+### Minor Changes
+
+-   [#1073](https://github.com/worktile/plait/pull/1073) [`34f5a6b32955248d97d52fda5516cafb5090efc5`](https://github.com/worktile/plait/commit/34f5a6b32955248d97d52fda5516cafb5090efc5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract point-placement to common package
+    optimize flowchart's hover to preview and click to commit function
+
+## 0.82.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.82.0-next.0
+
+### Minor Changes
+
+-   [#1063](https://github.com/worktile/plait/pull/1063) [`57e2d42b0bad63bd61b86c1a918654184fcc84c1`](https://github.com/worktile/plait/commit/57e2d42b0bad63bd61b86c1a918654184fcc84c1) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - bump slate into 0.117.2 and slate-angular into 19.1.0-next.3
+
+## 0.81.3
+
+## 0.81.2
+
+## 0.81.1
+
+## 0.81.0
+
+## 0.80.0
+
+## 0.79.1
+
+### Patch Changes
+
+-   [#1060](https://github.com/worktile/plait/pull/1060) [`c513b74bdcbc78bbc102aa9ec790f386b8a9d0de`](https://github.com/worktile/plait/commit/c513b74bdcbc78bbc102aa9ec790f386b8a9d0de) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix with hand conflict when press space key
+
+## 0.79.0
+
+### Minor Changes
+
+-   [`4f1f3817fe6a033fd31c531bc4415fc213fcb74a`](https://github.com/worktile/plait/commit/4f1f3817fe6a033fd31c531bc4415fc213fcb74a) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support drop method to handle drag files to board
+
+## 0.78.2
+
+### Patch Changes
+
+-   [#1057](https://github.com/worktile/plait/pull/1057) [`5c889a1185ba0f0ca090c418016f16a8e85f2836`](https://github.com/worktile/plait/commit/5c889a1185ba0f0ca090c418016f16a8e85f2836) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - export getHitConnectionFromConnectionPoint method in @plait/draw
+    optimize the selection logic in group scene
+
+## 0.78.1
+
+### Patch Changes
+
+-   [`981912e244a929e07f50cac9d41e07c3eae18f2c`](https://github.com/worktile/plait/commit/981912e244a929e07f50cac9d41e07c3eae18f2c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve first function to avoid get collapsed mind node
+
+## 0.78.0
+
+### Minor Changes
+
+-   [#1052](https://github.com/worktile/plait/pull/1052) [`688cf253feea7902690af40ded129bd83a4469a7`](https://github.com/worktile/plait/commit/688cf253feea7902690af40ded129bd83a4469a7) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.78.0-next.0
+
+### Minor Changes
+
+-   [`af24487d0cb31303c8600aae655f5825e4c9e918`](https://github.com/worktile/plait/commit/af24487d0cb31303c8600aae655f5825e4c9e918) Thanks [@minlovehua](https://github.com/minlovehua)! - bump angular into v19.x
+
+## 0.77.3
+
+### Patch Changes
+
+-   [#1047](https://github.com/worktile/plait/pull/1047) [`989635090d9e1d3cbfaa00eb746697c6ab981e54`](https://github.com/worktile/plait/commit/989635090d9e1d3cbfaa00eb746697c6ab981e54) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the issue of characters being copied to the clipboard with quotation marks included at the beginning and end
+
+-   [`b1eb05c3771dbb4f0ee76da71268dc3cea9d70bc`](https://github.com/worktile/plait/commit/b1eb05c3771dbb4f0ee76da71268dc3cea9d70bc) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct improve package dependencies
+
+-   [#1046](https://github.com/worktile/plait/pull/1046) [`f511044e084a0a9620ec5d2ce49aa0f73ae03c59`](https://github.com/worktile/plait/commit/f511044e084a0a9620ec5d2ce49aa0f73ae03c59) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix the image layer issue on export as image
+    fix hitting check issue for multiple image
+
+## 0.77.2
+
+## 0.77.1
+
+### Patch Changes
+
+-   [#1037](https://github.com/worktile/plait/pull/1037) [`73b525478594edeece159dc2c5cde4c1af3b17d7`](https://github.com/worktile/plait/commit/73b525478594edeece159dc2c5cde4c1af3b17d7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update viewport only new content bbox exceed current bbox to reduce jitter effect
+
+## 0.77.0
+
+### Minor Changes
+
+-   [#1036](https://github.com/worktile/plait/pull/1036) [`5dae213e846693a1a7207d1787bf2ea25d055495`](https://github.com/worktile/plait/commit/5dae213e846693a1a7207d1787bf2ea25d055495) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support i18n method, you can config default text like below code:
+
+    ```
+    const { getI18nValue } = newBoard;
+    newBoard.getI18nValue = (key) => {
+        if (key === DrawI18nKey.lineText) {
+            return 'Text';
+        }
+        if (key === DrawI18nKey.geometryText) {
+            return 'Text';
+        }
+        if (key === MindI18nKey.mindCentralText) {
+            return 'Central Topic';
+        }
+        return getI18nValue(key);
+    };
+    ```
+
+## 0.76.0
+
+### Minor Changes
+
+-   [#1026](https://github.com/worktile/plait/pull/1026) [`f10341585a84d6f0509099ecb247f54fbdaf9f90`](https://github.com/worktile/plait/commit/f10341585a84d6f0509099ecb247f54fbdaf9f90) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support active host to remain handles size、selection stroke width consistent across zoom levels
+
+### Patch Changes
+
+-   [#1032](https://github.com/worktile/plait/pull/1032) [`94d428b814c1c5c5c78d00bf02599d1dc1389170`](https://github.com/worktile/plait/commit/94d428b814c1c5c5c78d00bf02599d1dc1389170) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix arrow-line-auto-complete reaction and interaction issue when element has angle
+
+-   [#1025](https://github.com/worktile/plait/pull/1025) [`95f3d4962653090de36eddaefcb5449c099debd7`](https://github.com/worktile/plait/commit/95f3d4962653090de36eddaefcb5449c099debd7) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support long-press wheel to enter hand mode
+
+-   [#1031](https://github.com/worktile/plait/pull/1031) [`aaf13a9712e3cd9c349f39ab6ef12a4678b0de10`](https://github.com/worktile/plait/commit/aaf13a9712e3cd9c349f39ab6ef12a4678b0de10) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix toActivePointFromViewBoxPoint to handle the case when board is not filled all screen
+
+## 0.75.0
+
+### Minor Changes
+
+-   [#1005](https://github.com/worktile/plait/pull/1005) [`f4da3d2859e94e6717965ac8672dee43325ef8e8`](https://github.com/worktile/plait/commit/f4da3d2859e94e6717965ac8672dee43325ef8e8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Optimize pointer interactions across devices:
+
+    For mobile devices:
+    Long-press triggers drag selection
+    Normal movement triggers scroll interaction (while pointer remains in selection mode)
+
+    For desktop devices:
+    Selection pointer enables drag selection
+    Hand pointer triggers scrolling
+
+    优化各端设备的指针交互：
+
+    移动端：
+    长按触发拖选功能
+    普通移动触发滚动（保持 selection 指针状态）
+
+    桌面端：
+    selection 指针用于拖选
+    hand 指针用于滚动
+
+-   [#1010](https://github.com/worktile/plait/pull/1010) [`26973adcd4eda7143649e9b97b5a14e7628bd264`](https://github.com/worktile/plait/commit/26973adcd4eda7143649e9b97b5a14e7628bd264) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support to hit the could'stroke precisely
+
+-   [#1000](https://github.com/worktile/plait/pull/1000) [`e4beff4e225bfc8c2b4e4e2ba41d176e18bc859f`](https://github.com/worktile/plait/commit/e4beff4e225bfc8c2b4e4e2ba41d176e18bc859f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - updateZoom support center param
+
+-   [#1002](https://github.com/worktile/plait/pull/1002) [`95947209ecea26c7686f037a0e364e8d5403e0a2`](https://github.com/worktile/plait/commit/95947209ecea26c7686f037a0e364e8d5403e0a2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - override isHit method support isStrict param
+
+### Patch Changes
+
+-   [`fdd95ff7f4eff74126aae17e956df9c17bfdc2c2`](https://github.com/worktile/plait/commit/fdd95ff7f4eff74126aae17e956df9c17bfdc2c2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prevent with-hand action when pointer hit element target（mobile device）
+
+-   [`bb8e77285e9fd07d1b14e3b4131a2e90e92d5c4c`](https://github.com/worktile/plait/commit/bb8e77285e9fd07d1b14e3b4131a2e90e92d5c4c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - clear timeout when pointerUp in with-selection（mobile device）
+
+-   [`b2c3011b725a2228c5f24bf0d700d71e4bff1d85`](https://github.com/worktile/plait/commit/b2c3011b725a2228c5f24bf0d700d71e4bff1d85) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - reduce setTimeout time on mobile device to make drag selection more easy
+
+-   [`a7a2f07ae73fbe34dfbf09a14e14540754ea8e6c`](https://github.com/worktile/plait/commit/a7a2f07ae73fbe34dfbf09a14e14540754ea8e6c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isLineHitLine method result when the fist line and the second line both are point
+
+-   [`a0750d84cd8cd8c45cf0efb3757832265d508321`](https://github.com/worktile/plait/commit/a0750d84cd8cd8c45cf0efb3757832265d508321) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix drag selection on desktop
+
+-   [`d922ee51fd89d666c1ecc77f3d1f0b181e88d493`](https://github.com/worktile/plait/commit/d922ee51fd89d666c1ecc77f3d1f0b181e88d493) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - define DRAG_SELECTION_PRESS_AND_MOVE_BUFFER to make drag selection more easy on mobile device
+
+-   [#1007](https://github.com/worktile/plait/pull/1007) [`fc8912ce4d8f69460358d823ab6363bb85fda77b`](https://github.com/worktile/plait/commit/fc8912ce4d8f69460358d823ab6363bb85fda77b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct isLineHitRectangle logic when points length is only 1
+
+-   [#1007](https://github.com/worktile/plait/pull/1007) [`fc8912ce4d8f69460358d823ab6363bb85fda77b`](https://github.com/worktile/plait/commit/fc8912ce4d8f69460358d823ab6363bb85fda77b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - handle the issue when element only has one point
+
+-   [#1006](https://github.com/worktile/plait/pull/1006) [`dd32f2e18abafcb65428d8ac093fc5e667f099d9`](https://github.com/worktile/plait/commit/dd32f2e18abafcb65428d8ac093fc5e667f099d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add overridable normalizeElement method to fix incorrect data before element initialization
+
+    add normalizeElement method for mind element to fix incorrect data and widthAndHeight
+
+-   [#1023](https://github.com/worktile/plait/pull/1023) [`a181c47de84345a5dbb50bcedd3cd1a195fec243`](https://github.com/worktile/plait/commit/a181c47de84345a5dbb50bcedd3cd1a195fec243) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix table hit issue and geometry can not hitting when drag selection at left edge
+
+-   [`41f0fdd23a75022e48af04d3916fb2749f566c0e`](https://github.com/worktile/plait/commit/41f0fdd23a75022e48af04d3916fb2749f566c0e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isLineHitLine
+
+## 0.75.0-next.9
+
+## 0.75.0-next.8
+
+### Minor Changes
+
+-   [#1010](https://github.com/worktile/plait/pull/1010) [`26973adcd4eda7143649e9b97b5a14e7628bd264`](https://github.com/worktile/plait/commit/26973adcd4eda7143649e9b97b5a14e7628bd264) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support to hit the could'stroke precisely
+
+### Patch Changes
+
+-   [#1007](https://github.com/worktile/plait/pull/1007) [`fc8912ce4d8f69460358d823ab6363bb85fda77b`](https://github.com/worktile/plait/commit/fc8912ce4d8f69460358d823ab6363bb85fda77b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct isLineHitRectangle logic when points length is only 1
+
+-   [#1007](https://github.com/worktile/plait/pull/1007) [`fc8912ce4d8f69460358d823ab6363bb85fda77b`](https://github.com/worktile/plait/commit/fc8912ce4d8f69460358d823ab6363bb85fda77b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - handle the issue when element only has one point
+
+## 0.75.0-next.7
+
+### Patch Changes
+
+-   [`41f0fdd23a75022e48af04d3916fb2749f566c0e`](https://github.com/worktile/plait/commit/41f0fdd23a75022e48af04d3916fb2749f566c0e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isLineHitLine
+
+## 0.75.0-next.6
+
+### Patch Changes
+
+-   [`a7a2f07ae73fbe34dfbf09a14e14540754ea8e6c`](https://github.com/worktile/plait/commit/a7a2f07ae73fbe34dfbf09a14e14540754ea8e6c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix isLineHitLine method result when the fist line and the second line both are point
+
+-   [#1006](https://github.com/worktile/plait/pull/1006) [`dd32f2e18abafcb65428d8ac093fc5e667f099d9`](https://github.com/worktile/plait/commit/dd32f2e18abafcb65428d8ac093fc5e667f099d9) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add overridable normalizeElement method to fix incorrect data before element initialization
+
+    add normalizeElement method for mind element to fix incorrect data and widthAndHeight
+
+## 0.75.0-next.5
+
+### Patch Changes
+
+-   [`b2c3011b725a2228c5f24bf0d700d71e4bff1d85`](https://github.com/worktile/plait/commit/b2c3011b725a2228c5f24bf0d700d71e4bff1d85) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - reduce setTimeout time on mobile device to make drag selection more easy
+
+## 0.75.0-next.4
+
+### Patch Changes
+
+-   [`d922ee51fd89d666c1ecc77f3d1f0b181e88d493`](https://github.com/worktile/plait/commit/d922ee51fd89d666c1ecc77f3d1f0b181e88d493) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - define DRAG_SELECTION_PRESS_AND_MOVE_BUFFER to make drag selection more easy on mobile device
+
+## 0.75.0-next.3
+
+### Patch Changes
+
+-   [`fdd95ff7f4eff74126aae17e956df9c17bfdc2c2`](https://github.com/worktile/plait/commit/fdd95ff7f4eff74126aae17e956df9c17bfdc2c2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - prevent with-hand action when pointer hit element target（mobile device）
+
+## 0.75.0-next.2
+
+### Patch Changes
+
+-   [`bb8e77285e9fd07d1b14e3b4131a2e90e92d5c4c`](https://github.com/worktile/plait/commit/bb8e77285e9fd07d1b14e3b4131a2e90e92d5c4c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - clear timeout when pointerUp in with-selection（mobile device）
+
+-   [`a0750d84cd8cd8c45cf0efb3757832265d508321`](https://github.com/worktile/plait/commit/a0750d84cd8cd8c45cf0efb3757832265d508321) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - fix drag selection on desktop
+
+## 0.75.0-next.1
+
+### Minor Changes
+
+-   [#1005](https://github.com/worktile/plait/pull/1005) [`f4da3d2859e94e6717965ac8672dee43325ef8e8`](https://github.com/worktile/plait/commit/f4da3d2859e94e6717965ac8672dee43325ef8e8) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Optimize pointer interactions across devices:
+
+    For mobile devices:
+    Long-press triggers drag selection
+    Normal movement triggers scroll interaction (while pointer remains in selection mode)
+
+    For desktop devices:
+    Selection pointer enables drag selection
+    Hand pointer triggers scrolling
+
+    优化各端设备的指针交互：
+
+    移动端：
+    长按触发拖选功能
+    普通移动触发滚动（保持 selection 指针状态）
+
+    桌面端：
+    selection 指针用于拖选
+    hand 指针用于滚动
+
+## 0.75.0-next.0
+
+### Minor Changes
+
+-   [#1000](https://github.com/worktile/plait/pull/1000) [`e4beff4e225bfc8c2b4e4e2ba41d176e18bc859f`](https://github.com/worktile/plait/commit/e4beff4e225bfc8c2b4e4e2ba41d176e18bc859f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - updateZoom support center param
+
+-   [#1002](https://github.com/worktile/plait/pull/1002) [`95947209ecea26c7686f037a0e364e8d5403e0a2`](https://github.com/worktile/plait/commit/95947209ecea26c7686f037a0e364e8d5403e0a2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - override isHit method support isStrict param
+
+## 0.74.0
+
+### Minor Changes
+
+-   [#996](https://github.com/worktile/plait/pull/996) [`6e52c593f`](https://github.com/worktile/plait/commit/6e52c593fb7e8a78f146e4187263c14545d97f03) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - improve redos logic to support withNewBatch handle(inspired by slate)
+
+    ref: https://github.com/ianstormtaylor/slate/pull/5747
+
+## 0.73.0
+
+## 0.72.0
+
+### Minor Changes
+
+-   [#983](https://github.com/worktile/plait/pull/983) [`5d876529f`](https://github.com/worktile/plait/commit/5d876529f0e835dc10baa17c1583961f13d3485b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract addOrCreateClipboardContext to handle addClipboardContext and createClipboardContext requirement
+
+*   [#982](https://github.com/worktile/plait/pull/982) [`23cf8e519`](https://github.com/worktile/plait/commit/23cf8e519cbd2f38371610c9d8bd7290f9e0698c) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract hasThemeChanged to PlaitPluginElementContext and all plugin apply hasThemeChanged to complete logic condition
+
+### Patch Changes
+
+-   [#987](https://github.com/worktile/plait/pull/987) [`c759b8c0b`](https://github.com/worktile/plait/commit/c759b8c0bc95023cc45624814e1cad96e7b6fb6f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - should rewrite clipboardContext after invoking addOrCreateClipboardContext
+
+## 0.71.0
+
+## 0.70.0
+
+## 0.69.2
+
+## 0.69.1
+
+### Patch Changes
+
+-   [`bc2e97230`](https://github.com/worktile/plait/commit/bc2e97230d0050fabc81bb59ad91acc6fd948068) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - using ceilToDecimal to set text width to avoid breaking line（safari/firefox `Plait 框架`）
+
+## 0.69.0
+
+### Minor Changes
+
+-   [`0f8bb0f51`](https://github.com/worktile/plait/commit/0f8bb0f51a0cd95b322712d9812a3ccd35cd47a6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove touch handle and use touchstart event to prevent container scrolling on mobile device
+
+## 0.68.0
+
+## 0.67.2
+
+### Patch Changes
+
+-   [`63b276d57`](https://github.com/worktile/plait/commit/63b276d571a7848d272101dc8119f124c69a21b3) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - extract `#333333` as `DEFAULT_COLOR` instant value
+
+## 0.67.1
+
+## 0.67.0
+
+### Patch Changes
+
+-   [`203b6c14c`](https://github.com/worktile/plait/commit/203b6c14cd61ed272703a3b96d2e9227f6799693) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename drawActiveRectangle to drawSelectionRectangle
+
+    add SELECTION_RECTANGLE_BOUNDING_CLASS_NAME for multiple select selection g
+
+*   [#968](https://github.com/worktile/plait/pull/968) [`b768be7ef`](https://github.com/worktile/plait/commit/b768be7ef9734ee33c6bbb24565efcc5eafd09d2) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use fetch to load image to resolve CORS Error(second time export img)
+
+## 0.66.1
+
+### Patch Changes
+
+-   [`875feb44e`](https://github.com/worktile/plait/commit/875feb44e97feffacdc78a0ccd46148c64aae43b) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - using ceilToDecimal to set text width to avoid breaking line(like `j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j'j`)
+
+*   [#969](https://github.com/worktile/plait/pull/969) [`14f0296c3`](https://github.com/worktile/plait/commit/14f0296c3d81360837830c77dac0d1a4a4999b7d) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - fix get isOnlySetSelection error
+
+## 0.66.0
+
+### Minor Changes
+
+-   [#967](https://github.com/worktile/plait/pull/967) [`656f53e9a`](https://github.com/worktile/plait/commit/656f53e9a80f9151b9a69273481214e084673ca6) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - performance:
+
+    1. use KEY_TO_ELEMENT_MAP cache the relation between element's key and element and use KEY_TO_ELEMENT_MAP in getElementById to optimize performance
+
+    2. add replaceSelectedElement to take the place of the new selected element
+
+## 0.65.2
+
+## 0.65.1
+
+## 0.65.0
+
+## 0.65.0-next.0
+
+## 0.64.9
+
+## 0.64.8
+
+## 0.64.7
+
+## 0.64.6
+
+## 0.64.5
+
+## 0.64.4
+
+## 0.64.3
+
+### Patch Changes
+
+-   [`ed2f0906f`](https://github.com/worktile/plait/commit/ed2f0906f242996f1486adbee802c3d0746e0a34) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Identify mind elements by the type of root node rather than the node properties
+
+    Handle the waring of drawing on element can not been identified
+
+## 0.64.2
+
+## 0.64.1
+
+### Patch Changes
+
+-   [`4cf4d521c`](https://github.com/worktile/plait/commit/4cf4d521cf33ff7ae6d74b83cc88d40399802744) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct debounce method #WIK-16088
+
+## 0.64.0
+
+## 0.63.0
+
+### Minor Changes
+
+-   [#951](https://github.com/worktile/plait/pull/951) [`332b9661d`](https://github.com/worktile/plait/commit/332b9661da9f620c607542300f0c83d8a7cbd0de) Thanks [@Xwatson](https://github.com/Xwatson)! - support board movement control
+
+*   [#953](https://github.com/worktile/plait/pull/953) [`6ec85feb5`](https://github.com/worktile/plait/commit/6ec85feb54dc3a957c838b6ce74af16e577626d8) Thanks [@Xwatson](https://github.com/Xwatson)! - add moveToCenter utility functions
+
+## 0.62.0
+
+### Minor Changes
+
+-   [#947](https://github.com/worktile/plait/pull/947) [`7dcbfcd9e`](https://github.com/worktile/plait/commit/7dcbfcd9e126283637450f23bf4953941754a78e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add try-catch to avoid the list rendering being broken and add try-catch to avoid selection being break on data is invalid. and console the error when env is debug mode.
+
+    add try-catch for initialize element-flavour in list-render
+
+    add try-catch for isHit in selected-element
+
+    add try-catch for isRectangleHit in selected-element
+
+*   [#914](https://github.com/worktile/plait/pull/914) [`92436588f`](https://github.com/worktile/plait/commit/92436588fa95557474c8ebc0c282330376622fb4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - Framework agnostic refactoring:
+
+    1. Reimplement text-manage in `@plait/common`, and remove the dependency on front-end frameworks such as Angular/React by providing an overridable method renderText
+
+    2. Provide an overridable method renderImage in `@plait/common`
+
+    3. Implement the `measureElement` method based on `canvas`, calculate the width and height of the text in Plait through the `measureText` API of `canvas`, and change all places that originally called `getTextSize` or `measureDivSize` to call `measureElement`
+
+    4. Move the part of `@plait/core` that depends on Angular to `@plait/angular-board`
+
+    ---
+
+    Framework agnostic 改造:
+
+    1. 在 `@plait/common` 中重新实现 text-manage，通过提供可重写方法 renderText 解除和 Angular/React 等前端框架的强依赖
+    2. 在 `@plait/common` 中提供可重写方法 renderImage
+    3. 基于 `canvas` 实现 `measureElement` 方法，通过 `canvas` 的 `measureText` API 计算 Plait 中文本的宽和高，将原本调用 `getTextSize` 或者 `measureDivSize` 的地方全部改为调用 `measureElement`
+    4. 将 `@plait/core` 中依赖 Angular 的部分移入 `@plait/angular-board`
+
+-   [#922](https://github.com/worktile/plait/pull/922) [`0e1ddecc4`](https://github.com/worktile/plait/commit/0e1ddecc45b76f4093944d340bfe5670a80e2b1b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - refactor getHitElementByPoint return value
+
+    add getHitElement to board, the hit element is determined by the plugin
+
+### Patch Changes
+
+-   [`ec00cb4f4`](https://github.com/worktile/plait/commit/ec00cb4f4c3cff6fbab7ed7ab67ef48e3efb47ee) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `isPreventClearSelection` in WithSelectionPluginOptions(with-selection)
+
+    extract `getSelectionOptions` and `setSelectionOptions` to set/get options of selection
+
+    rename `isMultipleSelection` to `isMultiple` in WithSelectionPluginOptions(with-selection)
+
+    rename `WithPluginOptions` to `WithSelectionPluginOptions` and rename `PlaitPluginOptions` to `WithPluginOptions`
+
+*   [`aa8ce9692`](https://github.com/worktile/plait/commit/aa8ce9692508bcf34d9d233f83086af5a8088006) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - remove 'plait-image-container' from image-base.component
+
+    remove the dependency of className('plait-image-container') from @plait/core
+
+-   [#928](https://github.com/worktile/plait/pull/928) [`e85f1bf5e`](https://github.com/worktile/plait/commit/e85f1bf5e3c8c54475ce29b3e15a553c2e888510) Thanks [@MissLixf](https://github.com/MissLixf)! - fix interface geometry paste error
+
+*   [`7625c6cb2`](https://github.com/worktile/plait/commit/7625c6cb228fa66a408b00997a7b81d5fd9d8d6d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update peerDependencies
+
+-   [`e119a46ba`](https://github.com/worktile/plait/commit/e119a46ba70fe22f18718492774db3d9e9b6b780) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - should use hasSetSelectionOperation(not isSetSelectionOperation) in withSelection
+
+*   [`38ad91d93`](https://github.com/worktile/plait/commit/38ad91d9346f6ef39eddb264ddaa293bf219f93f) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add isSetSelectionOperation and isSetThemeOperation in operation interface
+
+    remove add/remove className in updatePointerType and add className in angular-board component
+
+## 0.62.0-next.10
+
+### Patch Changes
+
+-   [`ec00cb4f4`](https://github.com/worktile/plait/commit/ec00cb4f4c3cff6fbab7ed7ab67ef48e3efb47ee) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - support `isPreventClearSelection` in WithSelectionPluginOptions(with-selection)
+
+    extract `getSelectionOptions` and `setSelectionOptions` to set/get options of selection
+
+    rename `isMultipleSelection` to `isMultiple` in WithSelectionPluginOptions(with-selection)
+
+    rename `WithPluginOptions` to `WithSelectionPluginOptions` and rename `PlaitPluginOptions` to `WithPluginOptions`
+
+## 0.62.0-next.9
+
+### Patch Changes
+
+-   [`7625c6cb2`](https://github.com/worktile/plait/commit/7625c6cb228fa66a408b00997a7b81d5fd9d8d6d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update peerDependencies
+
+## 0.62.0-next.8
+
+### Minor Changes
+
+-   [#947](https://github.com/worktile/plait/pull/947) [`7dcbfcd9e`](https://github.com/worktile/plait/commit/7dcbfcd9e126283637450f23bf4953941754a78e) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add try-catch to avoid the list rendering being broken and add try-catch to avoid selection being break on data is invalid. and console the error when env is debug mode.
+
+    add try-catch for initialize element-flavour in list-render
+
+    add try-catch for isHit in selected-element
+
+    add try-catch for isRectangleHit in selected-element
+
+## 0.62.0-next.7
+
+### Minor Changes
+
+-   [#922](https://github.com/worktile/plait/pull/922) [`0e1ddecc4`](https://github.com/worktile/plait/commit/0e1ddecc45b76f4093944d340bfe5670a80e2b1b) Thanks [@huanhuanwa](https://github.com/huanhuanwa)! - refactor getHitElementByPoint return value
+
+    add getHitElement to board, the hit element is determined by the plugin
+
+### Patch Changes
+
+-   [#928](https://github.com/worktile/plait/pull/928) [`e85f1bf5e`](https://github.com/worktile/plait/commit/e85f1bf5e3c8c54475ce29b3e15a553c2e888510) Thanks [@MissLixf](https://github.com/MissLixf)! - fix interface geometry paste error
+
 ## 0.62.0-next.6
 
 ## 0.62.0-next.5
@@ -537,7 +1135,7 @@
 
 ### Minor Changes
 
--   [`07eaf04d`](https://github.com/worktile/plait/commit/07eaf04d7a74f1b9fc67e5822ba01bf5e7e8e469) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add afterChange method and move the timing of plaitChange event trigging to afterChange
+-   [`07eaf04d`](https://github.com/worktile/plait/commit/07eaf04d7a74f1b9fc67e5822ba01bf5e7e8e469) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - add afterChange method and move the timing of change event trigging to afterChange
     overriding the afterChange method of board can handle some things between the component update and the component triggering the change event.
 
 *   [`e90c5c21`](https://github.com/worktile/plait/commit/e90c5c2192807eae2b6d6d7c230bc4e979d4c863) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - correct getGapCenter method logic, add note for a-star
@@ -706,7 +1304,7 @@
 
 *   [`3f8d541a`](https://github.com/worktile/plait/commit/3f8d541a6b7fa2257e42ce9048f9e4eff8f255e4) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - select elements which were inserted from clipboard
 
--   [`c49f5ec1`](https://github.com/worktile/plait/commit/c49f5ec1d46a06770692a2b52c6bbc43c1c10786) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use plaitChange replace onChange to handle island base
+-   [`c49f5ec1`](https://github.com/worktile/plait/commit/c49f5ec1d46a06770692a2b52c6bbc43c1c10786) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use change replace onChange to handle island base
 
 *   [`bc9efa35`](https://github.com/worktile/plait/commit/bc9efa3570703860be0ef8824c20a8cb4c56d904) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - rename folder name from plait to core
 
@@ -841,7 +1439,7 @@
 
 -   [`653109b8`](https://github.com/worktile/plait/commit/653109b836c5707ec03714a801e3a167ad4e6263) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - handle touch target to avoid touch move event not fire
 
-*   [`c49f5ec1`](https://github.com/worktile/plait/commit/c49f5ec1d46a06770692a2b52c6bbc43c1c10786) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use plaitChange replace onChange to handle island base
+*   [`c49f5ec1`](https://github.com/worktile/plait/commit/c49f5ec1d46a06770692a2b52c6bbc43c1c10786) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - use change replace onChange to handle island base
 
 -   [`aedbae54`](https://github.com/worktile/plait/commit/aedbae5464735592f7682335c14cf1e733b9e46d) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - update geometry stroke width generate logic
 
@@ -1592,9 +2190,7 @@
 
 -   [#84](https://github.com/worktile/plait/pull/84) [`65e9d11`](https://github.com/worktile/plait/commit/65e9d11cc098e2898d201f3f571a579c8234c618) Thanks [@Ashy6](https://github.com/Ashy6)! - add toolbar for board
 
-*   [#84](https://github.com/worktile/plait/pull/84) [`65e9d11`](https://github.com/worktile/plait/commit/65e9d11cc098e2898d201f3f571a579c8234c618) Thanks [@Ashy6](https://github.com/Ashy6)! - 1. change plait toolbar style
-    2. support adapt of board
-    3. fix zoomIn and zoomOut
+*   [#84](https://github.com/worktile/plait/pull/84) [`65e9d11`](https://github.com/worktile/plait/commit/65e9d11cc098e2898d201f3f571a579c8234c618) Thanks [@Ashy6](https://github.com/Ashy6)! - 1. change plait toolbar style 2. support adapt of board 3. fix zoomIn and zoomOut
 
 ## 0.0.33
 

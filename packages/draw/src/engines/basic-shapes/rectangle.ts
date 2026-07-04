@@ -5,7 +5,7 @@ import { getPolygonEdgeByConnectionPoint } from '../../utils/polygon';
 
 export const RectangleEngine: ShapeEngine = {
     draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
-        return drawRectangle(board, rectangle, { ...options, fillStyle: 'solid' });
+        return drawRectangle(board, rectangle, options);
     },
     isInsidePoint(rectangle: RectangleClient, point: Point) {
         const rangeRectangle = RectangleClient.getRectangleByPoints([point, point]);

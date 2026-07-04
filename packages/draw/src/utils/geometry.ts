@@ -1,4 +1,13 @@
-import { PlaitBoard, PlaitElement, Point, RectangleClient, ThemeColorMode, getSelectedElements, idCreator } from '@plait/core';
+import {
+    PlaitBoard,
+    PlaitElement,
+    Point,
+    RectangleClient,
+    ThemeColorMode,
+    getSelectedElements,
+    idCreator,
+    toActiveRectangleFromViewBoxRectangle
+} from '@plait/core';
 import { GeometryShapes, BasicShapes, PlaitGeometry, FlowchartSymbols, UMLSymbols } from '../interfaces/geometry';
 import { Element } from 'slate';
 import {
@@ -9,6 +18,7 @@ import {
     DefaultUMLPropertyMap,
     DrawPointerType,
     DrawThemeColors,
+    GEOMETRY_NOT_CLOSED,
     GEOMETRY_WITHOUT_TEXT,
     ShapeDefaultSpace,
     getFlowchartPointers,
@@ -28,18 +38,16 @@ import {
 import { Options } from 'roughjs/bin/core';
 import { getEngine } from '../engines';
 import { getElementShape } from './shape';
-import { createLineElement } from './line/line-basic';
-import { LineMarkerType, LineShape, PlaitDrawElement, PlaitShapeElement } from '../interfaces';
-import { DefaultLineStyle } from '../constants/line';
+import { PlaitDrawElement, PlaitShapeElement } from '../interfaces';
 import { getMemorizedLatestByPointer } from './memorize';
-import { PlaitDrawShapeText, getTextManage } from '../generators/text.generator';
+import { DrawTextInfo, getTextManage } from '../generators/text.generator';
 import { createUMLClassOrInterfaceGeometryElement } from './uml';
 import { createMultipleTextGeometryElement, isMultipleTextGeometry, isMultipleTextShape } from './multi-text-geometry';
 import { DEFAULT_FONT_SIZE } from '@plait/text-plugins';
 
-export type GeometryStyleOptions = Pick<PlaitGeometry, 'fill' | 'strokeColor' | 'strokeWidth'>;
+export type GeometryStyleOptions = Pick<PlaitGeometry, 'fill' | 'strokeColor' | 'strokeWidth' | 'fillStyle'>;
 
-export type TextProperties = Partial<CustomText> & { align?: Alignment; textHeight?: number };
+export type TextProperties = Partial<CustomText> & { align?: Alignment };
 
 export const createGeometryElement = (
     shape: GeometryShapes,
@@ -64,16 +72,13 @@ export const createGeometryElementWithText = (
 ): PlaitGeometry => {
     let textOptions = {};
     let alignment: undefined | Alignment = Alignment.center;
-    let textHeight = DefaultTextProperty.height;
     if (shape === BasicShapes.text) {
         textOptions = { autoSize: true };
         alignment = undefined;
     }
     textProperties = { ...textProperties };
     textProperties?.align && (alignment = textProperties?.align);
-    textProperties?.textHeight && (textHeight = textProperties?.textHeight);
     delete textProperties?.align;
-    delete textProperties?.textHeight;
 
     return {
         id: idCreator(),
@@ -81,7 +86,6 @@ export const createGeometryElementWithText = (
         shape,
         angle: 0,
         opacity: 1,
-        textHeight,
         text: buildText(text, alignment, textProperties),
         points,
         ...textOptions,
@@ -106,7 +110,10 @@ export const createGeometryElementWithoutText = (
 };
 
 export const drawGeometry = (board: PlaitBoard, outerRectangle: RectangleClient, shape: GeometryShapes, roughOptions: Options) => {
-    return getEngine(shape).draw(board, outerRectangle, roughOptions);
+    return getEngine(shape).draw(board, outerRectangle, {
+        ...roughOptions,
+        fillStyle: roughOptions.fillStyle ?? 'solid'
+    });
 };
 
 export const getNearestPoint = (element: PlaitShapeElement, point: Point) => {
@@ -136,143 +143,16 @@ export const getDefaultUMLProperty = (shape: UMLSymbols) => {
     return DefaultUMLPropertyMap[shape];
 };
 
-export const createDefaultFlowchart = (point: Point) => {
-    const decisionProperty = getDefaultFlowchartProperty(FlowchartSymbols.decision);
-    const processProperty = getDefaultFlowchartProperty(FlowchartSymbols.process);
-    const terminalProperty = getDefaultFlowchartProperty(FlowchartSymbols.terminal);
-
-    const options = {
-        strokeWidth: DefaultBasicShapeProperty.strokeWidth
-    };
-
-    const lineOptions = {
-        strokeWidth: DefaultLineStyle.strokeWidth
-    };
-    const startElement = createGeometryElement(
-        FlowchartSymbols.terminal,
-        getDefaultGeometryPoints(FlowchartSymbols.terminal, point),
-        '开始',
-        options
-    );
-
-    const processPoint1: Point = [point[0], point[1] + terminalProperty.height / 2 + 55 + processProperty.height / 2];
-    const processElement1 = createGeometryElement(
-        FlowchartSymbols.process,
-        getDefaultGeometryPoints(FlowchartSymbols.process, processPoint1),
-        '过程',
-        options
-    );
-
-    const decisionPoint: Point = [processPoint1[0], processPoint1[1] + processProperty.height / 2 + 55 + decisionProperty.height / 2];
-    const decisionElement = createGeometryElement(
-        FlowchartSymbols.decision,
-        getDefaultGeometryPoints(FlowchartSymbols.decision, decisionPoint),
-        '判断',
-        options
-    );
-
-    const processPoint2: Point = [decisionPoint[0] + decisionProperty.width / 2 + 75 + processProperty.width / 2, decisionPoint[1]];
-    const processElement2 = createGeometryElement(
-        FlowchartSymbols.process,
-        getDefaultGeometryPoints(FlowchartSymbols.process, processPoint2),
-        '过程',
-        options
-    );
-
-    const endPoint: Point = [decisionPoint[0], decisionPoint[1] + decisionProperty.height / 2 + 95 + terminalProperty.height / 2];
-    const endElement = createGeometryElement(
-        FlowchartSymbols.terminal,
-        getDefaultGeometryPoints(FlowchartSymbols.terminal, endPoint),
-        '结束',
-        options
-    );
-
-    const line1 = createLineElement(
-        LineShape.elbow,
-        [
-            [0, 0],
-            [0, 0]
-        ],
-        { marker: LineMarkerType.none, connection: [0.5, 1], boundId: startElement.id },
-        { marker: LineMarkerType.arrow, connection: [0.5, 0], boundId: processElement1.id },
-        [],
-        lineOptions
-    );
-
-    const line2 = createLineElement(
-        LineShape.elbow,
-        [
-            [0, 0],
-            [0, 0]
-        ],
-        { marker: LineMarkerType.none, connection: [0.5, 1], boundId: processElement1.id },
-        { marker: LineMarkerType.arrow, connection: [0.5, 0], boundId: decisionElement.id },
-        [],
-        lineOptions
-    );
-
-    const line3 = createLineElement(
-        LineShape.elbow,
-        [
-            [0, 0],
-            [0, 0]
-        ],
-        { marker: LineMarkerType.none, connection: [0.5, 1], boundId: decisionElement.id },
-        { marker: LineMarkerType.arrow, connection: [0.5, 0], boundId: endElement.id },
-        [
-            {
-                text: buildText('是'),
-                position: 0.5,
-                width: 14,
-                height: 20
-            }
-        ],
-        lineOptions
-    );
-
-    const line4 = createLineElement(
-        LineShape.elbow,
-        [
-            [0, 0],
-            [0, 0]
-        ],
-        { marker: LineMarkerType.none, connection: [1, 0.5], boundId: decisionElement.id },
-        { marker: LineMarkerType.arrow, connection: [0, 0.5], boundId: processElement2.id },
-        [
-            {
-                text: buildText('否'),
-                position: 0.5,
-                width: 14,
-                height: 20
-            }
-        ],
-        lineOptions
-    );
-
-    const line5 = createLineElement(
-        LineShape.elbow,
-        [
-            [0, 0],
-            [0, 0]
-        ],
-        { marker: LineMarkerType.none, connection: [0.5, 1], boundId: processElement2.id },
-        { marker: LineMarkerType.arrow, connection: [1, 0.5], boundId: endElement.id },
-        [],
-        lineOptions
-    );
-
-    return [startElement, processElement1, decisionElement, processElement2, endElement, line1, line2, line3, line4, line5];
-};
-
-export const getAutoCompletePoints = (element: PlaitShapeElement) => {
+export const getAutoCompletePoints = (board: PlaitBoard, element: PlaitShapeElement, isToActive = false) => {
     const AutoCompleteMargin = (12 + RESIZE_HANDLE_DIAMETER / 2) * 2;
-    let rectangle = RectangleClient.getRectangleByPoints(element.points);
-    rectangle = RectangleClient.inflate(rectangle, AutoCompleteMargin);
-    return RectangleClient.getEdgeCenterPoints(rectangle);
+    const rectangle = RectangleClient.getRectangleByPoints(element.points);
+    const activeRectangle = toActiveRectangleFromViewBoxRectangle(board, rectangle);
+    const targetRectangle = isToActive ? activeRectangle : rectangle;
+    return RectangleClient.getEdgeCenterPoints(RectangleClient.inflate(targetRectangle, AutoCompleteMargin));
 };
 
 export const getHitIndexOfAutoCompletePoint = (movingPoint: Point, points: Point[]) => {
-    return points.findIndex(point => {
+    return points.findIndex((point) => {
         const movingRectangle = RectangleClient.getRectangleByPoints([movingPoint]);
         let rectangle = RectangleClient.getRectangleByPoints([point]);
         rectangle = RectangleClient.inflate(rectangle, RESIZE_HANDLE_DIAMETER);
@@ -288,9 +168,9 @@ export const getFlowchartDefaultFill = (theme: ThemeColorMode) => {
     return DrawThemeColors[theme].fill;
 };
 
-export const getTextShapeProperty = (board: PlaitBoard, text: string | Element = DefaultTextProperty.text, fontSize?: number | string) => {
+export const getTextShapeProperty = (board: PlaitBoard, text: string | Element, fontSize?: number | string) => {
     fontSize = fontSize ? Number(fontSize) : DEFAULT_FONT_SIZE;
-    const textSize = measureElement(buildText(text), { fontSize, fontFamily: DEFAULT_FONT_FAMILY });
+    const textSize = measureElement(board, buildText(text), { fontSize, fontFamily: DEFAULT_FONT_FAMILY });
     return {
         width: textSize.width + ShapeDefaultSpace.rectangleAndText * 2,
         height: textSize.height
@@ -319,23 +199,15 @@ export const getDefaultTextPoints = (board: PlaitBoard, centerPoint: Point, font
     return RectangleClient.getPoints(RectangleClient.getRectangleByCenterPoint(centerPoint, property.width, property.height));
 };
 
-export const createTextElement = (
-    board: PlaitBoard,
-    points: [Point, Point],
-    text: string | Element = DefaultTextProperty.text,
-    textHeight?: number
-) => {
+export const createTextElement = (board: PlaitBoard, points: [Point, Point], text: string | Element) => {
     const memorizedLatest = getMemorizedLatestByPointer(BasicShapes.text);
-    textHeight = textHeight ? textHeight : RectangleClient.getRectangleByPoints(points).height;
     return createGeometryElement(BasicShapes.text, points, text, memorizedLatest.geometryProperties as GeometryStyleOptions, {
-        ...memorizedLatest.textProperties,
-        textHeight
+        ...memorizedLatest.textProperties
     });
 };
 
 export const createDefaultGeometry = (board: PlaitBoard, points: [Point, Point], shape: GeometryShapes) => {
     const memorizedLatest = getMemorizedLatestByPointer(shape);
-    const textHeight = getTextShapeProperty(board, DefaultTextProperty.text, memorizedLatest.textProperties['font-size']).height;
     if (PlaitDrawElement.isUMLClassOrInterface({ shape })) {
         return createUMLClassOrInterfaceGeometryElement(board, shape, points);
     }
@@ -353,30 +225,16 @@ export const createDefaultGeometry = (board: PlaitBoard, points: [Point, Point],
                 strokeWidth: DefaultBasicShapeProperty.strokeWidth,
                 ...(memorizedLatest.geometryProperties as GeometryStyleOptions)
             },
-            { ...memorizedLatest.textProperties, textHeight }
+            { ...memorizedLatest.textProperties }
         );
     }
 };
 
-export const editText = (board: PlaitBoard, element: PlaitGeometry, text?: PlaitDrawShapeText) => {
-    const textManage = text ? getTextManage(`${element.id}-${text.key}`)! : getFirstTextManage(element);
+export const editText = (board: PlaitBoard, element: PlaitGeometry, text?: DrawTextInfo) => {
+    const textManage = text ? getTextManage(board, element, text) : getFirstTextManage(element);
     if (textManage) {
-        textManage.edit(() => {
-            // delay to avoid blinking
-            setTimeout(() => {
-                rerenderGeometryActive(board, element);
-            }, 200);
-        });
+        textManage.edit(() => {});
     }
-
-    rerenderGeometryActive(board, element);
-};
-
-export const rerenderGeometryActive = (board: PlaitBoard, element: PlaitGeometry) => {
-    const elementRef = PlaitElement.getElementRef<PlaitCommonElementRef>(element);
-    const activeGenerator = elementRef.getGenerator(ActiveGenerator.key);
-    const selected = getSelectedElements(board).includes(element);
-    activeGenerator.processDrawing(element, PlaitBoard.getElementActiveHost(board), { selected });
 };
 
 export const isGeometryIncludeText = (element: PlaitGeometry) => {
@@ -389,4 +247,8 @@ export const isSingleTextShape = (shape: GeometryShapes) => {
 
 export const isSingleTextGeometry = (element: PlaitGeometry) => {
     return PlaitDrawElement.isGeometry(element) && isSingleTextShape(element.shape);
+};
+
+export const isGeometryClosed = (element: PlaitGeometry) => {
+    return !GEOMETRY_NOT_CLOSED.includes(element.shape);
 };
