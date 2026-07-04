@@ -34,7 +34,7 @@ export const ComponentBoxEngine: ShapeEngine = {
             H${rectangle.x} Z
 
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
 
         const componentShape = ComponentEngine.draw(board, componentRectangle, options);

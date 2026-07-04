@@ -24,7 +24,7 @@ export function createPolygonEngine(options: CreateOptions): ShapeEngine {
         draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
             const points = getPoints(rectangle);
             const rs = PlaitBoard.getRoughSVG(board);
-            const polygon = rs.polygon(points, { ...options, fillStyle: 'solid' });
+            const polygon = rs.polygon(points, options);
             setStrokeLinecap(polygon, 'round');
             return polygon;
         },

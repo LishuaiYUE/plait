@@ -26,7 +26,6 @@ export const TemplateEngine: ShapeEngine = {
             rectangle.y + rectangle.height,
             {
                 ...options,
-                fillStyle: 'solid',
                 dashGap: 10,
                 strokeLineDash: [10, 10]
             },

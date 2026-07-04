@@ -56,7 +56,7 @@ export const NoteCurlyLeftEngine: ShapeEngine = {
             ${lowerCurve.endPoint[0]} ${lowerCurve.endPoint[1]}`
         ].join(' ');
 
-        const shape = rs.path(pathData, { ...options, fillStyle: 'solid', fill: 'transparent' });
+        const shape = rs.path(pathData, { ...options, fill: 'transparent' });
         setStrokeLinecap(shape, 'round');
         return shape;
     },

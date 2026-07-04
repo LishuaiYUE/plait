@@ -35,7 +35,7 @@ export const SummingJunctionEngine: ShapeEngine = createEllipseEngine({
         M${line2Points[0][0]} ${line2Points[0][1]}
         L${line2Points[1][0]} ${line2Points[1][1]}
         `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
 
         setStrokeLinecap(shape, 'round');

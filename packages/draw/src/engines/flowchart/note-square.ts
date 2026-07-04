@@ -22,7 +22,7 @@ export const NoteSquareEngine: ShapeEngine = {
                 rectangle.x + rectangle.width * 0.075
             }
            `,
-            { ...options, fillStyle: 'solid', fill: 'transparent' }
+            { ...options, fill: 'transparent' }
         );
         setStrokeLinecap(shape, 'round');
         return shape;

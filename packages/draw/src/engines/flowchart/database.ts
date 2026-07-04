@@ -31,7 +31,7 @@ export const DatabaseEngine: ShapeEngine = {
                 rectangle.y + rectangle.height - rectangle.height * 0.15
             }
             V${rectangle.y + rectangle.height * 0.15}`,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;

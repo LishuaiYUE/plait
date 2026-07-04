@@ -81,10 +81,7 @@ export const ProvidedInterfaceEngine: ShapeEngine = {
             )
         ].join(' ');
 
-        const shape = rs.path(pathData, {
-            ...options,
-            fillStyle: 'solid'
-        });
+        const shape = rs.path(pathData, options);
         setStrokeLinecap(shape, 'round');
         return shape;
     },

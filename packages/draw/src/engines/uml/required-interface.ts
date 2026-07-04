@@ -61,11 +61,7 @@ export const RequiredInterfaceEngine: ShapeEngine = {
             `M${line.startX} ${line.startY} H${line.endX}`
         ].join(' ');
 
-        const shape = rs.path(pathData, {
-            ...options,
-            fillStyle: 'solid',
-            fill: 'transparent'
-        });
+        const shape = rs.path(pathData, { ...options, fill: 'transparent' });
         setStrokeLinecap(shape, 'round');
         return shape;
     },

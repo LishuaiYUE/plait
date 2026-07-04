@@ -27,9 +27,9 @@ export const DocumentEngine: ShapeEngine = {
                 rectangle.x + rectangle.width / 2
             } ${rectangle.y + rectangle.height - rectangle.height / 9} T${rectangle.x} ${
                 rectangle.y + rectangle.height - rectangle.height / 9
-            }           
+            }
             `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;

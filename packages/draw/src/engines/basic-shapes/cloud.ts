@@ -114,7 +114,7 @@ export const CloudEngine: ShapeEngine = {
                 .join('\n') +
             ' Z';
 
-        const svgElement = rs.path(pathData, { ...options, fillStyle: 'solid' });
+        const svgElement = rs.path(pathData, options);
         setPathStrokeLinecap(svgElement, 'round');
         return svgElement;
     },

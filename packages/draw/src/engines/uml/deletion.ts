@@ -32,7 +32,6 @@ export const DeletionEngine: ShapeEngine = {
         const lines = getDeletionLines(rectangle);
         const shape = rs.path(lines.map(([from, to]) => `M${from[0]} ${from[1]} L${to[0]} ${to[1]}`).join(' '), {
             ...options,
-            fillStyle: 'solid',
             strokeWidth: 4
         });
         setStrokeLinecap(shape, 'round');

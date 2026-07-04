@@ -21,19 +21,19 @@ export const HardDiskEngine: ShapeEngine = {
     draw(board: PlaitBoard, rectangle: RectangleClient, options: Options) {
         const rs = PlaitBoard.getRoughSVG(board);
         const shape = rs.path(
-            `M${rectangle.x + rectangle.width - rectangle.width * 0.15} ${rectangle.y}  
+            `M${rectangle.x + rectangle.width - rectangle.width * 0.15} ${rectangle.y}
             A${rectangle.width * 0.15} ${rectangle.height / 2}, 0, 0, 0,${rectangle.x + rectangle.width - rectangle.width * 0.15} ${
                 rectangle.y + rectangle.height
-            } 
+            }
             A${rectangle.width * 0.15} ${rectangle.height / 2}, 0, 0, 0,${rectangle.x + rectangle.width - rectangle.width * 0.15} ${
                 rectangle.y
-            } 
+            }
             H${rectangle.x + rectangle.width * 0.15}
             A${rectangle.width * 0.15} ${rectangle.height / 2}, 0, 0, 0, ${rectangle.x + rectangle.width * 0.15} ${
                 rectangle.y + rectangle.height
             }
             H${rectangle.x + rectangle.width - rectangle.width * 0.15}`,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;

@@ -17,7 +17,7 @@ export const OrEngine: ShapeEngine = createEllipseEngine({
         M${rectangle.x + rectangle.width / 2} ${rectangle.y}
         L${rectangle.x + rectangle.width / 2} ${rectangle.y + rectangle.height}
         `,
-            { ...options, fillStyle: 'solid' }
+            options
         );
         setStrokeLinecap(shape, 'round');
         return shape;
