@@ -5,7 +5,6 @@ import {
     PlaitGroup,
     PlaitOperation,
     PlaitPluginKey,
-    PlaitPointerType,
     Point,
     RectangleClient,
     SELECTION_BORDER_COLOR,
@@ -41,7 +40,7 @@ export function clearSelectionMoving(board: PlaitBoard) {
 
 export function isHandleSelection(board: PlaitBoard) {
     const options = getSelectionOptions(board);
-    return board.pointer !== PlaitPointerType.hand && !options.isDisabledSelection && !PlaitBoard.isReadonly(board);
+    return !options.isDisabledSelection && !PlaitBoard.isReadonly(board);
 }
 
 export function hasSetSelectionOperation(board: PlaitBoard) {
