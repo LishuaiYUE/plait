@@ -13,7 +13,7 @@ import {
 } from '@plait/common';
 import { getCellsWithPoints, getCurrentRowOrColumnSize, ResizeEdge, updateColumns, updateRows } from '../utils/table';
 import { getHitRectangleResizeHandleRef } from '../utils/position/geometry';
-import { getResizeOriginPointAndHandlePoint, getResizeZoom, movePointByZoomAndOriginPoint } from './with-draw-resize';
+import { getResizeOriginPointAndHandlePoint } from './with-draw-resize';
 import { getSnapResizingRef, getSnapResizingRefOptions } from '../utils/snap-resizing';
 import { PlaitDrawElement } from '../interfaces';
 import { isSingleSelectTable } from '../utils';
@@ -41,11 +41,24 @@ export function withTableResize(board: PlaitTableBoard) {
             const hitElement = selectedElements[0];
             // debugGenerator.clear();
             if (hitElement && PlaitDrawElement.isElementByTable(hitElement)) {
+                const tableRectangle = board.getRectangle(hitElement) as RectangleClient;
+                // debugGenerator.drawRectangle(board, tableRectangle);
+                // debugGenerator.drawCircles(board, [point], 5);
+                const tableHandleRef = getHitRectangleResizeHandleRef(board, tableRectangle, point, hitElement.angle);
+                if (tableHandleRef && isCornerHandle(board, tableHandleRef.handle)) {
+                    return {
+                        element: hitElement,
+                        handle: tableHandleRef.handle,
+                        cursorClass: tableHandleRef.cursorClass,
+                        rectangle: tableRectangle
+                    };
+                }
+
                 const cells = getCellsWithPoints(board, hitElement);
                 for (let i = 0; i < cells.length; i++) {
                     const rectangle = RectangleClient.getRectangleByPoints(cells[i].points);
-                    const handleRef = getHitRectangleResizeHandleRef(board, rectangle, point, 0);
-                    if (handleRef && !isCornerHandle(board, handleRef.handle)) {
+                    const handleRef = getHitRectangleResizeHandleRef(board, rectangle, point, 0, true);
+                    if (handleRef) {
                         return {
                             element: hitElement,
                             handle: handleRef.handle,
@@ -57,19 +70,6 @@ export function withTableResize(board: PlaitTableBoard) {
                         };
                     }
                 }
-
-                const rectangle = board.getRectangle(hitElement) as RectangleClient;
-                // debugGenerator.drawRectangle(board, rectangle);
-                // debugGenerator.drawCircles(board, [point], 5);
-                const handleRef = getHitRectangleResizeHandleRef(board, rectangle, point, hitElement.angle);
-                if (handleRef && isCornerHandle(board, handleRef.handle)) {
-                    return {
-                        element: hitElement,
-                        handle: handleRef.handle,
-                        cursorClass: handleRef.cursorClass,
-                        rectangle
-                    };
-                }
             }
             return null;
         },
@@ -78,44 +78,40 @@ export function withTableResize(board: PlaitTableBoard) {
             const path = PlaitBoard.findPath(board, resizeRef.element);
             if (resizeRef.options?.cell && resizeRef.rectangle) {
                 const handleIndex = getIndexByResizeHandle(resizeRef.handle);
-                const { originPoint, handlePoint } = getResizeOriginPointAndHandlePoint(board, handleIndex, resizeRef.rectangle);
-                const resizePoints: [Point, Point] = [resizeState.startPoint, resizeState.endPoint];
-                const { xZoom, yZoom } = getResizeZoom(resizePoints, originPoint, handlePoint, false, false);
-                const originPoints = resizeRef.options.cell.points;
-                const targetPoints = originPoints.map((p) => {
-                    return movePointByZoomAndOriginPoint(p, originPoint, xZoom, yZoom);
-                }) as [Point, Point];
-
-                const originRect = RectangleClient.getRectangleByPoints(originPoints);
-                const targetRect = RectangleClient.getRectangleByPoints(targetPoints);
-                const offsetWidth = targetRect.width - originRect.width;
-                const offsetHeight = targetRect.height - originRect.height;
                 const edge = getResizeEdge(handleIndex);
-                if (offsetWidth !== 0 && edge) {
-                    const columnIndex = getResizeTargetRowOrColumnIndex(resizeRef.element, resizeRef.options.cell, edge, false);
-                    const width = getCurrentRowOrColumnSize(resizeRef.element, columnIndex, false) + offsetWidth;
-                    if (width >= MIN_CELL_SIZE) {
-                        const { columns, points } = updateColumns(
-                            resizeRef.element,
-                            resizeRef.element.columns[columnIndex].id,
-                            width,
-                            offsetWidth,
-                            edge
-                        );
-                        Transforms.setNode(board, { columns, points }, path);
+                if (edge) {
+                    const isRow = isRowResizeHandle(handleIndex);
+                    const pointerOffset = isRow
+                        ? resizeState.endPoint[1] - resizeState.startPoint[1]
+                        : resizeState.endPoint[0] - resizeState.startPoint[0];
+                    const targetIndex = getResizeTargetRowOrColumnIndex(resizeRef.element, resizeRef.options.cell, edge, isRow);
+                    if (targetIndex < 0) {
+                        return;
                     }
-                } else if (offsetHeight !== 0 && edge) {
-                    const rowIndex = getResizeTargetRowOrColumnIndex(resizeRef.element, resizeRef.options.cell, edge, true);
-                    const height = getCurrentRowOrColumnSize(resizeRef.element, rowIndex, true) + offsetHeight;
-                    if (height >= MIN_CELL_SIZE) {
-                        const { rows, points } = updateRows(
-                            resizeRef.element,
-                            resizeRef.element.rows[rowIndex].id,
-                            height,
-                            offsetHeight,
-                            edge
-                        );
-                        Transforms.setNode(board, { rows, points }, path);
+                    const currentSize = getCurrentRowOrColumnSize(resizeRef.element, targetIndex, isRow);
+                    const sizeOffset = edge === 'start' ? -pointerOffset : pointerOffset;
+                    const targetSize = Math.max(MIN_CELL_SIZE, currentSize + sizeOffset);
+                    const appliedOffset = targetSize - currentSize;
+                    if (appliedOffset !== 0) {
+                        if (isRow) {
+                            const { rows, points } = updateRows(
+                                resizeRef.element,
+                                resizeRef.element.rows[targetIndex].id,
+                                targetSize,
+                                appliedOffset,
+                                edge
+                            );
+                            Transforms.setNode(board, { rows, points }, path);
+                        } else {
+                            const { columns, points } = updateColumns(
+                                resizeRef.element,
+                                resizeRef.element.columns[targetIndex].id,
+                                targetSize,
+                                appliedOffset,
+                                edge
+                            );
+                            Transforms.setNode(board, { columns, points }, path);
+                        }
                     }
                 }
             } else if (isCornerHandle(board, resizeRef.handle)) {
@@ -162,6 +158,10 @@ export function withTableResize(board: PlaitTableBoard) {
     withResize<PlaitBaseTable, ResizeHandle, TableResizeOptions>(board, options);
 
     return board;
+}
+
+function isRowResizeHandle(handleIndex: number) {
+    return [Number(ResizeHandle.n), Number(ResizeHandle.s)].includes(handleIndex);
 }
 
 function scaleRowsOrColumns(data: { id: string; width?: number; height?: number }[], offset: number, originSize: number, isRow: boolean) {
