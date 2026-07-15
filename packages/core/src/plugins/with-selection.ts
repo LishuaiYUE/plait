@@ -185,7 +185,7 @@ export function withSelection(board: PlaitBoard) {
                 removeSelectedElement(board, op.node, true);
             }
         });
-        if (isHandleSelection(board) && hasSetSelectionOperation(board)) {
+        if (!PlaitBoard.isPointer(board, PlaitPointerType.hand) && isHandleSelection(board) && hasSetSelectionOperation(board)) {
             try {
                 if (!isShift) {
                     selectionRectangleG?.remove();
