@@ -13,6 +13,32 @@ import {
 import { getNavigatorClipboard, setNavigatorClipboard } from './navigator-clipboard';
 import { ClipboardData, WritableClipboardContext } from './types';
 
+const SVG_MIME_TYPE = 'image/svg+xml';
+
+const readDataTransferItemAsString = (item: DataTransferItem): Promise<string> => {
+    return new Promise<string>((resolve) => {
+        item.getAsString((value) => {
+            resolve(value || '');
+        });
+    });
+};
+
+const readSvgText = async (dataTransfer: DataTransfer): Promise<string> => {
+    const svgText = dataTransfer.getData(SVG_MIME_TYPE);
+    const svgItem = Array.from(dataTransfer.items || []).find((item) => item.kind === 'string' && item.type === SVG_MIME_TYPE);
+    if (svgText.trim()) {
+        return svgText;
+    }
+
+    return svgItem ? await readDataTransferItemAsString(svgItem) : '';
+};
+
+const createSvgClipboardData = (svgText: string): ClipboardData => {
+    return {
+        files: [new File([svgText], 'plait-svg-image.svg', { type: SVG_MIME_TYPE })]
+    };
+};
+
 export const cacheClipboardData = (clipboardData: ClipboardData) => {
     (window as any)['plait_fallback_clipboard_data'] = clipboardData;
 };
@@ -22,16 +48,22 @@ export const getCachedClipboardData = () => {
 };
 
 export const getClipboardData = async (dataTransfer: DataTransfer | null): Promise<ClipboardData | null> => {
-    let clipboardData = {};
     if (dataTransfer) {
         if (dataTransfer.files.length) {
             return { files: Array.from(dataTransfer.files) };
         }
-        clipboardData = getDataTransferClipboard(dataTransfer);
-        if (Object.keys(clipboardData).length === 0) {
-            clipboardData = getDataTransferClipboardText(dataTransfer);
+        const plaitClipboardData = getDataTransferClipboard(dataTransfer);
+        if (Object.keys(plaitClipboardData).length > 0) {
+            return plaitClipboardData;
         }
-        return clipboardData;
+        const svgTextPromise = readSvgText(dataTransfer);
+        // DataTransfer is event-scoped, so preserve the plain-text fallback before awaiting the SVG item.
+        const textClipboardData = getDataTransferClipboardText(dataTransfer);
+        const svgText = await svgTextPromise;
+        if (svgText.trim()) {
+            return createSvgClipboardData(svgText);
+        }
+        return textClipboardData;
     }
     if (getProbablySupportsClipboardRead()) {
         return await getNavigatorClipboard();
