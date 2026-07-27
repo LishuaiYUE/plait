@@ -3,14 +3,19 @@ import { PlaitBoard } from '../interfaces/board';
 import { NodeTransforms } from '../transforms/node';
 import { sortElements } from './position';
 
-const BOARD_TO_RAF = new WeakMap<PlaitBoard, { [key: string]: number | null }>();
+interface RAFTask {
+    timerId: number;
+    callback: () => void;
+}
+
+const BOARD_TO_RAF = new WeakMap<PlaitBoard, { [key: string]: RAFTask | null }>();
 
 export interface MoveNodeOption {
     element: PlaitElement;
     newPath: Path;
 }
 
-const getTimerId = (board: PlaitBoard, key: string) => {
+const getRAFTask = (board: PlaitBoard, key: string) => {
     const state = getRAFState(board);
     return state[key] || null;
 };
@@ -21,21 +26,37 @@ const getRAFState = (board: PlaitBoard) => {
 
 export const throttleRAF = (board: PlaitBoard, key: string, fn: () => void) => {
     const scheduleFunc = () => {
-        let timerId = requestAnimationFrame(() => {
+        const task: RAFTask = {
+            timerId: 0,
+            callback: fn
+        };
+        task.timerId = requestAnimationFrame(() => {
             const value = BOARD_TO_RAF.get(board) || {};
             value[key] = null;
             BOARD_TO_RAF.set(board, value);
-            PlaitBoard.isAlive(board) && fn();
+            PlaitBoard.isAlive(board) && task.callback();
         });
         const state = getRAFState(board);
-        state[key] = timerId;
+        state[key] = task;
         BOARD_TO_RAF.set(board, state);
     };
-    let timerId = getTimerId(board, key);
-    if (timerId !== null) {
-        cancelAnimationFrame(timerId);
+    const task = getRAFTask(board, key);
+    if (task !== null) {
+        cancelAnimationFrame(task.timerId);
     }
     scheduleFunc();
+};
+
+export const flushThrottleRAF = (board: PlaitBoard, key: string) => {
+    const task = getRAFTask(board, key);
+    if (task === null) {
+        return;
+    }
+    cancelAnimationFrame(task.timerId);
+    const state = getRAFState(board);
+    state[key] = null;
+    BOARD_TO_RAF.set(board, state);
+    PlaitBoard.isAlive(board) && task.callback();
 };
 
 export const debounce = <T>(func: (args?: T) => void, wait: number, options?: { leading: boolean }) => {

@@ -1,5 +1,7 @@
 import { fakeAsync, tick } from '@angular/core/testing';
-import { debounce } from './common';
+import { createTestingBoard } from '../testing';
+import { IS_BOARD_ALIVE } from './weak-maps';
+import { debounce, flushThrottleRAF, throttleRAF } from './common';
 
 describe('debounce', () => {
     let func: jasmine.Spy;
@@ -42,5 +44,38 @@ describe('debounce', () => {
         expect(func).toHaveBeenCalledTimes(1);
         tick(wait);
         expect(func).toHaveBeenCalledTimes(2);
+    }));
+});
+
+describe('throttleRAF', () => {
+    it('should synchronously flush the pending callback once', fakeAsync(() => {
+        const board = createTestingBoard([], []);
+        const callback = jasmine.createSpy('callback');
+        IS_BOARD_ALIVE.set(board, true);
+
+        throttleRAF(board, 'test', callback);
+        flushThrottleRAF(board, 'test');
+
+        expect(callback).toHaveBeenCalledTimes(1);
+        tick(16);
+        expect(callback).toHaveBeenCalledTimes(1);
+        IS_BOARD_ALIVE.delete(board);
+    }));
+
+    it('should flush only the latest pending callback', fakeAsync(() => {
+        const board = createTestingBoard([], []);
+        const firstCallback = jasmine.createSpy('firstCallback');
+        const latestCallback = jasmine.createSpy('latestCallback');
+        IS_BOARD_ALIVE.set(board, true);
+
+        throttleRAF(board, 'test', firstCallback);
+        throttleRAF(board, 'test', latestCallback);
+        flushThrottleRAF(board, 'test');
+
+        expect(firstCallback).not.toHaveBeenCalled();
+        expect(latestCallback).toHaveBeenCalledTimes(1);
+        tick(16);
+        expect(latestCallback).toHaveBeenCalledTimes(1);
+        IS_BOARD_ALIVE.delete(board);
     }));
 });

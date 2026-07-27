@@ -5,6 +5,7 @@ import {
     PlaitPointerType,
     Point,
     distanceBetweenPointAndPoint,
+    flushThrottleRAF,
     isMainPointer,
     throttleRAF,
     toViewBoxPoint,
@@ -20,6 +21,8 @@ const generalCanResize = (board: PlaitBoard, event: PointerEvent) => {
         !PlaitBoard.isReadonly(board) && !PlaitBoard.hasBeenTextEditing(board) && PlaitBoard.isPointer(board, PlaitPointerType.selection)
     );
 };
+
+const RESIZE_RAF_KEY = 'with-common-resize';
 
 export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, K = ResizeHandle, P = ResizeOptions>(
     board: PlaitBoard,
@@ -102,7 +105,7 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
             if (startPoint && isResizing(board)) {
                 event.preventDefault();
                 const endPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
-                throttleRAF(board, 'with-common-resize', () => {
+                throttleRAF(board, RESIZE_RAF_KEY, () => {
                     if (startPoint && resizeRef) {
                         options.onResize(resizeRef, {
                             startPoint: toViewBoxPoint(board, toHostPoint(board, startPoint[0], startPoint[1])),
@@ -118,6 +121,9 @@ export const withResize = <T extends PlaitElementOrArray = PlaitElementOrArray, 
     };
 
     board.globalPointerUp = (event: PointerEvent) => {
+        if (isResizing(board)) {
+            flushThrottleRAF(board, RESIZE_RAF_KEY);
+        }
         globalPointerUp(event);
         if (isResizing(board) || resizeHitTestRef) {
             options.afterResize && options.afterResize(resizeRef!);
