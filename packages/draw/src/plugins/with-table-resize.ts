@@ -1,4 +1,4 @@
-import { PlaitBoard, Point, RectangleClient, Transforms, getSelectedElements, hasValidAngle } from '@plait/core';
+import { PlaitBoard, PlaitNode, Point, RectangleClient, Transforms, getSelectedElements, hasValidAngle, isEqualData } from '@plait/core';
 import { PlaitBaseTable, PlaitTableBoard, PlaitTableCell, PlaitTableCellWithPoints } from '../interfaces/table';
 import {
     getIndexByResizeHandle,
@@ -92,24 +92,27 @@ export function withTableResize(board: PlaitTableBoard) {
                     const sizeOffset = edge === 'start' ? -pointerOffset : pointerOffset;
                     const targetSize = Math.max(MIN_CELL_SIZE, currentSize + sizeOffset);
                     const appliedOffset = targetSize - currentSize;
-                    if (appliedOffset !== 0) {
-                        if (isRow) {
-                            const { rows, points } = updateRows(
-                                resizeRef.element,
-                                resizeRef.element.rows[targetIndex].id,
-                                targetSize,
-                                appliedOffset,
-                                edge
-                            );
+                    const table = PlaitNode.get(board, path) as PlaitBaseTable;
+                    if (isRow) {
+                        const { rows, points } = updateRows(
+                            resizeRef.element,
+                            resizeRef.element.rows[targetIndex].id,
+                            targetSize,
+                            appliedOffset,
+                            edge
+                        );
+                        if (!isEqualData(rows, table.rows) || !isEqualData(points, table.points)) {
                             Transforms.setNode(board, { rows, points }, path);
-                        } else {
-                            const { columns, points } = updateColumns(
-                                resizeRef.element,
-                                resizeRef.element.columns[targetIndex].id,
-                                targetSize,
-                                appliedOffset,
-                                edge
-                            );
+                        }
+                    } else {
+                        const { columns, points } = updateColumns(
+                            resizeRef.element,
+                            resizeRef.element.columns[targetIndex].id,
+                            targetSize,
+                            appliedOffset,
+                            edge
+                        );
+                        if (!isEqualData(columns, table.columns) || !isEqualData(points, table.points)) {
                             Transforms.setNode(board, { columns, points }, path);
                         }
                     }

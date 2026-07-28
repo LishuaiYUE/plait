@@ -1,4 +1,5 @@
-import { BOARD_TO_ROUGH_SVG, createTestingBoard, PlaitBoard, RectangleClient } from '@plait/core';
+import { PlaitBoard, RectangleClient, TestingBoardFixture } from '@plait/core';
+import { setupTestingBoard } from '@plait/core';
 import { withDraw } from '../plugins/with-draw';
 import { Options } from 'roughjs/bin/core';
 import { GeometryShapeGenerator } from '../generators/geometry-shape.generator';
@@ -8,25 +9,24 @@ import { PlaitGeometry, BasicShapes, FlowchartSymbols, FILL_STYLES, UMLSymbols }
 import { drawGeometry } from './geometry';
 
 describe('fillStyle', () => {
-    let board: PlaitBoard;
+    let fixture: TestingBoardFixture;
 
     beforeEach(() => {
-        board = createTestingBoard([withDraw], []);
-        BOARD_TO_ROUGH_SVG.set(board, createTestingRoughSVG());
+        fixture = setupTestingBoard([withDraw], [], {
+            withNodeWeakMap: false,
+            withElementHost: false,
+            withHost: false,
+            withRoughSVG: true
+        });
     });
 
-    const createTestingRoughSVG = () => {
-        const createG = () => document.createElementNS('http://www.w3.org/2000/svg', 'g') as SVGGElement;
-        return {
-            rectangle: () => createG(),
-            path: () => createG(),
-            linearPath: () => createG()
-        } as any;
-    };
+    afterEach(() => {
+        fixture.destroy();
+    });
 
     describe('GeometryShapeGenerator', () => {
         it('should use solid fillStyle by default', () => {
-            const roughSVG = PlaitBoard.getRoughSVG(board);
+            const roughSVG = PlaitBoard.getRoughSVG(fixture.board);
             const rectangleSpy = spyOn(roughSVG, 'rectangle').and.callThrough();
             const element: PlaitGeometry = {
                 id: 'test-default-fill-style',
@@ -38,15 +38,13 @@ describe('fillStyle', () => {
                 ],
                 fill: '#FF5733'
             };
-
-            new GeometryShapeGenerator(board).draw(element, {});
-
+            new GeometryShapeGenerator(fixture.board).draw(element, {});
             const options = rectangleSpy.calls.mostRecent().args[4] as Options;
             expect(options.fillStyle).toBe('solid');
         });
 
         it('should pass element fillStyle to shape engine', () => {
-            const roughSVG = PlaitBoard.getRoughSVG(board);
+            const roughSVG = PlaitBoard.getRoughSVG(fixture.board);
             const rectangleSpy = spyOn(roughSVG, 'rectangle').and.callThrough();
             const element: PlaitGeometry = {
                 id: 'test-custom-fill-style',
@@ -60,8 +58,7 @@ describe('fillStyle', () => {
                 fillStyle: 'hachure'
             };
 
-            new GeometryShapeGenerator(board).draw(element, {});
-
+            new GeometryShapeGenerator(fixture.board).draw(element, {});
             const options = rectangleSpy.calls.mostRecent().args[4] as Options;
             expect(options.fillStyle).toBe('hachure');
         });
@@ -69,7 +66,7 @@ describe('fillStyle', () => {
 
     describe('drawGeometry', () => {
         it('should use solid fillStyle by default when called directly', () => {
-            const roughSVG = PlaitBoard.getRoughSVG(board);
+            const roughSVG = PlaitBoard.getRoughSVG(fixture.board);
             const rectangleSpy = spyOn(roughSVG, 'rectangle').and.callThrough();
             const rectangle: RectangleClient = {
                 x: 0,
@@ -78,7 +75,7 @@ describe('fillStyle', () => {
                 height: 100
             };
 
-            drawGeometry(board, rectangle, BasicShapes.rectangle, {
+            drawGeometry(fixture.board, rectangle, BasicShapes.rectangle, {
                 stroke: '#000000',
                 strokeWidth: 2,
                 fill: '#FF5733'
@@ -89,7 +86,7 @@ describe('fillStyle', () => {
         });
 
         it('should support all fill styles when called directly', () => {
-            const roughSVG = PlaitBoard.getRoughSVG(board);
+            const roughSVG = PlaitBoard.getRoughSVG(fixture.board);
             const rectangleSpy = spyOn(roughSVG, 'rectangle').and.callThrough();
             const rectangle: RectangleClient = {
                 x: 0,
@@ -99,7 +96,7 @@ describe('fillStyle', () => {
             };
 
             FILL_STYLES.forEach((fillStyle) => {
-                drawGeometry(board, rectangle, BasicShapes.rectangle, {
+                drawGeometry(fixture.board, rectangle, BasicShapes.rectangle, {
                     stroke: '#000000',
                     strokeWidth: 2,
                     fill: '#FF5733',
@@ -112,7 +109,7 @@ describe('fillStyle', () => {
         });
 
         it('should preserve fillStyle for path based geometry engines', () => {
-            const roughSVG = PlaitBoard.getRoughSVG(board);
+            const roughSVG = PlaitBoard.getRoughSVG(fixture.board);
             const pathSpy = spyOn(roughSVG, 'path').and.callThrough();
             const rectangle: RectangleClient = {
                 x: 0,
@@ -136,7 +133,7 @@ describe('fillStyle', () => {
             ];
 
             shapes.forEach((shape) => {
-                drawGeometry(board, rectangle, shape, roughOptions);
+                drawGeometry(fixture.board, rectangle, shape, roughOptions);
                 const options = pathSpy.calls.mostRecent().args[1] as Options;
                 expect(options.fillStyle).toBe('hachure');
             });
@@ -145,7 +142,7 @@ describe('fillStyle', () => {
 
     describe('drawShape', () => {
         it('should use solid fillStyle by default for table cell fills', () => {
-            const roughSVG = PlaitBoard.getRoughSVG(board);
+            const roughSVG = PlaitBoard.getRoughSVG(fixture.board);
             const rectangleSpy = spyOn(roughSVG, 'rectangle').and.callThrough();
             const rectangle: RectangleClient = {
                 x: 0,
@@ -164,10 +161,10 @@ describe('fillStyle', () => {
                 columns: [{ id: 'column-1' }],
                 cells: [{ id: 'cell-1', rowId: 'row-1', columnId: 'column-1', fill: '#FF5733' }]
             };
-            (board as any).buildTable = (element: PlaitTable) => element;
+            (fixture.board as any).buildTable = (element: PlaitTable) => element;
 
             drawShape(
-                board,
+                fixture.board,
                 rectangle,
                 TableSymbols.table,
                 {
@@ -180,6 +177,5 @@ describe('fillStyle', () => {
             const options = rectangleSpy.calls.mostRecent().args[4] as Options;
             expect(options.fillStyle).toBe('solid');
         });
-
     });
 });
