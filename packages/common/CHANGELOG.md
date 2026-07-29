@@ -1,5 +1,11 @@
 # @plait/common
 
+## 0.93.3
+
+### Patch Changes
+
+-   [#1149](https://github.com/worktile/plait/pull/1149) [`dd9eefae77ab0b8fe0cb9dc89bf2c8665d6de5f1`](https://github.com/worktile/plait/commit/dd9eefae77ab0b8fe0cb9dc89bf2c8665d6de5f1) Thanks [@nightt5879](https://github.com/nightt5879)! - Support pasting SVG clipboard content as an image file.
+
 ## 0.93.2
 
 ## 0.93.1

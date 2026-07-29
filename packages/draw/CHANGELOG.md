@@ -1,5 +1,15 @@
 # @plait/draw
 
+## 0.93.3
+
+### Patch Changes
+
+-   [#1151](https://github.com/worktile/plait/pull/1151) [`e57a1521e95f77edebb7938cd5fb7b7d12af2ef5`](https://github.com/worktile/plait/commit/e57a1521e95f77edebb7938cd5fb7b7d12af2ef5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - restore table cell resize origin and add isEqualData for base data comparisons
+
+-   [#1157](https://github.com/worktile/plait/pull/1157) [`ec7593d71569ab868cd2d85fc93172ed3eb7dc39`](https://github.com/worktile/plait/commit/ec7593d71569ab868cd2d85fc93172ed3eb7dc39) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - keep swimlane cells ordered after adding or removing rows and columns
+
+-   [#1153](https://github.com/worktile/plait/pull/1153) [`19150e8b816b6a270949c0152edb752a7382a61d`](https://github.com/worktile/plait/commit/19150e8b816b6a270949c0152edb752a7382a61d) Thanks [@nightt5879](https://github.com/nightt5879)! - prevent active tools from handling Space panning gestures
+
 ## 0.93.2
 
 ### Patch Changes

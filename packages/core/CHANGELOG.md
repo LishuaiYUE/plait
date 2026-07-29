@@ -1,5 +1,21 @@
 # plait
 
+## 0.93.3
+
+### Patch Changes
+
+-   [#1152](https://github.com/worktile/plait/pull/1152) [`8f2b3d1cac0aa9185e8c23f6c9bc66bb3841e4ec`](https://github.com/worktile/plait/commit/8f2b3d1cac0aa9185e8c23f6c9bc66bb3841e4ec) Thanks [@nightt5879](https://github.com/nightt5879)! - refresh the multi-selection rectangle while panning in hand mode
+
+-   [#1145](https://github.com/worktile/plait/pull/1145) [`d8883f886444dd64f5a7cc6188554aea8cf0cd9a`](https://github.com/worktile/plait/commit/d8883f886444dd64f5a7cc6188554aea8cf0cd9a) Thanks [@nightt5879](https://github.com/nightt5879)! - preserve text color in exports
+
+-   [#1151](https://github.com/worktile/plait/pull/1151) [`e57a1521e95f77edebb7938cd5fb7b7d12af2ef5`](https://github.com/worktile/plait/commit/e57a1521e95f77edebb7938cd5fb7b7d12af2ef5) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - restore table cell resize origin and add isEqualData for base data comparisons
+
+-   [#1149](https://github.com/worktile/plait/pull/1149) [`dd9eefae77ab0b8fe0cb9dc89bf2c8665d6de5f1`](https://github.com/worktile/plait/commit/dd9eefae77ab0b8fe0cb9dc89bf2c8665d6de5f1) Thanks [@nightt5879](https://github.com/nightt5879)! - Support pasting SVG clipboard content as an image file.
+
+-   [`e63ba9e952389a1798d345c2315aa74d54dafb45`](https://github.com/worktile/plait/commit/e63ba9e952389a1798d345c2315aa74d54dafb45) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - apply backgroundColor for svg
+
+-   [#1153](https://github.com/worktile/plait/pull/1153) [`19150e8b816b6a270949c0152edb752a7382a61d`](https://github.com/worktile/plait/commit/19150e8b816b6a270949c0152edb752a7382a61d) Thanks [@nightt5879](https://github.com/nightt5879)! - prevent active tools from handling Space panning gestures
+
 ## 0.93.2
 
 ## 0.93.1
