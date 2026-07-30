@@ -1,5 +1,11 @@
 # plait
 
+## 0.93.4
+
+### Patch Changes
+
+-   [`1d721e340ed0b125a0c245a85ffae3ce0e051423`](https://github.com/worktile/plait/commit/1d721e340ed0b125a0c245a85ffae3ce0e051423) Thanks [@pubuzhixing8](https://github.com/pubuzhixing8)! - xxx
+
 ## 0.93.3
 
 ### Patch Changes

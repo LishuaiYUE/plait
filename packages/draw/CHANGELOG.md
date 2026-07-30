@@ -1,5 +1,7 @@
 # @plait/draw
 
+## 0.93.4
+
 ## 0.93.3
 
 ### Patch Changes
