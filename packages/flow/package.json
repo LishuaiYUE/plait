@@ -14,7 +14,10 @@
     }
   },
   "license": "MIT",
-  "repository": "https://github.com/worktile/plait",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worktile/plait.git"
+  },
   "keywords": [
     "node-based",
     "flow process",

@@ -1,4 +1,4 @@
-import { RoughSVG } from 'roughjs/bin/svg';
+import rough from 'roughjs';
 import { PlaitBoard } from '../../interfaces/board';
 import { createG, createSVG } from '../../utils/dom/common';
 import { BOARD_TO_ELEMENT_HOST, BOARD_TO_HOST, BOARD_TO_ROUGH_SVG } from '../../utils/weak-maps';
@@ -46,7 +46,7 @@ export const clearBoardHost = (board: PlaitBoard) => {
 };
 
 export const createTestingRoughSVG = () => {
-    return new RoughSVG(createSVG());
+    return rough.svg(createSVG());
 };
 
 export const fakeBoardRoughSVG = (board: PlaitBoard) => {

@@ -6,7 +6,10 @@
     "tslib": "^2.3.0"
   },
   "license": "MIT",
-  "repository": "https://github.com/worktile/plait",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worktile/plait.git"
+  },
   "keywords": [
     "mind",
     "mind map",
