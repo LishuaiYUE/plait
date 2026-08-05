@@ -145,6 +145,8 @@ For more detailed examples refer to： [https://github.com/pubuzhixing8/plait-ba
 
 Everyone is welcome to contribute to Plait and build a new generation of drawing framework together. Any Issue or PR is acceptable, and we hope to get your ⭐️ support.
 
+Before opening an issue or pull request, please read the [Contributing Guide](CONTRIBUTING.md).
+
 ### LICENSE
 
 [MIT License](https://github.com/worktile/slate-angular/blob/master/LICENSE)
