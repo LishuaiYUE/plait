@@ -143,6 +143,8 @@ export class BasicBoardComponent {
 
 欢迎大家贡献 Plait ，一起构建新一代的画图框架，任何的 Issue、PR 都是可以，也希望得到大家的 ⭐️ 支持。
 
+提交 Issue 或 Pull Request 前，请先阅读 [贡献指南](CONTRIBUTING.md)。
+
 ### 开源协议
 
 [MIT License](https://github.com/worktile/slate-angular/blob/master/LICENSE)
