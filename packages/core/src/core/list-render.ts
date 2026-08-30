@@ -67,6 +67,7 @@ export class ListRender {
                 } else {
                     const instance = this.instances[record.previousIndex];
                     instance.context = context;
+                    instance.getContainerG().style.display = board.isVisible(record.item) ? '' : 'none';
                     newInstances.push(instance);
                     newContexts.push(context);
                 }

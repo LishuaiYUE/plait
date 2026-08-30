@@ -1,3 +1,34 @@
+import { PlaitBoard, PlaitElement, createG, createTestingBoard } from '../public-api';
+import { ElementFlavour } from './element/element-flavour';
+import { ListRender } from './list-render';
+
+class TestElementComponent extends ElementFlavour {
+    constructor() {
+        super({});
+    }
+}
+
+describe('ListRender', () => {
+    it('refreshes visibility when an element identity changes', () => {
+        const element = { id: 'a', type: 'test' } as PlaitElement;
+        const board = createTestingBoard([], [element]);
+        board.drawElement = () => TestElementComponent;
+        board.isVisible = (value) => !(value as PlaitElement & { hidden?: boolean }).hidden;
+        const parentG = createG();
+        const listRender = new ListRender(board);
+        listRender.initialize(board.children, { board, parent: board, parentG });
+
+        expect(PlaitElement.getContainerG(element, { suppressThrow: false })!.style.display).toBe('');
+
+        const hiddenElement = { ...element, hidden: true };
+        board.children = [hiddenElement];
+        listRender.update(board.children, { board, parent: board, parentG });
+
+        expect(PlaitElement.getContainerG(hiddenElement, { suppressThrow: false })!.style.display).toBe('none');
+        listRender.destroy();
+    });
+});
+
 describe('mountElementG', () => {
     describe('default', () => {
         it('container g should have correct position', () => {});
