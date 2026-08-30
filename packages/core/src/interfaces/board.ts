@@ -89,6 +89,8 @@ export interface PlaitBoard {
     canAddToGroup: (element: PlaitElement) => boolean;
     canSetZIndex: (element: PlaitElement) => boolean;
     isExpanded: (element: PlaitElement) => boolean;
+    /** Whether an element participates in rendering, hit testing and export. */
+    isVisible: (element: PlaitElement) => boolean;
     // pointer hook
     pointerDown: (pointer: PointerEvent) => void;
     pointerMove: (pointer: PointerEvent) => void;

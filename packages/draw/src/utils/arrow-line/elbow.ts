@@ -1,4 +1,4 @@
-import { Point, PlaitBoard, getElementById, RectangleClient, Vector, rotatePoints, rotatePointsByElement } from '@plait/core';
+import { Point, PlaitBoard, PlaitElement, getElementById, RectangleClient, Vector, rotatePoints, rotatePointsByElement } from '@plait/core';
 import {
     getPoints,
     getPointByVectorComponent,
@@ -7,9 +7,10 @@ import {
     simplifyOrthogonalPoints,
     isSourceAndTargetIntersect,
     DEFAULT_ROUTE_MARGIN,
-    ElbowLineRouteOptions
+    ElbowLineRouteOptions,
+    PlaitConnectionBoard
 } from '@plait/common';
-import { BasicShapes, ArrowLineHandleRefPair, PlaitGeometry, PlaitArrowLine } from '../../interfaces';
+import { BasicShapes, ArrowLineHandleRefPair, PlaitArrowLine } from '../../interfaces';
 import { createGeometryElement } from '../geometry';
 import { getElbowLineRouteOptions, getArrowLineHandleRefPair } from './arrow-line-common';
 import { getMidKeyPoints, getMirrorDataPoints, hasIllegalElbowPoint } from './arrow-line-resize';
@@ -93,8 +94,12 @@ export const getNextSourceAndTargetPoints = (board: PlaitBoard, element: PlaitAr
 };
 
 export const getSourceAndTargetRectangle = (board: PlaitBoard, element: PlaitArrowLine, handleRefPair: ArrowLineHandleRefPair) => {
-    let sourceElement = element.source.boundId ? getElementById<PlaitGeometry>(board, element.source.boundId) : undefined;
-    let targetElement = element.target.boundId ? getElementById<PlaitGeometry>(board, element.target.boundId) : undefined;
+    let sourceElement: PlaitElement | undefined = element.source.boundId
+        ? getElementById<PlaitElement>(board, element.source.boundId)
+        : undefined;
+    let targetElement: PlaitElement | undefined = element.target.boundId
+        ? getElementById<PlaitElement>(board, element.target.boundId)
+        : undefined;
     if (!sourceElement) {
         const source = handleRefPair.source;
         sourceElement = createFakeElement(source.point, source.vector);
@@ -104,14 +109,14 @@ export const getSourceAndTargetRectangle = (board: PlaitBoard, element: PlaitArr
         targetElement = createFakeElement(target.point, target.vector);
     }
 
-    let sourceRectangle = RectangleClient.getRectangleByPoints(sourceElement.points);
+    let sourceRectangle = (board as PlaitConnectionBoard).getConnectionGeometry(sourceElement)!.rectangle;
     const rotatedSourceCornerPoints =
         rotatePointsByElement(RectangleClient.getCornerPoints(sourceRectangle), sourceElement) ||
         RectangleClient.getCornerPoints(sourceRectangle);
     sourceRectangle = RectangleClient.getRectangleByPoints(rotatedSourceCornerPoints);
     sourceRectangle = RectangleClient.inflate(sourceRectangle, getStrokeWidthByElement(sourceElement) * 2);
 
-    let targetRectangle = RectangleClient.getRectangleByPoints(targetElement.points);
+    let targetRectangle = (board as PlaitConnectionBoard).getConnectionGeometry(targetElement)!.rectangle;
     const rotatedTargetCornerPoints =
         rotatePointsByElement(RectangleClient.getCornerPoints(targetRectangle), targetElement) ||
         RectangleClient.getCornerPoints(targetRectangle);

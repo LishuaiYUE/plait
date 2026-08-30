@@ -29,9 +29,12 @@ import { withNodeImageResize } from './with-node-image-resize';
 import { withMindFragment } from './with-mind-fragment';
 import { withEmoji } from '../emoji/with-emoji';
 import { fixMindElementData, isNormalizedData } from '../utils/normalize';
+import { getDirectionByPointOfRectangle, getDirectionFactor, PlaitConnectionBoard } from '@plait/common';
 
 export const withMind = (baseBoard: PlaitBoard) => {
     const board = baseBoard as PlaitBoard & PlaitMindBoard;
+    const connectionBoard = board as unknown as PlaitBoard & PlaitConnectionBoard;
+    const getConnectionGeometry = connectionBoard.getConnectionGeometry?.bind(connectionBoard);
     const {
         drawElement,
         dblClick,
@@ -48,6 +51,39 @@ export const withMind = (baseBoard: PlaitBoard) => {
         getOneHitElement,
         normalizeElement
     } = board;
+
+    if (getConnectionGeometry) {
+        connectionBoard.getConnectionGeometry = (element: PlaitElement) => {
+            if (MindElement.isMindElement(board, element)) {
+                const rectangle = getRectangleByNode(MindElement.getNode(element));
+                return {
+                    rectangle,
+                    connectorPoints: RectangleClient.getEdgeCenterPoints(rectangle),
+                    getNearestPoint: (point: Point) => {
+                        const x = Math.max(rectangle.x, Math.min(point[0], rectangle.x + rectangle.width));
+                        const y = Math.max(rectangle.y, Math.min(point[1], rectangle.y + rectangle.height));
+                        const candidates: Point[] = [
+                            [rectangle.x, y],
+                            [rectangle.x + rectangle.width, y],
+                            [x, rectangle.y],
+                            [x, rectangle.y + rectangle.height]
+                        ];
+                        return candidates.reduce((nearest, candidate) => {
+                            const distance = Math.hypot(candidate[0] - point[0], candidate[1] - point[1]);
+                            const nearestDistance = Math.hypot(nearest[0] - point[0], nearest[1] - point[1]);
+                            return distance < nearestDistance ? candidate : nearest;
+                        });
+                    },
+                    getVector: (connection) => {
+                        const direction = getDirectionByPointOfRectangle(connection);
+                        const factor = direction ? getDirectionFactor(direction) : { x: 0, y: 0 };
+                        return [factor.x, factor.y];
+                    }
+                };
+            }
+            return getConnectionGeometry(element);
+        };
+    }
 
     board.normalizeElement = (context: PlaitPluginElementContext) => {
         if (PlaitMind.isMind(context.element)) {

@@ -6,6 +6,7 @@ import {
     clearSelectedElement,
     createG,
     depthFirstRecursion,
+    distanceBetweenPointAndPoint,
     drawCircle,
     getI18nValue,
     getIsRecursionFunc,
@@ -40,7 +41,7 @@ import {
     PlaitGeometry,
     PlaitShapeElement
 } from '../interfaces';
-import { Alignment, getTextEditorsByElement } from '@plait/common';
+import { Alignment, getTextEditorsByElement, PlaitConnectionBoard } from '@plait/common';
 import { isCellIncludeText } from './table';
 import { getEngine } from '../engines';
 import { getElementShape } from './shape';
@@ -150,8 +151,8 @@ export const isClosedCustomGeometry = (board: PlaitBoard, value: PlaitElement): 
     return PlaitDrawElement.isCustomGeometryElement(board, value) && isClosedPoints(value.points);
 };
 
-export const getSnappingShape = (board: PlaitBoard, point: Point): PlaitShapeElement | null => {
-    let hitElement: PlaitShapeElement | null = getHitShape(board, point);
+export const getSnappingShape = (board: PlaitBoard, point: Point): PlaitElement | null => {
+    let hitElement: PlaitElement | null = getHitShape(board, point);
     if (hitElement) {
         const ref = getSnappingRef(board, hitElement, point);
         if (ref.isHitConnector || ref.isHitEdge) {
@@ -161,21 +162,41 @@ export const getSnappingShape = (board: PlaitBoard, point: Point): PlaitShapeEle
     return null;
 };
 
-export const getSnappingRef = (board: PlaitBoard, hitElement: PlaitShapeElement, point: Point) => {
+export const getSnappingRef = (board: PlaitBoard, hitElement: PlaitElement, point: Point) => {
     const rotatedPoint = rotateAntiPointsByElement(board, point, hitElement) || point;
-    const connectorPoint = getHitConnectorPoint(rotatedPoint, hitElement);
-    const edgePoint = getNearestPoint(hitElement, rotatedPoint);
-    const isHitEdge = isHitEdgeOfShape(board, hitElement, rotatedPoint, LINE_SNAPPING_BUFFER);
+    const geometry = (board as PlaitConnectionBoard).getConnectionGeometry?.(hitElement);
+    if (!geometry) {
+        return { isHitEdge: false, isHitConnector: false, connectorPoint: undefined, edgePoint: rotatedPoint };
+    }
+    const connectorPoint = geometry.connectorPoints.find(
+        (candidate) => distanceBetweenPointAndPoint(...candidate, ...rotatedPoint) <= LINE_SNAPPING_BUFFER
+    );
+    const edgePoint = geometry.getNearestPoint(rotatedPoint);
+    const isHitEdge = distanceBetweenPointAndPoint(...edgePoint, ...rotatedPoint) <= LINE_SNAPPING_BUFFER;
     return { isHitEdge, isHitConnector: !!connectorPoint, connectorPoint, edgePoint };
 };
 
-export const getHitShape = (board: PlaitBoard, point: Point, offset = LINE_HIT_GEOMETRY_BUFFER): PlaitShapeElement | null => {
-    let hitShape: PlaitShapeElement | null = null;
-    traverseDrawShapes(board, (element: PlaitShapeElement) => {
-        if (hitShape === null && isInsideOfShape(board, element, rotateAntiPointsByElement(board, point, element) || point, offset * 2)) {
-            hitShape = element;
-        }
-    });
+export const getHitShape = (board: PlaitBoard, point: Point, offset = LINE_HIT_GEOMETRY_BUFFER): PlaitElement | null => {
+    let hitShape: PlaitElement | null = null;
+    depthFirstRecursion<Ancestor>(
+        board,
+        (node) => {
+            if (hitShape !== null || PlaitBoard.isBoard(node) || !board.isVisible(node)) {
+                return;
+            }
+            const geometry = (board as PlaitConnectionBoard).getConnectionGeometry?.(node);
+            if (!geometry) {
+                return;
+            }
+            const rotatedPoint = rotateAntiPointsByElement(board, point, node) || point;
+            const client = RectangleClient.inflate(geometry.rectangle, offset * 2);
+            if (RectangleClient.isPointInRectangle(client, rotatedPoint)) {
+                hitShape = node;
+            }
+        },
+        (node) => PlaitBoard.isBoard(node) || board.isRecursion(node),
+        true
+    );
     return hitShape;
 };
 
@@ -212,12 +233,41 @@ export const drawShape = (
 
 export const drawBoundReaction = (
     board: PlaitBoard,
-    element: PlaitShapeElement,
+    element: PlaitElement,
     roughOptions: { hasMask: boolean; hasConnector: boolean } = { hasMask: true, hasConnector: true }
 ) => {
     const g = createG();
-    const rectangle = RectangleClient.getRectangleByPoints(element.points);
+    const geometry = (board as PlaitConnectionBoard).getConnectionGeometry(element)!;
+    const rectangle = geometry.rectangle;
     const activeRectangle = RectangleClient.inflate(rectangle, SNAPPING_STROKE_WIDTH);
+    if (!PlaitDrawElement.isShapeElement(element)) {
+        const strokeG = PlaitBoard.getRoughSVG(board).rectangle(
+            activeRectangle.x,
+            activeRectangle.y,
+            activeRectangle.width,
+            activeRectangle.height,
+            {
+                stroke: SELECTION_BORDER_COLOR,
+                strokeWidth: SNAPPING_STROKE_WIDTH,
+                fill: roughOptions.hasMask ? SELECTION_FILL_COLOR : undefined,
+                fillStyle: 'solid'
+            }
+        );
+        g.appendChild(strokeG);
+        if (roughOptions.hasConnector) {
+            geometry.connectorPoints.forEach((point) => {
+                g.appendChild(
+                    drawCircle(PlaitBoard.getRoughSVG(board), point, 8, {
+                        stroke: SELECTION_BORDER_COLOR,
+                        strokeWidth: ACTIVE_STROKE_WIDTH,
+                        fill: '#FFF',
+                        fillStyle: 'solid'
+                    })
+                );
+            });
+        }
+        return g;
+    }
     const shape = getElementShape(element);
     let drawOptions: DrawOptions | undefined;
     if (PlaitDrawElement.isElementByTable(element)) {

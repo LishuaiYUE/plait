@@ -98,6 +98,7 @@ export class ListRender {
                 const previousInstance = this.instances[index];
                 const context = getContext(board, element, index, parent, previousContext);
                 previousInstance.context = context;
+                previousInstance.getContainerG().style.display = board.isVisible(element) ? '' : 'none';
                 newContexts.push(context);
             });
             this.contexts = newContexts;
@@ -139,6 +140,7 @@ const createPluginComponent = (
         }
     }
     const g = instance.getContainerG();
+    g.style.display = board.isVisible(context.element) ? '' : 'none';
     mountElementG(context.index, g, childrenContext);
     instance.initializeListRender();
     return instance;
