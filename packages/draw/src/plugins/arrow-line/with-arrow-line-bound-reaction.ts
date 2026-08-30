@@ -58,7 +58,7 @@ export const withArrowLineBoundReaction = (board: PlaitBoard) => {
                     boundShapeG.appendChild(circleG);
                 }
                 if (hasValidAngle(hitElement)) {
-                    setAngleForG(boundShapeG, RectangleClient.getCenterPointByPoints(hitElement.points), hitElement.angle!);
+                    setAngleForG(boundShapeG, RectangleClient.getCenterPoint(board.getRectangle(hitElement)!), hitElement.angle!);
                 }
                 PlaitBoard.getElementTopHost(board).append(boundShapeG);
             }

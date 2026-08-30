@@ -21,7 +21,8 @@ import {
     removeDuplicatePoints,
     getExtendPoint,
     getStrokeLineDash,
-    StrokeStyle
+    StrokeStyle,
+    PlaitConnectionBoard
 } from '@plait/common';
 import {
     ArrowLineHandle,
@@ -149,14 +150,14 @@ export const drawArrowLine = (board: PlaitBoard, element: PlaitArrowLine) => {
     return lineG;
 };
 
-export const getHitConnection = (board: PlaitBoard, point: Point, hitElement: PlaitShapeElement): Point => {
+export const getHitConnection = (board: PlaitBoard, point: Point, hitElement: PlaitElement): Point => {
     const ref = getSnappingRef(board, hitElement, point);
     const connectionPoint = ref.connectorPoint || ref.edgePoint;
-    return getHitConnectionFromConnectionPoint(connectionPoint, hitElement);
+    return getHitConnectionFromConnectionPoint(board, connectionPoint, hitElement);
 };
 
-export const getHitConnectionFromConnectionPoint = (connectionPoint: Point, hitElement: PlaitShapeElement): Point => {
-    let rectangle = RectangleClient.getRectangleByPoints(hitElement.points);
+export const getHitConnectionFromConnectionPoint = (board: PlaitBoard, connectionPoint: Point, hitElement: PlaitElement): Point => {
+    const rectangle = (board as PlaitConnectionBoard).getConnectionGeometry(hitElement)!.rectangle;
     return [(connectionPoint[0] - rectangle.x) / rectangle.width, (connectionPoint[1] - rectangle.y) / rectangle.height];
 };
 
@@ -213,7 +214,7 @@ export const handleArrowLineCreating = (
     lineShape: ArrowLineShape,
     sourcePoint: Point,
     movingPoint: Point,
-    sourceElement: PlaitShapeElement | null,
+    sourceElement: PlaitElement | null,
     lineShapeG: SVGGElement,
     options?: Pick<PlaitArrowLine, 'strokeColor' | 'strokeWidth'>
 ) => {

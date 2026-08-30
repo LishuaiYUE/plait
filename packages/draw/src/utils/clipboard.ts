@@ -1,7 +1,7 @@
 import { PlaitBoard, PlaitElement, Point, Transforms, getElementById, idCreator } from '@plait/core';
 import { buildClipboardData as basicBuildClipboard, insertClipboardData as basicInsertClipboard } from '@plait/common';
-import { PlaitArrowLine, PlaitDrawElement, PlaitGeometry } from '../interfaces';
-import { getConnectionPoint } from './arrow-line/arrow-line-common';
+import { PlaitArrowLine, PlaitDrawElement } from '../interfaces';
+import { getConnectionPointByElement } from './arrow-line/arrow-line-common';
 import { PlaitTable } from '../interfaces/table';
 import { updateCellIds, updateRowOrColumnIds } from './table';
 
@@ -12,15 +12,20 @@ export const buildClipboardData = (board: PlaitBoard, elements: PlaitDrawElement
             let target = { ...element.target };
             let points = [...element.points];
             if (element.source.boundId) {
-                points[0] = getConnectionPoint(getElementById<PlaitGeometry>(board, element.source.boundId)!, element.source.connection!);
+                points[0] = getConnectionPointByElement(
+                    board,
+                    getElementById<PlaitElement>(board, element.source.boundId)!,
+                    element.source.connection!
+                );
                 if (!getElementById(board, element.source.boundId, elements)) {
                     delete source.boundId;
                     delete source.connection;
                 }
             }
             if (element.target.boundId) {
-                points[points.length - 1] = getConnectionPoint(
-                    getElementById<PlaitGeometry>(board, element.target.boundId)!,
+                points[points.length - 1] = getConnectionPointByElement(
+                    board,
+                    getElementById<PlaitElement>(board, element.target.boundId)!,
                     element.target.connection!
                 );
                 if (!getElementById(board, element.target.boundId, elements)) {

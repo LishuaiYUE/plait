@@ -2,6 +2,7 @@ import {
     BoardTransforms,
     PlaitBoard,
     PlaitPointerType,
+    PlaitElement,
     Point,
     Transforms,
     addSelectedElement,
@@ -10,7 +11,7 @@ import {
     toHostPoint,
     toViewBoxPoint
 } from '@plait/core';
-import { ArrowLineShape, PlaitArrowLine, PlaitShapeElement } from '../../interfaces';
+import { ArrowLineShape, PlaitArrowLine } from '../../interfaces';
 import { getArrowLinePointers } from '../../constants';
 import { isDrawingMode } from '@plait/common';
 import { handleArrowLineCreating } from '../../utils/arrow-line/arrow-line-basic';
@@ -21,7 +22,7 @@ export const withArrowLineCreateByDraw = (board: PlaitBoard) => {
 
     let start: Point | null = null;
 
-    let sourceElement: PlaitShapeElement | null;
+    let sourceElement: PlaitElement | null;
 
     let lineShapeG: SVGGElement | null = null;
 

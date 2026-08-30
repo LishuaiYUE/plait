@@ -1,8 +1,17 @@
-import { Direction, PlaitBoard, PlaitElement, Point, PointOfRectangle, Vector, getElementById, rotatePointsByElement } from '@plait/core';
+import {
+    Direction,
+    PlaitBoard,
+    PlaitElement,
+    Point,
+    PointOfRectangle,
+    RectangleClient,
+    Vector,
+    getElementById,
+    rotatePointsByElement
+} from '@plait/core';
 import { Element } from 'slate';
-import { getConnectionPoint } from '../utils/arrow-line/arrow-line-common';
-import { PlaitShapeElement } from '.';
 import { StrokeStyle } from '@plait/common';
+import { PlaitConnectionBoard } from '@plait/common';
 
 export enum ArrowLineMarkerType {
     arrow = 'arrow',
@@ -45,7 +54,7 @@ export interface ArrowLineHandleRef {
     direction: Direction;
     point: PointOfRectangle;
     vector: Vector;
-    boundElement?: PlaitShapeElement;
+    boundElement?: PlaitElement;
 }
 
 export interface ArrowLineHandleRefPair {
@@ -97,17 +106,18 @@ export const PlaitArrowLine = {
     isTargetMark(line: PlaitArrowLine, markType: ArrowLineMarkerType) {
         return PlaitArrowLine.isSourceMarkOrTargetMark(line, markType, ArrowLineHandleKey.target);
     },
-    isBoundElementOfSource(line: PlaitArrowLine, element: PlaitShapeElement) {
+    isBoundElementOfSource(line: PlaitArrowLine, element: PlaitElement) {
         return line.source.boundId === element.id;
     },
-    isBoundElementOfTarget(line: PlaitArrowLine, element: PlaitShapeElement) {
+    isBoundElementOfTarget(line: PlaitArrowLine, element: PlaitElement) {
         return line.target.boundId === element.id;
     },
     getPoints(board: PlaitBoard, line: PlaitArrowLine) {
         let sourcePoint;
         if (line.source.boundId) {
-            const sourceElement = getElementById<PlaitShapeElement>(board, line.source.boundId)!;
-            const sourceConnectionPoint = getConnectionPoint(sourceElement, line.source.connection!);
+            const sourceElement = getElementById<PlaitElement>(board, line.source.boundId)!;
+            const sourceRectangle = (board as PlaitConnectionBoard).getConnectionGeometry(sourceElement)!.rectangle;
+            const sourceConnectionPoint = RectangleClient.getConnectionPoint(sourceRectangle, line.source.connection!);
             sourcePoint = rotatePointsByElement(sourceConnectionPoint, sourceElement) || sourceConnectionPoint;
         } else {
             sourcePoint = line.points[0];
@@ -115,8 +125,9 @@ export const PlaitArrowLine = {
 
         let targetPoint;
         if (line.target.boundId) {
-            const targetElement = getElementById<PlaitShapeElement>(board, line.target.boundId)!;
-            const targetConnectionPoint = getConnectionPoint(targetElement, line.target.connection!);
+            const targetElement = getElementById<PlaitElement>(board, line.target.boundId)!;
+            const targetRectangle = (board as PlaitConnectionBoard).getConnectionGeometry(targetElement)!.rectangle;
+            const targetConnectionPoint = RectangleClient.getConnectionPoint(targetRectangle, line.target.connection!);
             targetPoint = rotatePointsByElement(targetConnectionPoint, targetElement) || targetConnectionPoint;
         } else {
             targetPoint = line.points[line.points.length - 1];

@@ -23,10 +23,31 @@ import { withSwimlane } from './with-swimlane';
 import { withVectorLineCreateByDraw } from './with-vector-line-create';
 import { getVectorLinePoints } from '../utils/vector-line';
 import { withVectorLineResize } from './with-vector-line-resize';
+import { PlaitConnectionBoard } from '@plait/common';
+import { getNearestPoint } from '../utils/geometry';
+import { getElementShape } from '../utils/shape';
+import { getEngine } from '../engines';
+import { getVectorByConnection } from '../utils/arrow-line/arrow-line-common';
 
 export const withDraw = (board: PlaitBoard) => {
     const { drawElement, getRectangle, isRectangleHit, isHit, isInsidePoint, isMovable, isAlign, getRelatedFragment, getOneHitElement } =
         board;
+    const connectionBoard = board as PlaitConnectionBoard;
+    const getConnectionGeometry = connectionBoard.getConnectionGeometry?.bind(connectionBoard);
+
+    connectionBoard.getConnectionGeometry = (element: PlaitElement) => {
+        if (PlaitDrawElement.isShapeElement(element)) {
+            const rectangle = RectangleClient.getRectangleByPoints(element.points);
+            const engine = getEngine(getElementShape(element));
+            return {
+                rectangle,
+                connectorPoints: engine.getConnectorPoints(rectangle),
+                getNearestPoint: (point: Point) => getNearestPoint(element, point),
+                getVector: (connection) => getVectorByConnection(element, connection)
+            };
+        }
+        return getConnectionGeometry?.(element) ?? null;
+    };
 
     board.drawElement = (context: PlaitPluginElementContext) => {
         if (PlaitDrawElement.isGeometry(context.element)) {

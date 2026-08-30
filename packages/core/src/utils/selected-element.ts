@@ -34,7 +34,7 @@ export const getHitElementsBySelection = (
     depthFirstRecursion<Ancestor>(
         board,
         (node) => {
-            if (!PlaitBoard.isBoard(node) && match(node)) {
+            if (!PlaitBoard.isBoard(node) && (!board.isVisible || board.isVisible(node)) && match(node)) {
                 let isRectangleHit = false;
                 try {
                     isRectangleHit = board.isRectangleHit(node, newSelection);
@@ -64,7 +64,7 @@ export const getHitElementsByPoint = (
     depthFirstRecursion<Ancestor>(
         board,
         (node) => {
-            if (PlaitBoard.isBoard(node) || !match(node) || !PlaitElement.hasMounted(node)) {
+            if (PlaitBoard.isBoard(node) || (board.isVisible && !board.isVisible(node)) || !match(node) || !PlaitElement.hasMounted(node)) {
                 return;
             }
             let isHit = false;
@@ -114,7 +114,12 @@ export const cacheSelectedElements = (board: PlaitBoard, selectedElements: Plait
 };
 
 export const getSelectedElements = (board: PlaitBoard) => {
-    return BOARD_TO_SELECTED_ELEMENT.get(board) || [];
+    const selectedElements = BOARD_TO_SELECTED_ELEMENT.get(board) || [];
+    const visibleElements = selectedElements.filter((element) => !board.isVisible || board.isVisible(element));
+    if (visibleElements.length !== selectedElements.length) {
+        BOARD_TO_SELECTED_ELEMENT.set(board, visibleElements);
+    }
+    return visibleElements;
 };
 
 export const addSelectedElement = (board: PlaitBoard, element: PlaitElement | PlaitElement[]) => {

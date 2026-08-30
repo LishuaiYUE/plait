@@ -6,6 +6,9 @@ import { KEY_TO_ELEMENT_MAP } from './weak-maps';
 export function getRectangleByElements(board: PlaitBoard, elements: PlaitElement[], recursion: boolean): RectangleClient {
     const rectanglesCornerPoints: [Point, Point, Point, Point][] = [];
     const callback = (node: PlaitElement) => {
+        if (board.isVisible && !board.isVisible(node)) {
+            return;
+        }
         const nodeRectangle = board.getRectangle(node);
         if (nodeRectangle) {
             const cornerPoints = RectangleClient.getCornerPoints(nodeRectangle);
