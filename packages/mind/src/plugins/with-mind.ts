@@ -54,7 +54,7 @@ export const withMind = (baseBoard: PlaitBoard) => {
 
     if (getConnectionGeometry) {
         connectionBoard.getConnectionGeometry = (element: PlaitElement) => {
-            if (MindElement.isMindElement(board, element)) {
+            if (element && MindElement.isMindElement(board, element)) {
                 const rectangle = getRectangleByNode(MindElement.getNode(element));
                 return {
                     rectangle,
