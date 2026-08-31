@@ -67,7 +67,6 @@ export class ListRender {
                 } else {
                     const instance = this.instances[record.previousIndex];
                     instance.context = context;
-                    instance.getContainerG().style.display = board.isVisible(record.item) ? '' : 'none';
                     newInstances.push(instance);
                     newContexts.push(context);
                 }
@@ -75,6 +74,11 @@ export class ListRender {
                 if (record.item === this.children[0] || record.item.id === this.children[0]?.id) {
                     currentIndexForFirstElement = record.currentIndex;
                 }
+            });
+            // Visibility can depend on another element. Refresh it only after every
+            // context and element-map entry has been updated for this render pass.
+            newInstances.forEach((instance, index) => {
+                instance.getContainerG().style.display = board.isVisible(children[index]) ? '' : 'none';
             });
             diffResult.forEachOperation((record) => {
                 // removed

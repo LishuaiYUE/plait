@@ -1,4 +1,4 @@
-import { PlaitBoard, PlaitElement, createG, createTestingBoard } from '../public-api';
+import { PlaitBoard, PlaitElement, createG, createTestingBoard, getElementById } from '../public-api';
 import { ElementFlavour } from './element/element-flavour';
 import { ListRender } from './list-render';
 
@@ -25,6 +25,29 @@ describe('ListRender', () => {
         listRender.update(board.children, { board, parent: board, parentG });
 
         expect(PlaitElement.getContainerG(hiddenElement, { suppressThrow: false })!.style.display).toBe('none');
+        listRender.destroy();
+    });
+
+    it('refreshes dependent visibility after all element contexts have changed', () => {
+        const dependent = { id: 'dependent', type: 'test' } as PlaitElement;
+        const owner = { id: 'owner', type: 'test', hidden: false } as PlaitElement & { hidden: boolean };
+        const board = createTestingBoard([], [dependent, owner]);
+        board.drawElement = () => TestElementComponent;
+        board.isVisible = (element) => {
+            if (element.id !== dependent.id) {
+                return true;
+            }
+            return !getElementById<PlaitElement & { hidden: boolean }>(board, owner.id)?.hidden;
+        };
+        const parentG = createG();
+        const listRender = new ListRender(board);
+        listRender.initialize(board.children, { board, parent: board, parentG });
+
+        const hiddenOwner = { ...owner, hidden: true };
+        board.children = [dependent, hiddenOwner];
+        listRender.update(board.children, { board, parent: board, parentG });
+
+        expect(PlaitElement.getContainerG(dependent, { suppressThrow: false })!.style.display).toBe('none');
         listRender.destroy();
     });
 });
