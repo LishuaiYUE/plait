@@ -14,7 +14,10 @@ import {
     getHitElementByPoint,
     toHostPoint,
     toViewBoxPoint,
-    isDragging
+    isDragging,
+    PlaitOptionsBoard,
+    getElementById,
+    cacheSelectedElements
 } from '@plait/core';
 import { AbstractNode, getNonAbstractChildren } from '@plait/layouts';
 import { MindElement, PlaitMind } from '../interfaces/element';
@@ -34,6 +37,8 @@ import { detectDropTarget, getPathByDropTarget } from '../utils/dnd/detector';
 import { drawFakeDragNode, drawFakeDropNode } from '../utils/draw/node-dnd';
 import { MindTransforms } from '../transforms';
 import { adjustAbstractToNode } from '../utils/node/adjust-node';
+import { WithMindOptions } from '../interfaces/options';
+import { WithMindPluginKey } from '../constants/default';
 
 const DRAG_MOVE_BUFFER = 5;
 
@@ -47,6 +52,11 @@ export const withNodeDnd = (board: PlaitBoard) => {
     let fakeDropNodeG: SVGGElement | undefined;
     let dropTarget: { target: MindElement; detectResult: DetectResult } | null = null;
     let targetPath: Path;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    const isFreeNodeLayout = () =>
+        (board as PlaitOptionsBoard).getPluginOptions<WithMindOptions>(WithMindPluginKey)?.freeNodeLayout;
 
     board.pointerDown = (event: PointerEvent) => {
         if (
@@ -98,20 +108,23 @@ export const withNodeDnd = (board: PlaitBoard) => {
             setMindDragging(board, true);
 
             fakeDropNodeG?.remove();
-            const detectPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
-            dropTarget = detectDropTarget(board, detectPoint, dropTarget, [...activeElements, ...correspondingElements]);
-            if (dropTarget?.target) {
-                targetPath = getPathByDropTarget(board, dropTarget);
+            if (!isFreeNodeLayout()) {
+                const detectPoint = toViewBoxPoint(board, toHostPoint(board, event.x, event.y));
+                dropTarget = detectDropTarget(board, detectPoint, dropTarget, [...activeElements, ...correspondingElements]);
+                if (dropTarget?.target) {
+                    targetPath = getPathByDropTarget(board, dropTarget);
 
-                fakeDropNodeG = drawFakeDropNode(board, dropTarget, targetPath);
-                PlaitBoard.getHost(board).appendChild(fakeDropNodeG);
+                    fakeDropNodeG = drawFakeDropNode(board, dropTarget, targetPath);
+                    PlaitBoard.getHost(board).appendChild(fakeDropNodeG);
+                }
             }
 
-            const offsetX = endPoint[0] - startPoint[0];
-            const offsetY = endPoint[1] - startPoint[1];
+            offsetX = endPoint[0] - startPoint[0];
+            offsetY = endPoint[1] - startPoint[1];
             dragFakeNodeG?.remove();
             dragFakeNodeG = createG();
-            [...activeElements, ...correspondingElements].forEach((element) => {
+            const draggingElements = isFreeNodeLayout() ? activeElements : [...activeElements, ...correspondingElements];
+            draggingElements.forEach((element) => {
                 addActiveOnDragOrigin(element);
             });
             activeElements.forEach((element) => {
@@ -129,13 +142,30 @@ export const withNodeDnd = (board: PlaitBoard) => {
     board.globalPointerUp = (event: PointerEvent) => {
         const firstLevelElements = getFirstLevelElement(activeElements);
         if (!board.options.readonly && firstLevelElements.length) {
-            firstLevelElements.push(...correspondingElements);
+            if (!isFreeNodeLayout()) {
+                firstLevelElements.push(...correspondingElements);
+            }
             if (isDragging(board)) {
                 firstLevelElements.forEach((element) => {
                     removeActiveOnDragOrigin(element);
                 });
             }
-            if (dropTarget) {
+            if (isFreeNodeLayout() && isDragging(board)) {
+                const selectedIds = activeElements.map((element) => element.id);
+                firstLevelElements.forEach((element) => {
+                    const path = PlaitBoard.findPath(board, element);
+                    const manualOffset = element.manualOffset || [0, 0];
+                    Transforms.setNode(
+                        board,
+                        { manualOffset: [manualOffset[0] + offsetX, manualOffset[1] + offsetY] },
+                        path
+                    );
+                });
+                const selectedElements = selectedIds
+                    .map((id) => getElementById<MindElement>(board, id))
+                    .filter((element): element is MindElement => !!element);
+                cacheSelectedElements(board, selectedElements);
+            } else if (dropTarget) {
                 const targetPathRef = board.pathRef(targetPath);
                 const targetPreviousPathRef = Path.hasPrevious(targetPath) && board.pathRef(Path.previous(targetPath));
                 const targetElementPathRef = board.pathRef(PlaitBoard.findPath(board, dropTarget.target));
@@ -226,6 +256,8 @@ export const withNodeDnd = (board: PlaitBoard) => {
             fakeDropNodeG?.remove();
             fakeDropNodeG = undefined;
             dropTarget = null;
+            offsetX = 0;
+            offsetY = 0;
         }
         globalPointerUp(event);
     };

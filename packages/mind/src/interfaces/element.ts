@@ -8,6 +8,7 @@ import { MIND_ELEMENT_TO_NODE } from '../utils/weak-maps';
 export interface BaseMindElement extends PlaitElement {
     rightNodeCount?: number;
     manualWidth?: number;
+    manualOffset?: Point;
 
     // node style attributes
     fill?: string;

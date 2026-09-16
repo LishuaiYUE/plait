@@ -59,7 +59,7 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
             imageItem: this.options.getImageItem(element),
             element,
             getRectangle: () => {
-                return this.options.getRectangle(element);
+                return this.options.getRectangle(this.element);
             }
         };
         this.imageComponentRef = (this.board as unknown as PlaitImageBoard).renderImage(this.foreignObject, props);
@@ -100,7 +100,7 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
                 imageItem: this.options.getImageItem(current),
                 element: current,
                 getRectangle: () => {
-                    return this.options.getRectangle(current);
+                    return this.options.getRectangle(this.element);
                 }
             };
             this.imageComponentRef.update(props);
