@@ -15,7 +15,9 @@ export const withImage = <T extends PlaitBoard = PlaitBoard>(board: T) => {
     return newBoard;
 };
 
-export type ImageComponentRef = RenderComponentRef<ImageProps>;
+export interface ImageComponentRef extends RenderComponentRef<ImageProps> {
+    updateRectangle?: (rectangle: RectangleClient) => void;
+}
 
 export interface ImageProps {
     board: PlaitBoard;

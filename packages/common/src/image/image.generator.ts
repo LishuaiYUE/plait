@@ -106,13 +106,17 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
             this.imageComponentRef.update(props);
         }
         const currentForeignObject = this.options.getRectangle(current);
-        updateForeignObject(
-            this.g!,
-            currentForeignObject.width,
-            currentForeignObject.height,
-            currentForeignObject.x,
-            currentForeignObject.y
-        );
+        if (this.imageComponentRef.updateRectangle) {
+            this.imageComponentRef.updateRectangle(currentForeignObject);
+        } else {
+            updateForeignObject(
+                this.g!,
+                currentForeignObject.width,
+                currentForeignObject.height,
+                currentForeignObject.x,
+                currentForeignObject.y
+            );
+        }
         if (currentForeignObject && current.angle !== undefined) {
             setAngleForG(this.g!, RectangleClient.getCenterPoint(currentForeignObject), current.angle);
         }
