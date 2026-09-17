@@ -113,24 +113,26 @@ export const PlaitArrowLine = {
         return line.target.boundId === element.id;
     },
     getPoints(board: PlaitBoard, line: PlaitArrowLine) {
-        let sourcePoint;
-        if (line.source.boundId) {
-            const sourceElement = getElementById<PlaitElement>(board, line.source.boundId)!;
-            const sourceRectangle = (board as PlaitConnectionBoard).getConnectionGeometry(sourceElement)!.rectangle;
-            const sourceConnectionPoint = RectangleClient.getConnectionPoint(sourceRectangle, line.source.connection!);
-            sourcePoint = rotatePointsByElement(sourceConnectionPoint, sourceElement) || sourceConnectionPoint;
-        } else {
-            sourcePoint = line.points[0];
+        let sourcePoint = line.points[0];
+        if (line.source.boundId && line.source.connection) {
+            const sourceElement = getElementById<PlaitElement>(board, line.source.boundId);
+            const sourceGeometry = sourceElement && (board as PlaitConnectionBoard).getConnectionGeometry(sourceElement);
+            if (sourceElement && sourceGeometry) {
+                const sourceRectangle = sourceGeometry.rectangle;
+                const sourceConnectionPoint = RectangleClient.getConnectionPoint(sourceRectangle, line.source.connection);
+                sourcePoint = rotatePointsByElement(sourceConnectionPoint, sourceElement) || sourceConnectionPoint;
+            }
         }
 
-        let targetPoint;
-        if (line.target.boundId) {
-            const targetElement = getElementById<PlaitElement>(board, line.target.boundId)!;
-            const targetRectangle = (board as PlaitConnectionBoard).getConnectionGeometry(targetElement)!.rectangle;
-            const targetConnectionPoint = RectangleClient.getConnectionPoint(targetRectangle, line.target.connection!);
-            targetPoint = rotatePointsByElement(targetConnectionPoint, targetElement) || targetConnectionPoint;
-        } else {
-            targetPoint = line.points[line.points.length - 1];
+        let targetPoint = line.points[line.points.length - 1];
+        if (line.target.boundId && line.target.connection) {
+            const targetElement = getElementById<PlaitElement>(board, line.target.boundId);
+            const targetGeometry = targetElement && (board as PlaitConnectionBoard).getConnectionGeometry(targetElement);
+            if (targetElement && targetGeometry) {
+                const targetRectangle = targetGeometry.rectangle;
+                const targetConnectionPoint = RectangleClient.getConnectionPoint(targetRectangle, line.target.connection);
+                targetPoint = rotatePointsByElement(targetConnectionPoint, targetElement) || targetConnectionPoint;
+            }
         }
         const restPoints = line.points.length > 2 ? line.points.slice(1, line.points.length - 1) : [];
         return [sourcePoint, ...restPoints, targetPoint];

@@ -39,6 +39,10 @@ export class PlaitMindComponent extends MindNodeComponent implements BeforeConte
         depthFirstRecursion<MindNode>(this.root, (node) => {
             node.x = node.x - offsetX + element.points[0][0];
             node.y = node.y - offsetY + element.points[0][1];
+            if (node.origin.manualOffset) {
+                node.x += node.origin.manualOffset[0];
+                node.y += node.origin.manualOffset[1];
+            }
             MIND_ELEMENT_TO_NODE.set(node.origin, node);
         });
     }

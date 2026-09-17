@@ -75,6 +75,11 @@ export class ListRender {
                     currentIndexForFirstElement = record.currentIndex;
                 }
             });
+            // Visibility can depend on another element. Refresh it only after every
+            // context and element-map entry has been updated for this render pass.
+            newInstances.forEach((instance, index) => {
+                instance.getContainerG().style.display = board.isVisible(children[index]) ? '' : 'none';
+            });
             diffResult.forEachOperation((record) => {
                 // removed
                 if (record.currentIndex === null) {

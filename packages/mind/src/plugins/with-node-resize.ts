@@ -6,15 +6,17 @@ import {
     RectangleClient,
     ResizeCursorClass,
     distanceBetweenPointAndRectangle,
-    getSelectedElements
+    getSelectedElements,
+    PlaitOptionsBoard
 } from '@plait/core';
 import { MindElement } from '../interfaces/element';
 import { getRectangleByNode } from '../utils/position/node';
 import { NodeSpace } from '../utils/space/node-space';
 import { PlaitMindBoard } from './with-mind.board';
 import { MindTransforms } from '../transforms';
-import { RESIZE_HANDLE_BUFFER_DISTANCE } from '../constants/default';
+import { RESIZE_HANDLE_BUFFER_DISTANCE, WithMindPluginKey } from '../constants/default';
 import { ResizeRef, ResizeState, TextManage, WithResizeOptions, getFirstTextManage, withResize } from '@plait/common';
+import { WithMindOptions } from '../interfaces/options';
 
 interface TargetElementRef {
     minWidth: number;
@@ -28,7 +30,7 @@ export const withNodeResize = (board: PlaitBoard) => {
     const options: WithResizeOptions<MindElement, null> = {
         key: 'mind-node',
         canResize: () => {
-            return true;
+            return !(board as PlaitOptionsBoard).getPluginOptions<WithMindOptions>(WithMindPluginKey)?.freeNodeLayout;
         },
         hitTest: (point: Point) => {
             const newTargetElement = getSelectedTarget(board as PlaitMindBoard, point);

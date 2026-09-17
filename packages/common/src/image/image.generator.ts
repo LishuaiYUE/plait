@@ -59,7 +59,7 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
             imageItem: this.options.getImageItem(element),
             element,
             getRectangle: () => {
-                return this.options.getRectangle(element);
+                return this.options.getRectangle(this.element);
             }
         };
         this.imageComponentRef = (this.board as unknown as PlaitImageBoard).renderImage(this.foreignObject, props);
@@ -100,19 +100,23 @@ export class ImageGenerator<T extends PlaitElement = PlaitElement> extends Gener
                 imageItem: this.options.getImageItem(current),
                 element: current,
                 getRectangle: () => {
-                    return this.options.getRectangle(current);
+                    return this.options.getRectangle(this.element);
                 }
             };
             this.imageComponentRef.update(props);
         }
         const currentForeignObject = this.options.getRectangle(current);
-        updateForeignObject(
-            this.g!,
-            currentForeignObject.width,
-            currentForeignObject.height,
-            currentForeignObject.x,
-            currentForeignObject.y
-        );
+        if (this.imageComponentRef.updateRectangle) {
+            this.imageComponentRef.updateRectangle(currentForeignObject);
+        } else {
+            updateForeignObject(
+                this.g!,
+                currentForeignObject.width,
+                currentForeignObject.height,
+                currentForeignObject.x,
+                currentForeignObject.y
+            );
+        }
         if (currentForeignObject && current.angle !== undefined) {
             setAngleForG(this.g!, RectangleClient.getCenterPoint(currentForeignObject), current.angle);
         }
